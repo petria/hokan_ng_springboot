@@ -10,7 +10,7 @@ import org.springframework.scheduling.annotation.ScheduledAnnotationBeanPostProc
 import javax.jms.*;
 
 @SpringBootApplication
-public class HokanNgSpringbootServices {
+public class HokanNgSpringBootServices {
 
   @Autowired
   private ConnectionFactory connectionFactory;
@@ -40,6 +40,6 @@ public class HokanNgSpringbootServices {
   }
 
   public static void main(String[] args) {
-    SpringApplication.run(HokanNgSpringbootServices.class, args);
+    SpringApplication.run(HokanNgSpringBootServices.class, args);
   }
 }

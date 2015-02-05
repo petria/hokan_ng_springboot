@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package org.freakz.hokan_ng_sprintboot.io;
+package org.freakz.hokan_ng_sprintboot.services.jms;
 
 import lombok.extern.slf4j.Slf4j;
-import org.freakz.hokan_ng_sprintboot.common.jmsmessages.JmsMessage;
+import org.freakz.hokan_ng_sprintboot.common.jms.JmsMessage;
+import org.freakz.hokan_ng_sprintboot.common.jms.api.JmsSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
@@ -27,11 +28,10 @@ import javax.jms.*;
 
 @Component
 @Slf4j
-public class IOSender {
+public class ServicesSender implements JmsSender {
 
-	@Autowired
-	private JmsTemplate jmsTemplate;
-
+  @Autowired
+  private JmsTemplate jmsTemplate;
 
   public ObjectMessage sendAndGetReply(String destination, String key, String msg) {
     log.debug("{}: {} -> {}", destination, key, msg);
@@ -56,7 +56,7 @@ public class IOSender {
           public Message createMessage(Session session) throws JMSException {
             ObjectMessage objectMessage = session.createObjectMessage();
             JmsMessage jmsMessage = new JmsMessage();
-            jmsMessage.addPayLoadObject(key , msg);
+            jmsMessage.addPayLoadObject(key, msg);
             objectMessage.setObject(jmsMessage);
             return objectMessage;
           }

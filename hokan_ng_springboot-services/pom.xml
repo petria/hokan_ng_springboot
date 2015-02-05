@@ -17,7 +17,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <start-class>org.freakz.hokan_ng_sprintboot.services.HokanNgSpringbootServices</start-class>
+        <start-class>org.freakz.hokan_ng_sprintboot.services.HokanNgSpringBootServices</start-class>
         <java.version>1.8</java.version>
     </properties>
 
@@ -53,10 +53,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-hornetq</artifactId>
         </dependency>
-<!--        <dependency>
-            <groupId>org.hornetq</groupId>
-            <artifactId>hornetq-jms-server</artifactId>
-        </dependency>-->
+        <!--        <dependency>
+                    <groupId>org.hornetq</groupId>
+                    <artifactId>hornetq-jms-server</artifactId>
+                </dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>

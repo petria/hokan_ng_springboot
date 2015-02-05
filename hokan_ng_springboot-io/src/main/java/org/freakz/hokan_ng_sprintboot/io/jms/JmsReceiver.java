@@ -1,19 +1,21 @@
-package org.freakz.hokan_ng_sprintboot.io;
+package org.freakz.hokan_ng_sprintboot.io.jms;
 
 import lombok.extern.slf4j.Slf4j;
-import org.freakz.hokan_ng_sprintboot.common.jmsmessages.JmsMessage;
+import org.freakz.hokan_ng_sprintboot.common.jms.JmsMessage;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jms.listener.DefaultMessageListenerContainer;
 import org.springframework.scheduling.annotation.ScheduledAnnotationBeanPostProcessor;
+import org.springframework.stereotype.Component;
 
 import javax.jms.*;
 
-@SpringBootApplication
+/**
+ * Created by petria on 5.2.2015.
+ */
+@Component
 @Slf4j
-public class HokanNgSpringbootIo {
+public class JmsReceiver {
 
   @Autowired
   private ConnectionFactory connectionFactory;
@@ -51,7 +53,4 @@ public class HokanNgSpringbootIo {
   }
 
 
-  public static void main(String[] args) {
-    SpringApplication.run(HokanNgSpringbootIo.class, args);
-  }
 }

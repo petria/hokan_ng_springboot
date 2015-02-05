@@ -1,11 +1,10 @@
-package org.freakz.hokan_ng_sprintboot.common.jmsmessages;
+package org.freakz.hokan_ng_sprintboot.common.jms;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- *
  * Created by petria on 4.2.2015.
  */
 public class JmsMessage implements Serializable {
