@@ -1,4 +1,4 @@
-package org.freakz.hokan_ng_sprintboot.io.jms;
+package org.freakz.hokan_ng_sprintboot.engine.jms;
 
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_sprintboot.common.jms.JmsMessage;
@@ -32,7 +32,7 @@ public class JmsReceiver {
   public DefaultMessageListenerContainer messageListener() {
     DefaultMessageListenerContainer container = new DefaultMessageListenerContainer();
     container.setConnectionFactory(this.connectionFactory);
-    container.setDestinationName("HokanNGIoQueue");
+    container.setDestinationName("HokanNGEngineQueue");
     container.setMessageListener((MessageListener) message -> {
       try {
         ObjectMessage objectMessage = (ObjectMessage) message;
