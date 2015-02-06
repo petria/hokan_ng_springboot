@@ -9,6 +9,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-public class JmsSender extends SpringJmsSender {
+public class IoJmsSender extends SpringJmsSender {
 
 }
