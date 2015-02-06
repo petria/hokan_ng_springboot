@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import javax.jms.*;
 
 /**
+ *
  * Created by petria on 5.2.2015.
  */
 @Component
@@ -21,7 +22,7 @@ public class JmsReceiver {
   private ConnectionFactory connectionFactory;
 
   @Autowired
-  private IOSender ioSender;
+  private JmsSender jmsSender;
 
   @Bean
   public ScheduledAnnotationBeanPostProcessor scheduledAnnotationBeanPostProcessor() {
@@ -40,7 +41,7 @@ public class JmsReceiver {
         Destination replyTo = message.getJMSReplyTo();
         log.debug("got message: {}, repplyTo: {}", jmsMessage, replyTo);
         if (replyTo != null) {
-          ioSender.send(replyTo, "REPLY", "reply: " + jmsMessage.getPayLoadObject("TEXT"));
+          jmsSender.send(replyTo, "REPLY", "reply: " + jmsMessage.getPayLoadObject("TEXT"));
         }
       } catch (JMSException ex) {
         ex.printStackTrace();
