@@ -42,4 +42,12 @@ public class TestController {
     return "message sent!";
   }
 
+  @RequestMapping("/test3")
+  @ResponseBody
+  public String testASync2() throws JMSException {
+    log.info("Sending ASync");
+    jmsSender.send("HokanNGEngineQueue", "TEXT", "To engine!");
+    return "message sent!";
+  }
+
 }

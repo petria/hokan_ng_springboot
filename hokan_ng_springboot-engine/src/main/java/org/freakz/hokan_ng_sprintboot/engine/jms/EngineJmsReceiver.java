@@ -1,4 +1,4 @@
-package org.freakz.hokan_ng_sprintboot.io.jms;
+package org.freakz.hokan_ng_sprintboot.engine.jms;
 
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_sprintboot.common.jms.JmsMessage;
@@ -18,14 +18,14 @@ import javax.jms.ObjectMessage;
  */
 @Component
 @Slf4j
-public class IoJmsReceiver extends SpringJmsReceiver {
+public class EngineJmsReceiver extends SpringJmsReceiver {
 
   @Autowired
   private JmsSender jmsSender;
 
   @Override
   public String getDestinationName() {
-    return "HokanNGIoQueue";
+    return "HokanNGEngineQueue";
   }
 
   @Override
@@ -37,6 +37,7 @@ public class IoJmsReceiver extends SpringJmsReceiver {
     if (replyTo != null) {
       jmsSender.send(replyTo, "REPLY", "reply: " + jmsMessage.getPayLoadObject("TEXT"));
     }
+
   }
 
 }
