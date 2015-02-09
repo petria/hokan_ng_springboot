@@ -13,6 +13,7 @@ import javax.jms.Message;
 import javax.jms.ObjectMessage;
 
 /**
+ *
  * Created by petria on 9.2.2015.
  */
 @Component
