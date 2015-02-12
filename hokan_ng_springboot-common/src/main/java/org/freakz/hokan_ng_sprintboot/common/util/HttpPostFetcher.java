@@ -1,9 +1,6 @@
 package org.freakz.hokan_ng_sprintboot.common.util;
 
 import lombok.extern.slf4j.Slf4j;
-import org.freakz.hokan_ng_sprintboot.common.jpa.entity.PropertyName;
-import org.freakz.hokan_ng_sprintboot.common.service.Properties;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -20,8 +17,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 
-import static org.freakz.hokan_ng_sprintboot.common.util.StaticStrings.HTTP_USER_AGENT;
-
 /**
  * <br>
  * <p/>
@@ -35,9 +30,9 @@ import static org.freakz.hokan_ng_sprintboot.common.util.StaticStrings.HTTP_USER
 @Scope("prototype")
 public class HttpPostFetcher {
 
-  @Autowired
-  private Properties properties;
-
+  /*  @Autowired
+    private Properties properties;
+  */
   private StringBuilder _htmlBuffer;
 
   public HttpPostFetcher() {
@@ -46,8 +41,8 @@ public class HttpPostFetcher {
   public void fetch(String urlStr, String encoding, String... params) throws IOException {
 
     URL url = new URL(urlStr);
-    String proxyHost = properties.getPropertyAsString(PropertyName.PROP_SYS_HTTP_PROXY_HOST, null);
-    int proxyPort = properties.getPropertyAsInt(PropertyName.PROP_SYS_HTTP_PROXY_PORT, -1);
+    String proxyHost = null;//properties.getPropertyAsString(PropertyName.PROP_SYS_HTTP_PROXY_HOST, null);
+    int proxyPort = -1;//properties.getPropertyAsInt(PropertyName.PROP_SYS_HTTP_PROXY_PORT, -1);
 
     URLConnection conn;
     if (proxyHost != null && proxyPort != -1) {
@@ -60,7 +55,7 @@ public class HttpPostFetcher {
     }
 
     HttpURLConnection connection = (HttpURLConnection) conn;
-    connection.setRequestProperty("User-Agent", properties.getPropertyAsString(PropertyName.PROP_SYS_HTTP_USER_AGENT, HTTP_USER_AGENT));
+// TODO    connection.setRequestProperty("User-Agent", properties.getPropertyAsString(PropertyName.PROP_SYS_HTTP_USER_AGENT, HTTP_USER_AGENT));
     connection.setRequestMethod("POST");
     connection.setDoOutput(true);
 

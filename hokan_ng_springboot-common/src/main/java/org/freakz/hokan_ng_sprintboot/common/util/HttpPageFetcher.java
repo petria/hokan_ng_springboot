@@ -3,9 +3,6 @@ package org.freakz.hokan_ng_sprintboot.common.util;
 
 import com.arthurdo.parser.HtmlStreamTokenizer;
 import lombok.extern.slf4j.Slf4j;
-import org.freakz.hokan_ng_sprintboot.common.jpa.entity.PropertyName;
-import org.freakz.hokan_ng_sprintboot.common.service.Properties;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -20,8 +17,6 @@ import java.net.SocketAddress;
 import java.net.URL;
 import java.net.URLConnection;
 
-import static org.freakz.hokan_ng_sprintboot.common.util.StaticStrings.HTTP_USER_AGENT;
-
 
 /**
  */
@@ -30,8 +25,8 @@ import static org.freakz.hokan_ng_sprintboot.common.util.StaticStrings.HTTP_USER
 @Scope("prototype")
 public class HttpPageFetcher {
 
-  @Autowired
-  private Properties properties;
+//  @Autowired
+//  private Properties properties;
 
   private static long bytesIn = 0;
 
@@ -57,20 +52,23 @@ public class HttpPageFetcher {
   public void fetch(String urlStr, String encoding) throws Exception {
 
     URL url = new URL(urlStr);
-    String proxyHost = properties.getPropertyAsString(PropertyName.PROP_SYS_HTTP_PROXY_HOST, null);
-    int proxyPort = properties.getPropertyAsInt(PropertyName.PROP_SYS_HTTP_PROXY_PORT, -1);
+//    TODO String proxyHost = properties.getPropertyAsString(PropertyName.PROP_SYS_HTTP_PROXY_HOST, null);
+//    int proxyPort = properties.getPropertyAsInt(PropertyName.PROP_SYS_HTTP_PROXY_PORT, -1);
 
     URLConnection conn;
+    String proxyHost = null;
+    int proxyPort = -1;
+
     if (proxyHost != null && proxyPort != -1) {
       SocketAddress address = new
           InetSocketAddress(proxyHost, proxyPort);
       Proxy proxy = new Proxy(Proxy.Type.HTTP, address);
-//      log.info("Using proxy: {}", proxy);
+// tODO      log.info("Using proxy: {}", proxy);
       conn = url.openConnection(proxy);
     } else {
       conn = url.openConnection();
     }
-    conn.setRequestProperty("User-Agent", properties.getPropertyAsString(PropertyName.PROP_SYS_HTTP_USER_AGENT, HTTP_USER_AGENT));
+//    conn.setRequestProperty("User-Agent", properties.getPropertyAsString(PropertyName.PROP_SYS_HTTP_USER_AGENT, HTTP_USER_AGENT));
 
     String headerEncoding;
     if (encoding != null) {
