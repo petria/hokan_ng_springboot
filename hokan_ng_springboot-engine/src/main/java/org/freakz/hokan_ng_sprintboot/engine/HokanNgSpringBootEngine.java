@@ -5,7 +5,7 @@ import java.util.Properties;
 import javax.annotation.Resource;
 import javax.sql.DataSource;
 
-import org.hibernate.ejb.HibernatePersistence;
+import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -36,8 +36,10 @@ public class HokanNgSpringBootEngine {
   public DataSource dataSource() {
     MysqlConnectionPoolDataSource dataSource = new MysqlConnectionPoolDataSource();
     //    BoneCPDataSource dataSource = new BoneCPDataSource();
-    dataSource.setUser("hokan_ng");
-    dataSource.setPassword("hokan_ng");
+    //    dataSource.setUser("hokan_ng");
+    //    dataSource.setPassword("hokan_ng");
+    dataSource.setUser("root");
+    //    dataSource.setPassword("hokan_ng");
     dataSource.setDatabaseName("hokan_ng_springboot");
     dataSource.setServerName("localhost");
     dataSource.setPort(3306);
@@ -49,12 +51,12 @@ public class HokanNgSpringBootEngine {
     LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
     entityManagerFactoryBean.setDataSource(dataSource());
     entityManagerFactoryBean.setPackagesToScan("org.freakz.hokan_ng_sprintboot.common.jpa.entity");
-    entityManagerFactoryBean.setPersistenceProviderClass(HibernatePersistence.class);
+    entityManagerFactoryBean.setPersistenceProviderClass(HibernatePersistenceProvider.class);
     Properties jpaProterties = new Properties();
     jpaProterties.put(PROPERTY_NAME_HIBERNATE_DIALECT, "org.hibernate.dialect.MySQL5InnoDBDialect");
     jpaProterties.put(PROPERTY_NAME_HIBERNATE_FORMAT_SQL, "true");
     jpaProterties.put(PROPERTY_NAME_HIBERNATE_HBM2DDL_AUTO, "update");
-    jpaProterties.put(PROPERTY_NAME_HIBERNATE_NAMING_STRATEGY, "org.hibernate.cfg.ImprovedNamingStrategy");
+    jpaProterties.put(PROPERTY_NAME_HIBERNATE_NAMING_STRATEGY, "org.hibernate.cfg.DefaultNamingStrategy");
     jpaProterties.put(PROPERTY_NAME_HIBERNATE_SHOW_SQL, "true");
     entityManagerFactoryBean.setJpaProperties(jpaProterties);
     return entityManagerFactoryBean;
