@@ -18,7 +18,7 @@ import javax.persistence.Table;
  * @author Petri Airio (petri.j.airio@gmail.com)
  */
 @Entity
-@Table(name = "IrcServerConfig")
+@Table(name = "Irc_Server_Config")
 public class IrcServerConfig {
 
   @Id

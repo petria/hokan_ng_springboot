@@ -1,5 +1,7 @@
 package org.freakz.hokan_ng_sprintboot.common.service;
 
+import java.util.List;
+
 import org.freakz.hokan_ng_sprintboot.common.jpa.entity.IrcServerConfig;
 
 /**
@@ -8,6 +10,6 @@ import org.freakz.hokan_ng_sprintboot.common.jpa.entity.IrcServerConfig;
  */
 public interface IrcServerConfigService {
 
-  Iterable<IrcServerConfig> findAll();
+  List<IrcServerConfig> findAll();
 
 }
