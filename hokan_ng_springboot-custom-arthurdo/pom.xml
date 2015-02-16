@@ -6,9 +6,8 @@
 
     <packaging>jar</packaging>
 
-    <name>HokanNG-arhurdo-custom</name>
-    <groupId>org.freakz</groupId>
-    <artifactId>hokan_ng_springboot-arthurdo-custom</artifactId>
+    <name>hokan_ng_springboot-custom-arthurdo</name>
+    <artifactId>hokan_ng_springboot-custom-arthurdo</artifactId>
     <version>1.0.0-final</version>
 
     <parent>
@@ -21,8 +20,8 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <encoding>UTF-8</encoding>
-        <maven.compiler.source>1.7</maven.compiler.source>
-        <maven.compiler.target>1.7</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
     <dependencies>
