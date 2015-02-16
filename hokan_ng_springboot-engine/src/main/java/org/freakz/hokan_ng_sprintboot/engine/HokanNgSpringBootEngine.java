@@ -2,64 +2,69 @@ package org.freakz.hokan_ng_sprintboot.engine;
 
 import java.util.Properties;
 
-import javax.annotation.Resource;
 import javax.sql.DataSource;
 
-import org.hibernate.jpa.HibernatePersistenceProvider;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-
-import com.mysql.jdbc.jdbc2.optional.MysqlConnectionPoolDataSource;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
 @Configuration
 @EnableAutoConfiguration
-//@EnableJpaRepositories("org.freakz.hokan_ng_sprintboot.common")
 @ComponentScan({"org.freakz.hokan_ng_sprintboot.common", "org.freakz.hokan_ng_sprintboot.engine"})
-//@EntityScan("org.freakz.hokan_ng_sprintboot.common")
-
 public class HokanNgSpringBootEngine {
 
-  private static final String PROPERTY_NAME_HIBERNATE_DIALECT = "hibernate.dialect";
-  private static final String PROPERTY_NAME_HIBERNATE_FORMAT_SQL = "hibernate.format_sql";
-  private static final String PROPERTY_NAME_HIBERNATE_HBM2DDL_AUTO = "hibernate.hbm2ddl.auto";
-  private static final String PROPERTY_NAME_HIBERNATE_NAMING_STRATEGY = "hibernate.ejb.naming_strategy";
-  private static final String PROPERTY_NAME_HIBERNATE_SHOW_SQL = "hibernate.show_sql";
+  @Value("${datasource.driverclassname}") private String datasource_driverclassname;
+  @Value("${datasource.url}") private String datasource_url;
+  @Value("${datasource.username}") private String datasource_username;
+  @Value("${datasource.password}") private String datasource_password;
 
-  @Resource private Environment environment;
+  @Value("${hibernate.hbm2ddl.auto}") private String hibernate_hbm2ddl_auto;
+  @Value("${hibernate.ejb.naming_strategy}") private String hibernate_ejb_naming_strategy;
+  @Value("${hibernate.dialect}") private String hibernate_dialect;
+  @Value("${hibernate.format_sql}") private String hibernate_format_sql;
+  @Value("${hibernate.show_sql}") private String hibernate_show_sql;
+
+  @Value("${entitymanager.packages.to.scan}") private String entitymanager_packages_to_scan;
+
 
   @Bean
   public DataSource dataSource() {
-    MysqlConnectionPoolDataSource dataSource = new MysqlConnectionPoolDataSource();
-    //    BoneCPDataSource dataSource = new BoneCPDataSource();
-    //    dataSource.setUser("hokan_ng");
-    //    dataSource.setPassword("hokan_ng");
-    dataSource.setUser("root");
-    //    dataSource.setPassword("hokan_ng");
-    dataSource.setDatabaseName("hokan_ng_springboot");
-    dataSource.setServerName("localhost");
-    dataSource.setPort(3306);
+    DriverManagerDataSource dataSource = new DriverManagerDataSource();
+    dataSource.setDriverClassName(datasource_driverclassname);
+    dataSource.setUrl(datasource_url);
+    dataSource.setUsername(datasource_username);
+    dataSource.setPassword(datasource_password);
     return dataSource;
   }
 
+  Properties additionalProperties() {
+    Properties properties = new Properties();
+    properties.setProperty("hibernate.hbm2ddl.auto", hibernate_hbm2ddl_auto);
+    properties.setProperty("hibernate.ejb.naming_strategy", hibernate_ejb_naming_strategy);
+    properties.setProperty("hibernate.dialect", hibernate_dialect);
+    properties.setProperty("hibernate.format_sql", hibernate_format_sql);
+    properties.setProperty("hibernate.show_sql", hibernate_show_sql);
+    return properties;
+  }
   @Bean
   public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean() throws ClassNotFoundException {
-    LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
-    entityManagerFactoryBean.setDataSource(dataSource());
-    entityManagerFactoryBean.setPackagesToScan("org.freakz.hokan_ng_sprintboot.common.jpa.entity");
-    entityManagerFactoryBean.setPersistenceProviderClass(HibernatePersistenceProvider.class);
-    Properties jpaProterties = new Properties();
-    jpaProterties.put(PROPERTY_NAME_HIBERNATE_DIALECT, "org.hibernate.dialect.MySQL5InnoDBDialect");
-    jpaProterties.put(PROPERTY_NAME_HIBERNATE_FORMAT_SQL, "true");
-    jpaProterties.put(PROPERTY_NAME_HIBERNATE_HBM2DDL_AUTO, "update");
-    jpaProterties.put(PROPERTY_NAME_HIBERNATE_NAMING_STRATEGY, "org.hibernate.cfg.DefaultNamingStrategy");
-    jpaProterties.put(PROPERTY_NAME_HIBERNATE_SHOW_SQL, "true");
-    entityManagerFactoryBean.setJpaProperties(jpaProterties);
-    return entityManagerFactoryBean;
+    LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
+    em.setDataSource(dataSource());
+    em.setPackagesToScan(entitymanager_packages_to_scan);
+
+    JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+    em.setJpaVendorAdapter(vendorAdapter);
+    em.setJpaProperties(additionalProperties());
+    em.afterPropertiesSet();
+
+    return em;
   }
 
   public static void main(String[] args) {

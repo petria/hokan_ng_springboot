@@ -1,5 +1,8 @@
 package org.freakz.hokan_ng_sprintboot.common.jpa.entity;
 
+import java.io.Serializable;
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -8,8 +11,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.io.Serializable;
-import java.util.Date;
 
 /**
  * Date: 23.1.2012
@@ -18,7 +19,7 @@ import java.util.Date;
  * @author Petri Airio
  */
 @Entity
-@Table(name = "Alias")
+@Table(name = "ALIAS")
 public class Alias implements Serializable {
 
   @Id

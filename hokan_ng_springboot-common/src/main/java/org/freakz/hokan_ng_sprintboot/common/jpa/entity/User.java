@@ -1,12 +1,13 @@
 package org.freakz.hokan_ng_sprintboot.common.jpa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.io.Serializable;
 
 /**
  * User: petria
@@ -14,7 +15,7 @@ import java.io.Serializable;
  * Time: 2:17 PM
  */
 @Entity
-@Table(name = "User")
+@Table(name = "USER")
 public class User implements Serializable {
 
   @Id

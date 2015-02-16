@@ -17,7 +17,7 @@ import javax.persistence.Table;
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
 @Entity
-@Table(name = "JoinedUser")
+@Table(name = "JOINEDUSER")
 public class JoinedUser {
 
   @Id

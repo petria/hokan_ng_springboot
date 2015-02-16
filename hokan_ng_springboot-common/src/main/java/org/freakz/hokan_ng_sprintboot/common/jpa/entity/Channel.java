@@ -1,5 +1,8 @@
 package org.freakz.hokan_ng_sprintboot.common.jpa.entity;
 
+import java.io.Serializable;
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -10,8 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.io.Serializable;
-import java.util.Date;
 
 /**
  * Created by IntelliJ IDEA.
@@ -20,7 +21,7 @@ import java.util.Date;
  * Time: 10:02 AM
  */
 @Entity
-@Table(name = "Channel")
+@Table(name = "CHANNEL")
 public class Channel implements Serializable {
 
   @Id

@@ -1,8 +1,9 @@
 package org.freakz.hokan_ng_sprintboot.common.jpa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.io.Serializable;
 
 /**
  * User: petria
@@ -10,7 +11,7 @@ import java.io.Serializable;
  * Time: 4:35 PM
  */
 @Entity
-@Table(name = "Properties")
+@Table(name = "PROPERTIES")
 public class Property extends PropertyBase implements Serializable {
 
   public Property() {

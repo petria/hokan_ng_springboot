@@ -1,12 +1,13 @@
 package org.freakz.hokan_ng_sprintboot.common.jpa.entity;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.Date;
 
 /**
  * Created by pairio on 28.5.2014.
@@ -14,7 +15,7 @@ import java.util.Date;
  * @author Petri Airio (petri.j.airio@gmail.com)
  */
 @Entity
-@Table(name = "SearchReplace")
+@Table(name = "SEARCHREPLACE")
 public class SearchReplace {
 
   @Id

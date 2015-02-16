@@ -1,5 +1,7 @@
 package org.freakz.hokan_ng_sprintboot.common.jpa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,7 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.io.Serializable;
 
 /**
  * User: petria
@@ -16,7 +17,7 @@ import java.io.Serializable;
  * Time: 5:53 PM
  */
 @Entity
-@Table(name = "TvNotify")
+@Table(name = "TVNOTIFY")
 public class TvNotify implements Serializable {
 
   @Id

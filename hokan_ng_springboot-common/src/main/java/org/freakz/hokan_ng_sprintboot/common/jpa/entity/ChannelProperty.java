@@ -1,10 +1,11 @@
 package org.freakz.hokan_ng_sprintboot.common.jpa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.io.Serializable;
 
 /**
  * User: petria
@@ -14,7 +15,7 @@ import java.io.Serializable;
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
 @Entity
-@Table(name = "ChannelProperties")
+@Table(name = "CHANNELPROPERTIES")
 public class ChannelProperty extends PropertyBase implements Serializable {
 
   @ManyToOne
