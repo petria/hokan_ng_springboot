@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ *
  * Created by petria on 4.2.2015.
  */
 public class JmsMessage implements Serializable {

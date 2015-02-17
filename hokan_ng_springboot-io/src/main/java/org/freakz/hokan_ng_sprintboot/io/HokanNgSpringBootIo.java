@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Configuration
 @EnableAutoConfiguration
-@ComponentScan({ "org.freakz.hokan_ng_sprintboot.common", "org.freakz.hokan_ng_sprintboot.engine" })
+@ComponentScan({ "org.freakz.hokan_ng_sprintboot.common", "org.freakz.hokan_ng_sprintboot.io" })
 @Slf4j
 public class HokanNgSpringBootIo {
 
