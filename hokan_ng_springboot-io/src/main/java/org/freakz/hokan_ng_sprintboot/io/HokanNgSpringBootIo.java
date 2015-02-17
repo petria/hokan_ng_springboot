@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -46,7 +47,14 @@ public class HokanNgSpringBootIo {
     return dataSource;
   }
 
-  Properties additionalProperties() {
+  @Bean
+  public JpaTransactionManager transactionManager() throws ClassNotFoundException {
+    JpaTransactionManager transactionManager = new JpaTransactionManager();
+    transactionManager.setEntityManagerFactory(entityManagerFactoryBean().getObject());
+    return transactionManager;
+  }
+
+  private Properties additionalProperties() {
     Properties properties = new Properties();
     properties.setProperty("hibernate.hbm2ddl.auto", hibernate_hbm2ddl_auto);
     properties.setProperty("hibernate.ejb.naming_strategy", hibernate_ejb_naming_strategy);

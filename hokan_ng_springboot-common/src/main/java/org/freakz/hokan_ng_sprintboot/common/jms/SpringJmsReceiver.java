@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import lombok.extern.slf4j.Slf4j;
 
 /**
+ *
  * Created by petria on 6.2.2015.
  */
 @Component

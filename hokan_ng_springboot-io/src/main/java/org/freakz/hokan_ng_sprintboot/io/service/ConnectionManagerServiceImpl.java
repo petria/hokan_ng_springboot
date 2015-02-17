@@ -130,7 +130,7 @@ public class ConnectionManagerServiceImpl implements ConnectionManagerService, E
 		if (network != null) {
 			connect(network);
 		} else {
-			log.info("Can't connect to {}, Network not configured!", networkName);
+			throw new HokanServiceException("Can't connect to {}, Network not configured: " + networkName);
 		}
 	}
 

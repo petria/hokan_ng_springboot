@@ -26,15 +26,16 @@ public class IoServiceMessageHandlerImpl implements JmsServiceMessageHandler {
   public JmsMessage handleJmsServiceMessage(JmsMessage jmsMessage) {
     log.debug("Handling message");
     String command = (String) jmsMessage.getPayLoadObject("COMMAND");
+    JmsMessage reply = new JmsMessage();
     if (command.equals("GO_ONLINE")) {
       try {
         connectionManagerService.connect("DEVNET");
+        reply.addPayLoadObject("REPLY", "Connecting to: DEVNET");
       } catch (HokanServiceException e) {
-        e.printStackTrace();
+        reply.addPayLoadObject("REPLY", e.getMessage());
+        //        e.printStackTrace();
       }
     }
-    JmsMessage reply = new JmsMessage();
-
     return reply;
   }
 }
