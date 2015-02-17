@@ -15,12 +15,14 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import lombok.extern.slf4j.Slf4j;
 
-@Configuration
 @EnableAutoConfiguration
+@Configuration
 @ComponentScan({ "org.freakz.hokan_ng_sprintboot.common", "org.freakz.hokan_ng_sprintboot.io" })
+@EnableTransactionManagement
 @Slf4j
 public class HokanNgSpringBootIo {
 
@@ -69,7 +71,6 @@ public class HokanNgSpringBootIo {
     LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
     em.setDataSource(dataSource());
     em.setPackagesToScan(entitymanager_packages_to_scan);
-
     JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
     em.setJpaVendorAdapter(vendorAdapter);
     em.setJpaProperties(additionalProperties());
