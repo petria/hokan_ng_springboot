@@ -1,19 +1,9 @@
 package org.freakz.hokan_ng_sprintboot.io.service;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.PostConstruct;
-
+import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_sprintboot.common.exception.HokanException;
 import org.freakz.hokan_ng_sprintboot.common.exception.HokanServiceException;
-import org.freakz.hokan_ng_sprintboot.common.jpa.entity.Channel;
-import org.freakz.hokan_ng_sprintboot.common.jpa.entity.ChannelState;
-import org.freakz.hokan_ng_sprintboot.common.jpa.entity.IrcServerConfig;
-import org.freakz.hokan_ng_sprintboot.common.jpa.entity.IrcServerConfigState;
-import org.freakz.hokan_ng_sprintboot.common.jpa.entity.Network;
+import org.freakz.hokan_ng_sprintboot.common.jpa.entity.*;
 import org.freakz.hokan_ng_sprintboot.common.service.ChannelService;
 import org.freakz.hokan_ng_sprintboot.common.service.ConnectionManagerService;
 import org.freakz.hokan_ng_sprintboot.common.service.IrcServerConfigService;
@@ -26,9 +16,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
-import lombok.extern.slf4j.Slf4j;
+import javax.annotation.PostConstruct;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
+ *
  * Created by AirioP on 17.2.2015.
  */
 @Service
