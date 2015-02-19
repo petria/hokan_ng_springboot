@@ -1,16 +1,17 @@
 package org.freakz.hokan_ng_sprintboot.common.jpa.dao;
 
-import lombok.extern.slf4j.Slf4j;
-import org.freakz.hokan_ng_sprintboot.common.exception.HokanDAOException;
-import org.freakz.hokan_ng_sprintboot.common.jpa.entity.SearchReplace;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import java.util.List;
+
+import org.freakz.hokan_ng_sprintboot.common.exception.HokanDAOException;
+import org.freakz.hokan_ng_sprintboot.common.jpa.entity.SearchReplace;
+import org.springframework.stereotype.Repository;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Created by pairio on 28.5.2014.
@@ -19,7 +20,7 @@ import java.util.List;
  */
 @Slf4j
 @Repository("SearchReplace")
-@Transactional
+//@Transactional
 public class SearchReplaceJPADAO implements SearchReplaceDAO {
 
   @PersistenceContext

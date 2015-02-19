@@ -1,6 +1,11 @@
 package org.freakz.hokan_ng_sprintboot.common.jpa.dao;
 
-import lombok.extern.slf4j.Slf4j;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
 import org.freakz.hokan_ng_sprintboot.common.exception.HokanDAOException;
 import org.freakz.hokan_ng_sprintboot.common.jpa.entity.IrcServerConfig;
 import org.freakz.hokan_ng_sprintboot.common.jpa.entity.IrcServerConfigState;
@@ -8,10 +13,7 @@ import org.freakz.hokan_ng_sprintboot.common.jpa.entity.Network;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Date: 3.6.2013
@@ -21,7 +23,6 @@ import java.util.List;
  */
 @Repository(value = "IrcServerConfig")
 @Slf4j
-@Transactional
 public class IrcServerConfigJPADAO implements IrcServerConfigDAO {
 
   @PersistenceContext
@@ -53,6 +54,7 @@ public class IrcServerConfigJPADAO implements IrcServerConfigDAO {
   }
 
   @Override
+  @Transactional
   public IrcServerConfig createIrcServerConfig(Network network,
                                                String server,
                                                int port,
@@ -77,6 +79,7 @@ public class IrcServerConfigJPADAO implements IrcServerConfigDAO {
   }
 
   @Override
+  @Transactional
   public IrcServerConfig updateIrcServerConfig(IrcServerConfig ircServerConfig) throws HokanDAOException {
     try {
       return entityManager.merge(ircServerConfig);

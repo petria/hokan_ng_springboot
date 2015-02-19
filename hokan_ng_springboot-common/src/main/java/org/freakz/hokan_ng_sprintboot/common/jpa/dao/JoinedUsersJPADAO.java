@@ -1,19 +1,20 @@
 package org.freakz.hokan_ng_sprintboot.common.jpa.dao;
 
-import lombok.extern.slf4j.Slf4j;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+
 import org.freakz.hokan_ng_sprintboot.common.exception.HokanDAOException;
 import org.freakz.hokan_ng_sprintboot.common.jpa.entity.Channel;
 import org.freakz.hokan_ng_sprintboot.common.jpa.entity.JoinedUser;
 import org.freakz.hokan_ng_sprintboot.common.jpa.entity.Network;
 import org.freakz.hokan_ng_sprintboot.common.jpa.entity.User;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
-import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * User: petria
@@ -23,7 +24,7 @@ import java.util.List;
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
 @Repository("ChannelUsers")
-@Transactional
+//@Transactional
 @Slf4j
 public class JoinedUsersJPADAO implements JoinedUsersDAO {
 

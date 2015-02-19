@@ -7,11 +7,12 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.context.annotation.AdviceMode;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -19,10 +20,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import lombok.extern.slf4j.Slf4j;
 
-@EnableAutoConfiguration
 @Configuration
-@ComponentScan({ "org.freakz.hokan_ng_sprintboot.common", "org.freakz.hokan_ng_sprintboot.io" })
-@EnableTransactionManagement
+@EnableTransactionManagement(mode = AdviceMode.ASPECTJ)
+@EnableAutoConfiguration
+@ComponentScan({ "org.freakz" })
 @Slf4j
 public class HokanNgSpringBootIo {
 
@@ -49,13 +50,6 @@ public class HokanNgSpringBootIo {
     return dataSource;
   }
 
-  @Bean
-  public JpaTransactionManager transactionManager() throws ClassNotFoundException {
-    JpaTransactionManager transactionManager = new JpaTransactionManager();
-    transactionManager.setEntityManagerFactory(entityManagerFactoryBean().getObject());
-    return transactionManager;
-  }
-
   private Properties additionalProperties() {
     Properties properties = new Properties();
     properties.setProperty("hibernate.hbm2ddl.auto", hibernate_hbm2ddl_auto);
@@ -67,6 +61,13 @@ public class HokanNgSpringBootIo {
   }
 
   @Bean
+  public DataSourceTransactionManager dataSourceTransactionManager() {
+    DataSourceTransactionManager dataSourceTransactionManager = new DataSourceTransactionManager();
+    dataSourceTransactionManager.setDataSource(dataSource());
+    return dataSourceTransactionManager;
+  }
+
+  @Bean
   public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean() throws ClassNotFoundException {
     LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
     em.setDataSource(dataSource());
@@ -75,7 +76,6 @@ public class HokanNgSpringBootIo {
     em.setJpaVendorAdapter(vendorAdapter);
     em.setJpaProperties(additionalProperties());
     em.afterPropertiesSet();
-
     return em;
   }
 

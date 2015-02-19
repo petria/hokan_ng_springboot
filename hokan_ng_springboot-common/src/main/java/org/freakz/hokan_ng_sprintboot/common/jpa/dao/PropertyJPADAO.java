@@ -1,18 +1,18 @@
 package org.freakz.hokan_ng_sprintboot.common.jpa.dao;
 
+import java.util.Arrays;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+
 import org.freakz.hokan_ng_sprintboot.common.exception.HokanDAOException;
 import org.freakz.hokan_ng_sprintboot.common.jpa.entity.Channel;
 import org.freakz.hokan_ng_sprintboot.common.jpa.entity.ChannelProperty;
 import org.freakz.hokan_ng_sprintboot.common.jpa.entity.Property;
 import org.freakz.hokan_ng_sprintboot.common.jpa.entity.PropertyName;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * User: petria
@@ -22,7 +22,7 @@ import java.util.List;
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
 @Repository(value = "Properties")
-@Transactional
+//@Transactional
 public class PropertyJPADAO implements PropertyDAO {
 
   @PersistenceContext

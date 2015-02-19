@@ -10,7 +10,6 @@ import org.freakz.hokan_ng_sprintboot.common.jpa.entity.IrcServerConfigState;
 import org.freakz.hokan_ng_sprintboot.common.jpa.entity.Network;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Component
 @Slf4j
-@Transactional
+//@Transactional
 public class IrcServerConfigServiceImpl implements IrcServerConfigService {
 
   private final IrcServerConfigDAO ircServerConfigDAO;

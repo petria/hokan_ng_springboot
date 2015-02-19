@@ -8,7 +8,6 @@ import org.freakz.hokan_ng_sprintboot.common.service.IrcServerConfigService;
 import org.freakz.hokan_ng_sprintboot.common.service.JmsServiceMessageHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
  * Created by petria on 10.2.2015.
  */
 @Component
-@Transactional
+//@Transactional
 @Slf4j
 public class EngineServiceMessageHandlerImpl implements JmsServiceMessageHandler {
 

@@ -1,15 +1,15 @@
 package org.freakz.hokan_ng_sprintboot.common.jpa.dao;
 
-import org.freakz.hokan_ng_sprintboot.common.exception.HokanDAOException;
-import org.freakz.hokan_ng_sprintboot.common.jpa.entity.User;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import java.util.List;
+
+import org.freakz.hokan_ng_sprintboot.common.exception.HokanDAOException;
+import org.freakz.hokan_ng_sprintboot.common.jpa.entity.User;
+import org.springframework.stereotype.Repository;
 
 /**
  * User: petria
@@ -19,7 +19,7 @@ import java.util.List;
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
 @Repository("User")
-@Transactional
+//@Transactional
 public class UserJPADAO implements UserDAO {
 
   @PersistenceContext

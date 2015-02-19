@@ -10,7 +10,9 @@ import org.freakz.hokan_ng_sprintboot.common.jms.SpringJmsReceiver;
 import org.freakz.hokan_ng_sprintboot.common.jms.api.JmsSender;
 import org.freakz.hokan_ng_sprintboot.common.service.JmsServiceMessageHandler;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,14 +20,19 @@ import lombok.extern.slf4j.Slf4j;
  *
  * Created by petria on 5.2.2015.
  */
-@Component
+@RestController
 @Slf4j
 public class IoJmsReceiver extends SpringJmsReceiver {
 
   @Autowired
   private JmsSender jmsSender;
 
-  @Autowired private JmsServiceMessageHandler jmsServiceMessageHandler;
+  private JmsServiceMessageHandler jmsServiceMessageHandler;
+
+  @Autowired
+  public void setJmsServiceMessageHandler(JmsServiceMessageHandler jmsServiceMessageHandler) {
+    this.jmsServiceMessageHandler = jmsServiceMessageHandler;
+  }
 
 
   @Override
@@ -52,5 +59,14 @@ public class IoJmsReceiver extends SpringJmsReceiver {
     }
 
   }
+
+  @RequestMapping("/iotest")
+  @ResponseBody
+  public String testASync() throws JMSException {
+    jmsSender.send("HokanNGServicesQueue", "MESSGE", "FUFUFUFUF");
+    log.info("ufufufufufufuf");
+    return "gfoo";
+  }
+
 
 }

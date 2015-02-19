@@ -1,16 +1,16 @@
 package org.freakz.hokan_ng_sprintboot.common.jpa.dao;
 
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+
 import org.freakz.hokan_ng_sprintboot.common.exception.HokanDAOException;
 import org.freakz.hokan_ng_sprintboot.common.jpa.entity.Channel;
 import org.freakz.hokan_ng_sprintboot.common.jpa.entity.User;
 import org.freakz.hokan_ng_sprintboot.common.jpa.entity.UserChannel;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-import java.util.List;
 
 /**
  * User: petria
@@ -20,7 +20,7 @@ import java.util.List;
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
 @Repository("UserChannel")
-@Transactional
+//@Transactional
 public class UserChannelJPADAO implements UserChannelDAO {
 
   @PersistenceContext
