@@ -1,4 +1,4 @@
-package org.freakz.hokan_ng_sprintboot.common.jpa.entity;
+package org.freakz.hokan_ng_sprintboot.io.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;

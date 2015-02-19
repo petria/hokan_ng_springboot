@@ -1,10 +1,6 @@
 package org.freakz.hokan_ng_sprintboot.io.jms;
 
-import javax.jms.Destination;
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.ObjectMessage;
-
+import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_sprintboot.common.jms.JmsMessage;
 import org.freakz.hokan_ng_sprintboot.common.jms.SpringJmsReceiver;
 import org.freakz.hokan_ng_sprintboot.common.jms.api.JmsSender;
@@ -14,7 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import lombok.extern.slf4j.Slf4j;
+import javax.jms.Destination;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.ObjectMessage;
 
 /**
  *
@@ -27,12 +26,8 @@ public class IoJmsReceiver extends SpringJmsReceiver {
   @Autowired
   private JmsSender jmsSender;
 
-  private JmsServiceMessageHandler jmsServiceMessageHandler;
-
   @Autowired
-  public void setJmsServiceMessageHandler(JmsServiceMessageHandler jmsServiceMessageHandler) {
-    this.jmsServiceMessageHandler = jmsServiceMessageHandler;
-  }
+  private JmsServiceMessageHandler jmsServiceMessageHandler;
 
 
   @Override
