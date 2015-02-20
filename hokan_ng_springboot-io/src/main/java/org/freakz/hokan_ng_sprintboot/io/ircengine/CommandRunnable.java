@@ -1,6 +1,6 @@
 package org.freakz.hokan_ng_sprintboot.io.ircengine;
 
-import org.freakz.hokan_ng_sprintboot.common.exception.HokanException;
+import org.freakz.hokan_ng_sprintboot.exception.HokanException;
 
 /**
  * User: petria

@@ -1,7 +1,7 @@
 package org.freakz.hokan_ng_sprintboot.io.ircengine.connector;
 
-import org.freakz.hokan_ng_sprintboot.common.exception.HokanException;
-import org.freakz.hokan_ng_sprintboot.common.jpa.entity.IrcServerConfig;
+import org.freakz.hokan_ng_sprintboot.entity.IrcServerConfig;
+import org.freakz.hokan_ng_sprintboot.exception.HokanException;
 import org.freakz.hokan_ng_sprintboot.io.ircengine.HokanCore;
 
 /**

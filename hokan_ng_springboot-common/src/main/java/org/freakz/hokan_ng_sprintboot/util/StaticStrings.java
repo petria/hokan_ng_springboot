@@ -1,4 +1,4 @@
-package org.freakz.hokan_ng_sprintboot.common.util;
+package org.freakz.hokan_ng_sprintboot.util;
 
 /**
  * User: petria

@@ -1,4 +1,4 @@
-package org.freakz.hokan_ng_sprintboot.common.util;
+package org.freakz.hokan_ng_sprintboot.util;
 
 
 import com.arthurdo.parser.HtmlStreamTokenizer;
@@ -6,16 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.StringReader;
-import java.net.InetSocketAddress;
-import java.net.Proxy;
-import java.net.SocketAddress;
-import java.net.URL;
-import java.net.URLConnection;
+import java.io.*;
+import java.net.*;
 
 
 /**

@@ -1,9 +1,8 @@
 package org.freakz.hokan_ng_sprintboot.io.ircengine.connector;
 
-import java.net.InetAddress;
-
-import org.freakz.hokan_ng_sprintboot.common.exception.HokanException;
-import org.freakz.hokan_ng_sprintboot.common.jpa.entity.IrcServerConfig;
+import lombok.extern.slf4j.Slf4j;
+import org.freakz.hokan_ng_sprintboot.entity.IrcServerConfig;
+import org.freakz.hokan_ng_sprintboot.exception.HokanException;
 import org.freakz.hokan_ng_sprintboot.io.ircengine.CommandPool;
 import org.freakz.hokan_ng_sprintboot.io.ircengine.CommandRunnable;
 import org.freakz.hokan_ng_sprintboot.io.ircengine.HokanCore;
@@ -13,7 +12,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import lombok.extern.slf4j.Slf4j;
+import java.net.InetAddress;
 
 /**
  * Date: 11/1/13

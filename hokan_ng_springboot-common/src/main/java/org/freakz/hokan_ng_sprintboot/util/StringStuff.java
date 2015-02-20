@@ -1,4 +1,4 @@
-package org.freakz.hokan_ng_sprintboot.common.util;
+package org.freakz.hokan_ng_sprintboot.util;
 
 //import com.arthurdo.parser.HtmlStreamTokenizer;
 
@@ -10,14 +10,7 @@ import java.security.MessageDigest;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
