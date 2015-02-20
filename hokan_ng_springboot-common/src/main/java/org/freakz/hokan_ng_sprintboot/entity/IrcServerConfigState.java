@@ -1,4 +1,4 @@
-package org.freakz.hokan_ng_sprintboot.io.entity;
+package org.freakz.hokan_ng_sprintboot.entity;
 
 /**
  * User: petria

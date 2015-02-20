@@ -1,4 +1,4 @@
-package org.freakz.hokan_ng_sprintboot.common.jms.api;
+package org.freakz.hokan_ng_sprintboot.jms.api;
 
 import javax.jms.JMSException;
 import javax.jms.Message;

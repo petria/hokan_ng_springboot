@@ -1,9 +1,9 @@
 package org.freakz.hokan_ng_sprintboot.engine.jms;
 
 import lombok.extern.slf4j.Slf4j;
-import org.freakz.hokan_ng_sprintboot.common.jms.JmsMessage;
-import org.freakz.hokan_ng_sprintboot.common.jms.SpringJmsReceiver;
-import org.freakz.hokan_ng_sprintboot.common.jms.api.JmsSender;
+import org.freakz.hokan_ng_sprintboot.jms.JmsMessage;
+import org.freakz.hokan_ng_sprintboot.jms.SpringJmsReceiver;
+import org.freakz.hokan_ng_sprintboot.jms.api.JmsSender;
 import org.freakz.hokan_ng_sprintboot.service.JmsServiceMessageHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

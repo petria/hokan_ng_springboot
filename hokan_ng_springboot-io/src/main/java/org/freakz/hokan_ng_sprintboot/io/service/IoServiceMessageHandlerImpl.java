@@ -1,7 +1,7 @@
 package org.freakz.hokan_ng_sprintboot.io.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.freakz.hokan_ng_sprintboot.common.jms.JmsMessage;
+import org.freakz.hokan_ng_sprintboot.jms.JmsMessage;
 import org.freakz.hokan_ng_sprintboot.repository.NetworkService;
 import org.freakz.hokan_ng_sprintboot.service.ConnectionManagerService;
 import org.freakz.hokan_ng_sprintboot.service.JmsServiceMessageHandler;

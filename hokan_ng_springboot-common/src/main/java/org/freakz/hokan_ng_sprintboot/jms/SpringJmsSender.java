@@ -1,18 +1,13 @@
-package org.freakz.hokan_ng_sprintboot.common.jms;
+package org.freakz.hokan_ng_sprintboot.jms;
 
-import javax.jms.Destination;
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.ObjectMessage;
-import javax.jms.Session;
-
-import org.freakz.hokan_ng_sprintboot.common.jms.api.JmsSender;
+import lombok.extern.slf4j.Slf4j;
+import org.freakz.hokan_ng_sprintboot.jms.api.JmsSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Component;
 
-import lombok.extern.slf4j.Slf4j;
+import javax.jms.*;
 
 /**
  *

@@ -1,9 +1,9 @@
-package org.freakz.hokan_ng_sprintboot.common.jms.api;
+package org.freakz.hokan_ng_sprintboot.jms.api;
+
+import org.freakz.hokan_ng_sprintboot.jms.JmsMessage;
 
 import javax.jms.Destination;
 import javax.jms.ObjectMessage;
-
-import org.freakz.hokan_ng_sprintboot.common.jms.JmsMessage;
 
 /**
  *

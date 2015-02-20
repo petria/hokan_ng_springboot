@@ -1,6 +1,7 @@
-package org.freakz.hokan_ng_sprintboot.io.entity;
+package org.freakz.hokan_ng_sprintboot.entity;
 
 /**
+ *
  * Created by Petri Airio on 14.11.2014.
  */
 public enum AliasType {

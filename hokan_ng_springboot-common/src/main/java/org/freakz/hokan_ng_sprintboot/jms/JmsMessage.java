@@ -1,4 +1,4 @@
-package org.freakz.hokan_ng_sprintboot.common.jms;
+package org.freakz.hokan_ng_sprintboot.jms;
 
 import java.io.Serializable;
 import java.util.HashMap;
