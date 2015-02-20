@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 
 /**
+ *
  * Created by JohnDoe on 19.2.2015.
  */
 @Service
