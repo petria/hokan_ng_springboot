@@ -1,8 +1,6 @@
-package org.freakz.hokan_ng_sprintboot.engine.jms;
+package org.freakz.hokan_ng_springboot.bot.jms;
 
 import lombok.extern.slf4j.Slf4j;
-import org.freakz.hokan_ng_springboot.bot.jms.JmsMessage;
-import org.freakz.hokan_ng_springboot.bot.jms.SpringJmsReceiver;
 import org.freakz.hokan_ng_springboot.bot.jms.api.JmsSender;
 import org.freakz.hokan_ng_springboot.bot.service.JmsServiceMessageHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,28 +17,38 @@ import javax.jms.ObjectMessage;
  */
 @Component
 @Slf4j
-public class EngineJmsReceiver extends SpringJmsReceiver {
+public class IoJmsReceiver extends SpringJmsReceiver {
 
   @Autowired
   private JmsSender jmsSender;
 
-  @Autowired private JmsServiceMessageHandler engineService;
+  @Autowired
+  private JmsServiceMessageHandler jmsServiceMessageHandler;
+
 
   @Override
   public String getDestinationName() {
-    return "HokanNGEngineQueue";
+    return "HokanNGIoQueue";
   }
 
   @Override
   public void handleJmsMessage(Message message) throws JMSException {
     ObjectMessage objectMessage = (ObjectMessage) message;
     JmsMessage jmsMessage = (JmsMessage) objectMessage.getObject();
-    JmsMessage jmsReplyMessage = engineService.handleJmsServiceMessage(jmsMessage);
+    JmsMessage jmsReplyMessage = null;
+    try {
+      jmsReplyMessage = jmsServiceMessageHandler.handleJmsServiceMessage(jmsMessage);
+    } catch (Exception e) {
+      log.error("Something went wrong!");
+    }
     Destination replyTo = message.getJMSReplyTo();
     log.debug("got message: {}, replyTo: {}", jmsMessage, replyTo);
     if (replyTo != null) {
-      jmsSender.sendJmsMessage(replyTo, jmsReplyMessage);
+      if (jmsReplyMessage != null) {
+        jmsSender.sendJmsMessage(replyTo, jmsReplyMessage);
+      }
     }
+
   }
 
 }

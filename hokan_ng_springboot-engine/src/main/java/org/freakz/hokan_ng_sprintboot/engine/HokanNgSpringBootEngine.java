@@ -17,7 +17,7 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
 @Configuration
 @EnableAutoConfiguration
-@ComponentScan({"org.freakz.hokan_ng_sprintboot.common", "org.freakz.hokan_ng_sprintboot.engine"})
+@ComponentScan({"org.freakz.hokan_ng_sprintboot.bot", "org.freakz.hokan_ng_sprintboot.engine"})
 public class HokanNgSpringBootEngine {
 
   @Value("${datasource.driverclassname}") private String datasource_driverclassname;

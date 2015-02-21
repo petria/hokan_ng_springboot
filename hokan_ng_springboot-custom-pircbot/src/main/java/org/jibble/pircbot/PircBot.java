@@ -25,7 +25,7 @@ import java.util.concurrent.Executors;
 /**
  * PircBot is a Java framework for writing IRC bots quickly and easily.
  * <p>
- * It provides an event-driven architecture to handle common IRC
+ * It provides an event-driven architecture to handle bot IRC
  * events, flood protection, DCC support, ident support, and more.
  * The comprehensive logfile format is suitable for use with pisg to generate
  * channel statistics.
