@@ -12,12 +12,11 @@ import javax.jms.Message;
 import javax.jms.ObjectMessage;
 
 /**
- *
  * Created by petria on 5.2.2015.
  */
 @Component
 @Slf4j
-public class IoJmsReceiver extends SpringJmsReceiver {
+public class ServicesJmsReceiver extends SpringJmsReceiver {
 
   @Autowired
   private JmsSender jmsSender;
@@ -28,7 +27,7 @@ public class IoJmsReceiver extends SpringJmsReceiver {
 
   @Override
   public String getDestinationName() {
-    return "HokanNGIoQueue";
+    return "HokanNGServicesQueue";
   }
 
   @Override
@@ -45,7 +44,6 @@ public class IoJmsReceiver extends SpringJmsReceiver {
     log.debug("got message: {}, replyTo: {}", jmsMessage, replyTo);
     if (replyTo != null) {
       if (jmsReplyMessage != null) {
-        log.info("Sending reply: {}", jmsReplyMessage);
         jmsSender.sendJmsMessage(replyTo, jmsReplyMessage);
       }
     }

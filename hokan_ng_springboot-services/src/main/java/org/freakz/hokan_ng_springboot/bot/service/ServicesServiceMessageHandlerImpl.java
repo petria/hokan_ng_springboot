@@ -5,20 +5,17 @@ import org.freakz.hokan_ng_springboot.bot.jms.JmsMessage;
 import org.freakz.hokan_ng_springboot.bot.jpa.repository.NetworkService;
 import org.springframework.stereotype.Controller;
 
-import javax.annotation.Resource;
-
 /**
- *
  * Created by Petri Airio on 10.2.2015.
  */
 @Controller
 @Slf4j
-public class IoServiceMessageHandlerImpl implements JmsServiceMessageHandler {
+public class ServicesServiceMessageHandlerImpl implements JmsServiceMessageHandler {
 
-  @Resource
+  //  @Resource
   private ConnectionManagerService connectionManagerService;
 
-//  @Resource
+  //  @Resource
   private NetworkService networkService;
 
   @Override

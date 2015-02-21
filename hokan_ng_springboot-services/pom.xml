@@ -3,8 +3,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <name>hokan_ng_springboot-io</name>
-    <artifactId>hokan_ng_springboot-io</artifactId>
+    <name>hokan_ng_springboot-services</name>
+    <artifactId>hokan_ng_springboot-services</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
 
@@ -17,7 +17,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <start-class>org.freakz.hokan_ng_springboot.bot.HokanNgSpringBootIo</start-class>
+        <start-class>org.freakz.hokan_ng_springboot.bot.HokanNgSpringBootServices</start-class>
         <java.version>1.8</java.version>
     </properties>
 
@@ -30,16 +30,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.freakz</groupId>
-            <artifactId>hokan_ng_springboot-custom-pircbot</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
         </dependency>
-
 
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -57,10 +50,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
-<!--        <dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-        </dependency> -->
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-hornetq</artifactId>
