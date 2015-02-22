@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /**
+ *
  * Created by AirioP on 17.2.2015.
  */
 @Component
