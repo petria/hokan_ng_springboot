@@ -2,7 +2,7 @@ package org.freakz.hokan_ng_springboot.bot.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.jms.JmsMessage;
-import org.freakz.hokan_ng_springboot.bot.jpa.repository.NetworkService;
+import org.freakz.hokan_ng_springboot.bot.jpa.repository.service.NetworkService;
 import org.springframework.stereotype.Controller;
 
 /**

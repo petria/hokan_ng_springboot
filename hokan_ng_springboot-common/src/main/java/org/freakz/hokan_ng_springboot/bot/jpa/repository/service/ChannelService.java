@@ -1,8 +1,8 @@
-package org.freakz.hokan_ng_springboot.bot.jpa.repository;
+package org.freakz.hokan_ng_springboot.bot.jpa.repository.service;
 
+import org.freakz.hokan_ng_springboot.bot.jpa.entity.Channel;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.ChannelState;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.Network;
-import org.freakz.hokan_ng_springboot.bot.jpa.entity.Channel;
 
 import java.util.List;
 
@@ -13,5 +13,7 @@ import java.util.List;
 public interface ChannelService {
 
   List<Channel> findChannels(Network network, ChannelState joined);
+
+  List<Channel> findAll();
 
 }

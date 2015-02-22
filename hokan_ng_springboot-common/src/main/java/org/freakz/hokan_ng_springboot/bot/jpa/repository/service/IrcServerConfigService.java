@@ -1,4 +1,4 @@
-package org.freakz.hokan_ng_springboot.bot.jpa.repository;
+package org.freakz.hokan_ng_springboot.bot.jpa.repository.service;
 
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.IrcServerConfig;
 

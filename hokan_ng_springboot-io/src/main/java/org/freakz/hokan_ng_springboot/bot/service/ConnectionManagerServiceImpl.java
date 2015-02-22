@@ -1,16 +1,17 @@
 package org.freakz.hokan_ng_springboot.bot.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.freakz.hokan_ng_springboot.bot.jpa.entity.*;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanServiceException;
 import org.freakz.hokan_ng_springboot.bot.ircengine.HokanCore;
 import org.freakz.hokan_ng_springboot.bot.ircengine.connector.AsyncConnector;
 import org.freakz.hokan_ng_springboot.bot.ircengine.connector.Connector;
 import org.freakz.hokan_ng_springboot.bot.ircengine.connector.EngineConnector;
-import org.freakz.hokan_ng_springboot.bot.jpa.repository.ChannelService;
-import org.freakz.hokan_ng_springboot.bot.jpa.repository.IrcServerConfigService;
-import org.freakz.hokan_ng_springboot.bot.jpa.repository.NetworkService;
+import org.freakz.hokan_ng_springboot.bot.jpa.entity.*;
+import org.freakz.hokan_ng_springboot.bot.jpa.repository.service.ChannelService;
+import org.freakz.hokan_ng_springboot.bot.jpa.repository.service.IrcServerConfigService;
+import org.freakz.hokan_ng_springboot.bot.jpa.repository.service.NetworkService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
@@ -27,16 +28,16 @@ import java.util.Map;
 @Slf4j
 public class ConnectionManagerServiceImpl implements ConnectionManagerService, EngineConnector {
 
-//  @Autowired
+  @Autowired
   private ApplicationContext context;
 
-//  @Autowired
+  @Autowired
   private ChannelService channelService;
 
-//  @Autowired
+  @Autowired
   private IrcServerConfigService ircServerConfigService;
 
-//  @Autowired
+  @Autowired
   private NetworkService networkService;
 
   private String botNick;
@@ -183,9 +184,18 @@ public class ConnectionManagerServiceImpl implements ConnectionManagerService, E
   }
 
   private void joinChannels(HokanCore engine, Network network) {
-    List<Channel> channels = this.channelService.findChannels(network, ChannelState.JOINED);
-    for (Channel channelToJoin : channels) {
-      engine.joinChannel(channelToJoin.getChannelName());
+    List<Channel> channels = this.channelService.findAll();
+    if (channels != null) {
+      for (Channel channelToJoin : channels) {
+        if (channelToJoin.getNetwork().getName().equals(network.getName())) {
+          if (channelToJoin.getChannelState() == ChannelState.JOINED) {
+            log.info("--> joining to {}", channelToJoin.getChannelName());
+            engine.joinChannel(channelToJoin.getChannelName());
+          }
+        }
+      }
+    } else {
+      log.info("NO channels to join: {} -> {}", engine, network);
     }
   }
 

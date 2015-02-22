@@ -2,7 +2,6 @@ package org.freakz.hokan_ng_springboot.bot.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.jms.JmsMessage;
-import org.freakz.hokan_ng_springboot.bot.jpa.repository.NetworkService;
 import org.springframework.stereotype.Controller;
 
 import javax.annotation.Resource;
@@ -17,9 +16,6 @@ public class IoServiceMessageHandlerImpl implements JmsServiceMessageHandler {
 
   @Resource
   private ConnectionManagerService connectionManagerService;
-
-//  @Resource
-  private NetworkService networkService;
 
   @Override
   public JmsMessage handleJmsServiceMessage(JmsMessage jmsMessage) {

@@ -29,6 +29,7 @@ public class HokanServicesController {
     ObjectMessage reply = jmsSender.sendAndGetReply("HokanNGIoQueue", "COMMAND", "GO_ONLINE");
     if (reply != null) {
       JmsMessage jmsMessage = (JmsMessage) reply.getObject();
+      log.info("reply: {}", jmsMessage);
       return "reply: " + jmsMessage.getPayLoadObject("REPLY");
     }
     return "No reply!";

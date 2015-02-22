@@ -23,7 +23,7 @@ public class SpringJmsSender implements JmsSender {
 
   public ObjectMessage sendAndGetReply(String destination, String key, String msg) {
     log.debug("{}: {} -> {}", destination, key, msg);
-    this.jmsTemplate.setReceiveTimeout(10 * 1000);
+    this.jmsTemplate.setReceiveTimeout(30 * 1000);
     Message reply = this.jmsTemplate.sendAndReceive(destination, new MessageCreator() {
           @Override
           public Message createMessage(Session session) throws JMSException {

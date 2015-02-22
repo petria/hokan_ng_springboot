@@ -1,7 +1,8 @@
-package org.freakz.hokan_ng_springboot.bot.jpa.repository;
+package org.freakz.hokan_ng_springboot.bot.jpa.repository.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.Network;
+import org.freakz.hokan_ng_springboot.bot.jpa.repository.NetworkRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
