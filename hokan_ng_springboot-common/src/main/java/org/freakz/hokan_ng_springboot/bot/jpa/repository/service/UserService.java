@@ -1,0 +1,14 @@
+package org.freakz.hokan_ng_springboot.bot.jpa.repository.service;
+
+import org.freakz.hokan_ng_springboot.bot.jpa.entity.User;
+
+import java.util.List;
+
+/**
+ * Created by Petri Airio on 11.3.2015.
+ */
+public interface UserService {
+
+    List<User> findAll();
+
+}

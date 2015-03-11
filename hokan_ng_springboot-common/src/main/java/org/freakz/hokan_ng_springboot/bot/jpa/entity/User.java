@@ -44,8 +44,6 @@ public class User implements Serializable {
   @Column(name = "LOGGED_IN")
   private int loggedIn;
 
-  @Column(name = "OLPO")
-  private int olpo;
 
   public User() {
     this.nick = "";
@@ -56,7 +54,6 @@ public class User implements Serializable {
     this.phone = "";
     this.email = "";
     this.loggedIn = 0;
-    this.olpo = 0;
   }
 
   public User(String nick) {
@@ -134,14 +131,6 @@ public class User implements Serializable {
 
   public void setLoggedIn(int loggedIn) {
     this.loggedIn = loggedIn;
-  }
-
-  public int isOlpo() {
-    return olpo;
-  }
-
-  public void setOlpo(int olpo) {
-    this.olpo = olpo;
   }
 
   public String getRealMask() {
