@@ -19,7 +19,7 @@ import java.util.List;
  */
 @Component
 @Slf4j
-public class CustomAuthenticationProvider implements AuthenticationProvider {
+public class HokanAuthenticationProvider implements AuthenticationProvider {
 
     @Autowired
     private UserService userService;

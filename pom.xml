@@ -32,6 +32,7 @@
         <module>hokan_ng_springboot-io</module>
         <module>hokan_ng_springboot-services</module>
         <module>hokan_ng_springboot-web</module>
+        <module>hokan_ng_springboot-wicket</module>
     </modules>
 
     <dependencies>

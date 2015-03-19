@@ -1,0 +1,31 @@
+package org.freakz.hokan_ng_springboot.bot.jms;
+
+import lombok.extern.slf4j.Slf4j;
+import org.freakz.hokan_ng_springboot.bot.jpa.repository.service.NetworkService;
+import org.freakz.hokan_ng_springboot.bot.service.ConnectionManagerService;
+import org.freakz.hokan_ng_springboot.bot.service.JmsServiceMessageHandler;
+import org.springframework.stereotype.Controller;
+
+/**
+ * Created by Petri Airio on 10.2.2015.
+ *
+ */
+@Controller
+@Slf4j
+public class WicketServiceMessageHandlerImpl implements JmsServiceMessageHandler {
+
+    //  @Resource
+    private ConnectionManagerService connectionManagerService;
+
+    //  @Resource
+    private NetworkService networkService;
+
+    @Override
+    public JmsMessage handleJmsServiceMessage(JmsMessage jmsMessage) {
+        log.debug("Handling message");
+        String command = (String) jmsMessage.getPayLoadObject("COMMAND");
+        JmsMessage reply = new JmsMessage();
+        reply.addPayLoadObject("REPLY", "Wicket reply!");
+        return reply;
+    }
+}
