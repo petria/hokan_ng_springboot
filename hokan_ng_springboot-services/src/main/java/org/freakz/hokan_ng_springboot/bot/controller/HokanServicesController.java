@@ -51,4 +51,17 @@ public class HokanServicesController {
     return "message sent!";
   }
 
+    @RequestMapping("/test4")
+    @ResponseBody
+    public String testASync4() throws JMSException {
+        log.info("Sending Sync");
+        ObjectMessage reply = jmsSender.sendAndGetReply("HokanNGWicketQueue", "COMMAND", "GO_ONLINE");
+        if (reply != null) {
+            JmsMessage jmsMessage = (JmsMessage) reply.getObject();
+            log.info("reply: {}", jmsMessage);
+            return "reply: " + jmsMessage.getPayLoadObject("REPLY");
+        }
+        return "No reply!";
+    }
+
 }
