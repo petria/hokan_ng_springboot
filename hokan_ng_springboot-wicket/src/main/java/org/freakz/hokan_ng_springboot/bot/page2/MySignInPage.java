@@ -2,14 +2,18 @@ package org.freakz.hokan_ng_springboot.bot.page2;
 
 import org.apache.wicket.authroles.authentication.panel.SignInPanel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.freakz.hokan_ng_springboot.bot.jpa.repository.service.UserService;
 
 /**
  * Created by Petri Airio on 19.3.2015.
+ *
  */
 public final class MySignInPage extends WicketExamplePage {
-    /**
-     * Construct
-     */
+
+    @SpringBean
+    private UserService userService;
+
     public MySignInPage() {
         this(null);
     }

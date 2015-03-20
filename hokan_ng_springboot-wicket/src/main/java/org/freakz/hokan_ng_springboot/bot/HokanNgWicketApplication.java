@@ -5,7 +5,7 @@ import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.crypt.CharEncoding;
-import org.freakz.hokan_ng_springboot.bot.page2.HomePage;
+import org.freakz.hokan_ng_springboot.bot.page.HokanBasePage;
 import org.freakz.hokan_ng_springboot.bot.page2.MySignInPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -31,7 +31,7 @@ public class HokanNgWicketApplication extends AuthenticatedWebApplication {
 
     @Override
     public Class<? extends WebPage> getHomePage() {
-        return HomePage.class;
+        return HokanBasePage.class;
     }
 
     public static void main(String[] args) {

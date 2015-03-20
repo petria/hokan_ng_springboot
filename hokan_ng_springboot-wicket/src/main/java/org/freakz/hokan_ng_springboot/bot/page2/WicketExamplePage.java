@@ -19,6 +19,7 @@ package org.freakz.hokan_ng_springboot.bot.page2;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.freakz.hokan_ng_springboot.bot.panel.HeaderPanel;
 
 /**
  * Base class for all example pages.
@@ -45,9 +46,7 @@ public class WicketExamplePage extends WebPage {
      */
     public WicketExamplePage(final PageParameters pageParameters) {
         super(pageParameters);
-
-        final String packageName = getClass().getPackage().getName();
-//        add(new WicketExampleHeader("mainNavigation", Strings.afterLast(packageName, '.'), this));
+        add(new HeaderPanel("mainNavigation",  this));
         explain();
     }
 
