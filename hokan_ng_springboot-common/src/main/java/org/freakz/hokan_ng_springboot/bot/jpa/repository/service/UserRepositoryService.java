@@ -24,19 +24,19 @@ public class UserRepositoryService implements UserService {
     return userRepository.findAll();
   }
 
-/*  @Override
-  public User findByNick(String nick) {
-    return userRepository.findByNick(nick);
+  @Override
+  public User findFirstByNick(String nick) {
+    return userRepository.findFirstByNick(nick);
   }
 
   @Override
   public User findById(long id) {
-    return userRepository.getOne(id);
+    return userRepository.findOne(id);
   }
 
   @Override
-  public User storeUser(User user) {
+  public User save(User user) {
     return userRepository.save(user);
   }
-*/
+
 }

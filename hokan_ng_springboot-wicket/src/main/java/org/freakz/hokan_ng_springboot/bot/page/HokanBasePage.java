@@ -18,5 +18,4 @@ public class HokanBasePage extends WicketExamplePage {
     add(new TabPanel("tabPanel"));
   }
 
-
 }

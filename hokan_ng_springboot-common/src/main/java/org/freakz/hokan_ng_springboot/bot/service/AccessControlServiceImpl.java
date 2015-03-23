@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * Created by Petri Airio on 23.3.2015.
+ *
  */
 @Service
 @Slf4j
@@ -19,7 +20,7 @@ public class AccessControlServiceImpl implements AccessControlService {
 
   @Override
   public boolean isAdminUser(User isAdmin) {
-    User user = null; //userService.findById(isAdmin.getUserId());
+    User user = userService.findById(isAdmin.getUserId());
     if (user == null) {
       log.debug("User not found: {}", user);
       return false;
@@ -39,7 +40,7 @@ public class AccessControlServiceImpl implements AccessControlService {
 
   @Override
   public boolean isLoggedIn(User isLoggedIn) {
-    User user = null; //userService.findById(isLoggedIn.getUserId());
+    User user = userService.findById(isLoggedIn.getUserId());
     if (user == null) {
       log.debug("User not found: {}", user);
       return false;
@@ -49,28 +50,26 @@ public class AccessControlServiceImpl implements AccessControlService {
 
   @Override
   public User loginUser(User user2) {
-    User user = null; // userService.findById(user2.getUserId());
+    User user = userService.findById(user2.getUserId());
     if (user == null) {
       log.debug("User not found: {}", user);
       return null;
     }
     user.setLoggedIn(1);
     log.info("User logged in: {}", user);
-//    return userService.storeUser(user);
-    return null;
+    return userService.save(user);
   }
 
   @Override
   public User logoffUser(User user2) {
-    User user = null; //userService.findById(user2.getUserId());
+    User user = userService.findById(user2.getUserId());
     if (user == null) {
       log.debug("User not found: {}", user);
       return null;
     }
     user.setLoggedIn(0);
     log.info("User logged off: {}", user);
-//    return userService.storeUser(user);
-    return null;
+    return userService.save(user);
   }
 
 }

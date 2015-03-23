@@ -5,6 +5,7 @@ import org.freakz.hokan_ng_springboot.bot.jpa.entity.User;
 
 /**
  * Created by Petri Airio on 23.3.2015.
+ *
  */
 public interface AccessControlService {
 

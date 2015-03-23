@@ -12,9 +12,10 @@ public interface UserService {
 
   List<User> findAll();
 
-/*  User findByNick(String nick);
+  User findFirstByNick(String nick);
 
   User findById(long id);
 
-  User storeUser(User user);*/
+  User save(User user);
+
 }

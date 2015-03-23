@@ -68,4 +68,10 @@ public class MyAuthenticatedWebSession extends AuthenticatedWebSession {
     }
     return null;
   }
+
+  public void logoffUser() {
+    accessControlService.logoffUser(this.loggedInUser);
+    this.loggedInUser = null;
+  }
+
 }
