@@ -10,17 +10,33 @@ import java.util.List;
 
 /**
  * Created by Petri Airio on 11.3.2015.
+ *
  */
 @Service
 @Slf4j
 public class UserRepositoryService implements UserService {
 
-    @Resource
-    private UserRepository userRepository;
+  @Resource
+  private UserRepository userRepository;
 
-    @Override
-    public List<User> findAll() {
-        return userRepository.findAll();
-    }
+  @Override
+  public List<User> findAll() {
+    return userRepository.findAll();
+  }
 
+/*  @Override
+  public User findByNick(String nick) {
+    return userRepository.findByNick(nick);
+  }
+
+  @Override
+  public User findById(long id) {
+    return userRepository.getOne(id);
+  }
+
+  @Override
+  public User storeUser(User user) {
+    return userRepository.save(user);
+  }
+*/
 }

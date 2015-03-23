@@ -141,4 +141,8 @@ public class User implements Serializable {
     this.realMask = realMask;
   }
 
+  public String toString() {
+    return String.format("[%03d] %s (%s)", this.userId, this.nick, this.fullName);
+  }
+
 }

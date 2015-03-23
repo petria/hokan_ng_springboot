@@ -6,9 +6,15 @@ import java.util.List;
 
 /**
  * Created by Petri Airio on 11.3.2015.
+ *
  */
 public interface UserService {
 
-    List<User> findAll();
+  List<User> findAll();
 
+/*  User findByNick(String nick);
+
+  User findById(long id);
+
+  User storeUser(User user);*/
 }
