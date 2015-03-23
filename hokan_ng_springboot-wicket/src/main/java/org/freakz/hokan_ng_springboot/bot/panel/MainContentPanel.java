@@ -9,8 +9,24 @@ import org.apache.wicket.markup.html.panel.Panel;
  */
 public class MainContentPanel extends Panel {
 
-    public MainContentPanel(String id, WebPage page) {
-        super(id);
-    }
+  public MainContentPanel(String id, WebPage page) {
+    super(id);
+
+/*    List<ITab> tabs = new ArrayList<>();
+    tabs.add(new AbstractTab(new Model<>("Status")) {
+      @Override
+      public Panel getPanel(String panelId) {
+        return new StatusPanel(panelId);
+      }
+    });
+    tabs.add(new AbstractTab(new Model<>("UserSettings")) {
+      @Override
+      public Panel getPanel(String panelId) {
+        return new UserSettingsPanel(panelId);
+      }
+    });
+    add(new AjaxTabbedPanel<ITab>("tabs", tabs));
+*/
+  }
 
 }
