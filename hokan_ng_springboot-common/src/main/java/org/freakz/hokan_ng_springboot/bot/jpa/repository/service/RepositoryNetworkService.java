@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  *
@@ -37,6 +38,16 @@ public class RepositoryNetworkService implements NetworkService {
   @Transactional
   public void updateNetwork(Network network) {
     Network saved = networkRepository.save(network);
+  }
+
+  @Override
+  public List<Network> findAll() {
+    return networkRepository.findAll();
+  }
+
+  @Override
+  public Network findOne(long id) {
+    return networkRepository.findOne(id);
   }
 
 }
