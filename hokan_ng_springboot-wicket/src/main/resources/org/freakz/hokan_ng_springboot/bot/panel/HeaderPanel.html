@@ -2,12 +2,20 @@
 <html xmlns:wicket="http://wicket.apache.org">
 <body>
 <wicket:panel>
-    <div>
-        <b>Header panel</b>
-    </div>
-    <div>
-        <wicket:link><a wicket:id="logoutLink" href="#">Logout</a></wicket:link>
-    </div>
+    <table width="100%">
+        <tr>
+            <td align="left">
+                <div>
+                    <b>HokanNG wicket UI</b>
+                </div>
+            </td>
+            <td align="right">
+                <div>
+                    <span wicket:id="loggedInUserPanel"></span>
+                </div>
+            </td>
+        </tr>
+    </table>
 </wicket:panel>
 </body>
 </html>

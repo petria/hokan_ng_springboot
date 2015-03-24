@@ -74,4 +74,8 @@ public class MyAuthenticatedWebSession extends AuthenticatedWebSession {
     this.loggedInUser = null;
   }
 
+  public User getUser() {
+    return this.loggedInUser;
+  }
+
 }
