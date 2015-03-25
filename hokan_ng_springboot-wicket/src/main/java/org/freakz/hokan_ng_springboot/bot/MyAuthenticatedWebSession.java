@@ -62,6 +62,7 @@ public class MyAuthenticatedWebSession extends AuthenticatedWebSession {
       Roles resultRoles = new Roles();
       resultRoles.add(Roles.USER);
       if (accessControlService.isAdminUser(this.loggedInUser)) {
+        log.info("User {} is ADMIN!");
         resultRoles.add(Roles.ADMIN);
       }
       return resultRoles;
