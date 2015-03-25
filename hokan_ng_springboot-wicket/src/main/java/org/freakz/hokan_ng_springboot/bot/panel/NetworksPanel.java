@@ -3,6 +3,7 @@ package org.freakz.hokan_ng_springboot.bot.panel;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.OddEvenItem;
@@ -18,6 +19,7 @@ import java.util.Iterator;
 
 /**
  * Created by Petri Airio on 24.3.2015.
+ *
  */
 @Slf4j
 public class NetworksPanel extends Panel {
@@ -48,12 +50,6 @@ public class NetworksPanel extends Panel {
       }
 
       @Override
-      protected void onModelChanged() {
-        super.onModelChanged();
-        log.info("Changed!!!");
-      }
-
-      @Override
       protected void populateItem(Item<Network> item) {
         IModel<Network> network = item.getModel();
         item.add(new ActionPanel(NetworksPanel.this, "actions", network));
@@ -66,11 +62,20 @@ public class NetworksPanel extends Panel {
         return new OddEvenItem<>(id, index, model);
       }
 
+
     };
 
     refreshingView.setItemReuseStrategy(ReuseIfModelsEqualStrategy.getInstance());
-
     form.add(refreshingView);
+
+    form.add(new Link("addNetworkLink") {
+      @Override
+      public void onClick() {
+        log.debug("addNetworkLink");
+        Services.getNetworkService().create("New network");
+        setResponsePage(getPage());
+      }
+    });
 
   }
 

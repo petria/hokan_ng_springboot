@@ -5,6 +5,7 @@ import org.freakz.hokan_ng_springboot.bot.jpa.repository.service.NetworkService;
 
 /**
  * Created by Petri Airio on 24.3.2015.
+ *
  */
 public class Services {
 

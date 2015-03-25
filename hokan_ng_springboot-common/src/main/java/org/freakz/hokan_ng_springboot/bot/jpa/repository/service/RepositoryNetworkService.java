@@ -50,4 +50,14 @@ public class RepositoryNetworkService implements NetworkService {
     return networkRepository.findOne(id);
   }
 
+  @Override
+  public void delete(Network network) {
+    this.networkRepository.delete(network);
+  }
+
+  @Override
+  @Transactional
+  public Network save(Network network) {
+    return this.networkRepository.save(network);
+  }
 }

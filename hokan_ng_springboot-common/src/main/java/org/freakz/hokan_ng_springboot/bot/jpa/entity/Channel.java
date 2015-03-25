@@ -20,7 +20,7 @@ public class Channel implements Serializable {
   private long channelId;
 
   @ManyToOne
-  @JoinColumn(name = "NETWORK_NAME_FK", referencedColumnName = "NETWORK_NAME")
+  @JoinColumn(name = "NETWORK_ID_FK", referencedColumnName = "ID")
   private Network network;
 
   @Column(name = "CHANNEL_NAME")

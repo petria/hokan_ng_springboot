@@ -125,7 +125,7 @@ public class Network implements Serializable {
   }
 
   public String toString() {
-    return String.format("[%s]", this.networkName);
+    return String.format("[%02d] - %s", this.id, this.networkName);
   }
 
 }

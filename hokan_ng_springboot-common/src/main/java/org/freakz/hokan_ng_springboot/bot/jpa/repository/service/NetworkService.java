@@ -20,4 +20,8 @@ public interface NetworkService {
 
   Network findOne(long id);
 
+  void delete(Network network);
+
+  Network save(Network network);
+
 }

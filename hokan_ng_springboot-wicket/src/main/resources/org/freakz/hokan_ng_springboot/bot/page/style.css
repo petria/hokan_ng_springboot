@@ -16,7 +16,7 @@
  */
 body {
     background-color: white;
-    background-image: url('wicket-bg.png');
+    /*    background-image: url('wicket-bg.png');*/
     background-repeat: repeat-x;
     color: black;
     font-family: 'Tahoma', 'Lucida Sans', 'Arial', 'Helvetica', 'Sans-serif', 'sans';
@@ -234,16 +234,16 @@ table.dataview tr th {
 
 table.dataview tr th.wicket_orderDown {
     background-color: #87cbff;
-    background-image: url(images/arrow_down.png);
+    /*    background-image: url(images/arrow_down.png);*/
 }
 
 table.dataview tr th.wicket_orderUp {
     background-color: #87cbff;
-    background-image: url(images/arrow_up.png);
+    /*    background-image: url(images/arrow_up.png);*/
 }
 
 table.dataview tr th.wicket_orderNone {
-    background-image: url(images/arrow_off.png);
+    /*    background-image: url(images/arrow_off.png);*/
 }
 
 table.dataview tr th a {
@@ -263,7 +263,7 @@ table.dataview caption {
 div.tabpanel div.tab-row {
     float: left;
     width: 100%;
-    background: #DAE0D2 url("tabs/bg.gif") repeat-x bottom;
+    /*    background: #DAE0D2 url("tabs/bg.gif") repeat-x bottom;*/
     line-height: normal;
 }
 
@@ -275,14 +275,14 @@ div.tabpanel div.tab-row ul {
 
 div.tabpanel div.tab-row li {
     float: left;
-    background: url("tabs/left.gif") no-repeat left top;
+    /*    background: url("tabs/left.gif") no-repeat left top;*/
     margin: 0;
     padding: 0 0 0 9px;
 }
 
 div.tabpanel div.tab-row a {
     display: block;
-    background: url("tabs/right.gif") no-repeat right top;
+    /*    background: url("tabs/right.gif") no-repeat right top;*/
     padding: 5px 15px 4px 6px;
     text-decoration: none;
     font-weight: bold;
@@ -299,11 +299,11 @@ div.tabpanel div.tab-row a:hover {
 }
 
 div.tabpanel div.tab-row li.selected {
-    background-image: url("tabs/left_on.gif");
+    /*    background-image: url("tabs/left_on.gif");*/
 }
 
 div.tabpanel div.tab-row li.selected a {
-    background-image: url("tabs/right_on.gif");
+    /*    background-image: url("tabs/right_on.gif");*/
     color: #333;
     padding-bottom: 5px;
 }
@@ -312,7 +312,7 @@ div.tabpanel div.tab-row li.selected a {
 div.tabpanel1 div.tab-row {
     float: left;
     width: 100%;
-    background: #DAE0D2 url("tabs1/bg.gif") repeat-x bottom;
+    /*    background: #DAE0D2 url("tabs1/bg.gif") repeat-x bottom;*/
     line-height: normal;
 }
 
@@ -324,14 +324,14 @@ div.tabpanel1 div.tab-row ul {
 
 div.tabpanel1 div.tab-row li {
     float: left;
-    background: url("tabs1/left.gif") no-repeat left top;
+    /*    background: url("tabs1/left.gif") no-repeat left top;*/
     margin: 0;
     padding: 0 0 0 9px;
 }
 
 div.tabpanel1 div.tab-row a {
     display: block;
-    background: url("tabs1/right.gif") no-repeat right top;
+    /*    background: url("tabs1/right.gif") no-repeat right top;*/
     padding: 5px 15px 4px 6px;
     text-decoration: none;
     font-weight: bold;
@@ -344,11 +344,11 @@ div.tabpanel1 div.tab-row a:hover {
 }
 
 div.tabpanel1 div.tab-row li.selected {
-    background-image: url("tabs1/left_on.gif");
+    /*    background-image: url("tabs1/left_on.gif");*/
 }
 
 div.tabpanel1 div.tab-row li.selected a {
-    background-image: url("tabs1/right_on.gif");
+    /*    background-image: url("tabs1/right_on.gif");*/
     color: #333;
     padding-bottom: 5px;
 }
@@ -357,7 +357,7 @@ div.tabpanel1 div.tab-row li.selected a {
 div.tabpanel2 div.tab-row {
     float: left;
     width: 100%;
-    background: #369 url("tabs2/bg.gif") repeat-x bottom;
+    /*    background: #369 url("tabs2/bg.gif") repeat-x bottom;*/
     font-size: 85%;
     line-height: normal;
 }
@@ -370,7 +370,7 @@ div.tabpanel2 div.tab-row ul {
 
 div.tabpanel2 div.tab-row li {
     float: left;
-    background: url("tabs2/right.gif") no-repeat right top;
+    /*    background: url("tabs2/right.gif") no-repeat right top;*/
     margin: 0;
     padding: 0 5px 0 0;
 }
@@ -378,7 +378,7 @@ div.tabpanel2 div.tab-row li {
 div.tabpanel2 div.tab-row a {
     float: left;
     display: block;
-    background: url("tabs2/left.gif") no-repeat left top;
+    /*    background: url("tabs2/left.gif") no-repeat left top;*/
     padding: 5px 7px 4px 20px;
     text-decoration: none;
     font-weight: bold;
@@ -398,11 +398,11 @@ div.tabpanel2 div.tab-row a:hover {
 }
 
 div.tabpanel2 div.tab-row li.selected {
-    background-image: url("tabs2/right_on.gif");
+    /*    background-image: url("tabs2/right_on.gif");*/
 }
 
 div.tabpanel2 div.tab-row li.selected a {
-    background-image: url("tabs2/left_on.gif");
+    /*    background-image: url("tabs2/left_on.gif");*/
     color: #333;
     padding-bottom: 5px;
 }
@@ -411,7 +411,7 @@ div.tabpanel2 div.tab-row li.selected a {
 div.tabpanel3 div.tab-row {
     float: left;
     width: 100%;
-    background: #eee url("tabs3/bg.jpg") repeat-x top;
+    /*    background: #eee url("tabs3/bg.jpg") repeat-x top;*/
     line-height: normal;
 }
 
@@ -423,7 +423,7 @@ div.tabpanel3 div.tab-row ul {
 
 div.tabpanel3 div.tab-row li {
     float: left;
-    background: url("tabs3/left.gif") no-repeat left top;
+    /*    background: url("tabs3/left.gif") no-repeat left top;*/
     margin: 0;
     padding: 0 0 0 28px;
 }
@@ -431,7 +431,7 @@ div.tabpanel3 div.tab-row li {
 div.tabpanel3 div.tab-row a {
     float: left;
     display: block;
-    background: url("tabs3/right.gif") no-repeat right top;
+    /*    background: url("tabs3/right.gif") no-repeat right top;*/
     padding: 9px 28px 4px 0px;
     text-decoration: none;
     font-weight: bold;
@@ -450,11 +450,11 @@ div.tabpanel3 div.tab-row a:hover {
 }
 
 div.tabpanel3 div.tab-row li.selected {
-    background-image: url("tabs3/left_on.gif");
+    /*    background-image: url("tabs3/left_on.gif");*/
 }
 
 div.tabpanel3 div.tab-row li.selected a {
-    background-image: url("tabs3/right_on.gif");
+    /*    background-image: url("tabs3/right_on.gif");*/
     color: #A56060;
 }
 
@@ -462,7 +462,7 @@ div.tabpanel4 div.tab-row ul {
     height: 20px;
     margin: 0;
     padding-left: 10px;
-    background: url(tabs4/tab_bottom.gif) repeat-x bottom;
+    /*    background: url(tabs4/tab_bottom.gif) repeat-x bottom;*/
 }
 
 div.tabpanel4 div.tab-row li {
@@ -507,7 +507,7 @@ div.wupb-progressBar {
 }
 
 div.wupb-progressBar .wupb-border {
-    background: url(progress-remainder.gif) repeat-x;
+    /*    background: url(progress-remainder.gif) repeat-x;*/
     background-color: #eee;
     border-left: 1px solid grey;
     border-right: 1px solid grey;
@@ -515,7 +515,7 @@ div.wupb-progressBar .wupb-border {
 }
 
 div.wupb-progressBar .wupb-background {
-    background: url(progress-bar.gif) repeat-x;
+    /*    background: url(progress-bar.gif) repeat-x;*/
     background-color: #507090;
     height: 18px;
     width: 0%;
@@ -582,12 +582,12 @@ table.grid tr th a {
 
 table.grid tr th.wicket_orderDown a {
     color: black;
-    background-image: url(images/arrow_down.png);
+    /*    background-image: url(images/arrow_down.png);*/
 }
 
 table.grid tr th.wicket_orderUp a {
     color: black;
-    background-image: url(images/arrow_up.png);
+    /*    background-image: url(images/arrow_up.png);*/
 }
 
 table.grid tr th.wicket_orderNone a {

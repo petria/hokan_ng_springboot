@@ -10,7 +10,8 @@ public class ConfigPanel extends Panel {
 
   public ConfigPanel(String id) {
     super(id);
-    add(new NetworksPanel("networksPanel"));
+    setOutputMarkupId(true);
+    add(new EditableNetworksPanel("editableNetworksPanel"));
   }
 
 }
