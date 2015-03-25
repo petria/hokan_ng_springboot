@@ -5,6 +5,7 @@ import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.crypt.CharEncoding;
+import org.freakz.hokan_ng_springboot.bot.jpa.repository.service.ChannelService;
 import org.freakz.hokan_ng_springboot.bot.jpa.repository.service.NetworkService;
 import org.freakz.hokan_ng_springboot.bot.page.HokanBasePage;
 import org.freakz.hokan_ng_springboot.bot.page2.MySignInPage;
@@ -26,6 +27,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableAutoConfiguration
 @EnableTransactionManagement
 public class HokanNgWicketApplication extends AuthenticatedWebApplication {
+
+  @Autowired
+  private ChannelService channelService;
 
   @Autowired
   private NetworkService networkService;
@@ -66,4 +70,7 @@ public class HokanNgWicketApplication extends AuthenticatedWebApplication {
     return networkService;
   }
 
+  public ChannelService getChannelService() {
+    return channelService;
+  }
 }

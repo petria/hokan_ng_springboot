@@ -12,6 +12,8 @@ public class ConfigPanel extends Panel {
     super(id);
     setOutputMarkupId(true);
     add(new EditableNetworksPanel("editableNetworksPanel"));
+
+    add(new EditableChannelsPanel("editableChannelsPanel"));
   }
 
 }

@@ -28,4 +28,24 @@ public class ChannelRepositoryService implements ChannelService {
     return repository.findAll();
   }
 
+  @Override
+  public List<Channel> FindByNetwork(Network network) {
+    return repository.findByNetwork(network);
+  }
+
+  @Override
+  public Channel save(Channel object) {
+    return repository.save(object);
+  }
+
+  @Override
+  public void delete(Channel object) {
+    repository.delete(object);
+  }
+
+  @Override
+  public Channel create(Channel newRow) {
+    return repository.save(newRow);
+  }
+
 }

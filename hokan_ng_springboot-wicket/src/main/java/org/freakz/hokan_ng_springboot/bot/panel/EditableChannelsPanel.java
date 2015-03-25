@@ -7,7 +7,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.freakz.hokan_ng_springboot.bot.Services;
-import org.freakz.hokan_ng_springboot.bot.jpa.entity.Network;
+import org.freakz.hokan_ng_springboot.bot.jpa.entity.Channel;
 import org.wicketstuff.egrid.EditableGrid;
 import org.wicketstuff.egrid.column.AbstractEditablePropertyColumn;
 import org.wicketstuff.egrid.column.RequiredEditableTextFieldColumn;
@@ -18,14 +18,13 @@ import java.util.List;
 
 /**
  * Created by Petri Airio on 25.3.2015.
- *
  */
 @Slf4j
-public class EditableNetworksPanel extends Panel {
+public class EditableChannelsPanel extends Panel {
 
   private FeedbackPanel feedbackPanel;
 
-  public EditableNetworksPanel(String id) {
+  public EditableChannelsPanel(String id) {
     super(id);
     setOutputMarkupId(true);
 
@@ -33,14 +32,15 @@ public class EditableNetworksPanel extends Panel {
     feedbackPanel.setOutputMarkupPlaceholderTag(true);
     add(feedbackPanel);
 
-    EditableListDataProvider<Network, String> provider = new EditableListDataProvider<>(Services.getNetworkService().findAll());
-    EditableGrid editableGrid = new EditableGrid<Network, String>("grid", getColumns(), provider, 10, Network.class) {
+    EditableListDataProvider<Channel, String> provider = new EditableListDataProvider<>(Services.getChannelService().findAll());
+    EditableGrid editableGrid = new EditableGrid<Channel, String>("grid", getColumns(), provider, 10, Channel.class) {
       private static final long serialVersionUID = 1L;
 
       @Override
-      protected void onAdd(AjaxRequestTarget target, Network newRow) {
-        Network network = Services.getNetworkService().create(newRow.getName());
-        newRow.setId(network.getId());
+      protected void onAdd(AjaxRequestTarget target, Channel newRow) {
+        Channel channel = Services.getChannelService().create(newRow);
+        newRow.setChannelId(channel.getChannelId());
+
         info("Added!");
         target.add(feedbackPanel);
       }
@@ -58,16 +58,16 @@ public class EditableNetworksPanel extends Panel {
       }
 
       @Override
-      protected void onDelete(AjaxRequestTarget target, IModel<Network> rowModel) {
-        Services.getNetworkService().delete(rowModel.getObject());
+      protected void onDelete(AjaxRequestTarget target, IModel<Channel> rowModel) {
+        Services.getChannelService().delete(rowModel.getObject());
         log.debug("deleted");
         target.add(feedbackPanel);
       }
 
       @Override
-      protected void onSave(AjaxRequestTarget target, IModel<Network> rowModel) {
+      protected void onSave(AjaxRequestTarget target, IModel<Channel> rowModel) {
         log.debug("save");
-        Services.getNetworkService().save(rowModel.getObject());
+        Services.getChannelService().save(rowModel.getObject());
         target.add(feedbackPanel);
       }
     };
@@ -75,10 +75,10 @@ public class EditableNetworksPanel extends Panel {
 
   }
 
-  private List<AbstractEditablePropertyColumn<Network, String>> getColumns() {
-    List<AbstractEditablePropertyColumn<Network, String>> columns = new ArrayList<>();
-    columns.add(new RequiredEditableTextFieldColumn<>(new Model<>("ID"), "id"));
-    columns.add(new RequiredEditableTextFieldColumn<>(new Model<>("Network name"), "networkName"));
+  private List<AbstractEditablePropertyColumn<Channel, String>> getColumns() {
+    List<AbstractEditablePropertyColumn<Channel, String>> columns = new ArrayList<>();
+    columns.add(new RequiredEditableTextFieldColumn<>(new Model<>("ID"), "channelId"));
+    columns.add(new RequiredEditableTextFieldColumn<>(new Model<>("Channel name"), "channelName"));
     return columns;
   }
 

@@ -16,4 +16,12 @@ public interface ChannelService {
 
   List<Channel> findAll();
 
+  List<Channel> FindByNetwork(Network network);
+
+  Channel save(Channel object);
+
+  void delete(Channel object);
+
+  Channel create(Channel newRow);
+
 }

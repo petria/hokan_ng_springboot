@@ -12,7 +12,8 @@ import java.util.List;
  */
 public interface ChannelRepository extends JpaRepository<Channel, Long> {
 
-
   List<Channel> findByNetworkAndChannelState(Network network, ChannelState channelState);
+
+  List<Channel> findByNetwork(Network network);
 
 }
