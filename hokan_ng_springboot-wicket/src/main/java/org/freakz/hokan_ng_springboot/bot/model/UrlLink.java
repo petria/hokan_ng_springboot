@@ -6,6 +6,7 @@ import java.io.Serializable;
 
 /**
  * Created by Petri Airio on 22.3.2015.
+ *
  */
 public class UrlLink implements Serializable {
 

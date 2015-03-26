@@ -18,16 +18,16 @@ public class TabPanel extends Panel {
     public TabPanel(String id) {
     super(id);
     List<ITab> tabs = new ArrayList<>();
-      tabs.add(new AbstractTab(new Model<String>("Config")) {
+      tabs.add(new AbstractTab(new Model<String>("Networks")) {
       @Override
       public Panel getPanel(String panelId) {
-        return new ConfigPanel(panelId);
+        return new EditableNetworksPanel(panelId);
       }
     });
     tabs.add(new AbstractTab(new Model<String>("Channels")) {
       @Override
       public Panel getPanel(String panelId) {
-        return new ChannelsPanel(panelId);
+        return new EditableChannelsPanel(panelId);
       }
     });
 

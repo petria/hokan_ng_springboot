@@ -11,6 +11,7 @@ import java.util.List;
 
 /**
  * Created by JohnDoe on 22.2.2015.
+ *
  */
 @Service
 public class ChannelRepositoryService implements ChannelService {
@@ -29,7 +30,7 @@ public class ChannelRepositoryService implements ChannelService {
   }
 
   @Override
-  public List<Channel> FindByNetwork(Network network) {
+  public List<Channel> findByNetwork(Network network) {
     return repository.findByNetwork(network);
   }
 

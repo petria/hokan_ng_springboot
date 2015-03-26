@@ -77,7 +77,7 @@ public class EditableNetworksPanel extends Panel {
 
   private List<AbstractEditablePropertyColumn<Network, String>> getColumns() {
     List<AbstractEditablePropertyColumn<Network, String>> columns = new ArrayList<>();
-    columns.add(new RequiredEditableTextFieldColumn<>(new Model<>("ID"), "id"));
+    columns.add(new RequiredEditableTextFieldColumn<>(new Model<>("ID"), "id", false));
     columns.add(new RequiredEditableTextFieldColumn<>(new Model<>("Network name"), "networkName"));
     return columns;
   }
