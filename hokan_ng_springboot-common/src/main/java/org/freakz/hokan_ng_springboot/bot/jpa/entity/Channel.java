@@ -31,11 +31,11 @@ public class Channel implements Serializable {
   public Channel(Network network, String name) {
     this.network = network;
     this.channelName = name;
-    this.channelState = ChannelState.NEW;
+    this.channelState = ChannelState.NOT_JOINED;
   }
 
   public Channel() {
-    this.channelState = ChannelState.NEW;
+    this.channelState = ChannelState.NOT_JOINED;
   }
 
   public long getId() {

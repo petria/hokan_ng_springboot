@@ -28,11 +28,7 @@ import java.util.List;
 @Slf4j
 public class EditableChannelsPanel extends Panel {
 
-  private FeedbackPanel feedbackPanel;
-
-  public EditableChannelsPanel(String panelId) {
-    this(panelId, Services.getNetworkService().findAll().get(0));
-  }
+  final private FeedbackPanel feedbackPanel;
 
   public EditableChannelsPanel(String id, final Network network) {
     super(id);

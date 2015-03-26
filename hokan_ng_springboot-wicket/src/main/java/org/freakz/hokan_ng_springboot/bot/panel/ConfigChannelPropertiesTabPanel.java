@@ -6,30 +6,32 @@ import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.freakz.hokan_ng_springboot.bot.Services;
-import org.freakz.hokan_ng_springboot.bot.jpa.entity.Network;
+import org.freakz.hokan_ng_springboot.bot.jpa.entity.Channel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Petri Airio on 26.3.2015.
- *
  */
-public class ConfigChannelsTabPanel extends Panel {
-  public ConfigChannelsTabPanel(String id) {
-    super(id);
+public class ConfigChannelPropertiesTabPanel extends Panel {
 
+  public ConfigChannelPropertiesTabPanel(String id) {
+    super(id);
     List<ITab> tabs = new ArrayList<>();
-    for (Network network : Services.getNetworkService().findAll()) {
-      tabs.add(new AbstractTab(new Model<String>(network.toString())) {
+    for (Channel channel : Services.getChannelService().findAll()) {
+      tabs.add(new AbstractTab(new Model<String>(channel.toString())) {
         @Override
         public Panel getPanel(String panelId) {
-          return new EditableChannelsPanel(panelId, network);
+          return new EditableChannelPropertiesPanel(panelId, channel);
         }
       });
 
     }
-    add(new AjaxTabbedPanel<>("configChannelTabs", tabs));
+    add(new AjaxTabbedPanel<>("configChannelPropertiesTabs", tabs));
 
   }
 }
+
+
+

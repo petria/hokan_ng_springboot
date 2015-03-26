@@ -5,6 +5,7 @@ import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.crypt.CharEncoding;
+import org.freakz.hokan_ng_springboot.bot.jpa.repository.service.ChannelPropertyService;
 import org.freakz.hokan_ng_springboot.bot.jpa.repository.service.ChannelService;
 import org.freakz.hokan_ng_springboot.bot.jpa.repository.service.NetworkService;
 import org.freakz.hokan_ng_springboot.bot.page.HokanBasePage;
@@ -32,10 +33,14 @@ public class HokanNgWicketApplication extends AuthenticatedWebApplication {
   private ChannelService channelService;
 
   @Autowired
+  private ChannelPropertyService channelPropertyService;
+
+  @Autowired
   private NetworkService networkService;
 
   @Autowired
   private ApplicationContext applicationContext;
+
 
   @Override
   public Class<? extends WebPage> getHomePage() {
@@ -52,7 +57,6 @@ public class HokanNgWicketApplication extends AuthenticatedWebApplication {
     getRequestCycleSettings().setResponseRequestEncoding(CharEncoding.UTF_8);
     getMarkupSettings().setDefaultMarkupEncoding(CharEncoding.UTF_8);
     getComponentInstantiationListeners().add(new SpringComponentInjector(this, applicationContext));
-//        mountPage("/FooPage", FooPage.class);
   }
 
   @Override
@@ -72,5 +76,9 @@ public class HokanNgWicketApplication extends AuthenticatedWebApplication {
 
   public ChannelService getChannelService() {
     return channelService;
+  }
+
+  public ChannelPropertyService getChannelPropertyService() {
+    return channelPropertyService;
   }
 }

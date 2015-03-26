@@ -1,6 +1,7 @@
 package org.freakz.hokan_ng_springboot.bot;
 
 import org.apache.wicket.Application;
+import org.freakz.hokan_ng_springboot.bot.jpa.repository.service.ChannelPropertyService;
 import org.freakz.hokan_ng_springboot.bot.jpa.repository.service.ChannelService;
 import org.freakz.hokan_ng_springboot.bot.jpa.repository.service.NetworkService;
 
@@ -15,8 +16,14 @@ public class Services {
     return application.getChannelService();
   }
 
+  public static ChannelPropertyService getChannelPropertyService() {
+    HokanNgWicketApplication application = (HokanNgWicketApplication) Application.get();
+    return application.getChannelPropertyService();
+  }
+
   public static NetworkService getNetworkService() {
     HokanNgWicketApplication application = (HokanNgWicketApplication) Application.get();
     return application.getNetworkService();
   }
+
 }

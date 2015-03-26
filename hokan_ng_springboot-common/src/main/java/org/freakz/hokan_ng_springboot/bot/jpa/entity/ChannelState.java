@@ -9,11 +9,7 @@ package org.freakz.hokan_ng_springboot.bot.jpa.entity;
  */
 public enum ChannelState {
 
-  NEW,
   NOT_JOINED,
   JOINED,
-  KICKED_OUT,
-  BANNED,
-  ALL
 
 }

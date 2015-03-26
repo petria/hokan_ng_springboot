@@ -24,10 +24,16 @@ public class TabPanel extends Panel {
         return new EditableNetworksPanel(panelId);
       }
     });
-    tabs.add(new AbstractTab(new Model<>("Network Channels")) {
+    tabs.add(new AbstractTab(new Model<>("Channels")) {
       @Override
       public Panel getPanel(String panelId) {
         return new ConfigChannelsTabPanel(panelId);
+      }
+    });
+    tabs.add(new AbstractTab(new Model<>("Channel properties")) {
+      @Override
+      public Panel getPanel(String panelId) {
+        return new ConfigChannelPropertiesTabPanel(panelId);
       }
     });
 
