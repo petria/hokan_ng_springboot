@@ -1,5 +1,8 @@
 package org.freakz.hokan_ng_springboot.bot.jpa.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * User: petria
  * Date: 11/7/13
@@ -39,6 +42,16 @@ public enum PropertyName {
    */
   private PropertyName(String text) {
     this.text = text;
+  }
+
+  public static List<PropertyName> getValuesLike(String pattern) {
+    List<PropertyName> values = new ArrayList<>();
+    for (PropertyName name : values()) {
+      if (name.toString().toLowerCase().matches(pattern)) {
+        values.add(name);
+      }
+    }
+    return values;
   }
 
   /* (non-Javadoc)

@@ -13,6 +13,7 @@ import java.util.List;
 
 /**
  * Created by Petri Airio on 26.3.2015.
+ *
  */
 public class ConfigChannelPropertiesTabPanel extends Panel {
 

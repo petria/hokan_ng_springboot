@@ -6,12 +6,19 @@ import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.freakz.hokan_ng_springboot.bot.Services;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.Channel;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.ChannelProperty;
+import org.freakz.hokan_ng_springboot.bot.jpa.entity.PropertyName;
 import org.wicketstuff.egrid.EditableGrid;
+import org.wicketstuff.egrid.column.AbstractEditablePropertyColumn;
+import org.wicketstuff.egrid.column.EditableCellPanel;
+import org.wicketstuff.egrid.column.EditableRequiredDropDownCellPanel;
+import org.wicketstuff.egrid.column.RequiredEditableTextFieldColumn;
 import org.wicketstuff.egrid.provider.EditableListDataProvider;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -74,7 +81,18 @@ public class EditableChannelPropertiesPanel extends Panel {
   }
 
   private List<? extends IColumn<ChannelProperty, String>> getColumns() {
-    return null;
+    List<AbstractEditablePropertyColumn<ChannelProperty, String>> columns = new ArrayList<>();
+    columns.add(new AbstractEditablePropertyColumn<ChannelProperty, String>(new Model<String>("Property name"), "property") {
+      private static final long serialVersionUID = 1L;
+
+      public EditableCellPanel getEditableCellPanel(String componentId) {
+        return new EditableRequiredDropDownCellPanel<ChannelProperty, String>(componentId, this, PropertyName.getValuesLike("channel.*"));
+      }
+    });
+    columns.add(new RequiredEditableTextFieldColumn<>(new Model<>("value"), "value", false));
+    return columns;
+
+
   }
 
 }

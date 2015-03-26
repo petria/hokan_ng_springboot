@@ -69,4 +69,11 @@ public class Channel implements Serializable {
   public void setChannelState(ChannelState channelState) {
     this.channelState = channelState;
   }
+
+  public String toString() {
+    if (network == null) {
+      return String.format("[%02d] %s", id, channelName);
+    }
+    return String.format("[%02d] %s@%s", id, channelName, network.getName());
+  }
 }
