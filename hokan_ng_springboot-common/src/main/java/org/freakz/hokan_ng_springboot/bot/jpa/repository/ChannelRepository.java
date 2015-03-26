@@ -16,4 +16,6 @@ public interface ChannelRepository extends JpaRepository<Channel, Long> {
 
   List<Channel> findByNetwork(Network network);
 
+  void deleteByNetwork(Network object);
+
 }

@@ -59,6 +59,7 @@ public class EditableNetworksPanel extends Panel {
 
       @Override
       protected void onDelete(AjaxRequestTarget target, IModel<Network> rowModel) {
+        Services.getChannelService().deleteAllByNetwork(rowModel.getObject());
         Services.getNetworkService().delete(rowModel.getObject());
         log.debug("deleted");
         target.add(feedbackPanel);

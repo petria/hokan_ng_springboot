@@ -2,7 +2,6 @@ package org.freakz.hokan_ng_springboot.bot.panel;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
@@ -42,17 +41,15 @@ public class EditableChannelsPanel extends Panel {
     feedbackPanel.setOutputMarkupPlaceholderTag(true);
     add(feedbackPanel);
 
-    add(new Label("networkName", network));
-
     EditableListDataProvider<Channel, String> provider = new EditableListDataProvider<>(Services.getChannelService().findByNetwork(network));
     EditableGrid editableGrid = new EditableGrid<Channel, String>("channelGrid", getColumns(), provider, 10, Channel.class) {
       private static final long serialVersionUID = 1L;
 
       @Override
       protected void onAdd(AjaxRequestTarget target, Channel newRow) {
+        newRow.setNetwork(network);
         Channel channel = Services.getChannelService().create(newRow);
         newRow.setId(channel.getId());
-
         info("Added!");
         target.add(feedbackPanel);
       }
@@ -71,7 +68,7 @@ public class EditableChannelsPanel extends Panel {
 
       @Override
       protected void onDelete(AjaxRequestTarget target, IModel<Channel> rowModel) {
-//        Services.getChannelService().delete(rowModel.getObject());
+        Services.getChannelService().delete(rowModel.getObject());
         log.debug("deleted");
         target.add(feedbackPanel);
       }
@@ -79,7 +76,7 @@ public class EditableChannelsPanel extends Panel {
       @Override
       protected void onSave(AjaxRequestTarget target, IModel<Channel> rowModel) {
         log.debug("save");
-//        Services.getChannelService().save(rowModel.getObject());
+        Services.getChannelService().save(rowModel.getObject());
         target.add(feedbackPanel);
       }
     };

@@ -24,5 +24,6 @@ public interface ChannelService {
 
   Channel create(Channel newRow);
 
+  void deleteAllByNetwork(Network object);
 
 }

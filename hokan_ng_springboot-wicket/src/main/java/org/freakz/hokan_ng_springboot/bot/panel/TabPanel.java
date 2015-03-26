@@ -15,24 +15,23 @@ import java.util.List;
  */
 public class TabPanel extends Panel {
 
-    public TabPanel(String id) {
+  public TabPanel(String id) {
     super(id);
     List<ITab> tabs = new ArrayList<>();
-      tabs.add(new AbstractTab(new Model<String>("Networks")) {
+    tabs.add(new AbstractTab(new Model<>("Networks")) {
       @Override
       public Panel getPanel(String panelId) {
         return new EditableNetworksPanel(panelId);
       }
     });
-    tabs.add(new AbstractTab(new Model<String>("Channels")) {
+    tabs.add(new AbstractTab(new Model<>("Network Channels")) {
       @Override
       public Panel getPanel(String panelId) {
-        return new EditableChannelsPanel(panelId);
+        return new ConfigChannelsTabPanel(panelId);
       }
     });
 
-
-    add(new AjaxTabbedPanel("tabs", tabs));
+    add(new AjaxTabbedPanel<>("tabs", tabs));
 
   }
 
