@@ -43,9 +43,9 @@ public class EditableChannelPropertiesPanel extends Panel {
 
       @Override
       protected void onAdd(AjaxRequestTarget target, ChannelProperty newRow) {
-//        newRow.setNetwork(network);
-//        Channel channel = Services.getChannelService().create(newRow);
-//        newRow.setId(channel.getId());
+        newRow.setChannel(channel);
+        ChannelProperty saved = Services.getChannelPropertyService().save(newRow);
+        newRow.setId(saved.getId());
         info("Added!");
         target.add(feedbackPanel);
       }
@@ -64,7 +64,7 @@ public class EditableChannelPropertiesPanel extends Panel {
 
       @Override
       protected void onDelete(AjaxRequestTarget target, IModel<ChannelProperty> rowModel) {
-//        Services.getChannelService().delete(rowModel.getObject());
+        Services.getChannelPropertyService().delete(rowModel.getObject());
         log.debug("deleted");
         target.add(feedbackPanel);
       }
@@ -72,7 +72,7 @@ public class EditableChannelPropertiesPanel extends Panel {
       @Override
       protected void onSave(AjaxRequestTarget target, IModel<ChannelProperty> rowModel) {
         log.debug("save");
-//        Services.getChannelService().save(rowModel.getObject());
+        Services.getChannelPropertyService().save(rowModel.getObject());
         target.add(feedbackPanel);
       }
     };

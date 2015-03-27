@@ -13,4 +13,8 @@ public interface ChannelPropertyService {
 
   List<ChannelProperty> findByChannel(Channel channel);
 
+  ChannelProperty save(ChannelProperty newRow);
+
+  void delete(ChannelProperty object);
+
 }

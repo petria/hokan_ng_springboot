@@ -10,6 +10,7 @@ import java.util.List;
 
 /**
  * Created by Petri Airio on 26.3.2015.
+ *
  */
 @Service
 public class ChannelPropertyRepositoryService implements ChannelPropertyService {
@@ -20,6 +21,16 @@ public class ChannelPropertyRepositoryService implements ChannelPropertyService 
   @Override
   public List<ChannelProperty> findByChannel(Channel channel) {
     return repository.findByChannel(channel);
+  }
+
+  @Override
+  public ChannelProperty save(ChannelProperty newRow) {
+    return repository.save(newRow);
+  }
+
+  @Override
+  public void delete(ChannelProperty object) {
+    repository.delete(object);
   }
 
 }
