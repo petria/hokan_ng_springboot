@@ -1,5 +1,8 @@
 package org.freakz.hokan_ng_springboot.bot.jpa.entity;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -18,6 +21,7 @@ public class Channel implements Serializable {
   private long id;
 
   @ManyToOne
+  @OnDelete(action = OnDeleteAction.CASCADE)
   @JoinColumn(name = "NETWORK_ID_FK", referencedColumnName = "ID")
   private Network network;
 

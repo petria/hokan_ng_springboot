@@ -11,11 +11,10 @@ import java.util.List;
 
 /**
  * Created by Petri Airio (petri.j.airio@gmail.com) on 22.3.2015.
- *
  */
-public class TabPanel extends Panel {
+public class ConfigurationsTabPanel extends Panel {
 
-  public TabPanel(String id) {
+  public ConfigurationsTabPanel(String id) {
     super(id);
     List<ITab> tabs = new ArrayList<>();
     tabs.add(new AbstractTab(new Model<>("Networks")) {
@@ -34,6 +33,12 @@ public class TabPanel extends Panel {
       @Override
       public Panel getPanel(String panelId) {
         return new ConfigChannelPropertiesTabPanel(panelId);
+      }
+    });
+    tabs.add(new AbstractTab(new Model<>("System properties")) {
+      @Override
+      public Panel getPanel(String panelId) {
+        return new EditableSystemPropertiesPanel(panelId);
       }
     });
 

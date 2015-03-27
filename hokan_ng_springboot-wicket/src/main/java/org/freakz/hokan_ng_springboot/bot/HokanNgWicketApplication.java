@@ -8,6 +8,7 @@ import org.apache.wicket.util.crypt.CharEncoding;
 import org.freakz.hokan_ng_springboot.bot.jpa.repository.service.ChannelPropertyService;
 import org.freakz.hokan_ng_springboot.bot.jpa.repository.service.ChannelService;
 import org.freakz.hokan_ng_springboot.bot.jpa.repository.service.NetworkService;
+import org.freakz.hokan_ng_springboot.bot.jpa.repository.service.PropertyService;
 import org.freakz.hokan_ng_springboot.bot.page.HokanBasePage;
 import org.freakz.hokan_ng_springboot.bot.page2.MySignInPage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class HokanNgWicketApplication extends AuthenticatedWebApplication {
 
   @Autowired
+  private ApplicationContext applicationContext;
+
+  @Autowired
   private ChannelService channelService;
 
   @Autowired
@@ -39,7 +43,7 @@ public class HokanNgWicketApplication extends AuthenticatedWebApplication {
   private NetworkService networkService;
 
   @Autowired
-  private ApplicationContext applicationContext;
+  private PropertyService propertyService;
 
 
   @Override
@@ -80,5 +84,9 @@ public class HokanNgWicketApplication extends AuthenticatedWebApplication {
 
   public ChannelPropertyService getChannelPropertyService() {
     return channelPropertyService;
+  }
+
+  public PropertyService getPropertyService() {
+    return propertyService;
   }
 }

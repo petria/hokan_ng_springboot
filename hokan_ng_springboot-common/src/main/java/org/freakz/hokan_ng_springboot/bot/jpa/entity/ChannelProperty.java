@@ -1,5 +1,8 @@
 package org.freakz.hokan_ng_springboot.bot.jpa.entity;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -18,6 +21,7 @@ import java.io.Serializable;
 public class ChannelProperty extends PropertyBase implements Serializable {
 
   @ManyToOne
+  @OnDelete(action = OnDeleteAction.CASCADE)
   @JoinColumn(name = "CHANNEL", referencedColumnName = "ID", nullable = false)
   private Channel channel;
 
