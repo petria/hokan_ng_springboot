@@ -21,16 +21,19 @@ public class ChannelRepositoryService implements ChannelService {
   private ChannelRepository repository;
 
   @Override
+  @Transactional(readOnly = true)
   public List<Channel> findChannels(Network network, ChannelState channelState) {
     return repository.findByNetworkAndChannelState(network, channelState);
   }
 
   @Override
+  @Transactional(readOnly = true)
   public List<Channel> findAll() {
     return repository.findAll();
   }
 
   @Override
+  @Transactional(readOnly = true)
   public List<Channel> findByNetwork(Network network) {
     return repository.findByNetwork(network);
   }

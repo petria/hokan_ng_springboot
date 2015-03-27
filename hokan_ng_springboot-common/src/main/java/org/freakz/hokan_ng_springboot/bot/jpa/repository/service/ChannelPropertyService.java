@@ -17,4 +17,6 @@ public interface ChannelPropertyService {
 
   void delete(ChannelProperty object);
 
+  void deleteByChannel(Channel object);
+
 }

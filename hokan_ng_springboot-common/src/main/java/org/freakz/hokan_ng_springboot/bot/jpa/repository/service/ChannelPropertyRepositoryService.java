@@ -5,6 +5,7 @@ import org.freakz.hokan_ng_springboot.bot.jpa.entity.ChannelProperty;
 import org.freakz.hokan_ng_springboot.bot.jpa.repository.ChannelPropertyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,13 +25,20 @@ public class ChannelPropertyRepositoryService implements ChannelPropertyService 
   }
 
   @Override
+  @Transactional
   public ChannelProperty save(ChannelProperty newRow) {
     return repository.save(newRow);
   }
 
   @Override
+  @Transactional
   public void delete(ChannelProperty object) {
     repository.delete(object);
   }
 
+  @Override
+  @Transactional
+  public void deleteByChannel(Channel object) {
+    repository.deleteByChannel(object);
+  }
 }

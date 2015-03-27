@@ -8,9 +8,12 @@ import java.util.List;
 
 /**
  * Created by Petri Airio on 26.3.2015.
+ *
  */
 public interface ChannelPropertyRepository extends JpaRepository<ChannelProperty, Long> {
 
   List<ChannelProperty> findByChannel(Channel channel);
+
+  void deleteByChannel(Channel object);
 
 }

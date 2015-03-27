@@ -14,8 +14,6 @@ public interface NetworkService {
 
   Network getNetwork(String networkName);
 
-  void updateNetwork(Network network);
-
   List<Network> findAll();
 
   Network findOne(long id);

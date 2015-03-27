@@ -177,7 +177,7 @@ public class ConnectionManagerServiceImpl implements ConnectionManagerService, E
 
     this.connectors.remove(network.getName());
     this.connectedEngines.put(network.getName(), engine);
-    this.networkService.updateNetwork(network);
+    this.networkService.save(network);
 
     joinChannels(engine, network);
 

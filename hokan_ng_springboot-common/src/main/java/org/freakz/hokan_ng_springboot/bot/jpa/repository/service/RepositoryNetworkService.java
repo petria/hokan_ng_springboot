@@ -33,24 +33,20 @@ public class RepositoryNetworkService implements NetworkService {
     return networkRepository.findByNetworkName(networkName);
   }
 
-
   @Override
-  @Transactional
-  public void updateNetwork(Network network) {
-    Network saved = networkRepository.save(network);
-  }
-
-  @Override
+  @Transactional(readOnly = true)
   public List<Network> findAll() {
     return networkRepository.findAll();
   }
 
   @Override
+  @Transactional(readOnly = true)
   public Network findOne(long id) {
     return networkRepository.findOne(id);
   }
 
   @Override
+  @Transactional
   public void delete(Network network) {
     this.networkRepository.delete(network);
   }

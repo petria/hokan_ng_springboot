@@ -64,6 +64,7 @@ public class EditableChannelsPanel extends Panel {
 
       @Override
       protected void onDelete(AjaxRequestTarget target, IModel<Channel> rowModel) {
+        Services.getChannelPropertyService().deleteByChannel(rowModel.getObject());
         Services.getChannelService().delete(rowModel.getObject());
         log.debug("deleted");
         target.add(feedbackPanel);
