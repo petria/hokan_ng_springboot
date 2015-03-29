@@ -3,11 +3,18 @@
 <body>
 <wicket:panel>
     <div style="">
-        <b><span wicket:id="userNameLabel"></span></b>
+        <wicket:link>
+            <a wicket:id="userEditorLink" href="#">
+                <b><span wicket:id="userNameLabel"></span></b>
+            </a>
+        </wicket:link>
     </div>
     <div style="">
         <wicket:link><a wicket:id="logoutLink" href="#">Logout</a></wicket:link>
     </div>
+    <div wicket:id="modal2"></div>
+    <br/>
+
 </wicket:panel>
 </body>
 </html>
