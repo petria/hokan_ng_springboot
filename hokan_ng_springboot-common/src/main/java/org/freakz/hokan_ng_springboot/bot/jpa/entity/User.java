@@ -48,11 +48,12 @@ public class User implements Serializable {
   public User() {
     this.nick = "";
     this.password = "";
-    this.realMask = "";
-    this.flags = "";
     this.fullName = "";
-    this.phone = "";
     this.email = "";
+    this.phone = "";
+    this.flags = "";
+    this.mask = "";
+    this.realMask = "";
     this.loggedIn = 0;
   }
 
