@@ -86,7 +86,7 @@ public class EditableSystemPropertiesPanel extends Panel {
         return new EditableRequiredDropDownCellPanel<Property, String>(componentId, this, PropertyName.getValuesLike("sys.*"));
       }
     });
-    columns.add(new RequiredEditableTextFieldColumn<>(new Model<>("value"), "value", false));
+    columns.add(new RequiredEditableTextFieldColumn<>(new Model<>("value"), "value", true));
     return columns;
 
 

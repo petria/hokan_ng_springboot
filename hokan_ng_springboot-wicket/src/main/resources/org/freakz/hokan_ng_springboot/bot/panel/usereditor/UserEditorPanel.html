@@ -2,8 +2,20 @@
 <html xmlns:wicket="http://wicket.apache.org">
 <body>
 <wicket:panel>
-    <h1>Edit user: <b><span wicket:id="editUserLabel"></span></b></h1>
+    <h1>Editing: <b><span wicket:id="editUserLabel"></span></b></h1>
     <hr/>
+    <form wicket:id="form">
+        <label wicket:id="full-name-label">[full name label]</label>: <input type="text" wicket:id="full-name"/>
+        <br/>
+        <label wicket:id="mask-label">[mask label]</label>: <input type="text" wicket:id="mask"/>
+        <br/>
+        <label wicket:id="email-label">[email label]</label>: <input type="text" wicket:id="email"/>
+        <br/>
+        <br/>
+        <input type="submit" value="submit via ajax" wicket:id="ajax-button"/>
+        <input type="submit" value="submit"/>
+    </form>
+
 </wicket:panel>
 </body>
 </html>
