@@ -6,20 +6,28 @@
     <hr/>
     <form wicket:id="form">
         <label for="fullName">
-            <wicket:message key="string"/>
+            <wicket:message key="fullName"/>
         </label>: <input type="text" wicket:id="fullName" id="fullName"/>
         <br/>
-        <!--        <label wicket:id="email-label">[email label]</label>: <input type="text" wicket:id="email"/>
-                <br/>
-                <label wicket:id="phone-label">[email label]</label>: <input type="text" wicket:id="phone"/>
-                <br/>
-                <label wicket:id="mask-label">[mask label]</label>: <input type="text" wicket:id="mask"/>
-                <br/>
-                <input type="submit" value="submit via ajax" wicket:id="ajax-button"/>
-        -->
+        <label for="email">
+            <wicket:message key="email"/>
+        </label>: <input type="text" wicket:id="email" id="email"/>
+        <br/>
+        <label for="phone">
+            <wicket:message key="phone"/>
+        </label>: <input type="text" wicket:id="phone" id="phone"/>
+        <br/>
+        <label for="mask">
+            <wicket:message key="mask"/>
+        </label>: <input type="text" wicket:id="mask" id="mask"/>
+        <br/>
+        <label for="flags">
+            <wicket:message key="flags"/>
+        </label>: <input type="text" wicket:id="flags" id="flags"/>
         <br/>
         <hr/>
-        <input type="submit" value="submit via ajax" wicket:id="ajax-button"/>
+        <input type="submit" value="Save" wicket:id="save-button"/>
+        <input type="submit" value="Cancel" wicket:id="cancel-button"/>
     </form>
 
 </wicket:panel>

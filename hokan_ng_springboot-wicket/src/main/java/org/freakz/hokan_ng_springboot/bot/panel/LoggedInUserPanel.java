@@ -35,7 +35,7 @@ public class LoggedInUserPanel extends Panel {
     final ModalWindow modal2;
     add(modal2 = new ModalWindow("modal2"));
 
-    modal2.setContent(new UserEditorPanel(modal2.getContentId(), session.getUser()));
+    modal2.setContent(new UserEditorPanel(modal2.getContentId(), modal2, session.getUser()));
     modal2.setTitle("User editor.");
     modal2.setCookieName("modal-2");
 

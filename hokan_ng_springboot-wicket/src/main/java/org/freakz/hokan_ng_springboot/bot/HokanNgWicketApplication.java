@@ -5,10 +5,7 @@ import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.crypt.CharEncoding;
-import org.freakz.hokan_ng_springboot.bot.jpa.repository.service.ChannelPropertyService;
-import org.freakz.hokan_ng_springboot.bot.jpa.repository.service.ChannelService;
-import org.freakz.hokan_ng_springboot.bot.jpa.repository.service.NetworkService;
-import org.freakz.hokan_ng_springboot.bot.jpa.repository.service.PropertyService;
+import org.freakz.hokan_ng_springboot.bot.jpa.repository.service.*;
 import org.freakz.hokan_ng_springboot.bot.page.HokanBasePage;
 import org.freakz.hokan_ng_springboot.bot.page2.MySignInPage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +41,9 @@ public class HokanNgWicketApplication extends AuthenticatedWebApplication {
 
   @Autowired
   private PropertyService propertyService;
+
+  @Autowired
+  private UserService userService;
 
 
   @Override
@@ -88,5 +88,9 @@ public class HokanNgWicketApplication extends AuthenticatedWebApplication {
 
   public PropertyService getPropertyService() {
     return propertyService;
+  }
+
+  public UserService getUserService() {
+    return userService;
   }
 }
