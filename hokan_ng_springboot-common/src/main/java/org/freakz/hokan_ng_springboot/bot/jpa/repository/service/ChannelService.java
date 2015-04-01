@@ -18,11 +18,15 @@ public interface ChannelService {
 
   List<Channel> findByNetwork(Network network);
 
+  Channel findByNetworkAndChannelName(Network network, String channelName);
+
   Channel save(Channel object);
 
   void delete(Channel object);
 
   Channel create(Channel newRow);
+
+  Channel createChannel(Network network, String channelName);
 
   void deleteAllByNetwork(Network object);
 

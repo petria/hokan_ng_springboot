@@ -39,6 +39,12 @@ public class ChannelRepositoryService implements ChannelService {
   }
 
   @Override
+  @Transactional(readOnly = true)
+  public Channel findByNetworkAndChannelName(Network network, String channelName) {
+    return repository.findByNetworkAndChannelName(network, channelName);
+  }
+
+  @Override
   @Transactional
   public Channel save(Channel object) {
     return repository.save(object);
@@ -54,6 +60,13 @@ public class ChannelRepositoryService implements ChannelService {
   @Transactional
   public Channel create(Channel newRow) {
     return repository.save(newRow);
+  }
+
+  @Override
+  @Transactional
+  public Channel createChannel(Network network, String channelName) {
+    Channel channel = new Channel(network, channelName);
+    return repository.save(channel);
   }
 
   @Override
