@@ -38,6 +38,7 @@ public class HokanCore extends PircBot {
   @Autowired
   private NetworkService networkService;
 
+  @Autowired
   private UserChannelService userChannelService;
 
   @Autowired
@@ -299,7 +300,7 @@ TODO
       handleBuiltInCommands(ircEvent);
     }
 */
-
+    log.info(">>> TODO handle: {}", ircEvent);
 /* TODO
     EngineRequest request = new EngineRequest(ircEvent);
     this.engineCommunicator.sendEngineMessage(request, this);

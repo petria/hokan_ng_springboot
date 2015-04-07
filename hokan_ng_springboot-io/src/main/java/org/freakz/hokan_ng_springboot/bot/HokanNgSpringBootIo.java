@@ -9,13 +9,10 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
-@ComponentScan({"org.freakz.hokan_ng_springboot.bot"})
-@EnableJpaRepositories({"org.freakz.hokan_ng_springboot.bot"})
-
-//
+@ComponentScan({"org.freakz.hokan_ng_springboot.bot", "org.freakz.hokan_ng_springboot.bot.jpa.repository.service"})
+@EnableJpaRepositories({"org.freakz.hokan_ng_springboot.bot", "org.freakz.hokan_ng_springboot.bot.jpa.repository.service"})
 @EnableAutoConfiguration
 @EnableTransactionManagement
-
 @Slf4j
 public class HokanNgSpringBootIo {
 

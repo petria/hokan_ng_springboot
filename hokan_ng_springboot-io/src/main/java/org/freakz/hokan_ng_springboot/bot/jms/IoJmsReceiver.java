@@ -43,6 +43,7 @@ public class IoJmsReceiver extends SpringJmsReceiver {
     } catch (Exception e) {
       jmsReplyMessage = new JmsMessage();
       jmsReplyMessage.addPayLoadObject("REPLY", e.getMessage());
+      e.printStackTrace();
       log.error("Something went wrong!");
     }
     Destination replyTo = message.getJMSReplyTo();

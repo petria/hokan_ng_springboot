@@ -2,9 +2,13 @@ package org.freakz.hokan_ng_springboot.bot.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.jms.JmsMessage;
+import org.freakz.hokan_ng_springboot.bot.jpa.entity.Channel;
+import org.freakz.hokan_ng_springboot.bot.jpa.repository.service.ChannelService;
+import org.freakz.hokan_ng_springboot.bot.jpa.repository.service.JoinedUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import javax.annotation.Resource;
+import java.util.List;
 
 /**
  *
@@ -14,8 +18,14 @@ import javax.annotation.Resource;
 @Slf4j
 public class IoServiceMessageHandlerImpl implements JmsServiceMessageHandler {
 
-  @Resource
+  @Autowired
   private ConnectionManagerService connectionManagerService;
+
+  @Autowired
+  private ChannelService channelService;
+
+  @Autowired
+  private JoinedUserService joinedUserService;
 
   @Override
   public JmsMessage handleJmsServiceMessage(JmsMessage jmsMessage) {
@@ -29,7 +39,12 @@ public class IoServiceMessageHandlerImpl implements JmsServiceMessageHandler {
       } catch (Exception e) {
         reply.addPayLoadObject("REPLY", e.getMessage());
       }
+    } else if (command.equals("TEST")) {
+      List<Channel> channels = channelService.findAll();
+      Channel channel = channels.get(0);
+      joinedUserService.clearJoinedUsers(channel);
     }
+
     return reply;
   }
 }

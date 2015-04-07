@@ -1,14 +1,13 @@
 package org.freakz.hokan_ng_springboot.bot.ircengine.connector;
 
 import lombok.extern.slf4j.Slf4j;
-import org.freakz.hokan_ng_springboot.bot.jpa.entity.IrcServerConfig;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
 import org.freakz.hokan_ng_springboot.bot.ircengine.CommandPool;
 import org.freakz.hokan_ng_springboot.bot.ircengine.CommandRunnable;
 import org.freakz.hokan_ng_springboot.bot.ircengine.HokanCore;
+import org.freakz.hokan_ng_springboot.bot.jpa.entity.IrcServerConfig;
 import org.jibble.pircbot.NickAlreadyInUseException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -25,7 +24,11 @@ import java.net.InetAddress;
 @Scope("prototype")
 public class AsyncConnector implements Connector, CommandRunnable {
 
-	@Autowired private ApplicationContext context;
+/*	@Autowired
+	private ApplicationContext _context;
+*/
+
+	private HokanCore engine = null;
 
 	private CommandPool commandPool;
 	private String botNick;
@@ -35,6 +38,11 @@ public class AsyncConnector implements Connector, CommandRunnable {
 	private boolean aborted = false;
 
 	public AsyncConnector() {
+	}
+
+	@Autowired
+	public void setEngine(HokanCore engine) {
+		this.engine = engine;
 	}
 
 	@Autowired
@@ -65,11 +73,10 @@ public class AsyncConnector implements Connector, CommandRunnable {
 
 		boolean connectOk = false;
 		int connectAttemps = 0;
-		HokanCore engine;
 		InetAddress inetAddress = null;
 		while (tryCount > 0 && !aborted) {
 			connectAttemps++;
-			engine = context.getBean(HokanCore.class);
+//			engine = context.getBean(HokanCore.class);
 
 			try {
 

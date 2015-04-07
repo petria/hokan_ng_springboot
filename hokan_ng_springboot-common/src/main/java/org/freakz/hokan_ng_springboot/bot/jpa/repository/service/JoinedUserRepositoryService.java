@@ -21,7 +21,7 @@ public class JoinedUserRepositoryService implements JoinedUserService {
   private JoinedUserRepository repository;
 
   @Override
-  @Transactional
+//  @Transactional
   public void clearJoinedUsers(Channel channel) {
     repository.deleteByChannel(channel);
   }

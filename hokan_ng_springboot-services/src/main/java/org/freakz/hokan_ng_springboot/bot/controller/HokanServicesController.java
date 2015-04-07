@@ -64,4 +64,17 @@ public class HokanServicesController {
         return "No reply!";
     }
 
+  @RequestMapping("/test5")
+  @ResponseBody
+  public String test5() throws JMSException {
+    log.info("Sending Sync");
+    ObjectMessage reply = jmsSender.sendAndGetReply("HokanNGIoQueue", "COMMAND", "TEST");
+    if (reply != null) {
+      JmsMessage jmsMessage = (JmsMessage) reply.getObject();
+      log.info("reply: {}", jmsMessage);
+      return "reply: " + jmsMessage.getPayLoadObject("REPLY");
+    }
+    return "No reply!";
+  }
+
 }

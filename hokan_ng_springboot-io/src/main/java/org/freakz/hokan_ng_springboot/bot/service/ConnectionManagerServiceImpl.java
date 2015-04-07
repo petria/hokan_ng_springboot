@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -46,13 +47,13 @@ public class ConnectionManagerServiceImpl implements ConnectionManagerService, E
   private Map<String, Connector> connectors = new HashMap<>();
   private Map<String, IrcServerConfig> configuredServers;
 
-//  @PostConstruct
+  @PostConstruct
   public void postInit() throws HokanException {
     updateServerMap();
     //		propertyService.setProperty(PropertyName.PROP_SYS_CORE_IO_UPTIME, "" + new Date().getTime());
     //		userService.resetLoggedInUsers();
     //		userService.resetOlpos();
-/*
+
     for (IrcServerConfig server : this.configuredServers.values()) {
 			if (server.getIrcServerConfigState() == IrcServerConfigState.CONNECTED) {
 				try {
@@ -61,7 +62,7 @@ public class ConnectionManagerServiceImpl implements ConnectionManagerService, E
 					log.error("Couldn't get engine online: " + server.getNetwork(), e);
 				}
 			}
-		}*/
+    }
   }
 
   private void updateServerMap() {
