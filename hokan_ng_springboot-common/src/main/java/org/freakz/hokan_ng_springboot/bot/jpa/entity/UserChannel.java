@@ -54,10 +54,6 @@ public class UserChannel implements Serializable {
   @Column(name = "LAST_COMMAND_TIME")
   private Date lastCommandTime;
 
-  public UserChannel() {
-    //
-  }
-
   public UserChannel(User user, Channel channel) {
     this.user = user;
     this.channel = channel;
