@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * Created by Petri Airio on 1.4.2015.
  *
@@ -31,4 +33,8 @@ public class JoinedUserRepositoryService implements JoinedUserService {
     return repository.save(joinedUser);
   }
 
+  @Override
+  public List<JoinedUser> findJoinedUsers(Channel channel) {
+    return repository.findByChannel(channel);
+  }
 }

@@ -4,6 +4,8 @@ import org.freakz.hokan_ng_springboot.bot.jpa.entity.Channel;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.JoinedUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 /**
  * Created by Petri Airio on 1.4.2015.
  *
@@ -11,4 +13,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface JoinedUserRepository extends JpaRepository<JoinedUser, Long> {
 
   void deleteByChannel(Channel channel);
+
+  List<JoinedUser> findByChannel(Channel channel);
+
 }

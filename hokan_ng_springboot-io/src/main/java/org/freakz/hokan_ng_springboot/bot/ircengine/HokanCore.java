@@ -2,6 +2,8 @@ package org.freakz.hokan_ng_springboot.bot.ircengine;
 
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.events.IrcEvent;
+import org.freakz.hokan_ng_springboot.bot.events.IrcEventFactory;
+import org.freakz.hokan_ng_springboot.bot.events.IrcMessageEvent;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
 import org.freakz.hokan_ng_springboot.bot.ircengine.connector.EngineConnector;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.*;
@@ -13,13 +15,11 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by AirioP on 17.2.2015.
+ *
  */
 @Component
 @Scope("prototype")
@@ -45,9 +45,9 @@ public class HokanCore extends PircBot {
 
 
   private EngineConnector engineConnector;
-
   private IrcServerConfig ircServerConfig;
   private OutputQueue outputQueue;
+  private Map<String, String> serverProperties = new HashMap<>();
 
   private Map<String, List<String>> whoQueries = new HashMap<>();
 
@@ -174,6 +174,149 @@ public class HokanCore extends PircBot {
       this.joinedUsersService.createJoinedUser(channel, user, userModes);
     }
   }
+
+  @Override
+  protected void onOp(String channel, String sourceNick, String sourceLogin, String sourceHostname, String recipient) {
+    sendWhoQuery(channel);
+  }
+
+  @Override
+  protected void onDeop(String channel, String sourceNick, String sourceLogin, String sourceHostname, String recipient) {
+    sendWhoQuery(channel);
+  }
+
+  @Override
+  protected void onVoice(String channel, String sourceNick, String sourceLogin, String sourceHostname, String recipient) {
+    sendWhoQuery(channel);
+  }
+
+  @Override
+  protected void onDeVoice(String channel, String sourceNick, String sourceLogin, String sourceHostname, String recipient) {
+    sendWhoQuery(channel);
+  }
+
+  @Override
+  protected void onServerResponse(int code, String line) {
+    if (code == RPL_WHOREPLY) {
+      String[] split = line.split(" ");
+      if (split.length >= 6) {
+        String channel = split[1];
+        List<String> whoReplies = whoQueries.get(channel.toLowerCase());
+        whoReplies.add(line);
+      } else {
+        log.info("SKIPPED WHO REPLY: {}", line);
+      }
+
+    } else if (code == RPL_ENDOFWHO) {
+      String[] split = line.split(" ");
+      String channel = split[1];
+      List<String> whoReplies = this.whoQueries.remove(channel.toLowerCase());
+      try {
+        handleWhoList(channel, whoReplies);
+      } catch (HokanException e) {
+        log.error("Core error", e);
+      }
+      log.info("Handled {} WHO lines!", whoReplies.size());
+
+    }
+    if (code == 5) {
+      String[] split = line.split(" ");
+      for (String str : split) {
+        if (str.contains("=")) {
+          String[] keyValue = str.split("=");
+          this.serverProperties.put(keyValue[0], keyValue[1]);
+          log.info("--> {}: {}", keyValue[0], keyValue[1]);
+        }
+      }
+    }
+  }
+
+  private boolean isBotOp(Channel channel) {
+    for (JoinedUser user : joinedUsersService.findJoinedUsers(channel)) {
+      if (user.getUser().getNick().equalsIgnoreCase(getName())) {
+        return user.isOp();
+      }
+    }
+    return false;
+  }
+
+  @Override
+  protected void onMessage(String channel, String sender, String login, String hostname, String message) {
+    String toMe = getName() + ": ";
+    boolean isToMe = false;
+    if (message.startsWith(toMe)) {
+      message = message.replaceFirst(toMe, "");
+      isToMe = true;
+    }
+    IrcMessageEvent ircEvent = (IrcMessageEvent) IrcEventFactory.createIrcMessageEvent(getName(), getNetwork().getName(), channel, sender, login, hostname, message);
+    ircEvent.setToMe(isToMe);
+
+    Network nw = getNetwork();
+    nw.addToLinesReceived(1);
+    this.networkService.save(nw);
+
+    User user = getUser(ircEvent);
+
+    Channel ch = getChannel(ircEvent);
+/*    ch.addToLinesReceived(1);
+    ch.setLastActive(new Date());
+TODO
+*/
+    ircEvent.setBotOp(isBotOp(ch));
+
+/*    String lastWriter = ch.getLastWriter();
+    if (lastWriter != null && lastWriter.equalsIgnoreCase(sender)) {
+      int spree = ch.getLastWriterSpree();
+      spree++;
+      ch.setLastWriterSpree(spree);
+      if (spree > ch.getWriterSpreeRecord()) {
+        ch.setWriterSpreeRecord(spree);
+        ch.setWriterSpreeOwner(sender);
+      }
+    } else {
+      ch.setLastWriterSpree(1);
+    }
+    ch.setLastWriter(sender);
+    TODO
+    */
+
+    UserChannel userChannel = userChannelService.getUserChannel(user, ch);
+    if (userChannel == null) {
+      userChannel = new UserChannel(user, ch);
+    }
+    userChannel.setLastMessage(message);
+    userChannel.setLastMessageTime(new Date());
+    userChannelService.save(userChannel);
+
+/*    boolean wlt = properties.getChannelPropertyAsBoolean(ch, PropertyName.PROP_CHANNEL_DO_WHOLELINE_TRICKERS, false);
+    if (wlt || ircEvent.isToMe()) {
+      WholeLineTrickers wholeLineTrickers = new WholeLineTrickers(this);
+      wholeLineTrickers.checkWholeLineTrickers(ircEvent);
+    }
+    urlLoggerService.catchUrls(ircEvent, ch, this);
+
+    if (accessControlService.isMasterUser(ircEvent)) {
+      handleBuiltInCommands(ircEvent);
+    }
+*/
+
+/* TODO
+    EngineRequest request = new EngineRequest(ircEvent);
+    this.engineCommunicator.sendEngineMessage(request, this);
+*/
+
+/*    RestMessageAddress address = new RestMessageAddress(RestUrlType.CORE_ENGINE, 1234);
+    RestMessage restMessage = new RestMessage(address);
+    RestMessageIrcEvent restMessageIrcEvent = new RestMessageIrcEvent();
+    restMessageIrcEvent.test = "ffufufuf";
+    restMessage.setMessageData("FffufufKey", "Bbabababrr");
+    restMessage.setMessageData("FfsdfddsfffufufKey", ircEvent);
+    restMessage.test = ircEvent;
+    this.restCommunicator.sendRestMessage(restMessage, this);*/
+
+    this.channelService.save(ch);
+  }
+
 
 }
 
