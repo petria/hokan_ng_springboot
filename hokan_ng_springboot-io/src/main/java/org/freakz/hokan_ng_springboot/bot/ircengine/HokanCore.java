@@ -166,8 +166,10 @@ public class HokanCore extends PircBot {
         user.setMask(StringStuff.quoteRegExp(mask));
         user.setPassword("not_set");
         user.setFullName(fullName);
-        user = this.userService.save(user);
       }
+      user.setRealMask(StringStuff.quoteRegExp(mask));
+      user = this.userService.save(user);
+
       UserChannel userChannel = userChannelService.getUserChannel(user, channel);
       if (userChannel == null) {
         userChannelService.createUserChannel(user, channel);

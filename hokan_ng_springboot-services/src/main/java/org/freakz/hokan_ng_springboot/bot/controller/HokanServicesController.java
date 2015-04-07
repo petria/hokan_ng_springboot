@@ -3,13 +3,17 @@ package org.freakz.hokan_ng_springboot.bot.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.jms.JmsMessage;
 import org.freakz.hokan_ng_springboot.bot.jms.api.JmsSender;
+import org.freakz.hokan_ng_springboot.bot.jpa.entity.Channel;
+import org.freakz.hokan_ng_springboot.bot.jpa.repository.service.ChannelService;
+import org.freakz.hokan_ng_springboot.bot.jpa.repository.service.JoinedUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.annotation.Resource;
 import javax.jms.JMSException;
 import javax.jms.ObjectMessage;
+import java.util.List;
 
 /**
  * Created by petria on 29.1.2015.
@@ -19,8 +23,15 @@ import javax.jms.ObjectMessage;
 @Slf4j
 public class HokanServicesController {
 
-  @Resource
+  @Autowired
   private JmsSender jmsSender;
+
+  @Autowired
+  private ChannelService channelService;
+
+  @Autowired
+  private JoinedUserService joinedUserService;
+
 
   @RequestMapping("/test")
   @ResponseBody
@@ -67,14 +78,20 @@ public class HokanServicesController {
   @RequestMapping("/test5")
   @ResponseBody
   public String test5() throws JMSException {
-    log.info("Sending Sync");
+
+    List<Channel> channels = channelService.findAll();
+    Channel channel = channels.get(0);
+    joinedUserService.clearJoinedUsers(channel);
+    return "joo";
+/*    log.info("Sending Sync");
     ObjectMessage reply = jmsSender.sendAndGetReply("HokanNGIoQueue", "COMMAND", "TEST");
     if (reply != null) {
       JmsMessage jmsMessage = (JmsMessage) reply.getObject();
       log.info("reply: {}", jmsMessage);
       return "reply: " + jmsMessage.getPayLoadObject("REPLY");
     }
-    return "No reply!";
+    return "No reply!";*/
+
   }
 
 }

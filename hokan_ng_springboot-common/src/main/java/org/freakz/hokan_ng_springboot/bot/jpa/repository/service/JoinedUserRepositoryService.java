@@ -1,5 +1,6 @@
 package org.freakz.hokan_ng_springboot.bot.jpa.repository.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.Channel;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.JoinedUser;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.User;
@@ -15,15 +16,20 @@ import java.util.List;
  *
  */
 @Service
+@Slf4j
 public class JoinedUserRepositoryService implements JoinedUserService {
 
   @Autowired
   private JoinedUserRepository repository;
 
   @Override
-//  @Transactional
+  @Transactional
   public void clearJoinedUsers(Channel channel) {
-    repository.deleteByChannel(channel);
+    List<JoinedUser> joinedUsers = repository.findAll();
+    log.debug("Deleting {} joined users!", joinedUsers.size());
+    repository.delete(joinedUsers);
+
+//    repository.deleteByChannel(channel);
   }
 
   @Override
