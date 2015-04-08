@@ -29,6 +29,9 @@ public class HokanCore extends PircBot {
   private ChannelService channelService;
 
   @Autowired
+  private ChannelStatsService channelStatsService;
+
+  @Autowired
   private JoinedUserService joinedUsersService;
 
   @Autowired
@@ -67,7 +70,6 @@ public class HokanCore extends PircBot {
   }
 
   public void startOutputQueue() {
-//    this.outputQueue = this.context.getBean(OutputQueue.class);
     this.outputQueue.init(this, getIrcServerConfig().isThrottleInUse());
   }
 
@@ -130,6 +132,15 @@ public class HokanCore extends PircBot {
     return getChannel(ircEvent.getChannel());
   }
 
+  public ChannelStats getChannelStats(Channel channel) {
+    ChannelStats channelStats = channelStatsService.findFirstByChannel(channel);
+    if (channelStats == null) {
+      channelStats = new ChannelStats();
+      channelStats.setChannel(channel);
+    }
+    return channelStats;
+  }
+
   public User getUser(IrcEvent ircEvent) {
     User user;
     User maskUser = this.userService.getUserByMask(ircEvent.getMask());
@@ -149,6 +160,13 @@ public class HokanCore extends PircBot {
 
   private void handleWhoList(String channelName, List<String> whoReplies) throws HokanException {
     Channel channel = getChannel(channelName);
+    ChannelStats channelStats = getChannelStats(channel);
+    if (whoReplies.size() > channelStats.getMaxUserCount()) {
+      channelStats.setMaxUserCount(whoReplies.size());
+      channelStats.setMaxUserCountDate(new Date());
+    }
+    channelStatsService.save(channelStats);
+
     this.joinedUsersService.clearJoinedUsers(channel);
     for (String whoLine : whoReplies) {
       String[] split = whoLine.split(" ");
@@ -256,29 +274,34 @@ public class HokanCore extends PircBot {
     this.networkService.save(nw);
 
     User user = getUser(ircEvent);
-
     Channel ch = getChannel(ircEvent);
-/*    ch.addToLinesReceived(1);
-    ch.setLastActive(new Date());
-TODO
-*/
     ircEvent.setBotOp(isBotOp(ch));
 
-/*    String lastWriter = ch.getLastWriter();
+    ChannelStats channelStats = channelStatsService.findFirstByChannel(ch);
+    if (channelStats == null) {
+      channelStats = new ChannelStats();
+      channelStats.setChannel(ch);
+    }
+
+    channelStats.setLastActive(new Date());
+    channelStats.setLastMessage(ircEvent.getMessage());
+    channelStats.setLastWriter(ircEvent.getSender());
+    channelStats.addToLinesReceived(1);
+
+    String lastWriter = channelStats.getLastWriter();
     if (lastWriter != null && lastWriter.equalsIgnoreCase(sender)) {
-      int spree = ch.getLastWriterSpree();
+      int spree = channelStats.getLastWriterSpree();
       spree++;
-      ch.setLastWriterSpree(spree);
-      if (spree > ch.getWriterSpreeRecord()) {
-        ch.setWriterSpreeRecord(spree);
-        ch.setWriterSpreeOwner(sender);
+      channelStats.setLastWriterSpree(spree);
+      if (spree > channelStats.getWriterSpreeRecord()) {
+        channelStats.setWriterSpreeRecord(spree);
+        channelStats.setWriterSpreeOwner(sender);
       }
     } else {
-      ch.setLastWriterSpree(1);
+      channelStats.setLastWriterSpree(1);
     }
-    ch.setLastWriter(sender);
-    TODO
-    */
+
+    channelStatsService.save(channelStats);
 
     UserChannel userChannel = userChannelService.getUserChannel(user, ch);
     if (userChannel == null) {
@@ -305,14 +328,6 @@ TODO
     this.engineCommunicator.sendEngineMessage(request, this);
 */
 
-/*    RestMessageAddress address = new RestMessageAddress(RestUrlType.CORE_ENGINE, 1234);
-    RestMessage restMessage = new RestMessage(address);
-    RestMessageIrcEvent restMessageIrcEvent = new RestMessageIrcEvent();
-    restMessageIrcEvent.test = "ffufufuf";
-    restMessage.setMessageData("FffufufKey", "Bbabababrr");
-    restMessage.setMessageData("FfsdfddsfffufufKey", ircEvent);
-    restMessage.test = ircEvent;
-    this.restCommunicator.sendRestMessage(restMessage, this);*/
 
     this.channelService.save(ch);
   }
