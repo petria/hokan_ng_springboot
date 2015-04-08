@@ -165,6 +165,7 @@ public class HokanCore extends PircBot {
       channelStats.setMaxUserCount(whoReplies.size());
       channelStats.setMaxUserCountDate(new Date());
     }
+    channelStats.setLastActive(new Date());
     channelStatsService.save(channelStats);
 
     this.joinedUsersService.clearJoinedUsers(channel);
