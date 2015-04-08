@@ -11,6 +11,7 @@ import org.freakz.hokan_ng_springboot.bot.jpa.entity.*;
 import org.freakz.hokan_ng_springboot.bot.jpa.repository.service.ChannelService;
 import org.freakz.hokan_ng_springboot.bot.jpa.repository.service.IrcServerConfigService;
 import org.freakz.hokan_ng_springboot.bot.jpa.repository.service.NetworkService;
+import org.freakz.hokan_ng_springboot.bot.jpa.repository.service.PropertyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
@@ -40,6 +41,10 @@ public class ConnectionManagerServiceImpl implements ConnectionManagerService, E
 
   @Autowired
   private NetworkService networkService;
+
+  @Autowired
+  private PropertyService propertyService;
+
 
   private String botNick;
 
@@ -75,7 +80,10 @@ public class ConnectionManagerServiceImpl implements ConnectionManagerService, E
 
   private boolean botNickOk() {
     try {
-      this.botNick = "HokanNG2";//propertyService.findProperty(PropertyName.PROP_SYS_BOT_NICK).getValue();
+      this.botNick = propertyService.findFirstByPropertyName(PropertyName.PROP_SYS_BOT_NICK).getValue();
+      if (this.botNick == null) {
+        this.botNick = "HokanNG2";
+      }
     } catch (Exception e) {
       log.error("Error occured {}", e);
       return false;

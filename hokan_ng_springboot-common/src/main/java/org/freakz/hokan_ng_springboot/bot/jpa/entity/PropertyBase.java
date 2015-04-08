@@ -18,9 +18,9 @@ public class PropertyBase implements Serializable {
   @Column(name = "ID")
   private long id;
 
-  @Column(name = "PROPERTY")
+  @Column(name = "PROPERTY_NAME")
   @Enumerated(EnumType.STRING)
-  private PropertyName property;
+  private PropertyName propertyName;
 
   @Column(name = "VALUE")
   private String value;
@@ -31,8 +31,8 @@ public class PropertyBase implements Serializable {
   public PropertyBase() {
   }
 
-  public PropertyBase(PropertyName property, String value, String flags) {
-    this.property = property;
+  public PropertyBase(PropertyName propertyName, String value, String flags) {
+    this.propertyName = propertyName;
     this.value = value;
     this.flags = flags;
   }
@@ -45,12 +45,12 @@ public class PropertyBase implements Serializable {
     this.id = id;
   }
 
-  public PropertyName getProperty() {
-    return property;
+  public PropertyName getPropertyName() {
+    return propertyName;
   }
 
-  public void setProperty(PropertyName property) {
-    this.property = property;
+  public void setPropertyName(PropertyName propertyName) {
+    this.propertyName = propertyName;
   }
 
   public String getValue() {

@@ -1,13 +1,12 @@
 package org.freakz.hokan_ng_springboot.bot.ircengine;
 
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
-
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import lombok.extern.slf4j.Slf4j;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * User: petria
@@ -21,7 +20,8 @@ import lombok.extern.slf4j.Slf4j;
 @Scope("prototype")
 public class OutputQueue implements CommandRunnable {
 
-	@Autowired private CommandPool commandPool;
+	@Autowired
+	private CommandPool commandPool;
 
 	private final Queue<String> outQueue = new ConcurrentLinkedQueue<>();
 	private HokanCore core;

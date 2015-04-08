@@ -16,12 +16,12 @@ public class Property extends PropertyBase implements Serializable {
   public Property() {
   }
 
-  public Property(PropertyName property, String value, String flags) {
-    super(property, value, flags);
+  public Property(PropertyName propertyName, String value, String flags) {
+    super(propertyName, value, flags);
   }
 
   public String toString() {
-    return String.format("%s = %s", getProperty().toString(), getValue());
+    return String.format("%s = %s", getPropertyName().toString(), getValue());
   }
 
 }

@@ -2,6 +2,7 @@ package org.freakz.hokan_ng_springboot.bot.jpa.repository.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.Property;
+import org.freakz.hokan_ng_springboot.bot.jpa.entity.PropertyName;
 import org.freakz.hokan_ng_springboot.bot.jpa.repository.PropertyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import java.util.List;
 
 /**
  * Created by Petri Airio on 27.3.2015.
+ *
  */
 @Service
 @Slf4j
@@ -31,5 +33,10 @@ public class PropertyRepositoryService implements PropertyService {
   @Override
   public void delete(Property object) {
     repository.delete(object);
+  }
+
+  @Override
+  public Property findFirstByPropertyName(PropertyName propertyName) {
+    return repository.findFirstByPropertyName(propertyName);
   }
 }

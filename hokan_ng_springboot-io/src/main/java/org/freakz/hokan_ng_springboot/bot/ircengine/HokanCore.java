@@ -11,7 +11,6 @@ import org.freakz.hokan_ng_springboot.bot.jpa.repository.service.*;
 import org.freakz.hokan_ng_springboot.bot.util.StringStuff;
 import org.jibble.pircbot.PircBot;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -25,9 +24,6 @@ import java.util.*;
 @Scope("prototype")
 @Slf4j
 public class HokanCore extends PircBot {
-
-  @Autowired
-  private ApplicationContext context;
 
   @Autowired
   private ChannelService channelService;
@@ -44,10 +40,11 @@ public class HokanCore extends PircBot {
   @Autowired
   private UserService userService;
 
+  @Autowired
+  private OutputQueue outputQueue;
 
   private EngineConnector engineConnector;
   private IrcServerConfig ircServerConfig;
-  private OutputQueue outputQueue;
   private Map<String, String> serverProperties = new HashMap<>();
 
   private Map<String, List<String>> whoQueries = new HashMap<>();
@@ -70,7 +67,7 @@ public class HokanCore extends PircBot {
   }
 
   public void startOutputQueue() {
-    this.outputQueue = this.context.getBean(OutputQueue.class);
+//    this.outputQueue = this.context.getBean(OutputQueue.class);
     this.outputQueue.init(this, getIrcServerConfig().isThrottleInUse());
   }
 
