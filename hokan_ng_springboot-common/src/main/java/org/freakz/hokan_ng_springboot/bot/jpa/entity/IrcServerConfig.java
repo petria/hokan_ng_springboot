@@ -1,6 +1,7 @@
 package org.freakz.hokan_ng_springboot.bot.jpa.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Date: 3.6.2013
@@ -10,7 +11,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "IRCSERVERCONFIG")
-public class IrcServerConfig {
+public class IrcServerConfig implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -42,6 +43,10 @@ public class IrcServerConfig {
 
   public IrcServerConfig() {
     this.ircServerConfigState = IrcServerConfigState.DISCONNECTED;
+  }
+
+  public void setId(long id) {
+    this.id = id;
   }
 
   public Network getNetwork() {

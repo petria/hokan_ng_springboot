@@ -37,6 +37,9 @@ public class HokanNgWicketApplication extends AuthenticatedWebApplication {
   private ChannelPropertyService channelPropertyService;
 
   @Autowired
+  private IrcServerConfigService ircServerConfigService;
+
+  @Autowired
   private NetworkService networkService;
 
   @Autowired
@@ -44,6 +47,7 @@ public class HokanNgWicketApplication extends AuthenticatedWebApplication {
 
   @Autowired
   private UserService userService;
+
 
 
   @Override
@@ -92,5 +96,9 @@ public class HokanNgWicketApplication extends AuthenticatedWebApplication {
 
   public UserService getUserService() {
     return userService;
+  }
+
+  public IrcServerConfigService getIrcServerConfigService() {
+    return ircServerConfigService;
   }
 }

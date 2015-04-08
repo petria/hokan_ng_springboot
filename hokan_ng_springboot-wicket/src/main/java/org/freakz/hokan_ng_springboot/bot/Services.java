@@ -34,4 +34,9 @@ public class Services {
     return application.getUserService();
   }
 
+  public static IrcServerConfigService getIrcServerConfigService() {
+    HokanNgWicketApplication application = (HokanNgWicketApplication) Application.get();
+    return application.getIrcServerConfigService();
+  }
+
 }

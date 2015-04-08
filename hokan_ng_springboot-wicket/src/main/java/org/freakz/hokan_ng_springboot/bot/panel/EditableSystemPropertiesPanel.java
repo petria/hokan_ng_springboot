@@ -36,7 +36,7 @@ public class EditableSystemPropertiesPanel extends Panel {
     feedbackPanel.setOutputMarkupPlaceholderTag(true);
     add(feedbackPanel);
     EditableListDataProvider<Property, String> provider = new EditableListDataProvider<>(Services.getPropertyService().findAll());
-    EditableGrid editableGrid = new EditableGrid<Property, String>("systemPropertiesGrid", getColumns(), provider, 10, Property.class) {
+    EditableGrid editableGrid = new EditableGrid<Property, String>("ircServerConfigsGrid", getColumns(), provider, 10, Property.class) {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -79,6 +79,7 @@ public class EditableSystemPropertiesPanel extends Panel {
 
   private List<? extends IColumn<Property, String>> getColumns() {
     List<AbstractEditablePropertyColumn<Property, String>> columns = new ArrayList<>();
+
     columns.add(new AbstractEditablePropertyColumn<Property, String>(new Model<String>("Property name"), "property") {
       private static final long serialVersionUID = 1L;
 
@@ -86,6 +87,7 @@ public class EditableSystemPropertiesPanel extends Panel {
         return new EditableRequiredDropDownCellPanel<Property, String>(componentId, this, PropertyName.getValuesLike("sys.*"));
       }
     });
+
     columns.add(new RequiredEditableTextFieldColumn<>(new Model<>("value"), "value", true));
     return columns;
 

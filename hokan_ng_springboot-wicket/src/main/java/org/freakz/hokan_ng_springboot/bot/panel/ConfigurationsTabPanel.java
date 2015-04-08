@@ -11,12 +11,19 @@ import java.util.List;
 
 /**
  * Created by Petri Airio (petri.j.airio@gmail.com) on 22.3.2015.
+ *
  */
 public class ConfigurationsTabPanel extends Panel {
 
   public ConfigurationsTabPanel(String id) {
     super(id);
     List<ITab> tabs = new ArrayList<>();
+    tabs.add(new AbstractTab(new Model<>("IrcServerConfigs")) {
+      @Override
+      public Panel getPanel(String panelId) {
+        return new EditableIrcServerConfigPanel(panelId);
+      }
+    });
     tabs.add(new AbstractTab(new Model<>("Networks")) {
       @Override
       public Panel getPanel(String panelId) {

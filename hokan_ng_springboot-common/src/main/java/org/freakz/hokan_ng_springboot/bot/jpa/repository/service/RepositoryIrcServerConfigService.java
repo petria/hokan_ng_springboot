@@ -17,17 +17,23 @@ import java.util.List;
 public class RepositoryIrcServerConfigService implements IrcServerConfigService {
 
   @Autowired
-  private IrcServerConfigRepository ircServerConfigRepository;
+  private IrcServerConfigRepository repository;
 
   @Override
   @Transactional(readOnly = true)
-  public List<IrcServerConfig> getIrcServerConfigs() {
-    return ircServerConfigRepository.findAll();
+  public List<IrcServerConfig> findAll() {
+    return repository.findAll();
   }
 
   @Override
   @Transactional
-  public void updateIrcServerConfig(IrcServerConfig configuredServer) {
-    ircServerConfigRepository.save(configuredServer);
+  public IrcServerConfig save(IrcServerConfig configuredServer) {
+    return repository.save(configuredServer);
   }
+
+  @Override
+  public void delete(IrcServerConfig object) {
+    repository.delete(object);
+  }
+
 }

@@ -66,7 +66,7 @@ public class ConnectionManagerServiceImpl implements ConnectionManagerService, E
   }
 
   private void updateServerMap() {
-    List<IrcServerConfig> servers = ircServerConfigService.getIrcServerConfigs();
+    List<IrcServerConfig> servers = ircServerConfigService.findAll();
     configuredServers = new HashMap<>();
     for (IrcServerConfig server : servers) {
       configuredServers.put(server.getNetwork().getName(), server);
@@ -103,7 +103,7 @@ public class ConnectionManagerServiceImpl implements ConnectionManagerService, E
       throw new HokanServiceException("IrcServerConfig not found for network: " + network);
     }
     configuredServer.setIrcServerConfigState(IrcServerConfigState.CONNECTED);
-    this.ircServerConfigService.updateIrcServerConfig(configuredServer);
+    this.ircServerConfigService.save(configuredServer);
 
     Connector connector;
     connector = this.connectors.get(configuredServer.getNetwork().getName());
@@ -165,7 +165,7 @@ public class ConnectionManagerServiceImpl implements ConnectionManagerService, E
 
     IrcServerConfig config = engine.getIrcServerConfig();
     config.setIrcServerConfigState(IrcServerConfigState.CONNECTED);
-    this.ircServerConfigService.updateIrcServerConfig(config);
+    this.ircServerConfigService.save(config);
     engine.setIrcServerConfig(config);
 
     Network network = config.getNetwork();
