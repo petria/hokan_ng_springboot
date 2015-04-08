@@ -10,7 +10,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.freakz.hokan_ng_springboot.bot.Services;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.IrcServerConfig;
-import org.freakz.hokan_ng_springboot.bot.jpa.entity.Network;
 import org.wicketstuff.egrid.EditableGrid;
 import org.wicketstuff.egrid.column.AbstractEditablePropertyColumn;
 import org.wicketstuff.egrid.column.EditableCellPanel;
@@ -22,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ *
  * Created by Petri Airio on 8.4.2015.
  */
 @Slf4j
@@ -82,11 +82,11 @@ public class EditableIrcServerConfigPanel extends Panel {
   private List<? extends IColumn<IrcServerConfig, String>> getColumns() {
     List<AbstractEditablePropertyColumn<IrcServerConfig, String>> columns = new ArrayList<>();
 
-    columns.add(new AbstractEditablePropertyColumn(new Model<String>("Network"), "network") {
+    columns.add(new AbstractEditablePropertyColumn(new Model<>("Network"), "network") {
       private static final long serialVersionUID = 1L;
 
       public EditableCellPanel getEditableCellPanel(String componentId) {
-        return new EditableRequiredDropDownCellPanel<Network, String>(componentId, this, Services.getNetworkService().findAll());
+        return new EditableRequiredDropDownCellPanel<>(componentId, this, Services.getNetworkService().findAll());
       }
     });
 

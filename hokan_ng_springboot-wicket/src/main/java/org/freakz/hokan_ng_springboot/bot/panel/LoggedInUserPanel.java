@@ -20,6 +20,7 @@ public class LoggedInUserPanel extends Panel {
 
   public LoggedInUserPanel() {
     super("loggedInUserPanel");
+    setOutputMarkupId(true);
     final MyAuthenticatedWebSession session = (MyAuthenticatedWebSession) AuthenticatedWebSession.get();
     AjaxLink<Void> logoutLink = new AjaxLink<Void>("logoutLink") {
       @Override
@@ -43,6 +44,7 @@ public class LoggedInUserPanel extends Panel {
       @Override
       public boolean onCloseButtonClicked(AjaxRequestTarget target) {
         log.debug("onCloseButtonClicked");
+        target.add(LoggedInUserPanel.this);
         return true;
       }
     });
@@ -51,7 +53,7 @@ public class LoggedInUserPanel extends Panel {
       @Override
       public void onClose(AjaxRequestTarget target) {
         log.debug("onClose");
-//        target.add(this);
+        target.add(LoggedInUserPanel.this);
       }
     });
 
