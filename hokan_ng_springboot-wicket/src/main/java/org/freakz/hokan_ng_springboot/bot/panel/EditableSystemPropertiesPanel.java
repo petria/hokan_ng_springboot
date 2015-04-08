@@ -36,7 +36,7 @@ public class EditableSystemPropertiesPanel extends Panel {
     feedbackPanel.setOutputMarkupPlaceholderTag(true);
     add(feedbackPanel);
     EditableListDataProvider<Property, String> provider = new EditableListDataProvider<>(Services.getPropertyService().findAll());
-    EditableGrid editableGrid = new EditableGrid<Property, String>("ircServerConfigsGrid", getColumns(), provider, 10, Property.class) {
+    EditableGrid editableGrid = new EditableGrid<Property, String>("systemPropertiesGrid", getColumns(), provider, 10, Property.class) {
       private static final long serialVersionUID = 1L;
 
       @Override
