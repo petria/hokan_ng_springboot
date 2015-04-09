@@ -28,6 +28,9 @@ public class IoServiceMessageHandlerImpl implements JmsServiceMessageHandler {
   @Autowired
   private JoinedUserService joinedUserService;
 
+  @Autowired
+  private UptimeService uptimeService;
+
   @Override
   public JmsMessage handleJmsServiceMessage(JmsMessage jmsMessage) {
 //    log.debug("Handling message");
@@ -49,6 +52,7 @@ public class IoServiceMessageHandlerImpl implements JmsServiceMessageHandler {
         break;
       case "PING":
         PingResponse pingResponse = new PingResponse();
+        pingResponse.setUptime(uptimeService.getUptime());
         reply.addPayLoadObject("PING_RESPONSE", pingResponse);
         break;
     }

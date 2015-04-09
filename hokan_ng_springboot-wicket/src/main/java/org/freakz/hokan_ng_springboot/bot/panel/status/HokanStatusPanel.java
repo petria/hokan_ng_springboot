@@ -8,6 +8,7 @@ import org.freakz.hokan_ng_springboot.bot.enums.HokanModule;
 
 /**
  * Created by Petri Airio on 9.4.2015.
+ *
  */
 public class HokanStatusPanel extends Panel {
 
@@ -25,7 +26,7 @@ public class HokanStatusPanel extends Panel {
     add(ioStatus);
     add(servicesStatus);
 
-    final AbstractAjaxTimerBehavior timer = new AbstractAjaxTimerBehavior(Duration.seconds(10)) {
+    final AbstractAjaxTimerBehavior timer = new AbstractAjaxTimerBehavior(Duration.seconds(3)) {
       @Override
       protected void onTimer(AjaxRequestTarget target) {
         target.add(engineStatus);

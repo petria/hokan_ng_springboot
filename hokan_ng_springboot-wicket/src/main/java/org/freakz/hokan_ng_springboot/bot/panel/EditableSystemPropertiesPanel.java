@@ -80,7 +80,7 @@ public class EditableSystemPropertiesPanel extends Panel {
   private List<? extends IColumn<Property, String>> getColumns() {
     List<AbstractEditablePropertyColumn<Property, String>> columns = new ArrayList<>();
 
-    columns.add(new AbstractEditablePropertyColumn<Property, String>(new Model<String>("Property name"), "property") {
+    columns.add(new AbstractEditablePropertyColumn<Property, String>(new Model<String>("Property name"), "propertyName") {
       private static final long serialVersionUID = 1L;
 
       public EditableCellPanel getEditableCellPanel(String componentId) {

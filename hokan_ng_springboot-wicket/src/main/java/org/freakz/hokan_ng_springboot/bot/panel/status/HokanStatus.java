@@ -4,9 +4,11 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.freakz.hokan_ng_springboot.bot.Services;
 import org.freakz.hokan_ng_springboot.bot.enums.HokanModule;
+import org.freakz.hokan_ng_springboot.bot.model.HokanStatusModel;
 
 /**
  * Created by Petri Airio on 9.4.2015.
+ *
  */
 public class HokanStatus extends Label {
 
@@ -24,8 +26,12 @@ public class HokanStatus extends Label {
 
     @Override
     public String getObject() {
-      String status = Services.getHokanStatusService().getHokanStatus(hokanModule);
-      return String.format("%s : %s", hokanModule, status);
+      HokanStatusModel status = Services.getHokanStatusService().getHokanStatus(hokanModule);
+      String uptime = "";
+      if (status.getPingResponse() != null) {
+        uptime = " :: " + status.getPingResponse().getUptime().toString();
+      }
+      return String.format("%s : %s%s", hokanModule, status.getStatus(), uptime);
     }
   }
 
