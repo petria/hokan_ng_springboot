@@ -6,6 +6,7 @@ import org.freakz.hokan_ng_springboot.bot.events.IrcEventFactory;
 import org.freakz.hokan_ng_springboot.bot.events.IrcMessageEvent;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
 import org.freakz.hokan_ng_springboot.bot.ircengine.connector.EngineConnector;
+import org.freakz.hokan_ng_springboot.bot.jms.EngineCommunicator;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.*;
 import org.freakz.hokan_ng_springboot.bot.jpa.repository.service.*;
 import org.freakz.hokan_ng_springboot.bot.util.StringStuff;
@@ -30,6 +31,9 @@ public class HokanCore extends PircBot {
 
   @Autowired
   private ChannelStatsService channelStatsService;
+
+  @Autowired
+  private EngineCommunicator engineCommunicator;
 
   @Autowired
   private JoinedUserService joinedUsersService;
@@ -324,11 +328,8 @@ public class HokanCore extends PircBot {
     }
 */
     log.info(">>> TODO handle: {}", ircEvent);
-/* TODO
-    EngineRequest request = new EngineRequest(ircEvent);
-    this.engineCommunicator.sendEngineMessage(request, this);
-*/
-
+    String result = engineCommunicator.sendToEngine(ircEvent);
+    log.info(">>> sent to engine: {}", result);
 
     this.channelService.save(ch);
   }

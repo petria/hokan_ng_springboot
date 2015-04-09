@@ -37,10 +37,9 @@
         <module>hokan_ng_springboot-custom-arthurdo</module>
         <module>hokan_ng_springboot-custom-pircbot</module>
         <module>hokan_ng_springboot-common</module>
-        <!--        <module>hokan_ng_springboot-engine</module> -->
+        <module>hokan_ng_springboot-engine</module>
         <module>hokan_ng_springboot-io</module>
         <module>hokan_ng_springboot-services</module>
-        <!--        <module>hokan_ng_springboot-web</module> -->
         <module>hokan_ng_springboot-wicket</module>
     </modules>
 

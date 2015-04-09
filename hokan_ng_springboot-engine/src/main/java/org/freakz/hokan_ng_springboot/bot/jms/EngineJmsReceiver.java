@@ -13,11 +13,10 @@ import javax.jms.ObjectMessage;
 
 /**
  * Created by petria on 5.2.2015.
- *
  */
 @Component
 @Slf4j
-public class ServicesJmsReceiver extends SpringJmsReceiver {
+public class EngineJmsReceiver extends SpringJmsReceiver {
 
   @Autowired
   private JmsSender jmsSender;
@@ -28,23 +27,29 @@ public class ServicesJmsReceiver extends SpringJmsReceiver {
 
   @Override
   public String getDestinationName() {
-    return "HokanNGServicesQueue";
+    return "HokanNGEngineQueue";
   }
 
   @Override
   public void handleJmsMessage(Message message) throws JMSException {
     ObjectMessage objectMessage = (ObjectMessage) message;
     JmsMessage jmsMessage = (JmsMessage) objectMessage.getObject();
-    JmsMessage jmsReplyMessage = null;
+    JmsMessage jmsReplyMessage;
     try {
+      log.info("---->");
       jmsReplyMessage = jmsServiceMessageHandler.handleJmsServiceMessage(jmsMessage);
+      log.info("<----");
     } catch (Exception e) {
+      jmsReplyMessage = new JmsMessage();
+      jmsReplyMessage.addPayLoadObject("REPLY", e.getMessage());
+      e.printStackTrace();
       log.error("Something went wrong!");
     }
     Destination replyTo = message.getJMSReplyTo();
     log.debug("got message: {}, replyTo: {}", jmsMessage, replyTo);
     if (replyTo != null) {
       if (jmsReplyMessage != null) {
+        log.info("Sending reply: {}", jmsReplyMessage);
         jmsSender.sendJmsMessage(replyTo, jmsReplyMessage);
       }
     }

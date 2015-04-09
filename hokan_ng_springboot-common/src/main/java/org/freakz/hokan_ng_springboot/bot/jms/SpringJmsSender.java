@@ -21,15 +21,15 @@ public class SpringJmsSender implements JmsSender {
   private JmsTemplate jmsTemplate;
 
 
-  public ObjectMessage sendAndGetReply(String destination, String key, String msg) {
-    log.debug("{}: {} -> {}", destination, key, msg);
+  public ObjectMessage sendAndGetReply(String destination, String key, Object object) {
+    log.debug("{}: {} -> {}", destination, key, object);
     this.jmsTemplate.setReceiveTimeout(30 * 1000);
     Message reply = this.jmsTemplate.sendAndReceive(destination, new MessageCreator() {
           @Override
           public Message createMessage(Session session) throws JMSException {
             ObjectMessage objectMessage = session.createObjectMessage();
             JmsMessage jmsMessage = new JmsMessage();
-            jmsMessage.addPayLoadObject(key, msg);
+            jmsMessage.addPayLoadObject(key, object);
             objectMessage.setObject(jmsMessage);
             return objectMessage;
           }
