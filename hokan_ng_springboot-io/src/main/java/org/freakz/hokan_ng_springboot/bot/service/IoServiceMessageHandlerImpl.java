@@ -30,7 +30,7 @@ public class IoServiceMessageHandlerImpl implements JmsServiceMessageHandler {
 
   @Override
   public JmsMessage handleJmsServiceMessage(JmsMessage jmsMessage) {
-    log.debug("Handling message");
+//    log.debug("Handling message");
     String command = (String) jmsMessage.getPayLoadObject("COMMAND");
     JmsMessage reply = new JmsMessage();
     switch (command) {

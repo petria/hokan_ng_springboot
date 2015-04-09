@@ -43,9 +43,9 @@ public class IoJmsReceiver extends SpringJmsReceiver {
     } else {
       JmsMessage jmsReplyMessage = null;
       try {
-        log.info("---->");
+//        log.info("---->");
         jmsReplyMessage = jmsServiceMessageHandler.handleJmsServiceMessage(jmsMessage);
-        log.info("<----");
+//        log.info("<----");
       } catch (Exception e) {
         jmsReplyMessage = new JmsMessage();
         jmsReplyMessage.addPayLoadObject("REPLY", e.getMessage());
@@ -53,10 +53,10 @@ public class IoJmsReceiver extends SpringJmsReceiver {
         log.error("Something went wrong!");
       }
       Destination replyTo = message.getJMSReplyTo();
-      log.debug("got message: {}, replyTo: {}", jmsMessage, replyTo);
+//      log.debug("got message: {}, replyTo: {}", jmsMessage, replyTo);
       if (replyTo != null) {
         if (jmsReplyMessage != null) {
-          log.info("Sending reply: {}", jmsReplyMessage);
+          //log.info("Sending reply: {}", jmsReplyMessage);
           jmsSender.sendJmsMessage(replyTo, jmsReplyMessage);
         }
       }

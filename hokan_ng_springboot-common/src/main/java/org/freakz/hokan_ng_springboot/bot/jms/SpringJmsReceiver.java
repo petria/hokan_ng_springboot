@@ -37,9 +37,9 @@ public abstract class SpringJmsReceiver implements JmsMessageHandler {
     container.setDestinationName(getDestinationName());
     container.setMessageListener((MessageListener) message -> {
       try {
-        log.debug("Got message: {} ... handling ", message);
+//        log.debug("Got message: {} ... handling ", message);
         handleJmsMessage(message);
-        log.debug("... message handle done!");
+//        log.debug("... message handle done!");
 
       } catch (JMSException ex) {
         ex.printStackTrace();

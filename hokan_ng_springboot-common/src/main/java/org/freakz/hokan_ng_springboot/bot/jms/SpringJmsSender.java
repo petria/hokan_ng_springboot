@@ -4,10 +4,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.jms.api.JmsSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Component;
 
-import javax.jms.*;
+import javax.jms.Destination;
+import javax.jms.Message;
+import javax.jms.ObjectMessage;
 
 /**
  *
@@ -22,24 +23,21 @@ public class SpringJmsSender implements JmsSender {
 
 
   public ObjectMessage sendAndGetReply(String destination, String key, Object object) {
-    log.debug("{}: {} -> {}", destination, key, object);
+//    log.debug("{}: {} -> {}", destination, key, object);
     this.jmsTemplate.setReceiveTimeout(2 * 1000);
-    Message reply = this.jmsTemplate.sendAndReceive(destination, new MessageCreator() {
-          @Override
-          public Message createMessage(Session session) throws JMSException {
-            ObjectMessage objectMessage = session.createObjectMessage();
-            JmsMessage jmsMessage = new JmsMessage();
-            jmsMessage.addPayLoadObject(key, object);
-            objectMessage.setObject(jmsMessage);
-            return objectMessage;
-          }
+    Message reply = this.jmsTemplate.sendAndReceive(destination, session -> {
+          ObjectMessage objectMessage = session.createObjectMessage();
+          JmsMessage jmsMessage = new JmsMessage();
+          jmsMessage.addPayLoadObject(key, object);
+          objectMessage.setObject(jmsMessage);
+          return objectMessage;
         }
     );
     return (ObjectMessage) reply;
   }
 
   public void send(String destination, String key, Object object) {
-    log.debug("{}: {} -> {}", destination, key, object);
+//    log.debug("{}: {} -> {}", destination, key, object);
     this.jmsTemplate.send(destination, session -> {
           ObjectMessage objectMessage = session.createObjectMessage();
           JmsMessage jmsMessage = new JmsMessage();
@@ -51,7 +49,7 @@ public class SpringJmsSender implements JmsSender {
   }
 
   public void send(Destination destination, String key, Object object) {
-    log.debug("{}: {} -> {}", destination, key, object);
+//    log.debug("{}: {} -> {}", destination, key, object);
     this.jmsTemplate.send(destination, session -> {
       ObjectMessage objectMessage = session.createObjectMessage();
       JmsMessage jmsMessage = new JmsMessage();
@@ -62,7 +60,7 @@ public class SpringJmsSender implements JmsSender {
   }
 
   public void sendJmsMessage(Destination destination, JmsMessage jmsMessage) {
-    log.debug("{}: ", destination);
+//    log.debug("{}: ", destination);
     this.jmsTemplate.send(destination, session -> {
       ObjectMessage objectMessage = session.createObjectMessage();
       objectMessage.setObject(jmsMessage);
