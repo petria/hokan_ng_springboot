@@ -11,11 +11,11 @@ import javax.jms.ObjectMessage;
  */
 public interface JmsSender {
 
-  ObjectMessage sendAndGetReply(String destination, String key, Object msg);
+  ObjectMessage sendAndGetReply(String destination, String key, Object object);
 
-  void send(String destination, String key, String msg);
+  void send(String destination, String key, Object object);
 
-  void send(Destination destination, String key, String msg);
+  void send(Destination destination, String key, Object object);
 
   void sendJmsMessage(Destination destination, JmsMessage jmsMessage);
 

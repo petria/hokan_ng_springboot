@@ -38,44 +38,35 @@ public class SpringJmsSender implements JmsSender {
     return (ObjectMessage) reply;
   }
 
-  public void send(String destination, String key, String msg) {
-    log.debug("{}: {} -> {}", destination, key, msg);
-    this.jmsTemplate.send(destination, new MessageCreator() {
-          @Override
-          public Message createMessage(Session session) throws JMSException {
-            ObjectMessage objectMessage = session.createObjectMessage();
-            JmsMessage jmsMessage = new JmsMessage();
-            jmsMessage.addPayLoadObject(key, msg);
-            objectMessage.setObject(jmsMessage);
-            return objectMessage;
-          }
+  public void send(String destination, String key, Object object) {
+    log.debug("{}: {} -> {}", destination, key, object);
+    this.jmsTemplate.send(destination, session -> {
+          ObjectMessage objectMessage = session.createObjectMessage();
+          JmsMessage jmsMessage = new JmsMessage();
+          jmsMessage.addPayLoadObject(key, object);
+          objectMessage.setObject(jmsMessage);
+          return objectMessage;
         }
     );
   }
 
-  public void send(Destination destination, String key, String msg) {
-    log.debug("{}: {} -> {}", destination, key, msg);
-    this.jmsTemplate.send(destination, new MessageCreator() {
-      @Override
-      public Message createMessage(Session session) throws JMSException {
-        ObjectMessage objectMessage = session.createObjectMessage();
-        JmsMessage jmsMessage = new JmsMessage();
-        jmsMessage.addPayLoadObject(key, msg);
-        objectMessage.setObject(jmsMessage);
-        return objectMessage;
-      }
+  public void send(Destination destination, String key, Object object) {
+    log.debug("{}: {} -> {}", destination, key, object);
+    this.jmsTemplate.send(destination, session -> {
+      ObjectMessage objectMessage = session.createObjectMessage();
+      JmsMessage jmsMessage = new JmsMessage();
+      jmsMessage.addPayLoadObject(key, object);
+      objectMessage.setObject(jmsMessage);
+      return objectMessage;
     });
   }
 
   public void sendJmsMessage(Destination destination, JmsMessage jmsMessage) {
     log.debug("{}: ", destination);
-    this.jmsTemplate.send(destination, new MessageCreator() {
-      @Override
-      public Message createMessage(Session session) throws JMSException {
-        ObjectMessage objectMessage = session.createObjectMessage();
-        objectMessage.setObject(jmsMessage);
-        return objectMessage;
-      }
+    this.jmsTemplate.send(destination, session -> {
+      ObjectMessage objectMessage = session.createObjectMessage();
+      objectMessage.setObject(jmsMessage);
+      return objectMessage;
     });
   }
 
