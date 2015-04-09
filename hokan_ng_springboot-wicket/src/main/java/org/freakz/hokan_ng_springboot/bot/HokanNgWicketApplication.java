@@ -8,6 +8,7 @@ import org.apache.wicket.util.crypt.CharEncoding;
 import org.freakz.hokan_ng_springboot.bot.jpa.repository.service.*;
 import org.freakz.hokan_ng_springboot.bot.page.HokanBasePage;
 import org.freakz.hokan_ng_springboot.bot.page2.MySignInPage;
+import org.freakz.hokan_ng_springboot.bot.wicketservices.HokanStatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -44,6 +45,9 @@ public class HokanNgWicketApplication extends AuthenticatedWebApplication {
 
   @Autowired
   private PropertyService propertyService;
+
+  @Autowired
+  private HokanStatusService statusService;
 
   @Autowired
   private UserService userService;
@@ -101,4 +105,9 @@ public class HokanNgWicketApplication extends AuthenticatedWebApplication {
   public IrcServerConfigService getIrcServerConfigService() {
     return ircServerConfigService;
   }
+
+  public HokanStatusService getHokanStatusService() {
+    return statusService;
+  }
+
 }
