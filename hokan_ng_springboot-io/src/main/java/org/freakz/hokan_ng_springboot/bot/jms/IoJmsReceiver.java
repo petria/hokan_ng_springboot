@@ -41,7 +41,7 @@ public class IoJmsReceiver extends SpringJmsReceiver {
     if (jmsMessage.getPayLoadObject("ENGINE_RESPONSE") != null) {
       handleEngineReply(jmsMessage);
     } else {
-      JmsMessage jmsReplyMessage = null;
+      JmsMessage jmsReplyMessage;
       try {
 //        log.info("---->");
         jmsReplyMessage = jmsServiceMessageHandler.handleJmsServiceMessage(jmsMessage);
