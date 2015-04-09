@@ -25,7 +25,7 @@ public class HokanStatusPanel extends Panel {
     add(ioStatus);
     add(servicesStatus);
 
-    final AbstractAjaxTimerBehavior timer = new AbstractAjaxTimerBehavior(Duration.seconds(1)) {
+    final AbstractAjaxTimerBehavior timer = new AbstractAjaxTimerBehavior(Duration.seconds(10)) {
       @Override
       protected void onTimer(AjaxRequestTarget target) {
         target.add(engineStatus);

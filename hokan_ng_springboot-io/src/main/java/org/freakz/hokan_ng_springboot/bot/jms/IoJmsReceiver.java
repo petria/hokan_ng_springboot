@@ -15,7 +15,6 @@ import javax.jms.ObjectMessage;
 
 /**
  * Created by petria on 5.2.2015.
- *
  */
 @Component
 @Slf4j
