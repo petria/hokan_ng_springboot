@@ -1,14 +1,13 @@
-package org.freakz.hokan_ng_springboot.bot.ircengine;
+package org.freakz.hokan_ng_springboot.bot.cmdpool;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import org.springframework.beans.factory.DisposableBean;
-import org.springframework.stereotype.Component;
-
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * User: petria

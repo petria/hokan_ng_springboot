@@ -245,4 +245,7 @@ public class ChannelStats {
   }
 
 
+  public void addToLinesSent(int i) {
+    this.linesSent += i;
+  }
 }

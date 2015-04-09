@@ -1,20 +1,20 @@
 package org.freakz.hokan_ng_springboot.bot.ircengine;
 
 import lombok.extern.slf4j.Slf4j;
-import org.freakz.hokan_ng_springboot.bot.events.IrcEvent;
-import org.freakz.hokan_ng_springboot.bot.events.IrcEventFactory;
-import org.freakz.hokan_ng_springboot.bot.events.IrcMessageEvent;
+import org.freakz.hokan_ng_springboot.bot.events.*;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
 import org.freakz.hokan_ng_springboot.bot.ircengine.connector.EngineConnector;
 import org.freakz.hokan_ng_springboot.bot.jms.EngineCommunicator;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.*;
 import org.freakz.hokan_ng_springboot.bot.jpa.repository.service.*;
+import org.freakz.hokan_ng_springboot.bot.util.IRCUtility;
 import org.freakz.hokan_ng_springboot.bot.util.StringStuff;
 import org.jibble.pircbot.PircBot;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.Method;
 import java.util.*;
 
 /**
@@ -332,6 +332,135 @@ public class HokanCore extends PircBot {
     log.info(">>> sent to engine: {}", result);
 
     this.channelService.save(ch);
+  }
+
+
+  //  @Override
+  @SuppressWarnings({"ThrowableResultOfMethodCallIgnored"})
+  public void handleEngineResponse(EngineResponse response) {
+    log.debug("Handle: {}", response);
+
+/*    if (response.getException() != null) {
+      String error = " failed: " + response.getException();
+      String message;
+      String target;
+      if (response.getRequest().getIrcEvent() instanceof IrcMessageEvent) {
+        message = response.getRequest().getIrcEvent().getSender() + ": " + error;
+        target = response.getRequest().getIrcEvent().getChannel();
+      } else {
+        message = error;
+        target = response.getRequest().getIrcEvent().getSender();
+      }
+      sendMessage(target, message);
+      return;
+    }*/
+
+    handleSendMessage(response);
+/*    if (response.getCommandClass() != null) {
+      Channel ch = getChannel(response.getRequest().getIrcEvent().getChannel());
+      ch.addCommandsHandled(1);
+      this.channelService.updateChannel(ch);
+    }
+TODO
+*/
+    for (EngineMethodCall methodCall : response.getEngineMethodCalls()) {
+      String methodName = methodCall.getMethodName();
+      String[] methodArgs = methodCall.getMethodArgs();
+
+      log.info("Executing engine method : " + methodName);
+      log.info("Engine method args      : " + StringStuff.arrayToString(methodArgs, ", "));
+      Method method = null; // TODO getEngineMethod(methodName);
+      if (method != null) {
+        String[] args = new String[method.getParameterTypes().length];
+        int i = 0;
+        for (String arg : methodArgs) {
+          args[i] = arg;
+          i++;
+        }
+        log.info("Using method args       : " + StringStuff.arrayToString(args, ", "));
+        try {
+          log.info("Invoking method         : {}", method);
+          Object result = method.invoke(this, (Object[]) args);
+          log.info("Invoke   result         : {}", result);
+        } catch (Exception e) {
+          log.error("Couldn't do engine method!", e);
+        }
+      } else {
+        log.error("Couldn't find method for: " + methodName);
+      }
+
+    }
+  }
+
+  protected void handleSendMessage(EngineResponse response) {
+    String channel = response.getReplyTo();
+    String message = response.getResponseMessage();
+    if (message != null && message.trim().length() > 1) {
+      boolean doSr = false;
+      if (!response.isNoSearchReplace()) {
+        if (!response.getIrcMessageEvent().isPrivate()) {
+          Channel ch = getChannel(response.getIrcMessageEvent().getChannel());
+//          doSr = properties.getChannelPropertyAsBoolean(ch, PropertyName.PROP_CHANNEL_DO_SEARCH_REPLACE, false);
+        }
+      }
+      handleSendMessage(channel, message, doSr, "", "");
+    }
+  }
+
+  private String handleSearchReplace(String message) {
+/*    List<SearchReplace> searchReplaces = searchReplaceService.getSearchReplaces();
+    for (SearchReplace sr : searchReplaces) {
+      try {
+        message = Pattern.compile(sr.getSearch(), Pattern.CASE_INSENSITIVE).matcher(message).replaceAll(sr.getReplace());
+      } catch (Exception e) {
+        message += " || SR error: " + sr.getId() + " || ";
+        break;
+      }
+    }
+    TODO
+    */
+    return message;
+  }
+
+  public void handleSendMessage(String channel, String message) {
+    handleSendMessage(channel, message, false, null, null);
+  }
+
+  public void handleSendMessage(String channel, String message, boolean doSr, String prefix, String postfix) {
+
+    if (doSr) {
+      message = handleSearchReplace(message);
+    }
+
+    Channel ch = null;
+    if (channel.startsWith("#")) {
+      ch = getChannel(channel);
+    }
+    if (prefix == null) {
+      prefix = "";
+    }
+    if (postfix == null) {
+      postfix = "";
+    }
+    Network nw = getNetwork();
+    ChannelStats stats = getChannelStats(ch);
+
+    String[] lines = message.split("\n");
+    for (String line : lines) {
+      String[] split = IRCUtility.breakUpMessageByIRCLineLength(channel, line);
+      for (String l : split) {
+        String raw = "PRIVMSG " + channel + " :" + prefix + l + postfix;
+        this.outputQueue.addLine(raw);
+        if (ch != null) {
+          stats.addToLinesSent(1);
+        }
+        nw.addToLinesSent(1);
+      }
+    }
+    if (stats != null) {
+      this.channelStatsService.save(stats);
+    }
+    this.networkService.save(nw);
   }
 
 

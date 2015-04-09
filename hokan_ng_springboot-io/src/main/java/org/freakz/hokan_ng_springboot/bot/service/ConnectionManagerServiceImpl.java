@@ -1,6 +1,7 @@
 package org.freakz.hokan_ng_springboot.bot.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanServiceException;
 import org.freakz.hokan_ng_springboot.bot.ircengine.HokanCore;
@@ -235,6 +236,18 @@ public class ConnectionManagerServiceImpl implements ConnectionManagerService, E
       connect(hokanCore.getIrcServerConfig().getNetwork().getName());
     } catch (HokanServiceException e) {
       log.error("Couldn't re-connect after Excess Flood!", e);
+    }
+
+  }
+
+  @Override
+  public void handleEngineResponse(EngineResponse response) {
+    log.debug("Handle: {}", response);
+    HokanCore core = this.connectedEngines.get(response.getIrcMessageEvent().getNetwork());
+    if (core != null) {
+      core.handleEngineResponse(response);
+    } else {
+      log.warn("No active HokanCore found!");
     }
 
   }

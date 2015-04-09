@@ -1,5 +1,6 @@
 package org.freakz.hokan_ng_springboot.bot.service;
 
+import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanServiceException;
 
 /**
@@ -23,5 +24,7 @@ public interface ConnectionManagerService {
   void updateServers();
 
   //  void handleCoreRequest(CoreRequest request);
+
+  void handleEngineResponse(EngineResponse response);
 
 }

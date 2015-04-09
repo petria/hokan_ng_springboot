@@ -1,4 +1,4 @@
-package org.freakz.hokan_ng_springboot.bot.ircengine;
+package org.freakz.hokan_ng_springboot.bot.cmdpool;
 
 import java.util.List;
 

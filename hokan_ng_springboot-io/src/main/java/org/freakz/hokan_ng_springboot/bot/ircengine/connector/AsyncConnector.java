@@ -1,9 +1,9 @@
 package org.freakz.hokan_ng_springboot.bot.ircengine.connector;
 
 import lombok.extern.slf4j.Slf4j;
+import org.freakz.hokan_ng_springboot.bot.cmdpool.CommandPool;
+import org.freakz.hokan_ng_springboot.bot.cmdpool.CommandRunnable;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
-import org.freakz.hokan_ng_springboot.bot.ircengine.CommandPool;
-import org.freakz.hokan_ng_springboot.bot.ircengine.CommandRunnable;
 import org.freakz.hokan_ng_springboot.bot.ircengine.HokanCore;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.IrcServerConfig;
 import org.jibble.pircbot.NickAlreadyInUseException;
