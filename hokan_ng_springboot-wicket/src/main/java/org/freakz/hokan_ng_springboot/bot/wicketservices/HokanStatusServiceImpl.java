@@ -44,13 +44,13 @@ public class HokanStatusServiceImpl implements HokanStatusService {
     for (HokanModule module : HokanModule.values()) {
       ObjectMessage objectMessage = jmsSender.sendAndGetReply(module.getQueueName(), "COMMAND", "PING");
       if (objectMessage == null) {
-        statusModelMap.put(module, new HokanStatusModel("<OffLine>"));
+        statusModelMap.put(module, new HokanStatusModel("<offline>"));
         continue;
       }
       try {
         JmsMessage jmsMessage = (JmsMessage) objectMessage.getObject();
         PingResponse pingResponse = (PingResponse) jmsMessage.getPayLoadObject("PING_RESPONSE");
-        HokanStatusModel status = new HokanStatusModel("<OnLine>");
+        HokanStatusModel status = new HokanStatusModel("<online>");
         status.setPingResponse(pingResponse);
         statusModelMap.put(module, status);
       } catch (JMSException e) {
