@@ -36,7 +36,9 @@ public class EngineServiceMessageHandlerImpl implements JmsServiceMessageHandler
   public JmsMessage handleJmsServiceMessage(JmsMessage jmsMessage) {
     IrcMessageEvent event = (IrcMessageEvent) jmsMessage.getPayLoadObject("EVENT");
     log.debug("Handling event: {}", event);
-
+    if (event == null) {
+      return null;
+    }
     Cmd handler = commandHandlerService.getCommandHandler(event.getMessage());
 
     if (handler != null) {

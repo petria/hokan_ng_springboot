@@ -83,7 +83,7 @@ public class EditableChannelPropertiesPanel extends Panel {
 
   private List<? extends IColumn<ChannelProperty, String>> getColumns() {
     List<AbstractEditablePropertyColumn<ChannelProperty, String>> columns = new ArrayList<>();
-    columns.add(new AbstractEditablePropertyColumn<ChannelProperty, String>(new Model<String>("Property name"), "property") {
+    columns.add(new AbstractEditablePropertyColumn<ChannelProperty, String>(new Model<String>("Property name"), "propertyName") {
       private static final long serialVersionUID = 1L;
 
       public EditableCellPanel getEditableCellPanel(String componentId) {

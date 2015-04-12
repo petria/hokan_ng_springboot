@@ -2,7 +2,6 @@ package org.freakz.hokan_ng_springboot.bot;
 
 import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
-import org.apache.wicket.markup.html.SecurePackageResourceGuard;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.crypt.CharEncoding;
@@ -70,11 +69,16 @@ public class HokanNgWicketApplication extends AuthenticatedWebApplication {
     getRequestCycleSettings().setResponseRequestEncoding(CharEncoding.UTF_8);
     getMarkupSettings().setDefaultMarkupEncoding(CharEncoding.UTF_8);
     getComponentInstantiationListeners().add(new SpringComponentInjector(this, applicationContext));
-    SecurePackageResourceGuard guard = new
-        SecurePackageResourceGuard();
+/*    SecurePackageResourceGuard guard = new SecurePackageResourceGuard() {
+      @Override
+      public boolean accept(Class<?> scope, String absolutePath) {
+        return true;
+//        return super.accept(scope, absolutePath);
+      }
+    };
     guard.addPattern("+*.png");
     guard.setAllowAccessToRootResources(true);
-    getResourceSettings().setPackageResourceGuard(guard);
+    getResourceSettings().setPackageResourceGuard(guard);*/
   }
 
   @Override
