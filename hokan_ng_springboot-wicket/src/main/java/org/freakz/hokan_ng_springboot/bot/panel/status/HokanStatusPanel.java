@@ -2,14 +2,9 @@ package org.freakz.hokan_ng_springboot.bot.panel.status;
 
 import org.apache.wicket.ajax.AbstractAjaxTimerBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.image.NonCachingImage;
 import org.apache.wicket.markup.html.image.resource.RenderedDynamicImageResource;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.AbstractReadOnlyModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.request.resource.PackageResourceReference;
-import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.util.time.Duration;
 import org.freakz.hokan_ng_springboot.bot.Services;
 import org.freakz.hokan_ng_springboot.bot.enums.HokanModule;
@@ -24,16 +19,14 @@ import java.util.Random;
  */
 public class HokanStatusPanel extends Panel {
 
-  protected static final ResourceReference RESOURCE_REF_BLUE = new PackageResourceReference(HokanStatusPanel.class,
-      "BlueBall_small.png");
-  protected static final ResourceReference RESOURCE_REF_ORANGE = new PackageResourceReference(HokanStatusPanel.class,
-      "OrangeBall_small.png");
-  protected static final ResourceReference RESOURCE_REF_RED = new PackageResourceReference(HokanStatusPanel.class,
-      "RedBall_small.png");
 
   private final class CircleDynamicImageResource extends RenderedDynamicImageResource {
-    private CircleDynamicImageResource(int width, int height) {
+
+    private HokanModule module;
+
+    private CircleDynamicImageResource(int width, int height, HokanModule hokanModule) {
       super(width, height);
+      this.module = hokanModule;
     }
 
     @Override
@@ -44,12 +37,21 @@ public class HokanStatusPanel extends Panel {
 
     void drawCircle(Graphics2D graphics) {
       // Compute random size for circle
-      graphics.setColor(Color.RED);
+      HokanStatusModel status = Services.getHokanStatusService().getHokanStatus(this.module);
+      if (status.getStatus().contains("unknown")) {
+        graphics.setColor(Color.YELLOW);
+      } else if (status.getStatus().contains("offline")) {
+        graphics.setColor(Color.RED);
+      } else if (status.getStatus().contains("online")) {
+        graphics.setColor(Color.GREEN);
+      }
+      graphics.setBackground(Color.WHITE);
+
       final Random random = new Random();
-      int dx = Math.abs(10 + random.nextInt(80));
-      int dy = Math.abs(10 + random.nextInt(80));
-      int x = Math.abs(random.nextInt(100 - dx));
-      int y = Math.abs(random.nextInt(100 - dy));
+      int dx = 6;
+      int dy = 6;
+      int x = 4;
+      int y = 4;
 
       // Draw circle with thick stroke width
       graphics.setStroke(new BasicStroke(5));
@@ -71,15 +73,25 @@ public class HokanStatusPanel extends Panel {
     add(ioStatus);
     add(servicesStatus);
 
-    final NonCachingImage statusBall = new NonCachingImage("statusBall", new CircleDynamicImageResource(50, 50));
-    statusBall.setOutputMarkupId(true);
-    add(statusBall);
+    final NonCachingImage engineBall = new NonCachingImage("engineBall", new CircleDynamicImageResource(16, 16, HokanModule.HokanEngine));
+    engineBall.setOutputMarkupId(true);
+    add(engineBall);
+    final NonCachingImage ioBall = new NonCachingImage("ioBall", new CircleDynamicImageResource(16, 16, HokanModule.HokanIo));
+    ioBall.setOutputMarkupId(true);
+    add(ioBall);
+    final NonCachingImage servicesBall = new NonCachingImage("servicesBall", new CircleDynamicImageResource(16, 16, HokanModule.HokanServices));
+    servicesBall.setOutputMarkupId(true);
+    add(servicesBall);
 
     final AbstractAjaxTimerBehavior timer = new AbstractAjaxTimerBehavior(Duration.seconds(3)) {
       @Override
       protected void onTimer(AjaxRequestTarget target) {
-        statusBall.setImageResource(new CircleDynamicImageResource(50, 50));
-        target.add(statusBall);
+        engineBall.setImageResource(new CircleDynamicImageResource(16, 16, HokanModule.HokanEngine));
+        target.add(engineBall);
+        ioBall.setImageResource(new CircleDynamicImageResource(16, 16, HokanModule.HokanIo));
+        target.add(ioBall);
+        servicesBall.setImageResource(new CircleDynamicImageResource(16, 16, HokanModule.HokanServices));
+        target.add(engineBall);
         target.add(engineStatus);
         target.add(ioStatus);
         target.add(servicesStatus);
@@ -87,29 +99,6 @@ public class HokanStatusPanel extends Panel {
     };
     add(timer);
 
-  }
-
-  private static class ImageModel extends AbstractReadOnlyModel<Image> {
-
-    private final HokanModule hokanModule;
-
-    public ImageModel(HokanModule hokanModule) {
-      this.hokanModule = hokanModule;
-    }
-
-    @Override
-    public Image getObject() {
-      HokanStatusModel status = Services.getHokanStatusService().getHokanStatus(hokanModule);
-      switch (status.getStatus()) {
-        case "<offline>":
-          return new Image("statusBall", new Model<>(new PackageResourceReference(HokanStatusPanel.class, "RedBall_small.png")));
-        case "<online>":
-          return new Image("statusBall", new Model<>(new PackageResourceReference(HokanStatusPanel.class, "BlueBall_small.png")));
-        case "<unknown>":
-          return new Image("statusBall", new Model<>(new PackageResourceReference(HokanStatusPanel.class, "OrangeBall_small.png")));
-      }
-      return null;
-    }
   }
 
 }

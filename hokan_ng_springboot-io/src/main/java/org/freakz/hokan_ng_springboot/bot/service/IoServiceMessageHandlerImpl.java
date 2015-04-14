@@ -28,8 +28,6 @@ public class IoServiceMessageHandlerImpl implements JmsServiceMessageHandler {
   @Autowired
   private JoinedUserService joinedUserService;
 
-  @Autowired
-  private UptimeService uptimeService;
 
   @Override
   public JmsMessage handleJmsServiceMessage(JmsMessage jmsMessage) {

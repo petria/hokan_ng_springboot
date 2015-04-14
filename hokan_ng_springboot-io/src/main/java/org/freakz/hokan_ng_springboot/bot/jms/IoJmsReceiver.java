@@ -15,6 +15,7 @@ import javax.jms.ObjectMessage;
 
 /**
  * Created by petria on 5.2.2015.
+ *
  */
 @Component
 @Slf4j
@@ -41,10 +42,10 @@ public class IoJmsReceiver extends SpringJmsReceiver {
     if (jmsMessage.getPayLoadObject("ENGINE_RESPONSE") != null) {
       handleEngineReply(jmsMessage);
     } else {
-      JmsMessage jmsReplyMessage;
+
       try {
 //        log.info("---->");
-        jmsReplyMessage = jmsServiceMessageHandler.handleJmsServiceMessage(jmsMessage);
+        JmsMessage jmsReplyMessage = jmsServiceMessageHandler.handleJmsServiceMessage(jmsMessage);
 //        log.info("<----");
       } catch (Exception e) {
         jmsReplyMessage = new JmsMessage();
