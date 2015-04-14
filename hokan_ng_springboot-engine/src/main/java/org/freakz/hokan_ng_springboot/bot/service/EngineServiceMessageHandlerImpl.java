@@ -7,8 +7,9 @@ import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.events.IrcMessageEvent;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanEngineException;
-import org.freakz.hokan_ng_springboot.bot.jms.JmsMessage;
+import org.freakz.hokan_ng_springboot.bot.jms.JmsEnvelope;
 import org.freakz.hokan_ng_springboot.bot.jms.api.JmsSender;
+import org.freakz.hokan_ng_springboot.bot.jms.api.JmsServiceMessageHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
@@ -32,12 +33,13 @@ public class EngineServiceMessageHandlerImpl implements JmsServiceMessageHandler
   @Autowired
   private CommandHandlerService commandHandlerService;
 
+
   @Override
-  public JmsMessage handleJmsServiceMessage(JmsMessage jmsMessage) {
-    IrcMessageEvent event = (IrcMessageEvent) jmsMessage.getPayLoadObject("EVENT");
+  public void handleJmsEnvelope(JmsEnvelope envelope) throws Exception {
+    IrcMessageEvent event = (IrcMessageEvent) envelope.getMessageIn().getPayLoadObject("EVENT");
     log.debug("Handling event: {}", event);
     if (event == null) {
-      return null;
+      log.debug("Nothing to do!");
     }
     Cmd handler = commandHandlerService.getCommandHandler(event.getMessage());
 
@@ -60,7 +62,6 @@ public class EngineServiceMessageHandlerImpl implements JmsServiceMessageHandler
       }
       sendReply(response);
     }
-    return null;
   }
 
   private void sendReply(EngineResponse response) {

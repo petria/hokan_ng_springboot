@@ -2,16 +2,9 @@ package org.freakz.hokan_ng_springboot.bot.jms;
 
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
-import org.freakz.hokan_ng_springboot.bot.jms.api.JmsSender;
 import org.freakz.hokan_ng_springboot.bot.service.ConnectionManagerService;
-import org.freakz.hokan_ng_springboot.bot.service.JmsServiceMessageHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import javax.jms.Destination;
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.ObjectMessage;
 
 /**
  * Created by petria on 5.2.2015.
@@ -22,12 +15,6 @@ import javax.jms.ObjectMessage;
 public class IoJmsReceiver extends SpringJmsReceiver {
 
   @Autowired
-  private JmsSender jmsSender;
-
-  @Autowired
-  private JmsServiceMessageHandler jmsServiceMessageHandler;
-
-  @Autowired
   private ConnectionManagerService connectionManagerService;
 
   @Override
@@ -36,6 +23,23 @@ public class IoJmsReceiver extends SpringJmsReceiver {
   }
 
   @Override
+  public void handleJmsEnvelope(JmsEnvelope envelope) throws Exception {
+    if (envelope.getMessageIn().getPayLoadObject("ENGINE_RESPONSE") != null) {
+      handleEngineReply(envelope);
+    } else {
+      // handle others
+    }
+
+  }
+
+  private void handleEngineReply(JmsEnvelope envelope) {
+    EngineResponse response = (EngineResponse) envelope.getMessageIn().getPayLoadObject("ENGINE_RESPONSE");
+    log.debug("handling engine response: {}", response);
+    connectionManagerService.handleEngineResponse(response);
+  }
+
+
+/*  @Override
   public void handleJmsMessage(Message message) throws JMSException {
     ObjectMessage objectMessage = (ObjectMessage) message;
     JmsMessage jmsMessage = (JmsMessage) objectMessage.getObject();
@@ -63,12 +67,6 @@ public class IoJmsReceiver extends SpringJmsReceiver {
       }
     }
 
-  }
-
-  private void handleEngineReply(JmsMessage jmsMessage) {
-    EngineResponse response = (EngineResponse) jmsMessage.getPayLoadObject("ENGINE_RESPONSE");
-    log.debug("handling engine response: {}", response);
-    connectionManagerService.handleEngineResponse(response);
-  }
+  }*/
 
 }

@@ -1,7 +1,8 @@
 package org.freakz.hokan_ng_springboot.bot.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.freakz.hokan_ng_springboot.bot.jms.JmsMessage;
+import org.freakz.hokan_ng_springboot.bot.jms.JmsEnvelope;
+import org.freakz.hokan_ng_springboot.bot.jms.api.JmsServiceMessageHandler;
 import org.springframework.stereotype.Controller;
 
 /**
@@ -12,10 +13,11 @@ import org.springframework.stereotype.Controller;
 @Slf4j
 public class ServicesServiceMessageHandlerImpl implements JmsServiceMessageHandler {
 
+
   @Override
-  public JmsMessage handleJmsServiceMessage(JmsMessage jmsMessage) {
-    log.debug("Handling message");
-    JmsMessage reply = new JmsMessage();
-    return reply;
+  public void handleJmsEnvelope(JmsEnvelope envelope) throws Exception {
+    log.debug("Handling envelope");
+
   }
+
 }

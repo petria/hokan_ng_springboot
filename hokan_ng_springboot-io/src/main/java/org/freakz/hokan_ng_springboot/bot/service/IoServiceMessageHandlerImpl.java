@@ -1,15 +1,12 @@
 package org.freakz.hokan_ng_springboot.bot.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.freakz.hokan_ng_springboot.bot.jms.JmsMessage;
-import org.freakz.hokan_ng_springboot.bot.jms.PingResponse;
-import org.freakz.hokan_ng_springboot.bot.jpa.entity.Channel;
+import org.freakz.hokan_ng_springboot.bot.jms.JmsEnvelope;
+import org.freakz.hokan_ng_springboot.bot.jms.api.JmsServiceMessageHandler;
 import org.freakz.hokan_ng_springboot.bot.jpa.repository.service.ChannelService;
 import org.freakz.hokan_ng_springboot.bot.jpa.repository.service.JoinedUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-
-import java.util.List;
 
 /**
  *
@@ -30,6 +27,11 @@ public class IoServiceMessageHandlerImpl implements JmsServiceMessageHandler {
 
 
   @Override
+  public void handleJmsEnvelope(JmsEnvelope envelope) throws Exception {
+
+  }
+
+/*  @Override
   public JmsMessage handleJmsServiceMessage(JmsMessage jmsMessage) {
 //    log.debug("Handling message");
     String command = (String) jmsMessage.getPayLoadObject("COMMAND");
@@ -48,12 +50,8 @@ public class IoServiceMessageHandlerImpl implements JmsServiceMessageHandler {
         Channel channel = channels.get(0);
         joinedUserService.clearJoinedUsers(channel);
         break;
-      case "PING":
-        PingResponse pingResponse = new PingResponse();
-        pingResponse.setUptime(uptimeService.getUptime());
-        reply.addPayLoadObject("PING_RESPONSE", pingResponse);
-        break;
     }
     return reply;
   }
+  */
 }

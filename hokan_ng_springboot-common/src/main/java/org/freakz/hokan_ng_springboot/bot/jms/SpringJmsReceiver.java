@@ -2,6 +2,7 @@ package org.freakz.hokan_ng_springboot.bot.jms;
 
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.jms.api.JmsMessageHandler;
+import org.freakz.hokan_ng_springboot.bot.jms.api.JmsSender;
 import org.freakz.hokan_ng_springboot.bot.service.UptimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -25,6 +26,8 @@ public abstract class SpringJmsReceiver implements JmsMessageHandler {
   @Autowired
   private UptimeService uptimeService;
 
+  @Autowired
+  private JmsSender jmsSender;
 
   @Bean
   public ScheduledAnnotationBeanPostProcessor scheduledAnnotationBeanPostProcessor() {
@@ -39,29 +42,29 @@ public abstract class SpringJmsReceiver implements JmsMessageHandler {
     container.setDestinationName(getDestinationName());
     container.setMessageListener((MessageListener) message -> {
       try {
-//        log.debug("Got message: {} ... handling ", message);
         ObjectMessage objectMessage = (ObjectMessage) message;
-        JmsMessage jmsMessage = (JmsMessage) objectMessage.getObject();
-        String command = (String) jmsMessage.getPayLoadObject("COMMAND");
+        JmsMessage messageIn = (JmsMessage) objectMessage.getObject();
+        JmsMessage messageOut = new JmsMessage();
+        JmsEnvelope envelope = new JmsEnvelope(objectMessage, messageIn, messageOut);
+
+        String command = messageIn.getCommand();
         if (command.equals("PING")) {
+
           PingResponse pingResponse = new PingResponse();
           pingResponse.setUptime(uptimeService.getUptime());
-          reply.addPayLoadObject("PING_RESPONSE", pingResponse);
+          messageOut.addPayLoadObject("PING_RESPONSE", pingResponse);
 
         } else {
-          handleJmsMessage(message);
-        }
-
-        Destination replyTo = message.getJMSReplyTo();
-//      log.debug("got message: {}, replyTo: {}", jmsMessage, replyTo);
-        if (replyTo != null) {
-          if (jmsReplyMessage != null) {
-            //log.info("Sending reply: {}", jmsReplyMessage);
-            jmsSender.sendJmsMessage(replyTo, jmsReplyMessage);
+          try {
+            handleJmsEnvelope(envelope);
+          } catch (Exception e) {
+            log.error("Exception", e);
+          }
+          Destination replyTo = message.getJMSReplyTo();
+          if (replyTo != null) {
+            jmsSender.sendJmsMessage(replyTo, messageOut);
           }
         }
-
-//        log.debug("... message handle done!");
 
       } catch (JMSException ex) {
         ex.printStackTrace();

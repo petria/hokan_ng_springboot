@@ -32,6 +32,14 @@ public class JmsMessage implements Serializable {
     return this.payload.get(key);
   }
 
+  public String getCommand() {
+    String command = (String) getPayLoadObject("COMMAND");
+    if (command == null) {
+      return "<null>";
+    }
+    return command;
+  }
+
   public String toString() {
     String values = "";
     for (String key : payload.keySet()) {
