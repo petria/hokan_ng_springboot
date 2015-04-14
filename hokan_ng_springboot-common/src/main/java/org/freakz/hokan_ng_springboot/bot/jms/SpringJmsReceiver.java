@@ -60,10 +60,10 @@ public abstract class SpringJmsReceiver implements JmsMessageHandler {
           } catch (Exception e) {
             log.error("Exception", e);
           }
-          Destination replyTo = message.getJMSReplyTo();
-          if (replyTo != null) {
-            jmsSender.sendJmsMessage(replyTo, messageOut);
-          }
+        }
+        Destination replyTo = message.getJMSReplyTo();
+        if (replyTo != null) {
+          jmsSender.sendJmsMessage(replyTo, messageOut);
         }
 
       } catch (JMSException ex) {
