@@ -1,6 +1,7 @@
 package org.freakz.hokan_ng_springboot.bot.ircengine;
 
 import lombok.extern.slf4j.Slf4j;
+import org.freakz.hokan_ng_springboot.bot.core.HokanCoreService;
 import org.freakz.hokan_ng_springboot.bot.events.*;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
 import org.freakz.hokan_ng_springboot.bot.ircengine.connector.EngineConnector;
@@ -24,7 +25,7 @@ import java.util.*;
 @Component
 @Scope("prototype")
 @Slf4j
-public class HokanCore extends PircBot {
+public class HokanCore extends PircBot implements HokanCoreService {
 
   @Autowired
   private ChannelService channelService;
@@ -43,6 +44,9 @@ public class HokanCore extends PircBot {
 
   @Autowired
   private UserChannelService userChannelService;
+
+  @Autowired
+  private UrlLoggerService urlLoggerService;
 
   @Autowired
   private UserService userService;
@@ -316,12 +320,13 @@ public class HokanCore extends PircBot {
     userChannel.setLastMessageTime(new Date());
     userChannelService.save(userChannel);
 
+    urlLoggerService.catchUrls(ircEvent, ch, this);
+
 /*    boolean wlt = properties.getChannelPropertyAsBoolean(ch, PropertyName.PROP_CHANNEL_DO_WHOLELINE_TRICKERS, false);
     if (wlt || ircEvent.isToMe()) {
       WholeLineTrickers wholeLineTrickers = new WholeLineTrickers(this);
       wholeLineTrickers.checkWholeLineTrickers(ircEvent);
     }
-    urlLoggerService.catchUrls(ircEvent, ch, this);
 
     if (accessControlService.isMasterUser(ircEvent)) {
       handleBuiltInCommands(ircEvent);
