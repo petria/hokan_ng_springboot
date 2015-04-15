@@ -1,4 +1,4 @@
-package org.freakz.hokan_ng_springboot.bot.jpa.repository.service;
+package org.freakz.hokan_ng_springboot.bot.jpa.service;
 
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.Property;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.PropertyName;

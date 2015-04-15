@@ -87,11 +87,13 @@ public class HokanStatusPanel extends Panel {
       @Override
       protected void onTimer(AjaxRequestTarget target) {
         engineBall.setImageResource(new CircleDynamicImageResource(16, 16, HokanModule.HokanEngine));
-        target.add(engineBall);
         ioBall.setImageResource(new CircleDynamicImageResource(16, 16, HokanModule.HokanIo));
-        target.add(ioBall);
         servicesBall.setImageResource(new CircleDynamicImageResource(16, 16, HokanModule.HokanServices));
+
         target.add(engineBall);
+        target.add(ioBall);
+        target.add(servicesBall);
+
         target.add(engineStatus);
         target.add(ioStatus);
         target.add(servicesStatus);

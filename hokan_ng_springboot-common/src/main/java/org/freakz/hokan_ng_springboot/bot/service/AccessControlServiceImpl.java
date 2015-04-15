@@ -3,7 +3,7 @@ package org.freakz.hokan_ng_springboot.bot.service;
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.Channel;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.User;
-import org.freakz.hokan_ng_springboot.bot.jpa.repository.service.UserService;
+import org.freakz.hokan_ng_springboot.bot.jpa.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

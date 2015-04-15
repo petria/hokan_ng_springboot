@@ -12,7 +12,7 @@ import org.apache.wicket.injection.Injector;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.User;
-import org.freakz.hokan_ng_springboot.bot.jpa.repository.service.UserService;
+import org.freakz.hokan_ng_springboot.bot.jpa.service.UserService;
 import org.freakz.hokan_ng_springboot.bot.service.AccessControlService;
 
 import java.util.List;

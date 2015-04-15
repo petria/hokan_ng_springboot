@@ -5,7 +5,7 @@ import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.crypt.CharEncoding;
-import org.freakz.hokan_ng_springboot.bot.jpa.repository.service.*;
+import org.freakz.hokan_ng_springboot.bot.jpa.service.*;
 import org.freakz.hokan_ng_springboot.bot.page.HokanBasePage;
 import org.freakz.hokan_ng_springboot.bot.page2.MySignInPage;
 import org.freakz.hokan_ng_springboot.bot.wicketservices.HokanStatusService;

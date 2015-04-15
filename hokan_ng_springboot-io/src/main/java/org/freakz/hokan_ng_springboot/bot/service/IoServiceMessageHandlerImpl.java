@@ -3,8 +3,8 @@ package org.freakz.hokan_ng_springboot.bot.service;
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.jms.JmsEnvelope;
 import org.freakz.hokan_ng_springboot.bot.jms.api.JmsServiceMessageHandler;
-import org.freakz.hokan_ng_springboot.bot.jpa.repository.service.ChannelService;
-import org.freakz.hokan_ng_springboot.bot.jpa.repository.service.JoinedUserService;
+import org.freakz.hokan_ng_springboot.bot.jpa.service.ChannelService;
+import org.freakz.hokan_ng_springboot.bot.jpa.service.JoinedUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 

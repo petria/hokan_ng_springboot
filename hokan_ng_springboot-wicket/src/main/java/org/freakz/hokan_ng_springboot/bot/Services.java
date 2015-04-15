@@ -1,7 +1,7 @@
 package org.freakz.hokan_ng_springboot.bot;
 
 import org.apache.wicket.Application;
-import org.freakz.hokan_ng_springboot.bot.jpa.repository.service.*;
+import org.freakz.hokan_ng_springboot.bot.jpa.service.*;
 import org.freakz.hokan_ng_springboot.bot.wicketservices.HokanStatusService;
 
 /**
