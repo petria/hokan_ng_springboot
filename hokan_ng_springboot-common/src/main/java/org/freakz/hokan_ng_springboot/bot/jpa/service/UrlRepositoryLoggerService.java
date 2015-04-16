@@ -212,4 +212,13 @@ public class UrlRepositoryLoggerService implements UrlLoggerService {
     return repository.findByUrlLikeOrUrlTitleLikeAndSenderInOrderByCreatedDesc(likeUrl, likeUrl, nickList);
   }
 
+  @Override
+  public List<Url> findAll() {
+    return repository.findAll();
+  }
+
+  @Override
+  public Url findOne(long id) {
+    return repository.findOne(id);
+  }
 }

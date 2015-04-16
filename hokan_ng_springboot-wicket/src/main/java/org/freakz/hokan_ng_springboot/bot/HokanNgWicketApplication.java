@@ -50,6 +50,9 @@ public class HokanNgWicketApplication extends AuthenticatedWebApplication {
   private HokanStatusService statusService;
 
   @Autowired
+  private UrlLoggerService urlLoggerService;
+
+  @Autowired
   private UserService userService;
 
 
@@ -120,4 +123,7 @@ public class HokanNgWicketApplication extends AuthenticatedWebApplication {
     return statusService;
   }
 
+  public UrlLoggerService getUrlLoggerService() {
+    return urlLoggerService;
+  }
 }

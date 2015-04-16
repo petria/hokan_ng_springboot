@@ -19,4 +19,8 @@ public interface UrlLoggerService {
 
   List<Url> findByUrlAndNicks(String url, String... nicks);
 
+  List<Url> findAll();
+
+  Url findOne(long id);
+
 }

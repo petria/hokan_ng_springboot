@@ -34,10 +34,15 @@ public class MainTabPanel extends Panel {
         return new RuntimeControlPanel(panelId);
       }
     });
-    add(new AjaxTabbedPanel("mainTabPanel", tabs) {
+    tabs.add(new AbstractTab(new Model<>("Data")) {
+      @Override
+      public Panel getPanel(String panelId) {
+        return new DataPanel(panelId);
+      }
+    });
+    add(new AjaxTabbedPanel<ITab>("mainTabPanel", tabs) {
       @Override
       public TabbedPanel setSelectedTab(int index) {
-//        log.debug("Selected: {}", index);
         if (index == 1) {
           Services.getHokanStatusService().setActivated(true);
         } else {

@@ -46,4 +46,10 @@ public class Services {
 
   }
 
+  public static UrlLoggerService getUrlLoggerService() {
+    HokanNgWicketApplication application = (HokanNgWicketApplication) Application.get();
+    return application.getUrlLoggerService();
+
+  }
+
 }
