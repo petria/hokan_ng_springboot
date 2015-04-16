@@ -40,6 +40,11 @@ public class Url implements Serializable {
   private long wanhaCount;
 
   public Url() {
+    this.url = "";
+    this.sender = "";
+    this.channel = "";
+    this.created = new Date();
+    this.wanhaCount = 0;
 
   }
 
@@ -115,4 +120,10 @@ public class Url implements Serializable {
   public void setWanhaCount(long wanhaCount) {
     this.wanhaCount = wanhaCount;
   }
+
+  @Override
+  public String toString() {
+    return String.format("%s [w: %d]", this.url, this.wanhaCount);
+  }
+
 }
