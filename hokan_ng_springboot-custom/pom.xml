@@ -6,8 +6,8 @@
 
     <packaging>jar</packaging>
 
-    <name>hokan_ng_springboot-custom-arthurdo</name>
-    <artifactId>hokan_ng_springboot-custom-arthurdo</artifactId>
+    <name>hokan_ng_springboot-custom</name>
+    <artifactId>hokan_ng_springboot-custom</artifactId>
     <version>1.0.0-final</version>
 
     <parent>
