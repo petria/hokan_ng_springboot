@@ -10,6 +10,9 @@ import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_EXPRESSION;
 
 /**
@@ -24,6 +27,8 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_EXPRESSI
 public class CalcCmd extends Cmd {
 
   private final JEP jep;
+  private static int resultCounter = 0;
+  private static Map<String, String> resultMap = new HashMap<>();
 
   public CalcCmd() {
     super();
@@ -40,23 +45,30 @@ public class CalcCmd extends Cmd {
 
   }
 
+
   @Override
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
     String result;
     String expression = results.getString(ARG_EXPRESSION);
-
+    for (String key : resultMap.keySet()) {
+      expression = expression.replaceAll(key, resultMap.get(key));
+    }
     jep.parseExpression(expression);
 
     String error = jep.getErrorInfo();
+
     if (error != null) {
-      result = "Expression parse error: " + error.replaceAll("\"", "");
+      response.addResponse("Expression parse error: " + error.replaceAll("\"", ""));
     } else {
       try {
+        resultCounter++;
+        String resultKey = "RES" + resultCounter;
         result = expression + " = " + jep.getValue();
+        resultMap.put(resultKey, jep.getValue() + "");
+        response.addResponse(String.format("%s: %s", resultKey, result));
       } catch (ParseException e) {
         throw new HokanException(e);
       }
     }
-    response.addResponse(result);
   }
 }
