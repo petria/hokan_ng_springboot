@@ -50,7 +50,7 @@ public class HokanServicesController {
   @ResponseBody
   public String testASync() throws JMSException {
     log.info("Sending ASync");
-    jmsSender.send("HokanNGIoQueue", "TEXT", "fdfdfdffffd");
+    jmsSender.send("HokanNGIoQueue", "TEXT", "fdfdfdffffd", false);
     return "message sent!";
   }
 
@@ -58,7 +58,7 @@ public class HokanServicesController {
   @ResponseBody
   public String testASync2() throws JMSException {
     log.info("Sending ASync");
-    jmsSender.send("HokanNGEngineQueue", "TEXT", "To engine!");
+    jmsSender.send("HokanNGEngineQueue", "TEXT", "To engine!", false);
     return "message sent!";
   }
 

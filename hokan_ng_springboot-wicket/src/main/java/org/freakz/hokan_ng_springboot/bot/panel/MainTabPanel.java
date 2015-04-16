@@ -37,7 +37,7 @@ public class MainTabPanel extends Panel {
     add(new AjaxTabbedPanel("mainTabPanel", tabs) {
       @Override
       public TabbedPanel setSelectedTab(int index) {
-        log.debug("Selected: {}", index);
+//        log.debug("Selected: {}", index);
         if (index == 1) {
           Services.getHokanStatusService().setActivated(true);
         } else {

@@ -2,12 +2,22 @@
 <html xmlns:wicket="http://wicket.apache.org">
 <body>
 <wicket:panel>
-    <img wicket:id="engineBall"/>
-    <span wicket:id="engineStatus"></span><br>
-    <img wicket:id="ioBall"/>
-    <span wicket:id="ioStatus"></span><br>
-    <img wicket:id="servicesBall"/>
-    <span wicket:id="servicesStatus"></span><br>
+    <table width="100%">
+        <tr>
+            <td>
+                <img wicket:id="engineBall"/>
+                <span wicket:id="engineStatus"></span><br>
+            </td>
+            <td>
+                <img wicket:id="ioBall"/>
+                <span wicket:id="ioStatus"></span><br>
+            </td>
+            <td>
+                <img wicket:id="servicesBall"/>
+                <span wicket:id="servicesStatus"></span><br>
+            </td>
+        </tr>
+    </table>
 </wicket:panel>
 </body>
 </html>

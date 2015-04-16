@@ -66,7 +66,7 @@ public class EngineServiceMessageHandlerImpl implements JmsServiceMessageHandler
 
   private void sendReply(EngineResponse response) {
     log.debug("Sending response: {}", response);
-    jmsSender.send("HokanNGIoQueue", "ENGINE_RESPONSE", response);
+    jmsSender.send("HokanNGIoQueue", "ENGINE_RESPONSE", response, false);
   }
 
 }

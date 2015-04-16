@@ -332,7 +332,6 @@ public class HokanCore extends PircBot implements HokanCoreService {
       handleBuiltInCommands(ircEvent);
     }
 */
-    log.info(">>> TODO handle: {}", ircEvent);
     String result = engineCommunicator.sendToEngine(ircEvent);
     log.info(">>> sent to engine: {}", result);
 

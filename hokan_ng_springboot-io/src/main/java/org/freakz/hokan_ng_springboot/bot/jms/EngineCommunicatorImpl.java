@@ -20,7 +20,7 @@ public class EngineCommunicatorImpl implements EngineCommunicator {
   @Override
   public String sendToEngine(IrcMessageEvent event) {
     try {
-      jmsSender.send("HokanNGEngineQueue", "EVENT", event);
+      jmsSender.send("HokanNGEngineQueue", "EVENT", event, false);
 /*      ObjectMessage reply = jmsSender.sendAndGetReply("HokanNGEngineQueue", "EVENT", event);
       if (reply != null) {
         JmsMessage jmsMessage = (JmsMessage) reply.getObject();

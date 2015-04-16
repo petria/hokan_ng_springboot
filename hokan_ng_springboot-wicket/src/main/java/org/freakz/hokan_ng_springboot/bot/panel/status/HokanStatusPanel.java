@@ -50,8 +50,8 @@ public class HokanStatusPanel extends Panel {
       final Random random = new Random();
       int dx = 6;
       int dy = 6;
-      int x = 4;
-      int y = 4;
+      int x = 5;
+      int y = 5;
 
       // Draw circle with thick stroke width
       graphics.setStroke(new BasicStroke(5));
