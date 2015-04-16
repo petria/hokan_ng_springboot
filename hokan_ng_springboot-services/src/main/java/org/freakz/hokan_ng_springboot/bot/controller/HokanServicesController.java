@@ -37,7 +37,7 @@ public class HokanServicesController {
   @ResponseBody
   public String goOnline() throws JMSException {
     log.info("Sending Sync");
-    ObjectMessage reply = jmsSender.sendAndGetReply("HokanNGIoQueue", "COMMAND", "GO_ONLINE");
+    ObjectMessage reply = jmsSender.sendAndGetReply("HokanNGIoQueue", "COMMAND", "GO_ONLINE", false);
     if (reply != null) {
       JmsMessage jmsMessage = (JmsMessage) reply.getObject();
       log.info("reply: {}", jmsMessage);
@@ -66,7 +66,7 @@ public class HokanServicesController {
     @ResponseBody
     public String testASync4() throws JMSException {
         log.info("Sending Sync");
-        ObjectMessage reply = jmsSender.sendAndGetReply("HokanNGWicketQueue", "COMMAND", "GO_ONLINE");
+      ObjectMessage reply = jmsSender.sendAndGetReply("HokanNGWicketQueue", "COMMAND", "GO_ONLINE", false);
         if (reply != null) {
             JmsMessage jmsMessage = (JmsMessage) reply.getObject();
             log.info("reply: {}", jmsMessage);

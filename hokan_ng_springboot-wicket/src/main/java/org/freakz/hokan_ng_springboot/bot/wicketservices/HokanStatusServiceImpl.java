@@ -27,6 +27,7 @@ public class HokanStatusServiceImpl implements HokanStatusService {
   private JmsSender jmsSender;
 
   private Map<HokanModule, HokanStatusModel> statusModelMap = new HashMap<>();
+  private boolean activated = false;
 
   public HokanStatusServiceImpl() {
     for (HokanModule module : HokanModule.values()) {
@@ -39,22 +40,29 @@ public class HokanStatusServiceImpl implements HokanStatusService {
     return statusModelMap.get(module);
   }
 
+  @Override
+  public void setActivated(boolean activated) {
+    this.activated = activated;
+  }
+
   @Scheduled(fixedDelay = 3000)
   private void updateStatuses() {
-    for (HokanModule module : HokanModule.values()) {
-      ObjectMessage objectMessage = jmsSender.sendAndGetReply(module.getQueueName(), "COMMAND", "PING");
-      if (objectMessage == null) {
-        statusModelMap.put(module, new HokanStatusModel("<offline>"));
-        continue;
-      }
-      try {
-        JmsMessage jmsMessage = (JmsMessage) objectMessage.getObject();
-        PingResponse pingResponse = (PingResponse) jmsMessage.getPayLoadObject("PING_RESPONSE");
-        HokanStatusModel status = new HokanStatusModel("<online>");
-        status.setPingResponse(pingResponse);
-        statusModelMap.put(module, status);
-      } catch (JMSException e) {
-        log.error("jms", e);
+    if (activated) {
+      for (HokanModule module : HokanModule.values()) {
+        ObjectMessage objectMessage = jmsSender.sendAndGetReply(module.getQueueName(), "COMMAND", "PING", false);
+        if (objectMessage == null) {
+          statusModelMap.put(module, new HokanStatusModel("<offline>"));
+          continue;
+        }
+        try {
+          JmsMessage jmsMessage = (JmsMessage) objectMessage.getObject();
+          PingResponse pingResponse = (PingResponse) jmsMessage.getPayLoadObject("PING_RESPONSE");
+          HokanStatusModel status = new HokanStatusModel("<online>");
+          status.setPingResponse(pingResponse);
+          statusModelMap.put(module, status);
+        } catch (JMSException e) {
+          log.error("jms", e);
+        }
       }
     }
   }

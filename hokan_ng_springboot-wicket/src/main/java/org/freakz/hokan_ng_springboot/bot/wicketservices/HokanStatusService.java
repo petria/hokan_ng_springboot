@@ -11,4 +11,6 @@ public interface HokanStatusService {
 
   HokanStatusModel getHokanStatus(HokanModule module);
 
+  void setActivated(boolean activated);
+
 }

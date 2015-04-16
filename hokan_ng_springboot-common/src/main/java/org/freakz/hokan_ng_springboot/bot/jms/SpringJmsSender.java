@@ -22,9 +22,10 @@ public class SpringJmsSender implements JmsSender {
   private JmsTemplate jmsTemplate;
 
 
-  public ObjectMessage sendAndGetReply(String destination, String key, Object object) {
+  public ObjectMessage sendAndGetReply(String destination, String key, Object object, boolean deliveryPersistent) {
 //    log.debug("{}: {} -> {}", destination, key, object);
     this.jmsTemplate.setReceiveTimeout(2 * 1000);
+    this.jmsTemplate.setDeliveryPersistent(deliveryPersistent);
     Message reply = this.jmsTemplate.sendAndReceive(destination, session -> {
           ObjectMessage objectMessage = session.createObjectMessage();
           JmsMessage jmsMessage = new JmsMessage();

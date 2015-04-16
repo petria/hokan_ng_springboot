@@ -11,7 +11,7 @@ import javax.jms.ObjectMessage;
  */
 public interface JmsSender {
 
-  ObjectMessage sendAndGetReply(String destination, String key, Object object);
+  ObjectMessage sendAndGetReply(String destination, String key, Object object, boolean deliveryPersistent);
 
   void send(String destination, String key, Object object);
 
