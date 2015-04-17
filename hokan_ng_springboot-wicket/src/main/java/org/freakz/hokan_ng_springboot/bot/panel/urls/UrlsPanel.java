@@ -42,7 +42,7 @@ public class UrlsPanel extends Panel {
 
       }
     };
-    dataView.setItemsPerPage(8L);
+    dataView.setItemsPerPage(2L);
 
     add(new OrderByBorder("orderById", "id", dp) {
       private static final long serialVersionUID = 1L;
