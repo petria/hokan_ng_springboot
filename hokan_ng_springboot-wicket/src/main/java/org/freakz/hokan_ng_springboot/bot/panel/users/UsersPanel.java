@@ -24,7 +24,7 @@ public class UsersPanel extends Panel {
 
   public UsersPanel(String id) {
     super(id);
-
+    setOutputMarkupId(true);
     final ModalWindow modal2;
     add(modal2 = new ModalWindow("modal2"));
     modal2.setTitle("User editor.");
@@ -36,6 +36,13 @@ public class UsersPanel extends Panel {
         log.debug("onCloseButtonClicked");
         target.add(UsersPanel.this);
         return true;
+      }
+    });
+    modal2.setWindowClosedCallback(new ModalWindow.WindowClosedCallback() {
+      @Override
+      public void onClose(AjaxRequestTarget target) {
+        log.debug("onClose");
+        target.add(UsersPanel.this);
       }
     });
 
