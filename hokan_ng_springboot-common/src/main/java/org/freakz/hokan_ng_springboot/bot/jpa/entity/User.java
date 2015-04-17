@@ -15,7 +15,7 @@ public class User implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "ID")
-  private long userId;
+  private long id;
 
   @Column(name = "NICK")
   private String nick;
@@ -62,12 +62,12 @@ public class User implements Serializable {
     this.nick = nick;
   }
 
-  public long getUserId() {
-    return userId;
+  public long getId() {
+    return id;
   }
 
   public void setUserId(long id) {
-    this.userId = id;
+    this.id = id;
   }
 
   public String getNick() {
@@ -143,7 +143,8 @@ public class User implements Serializable {
   }
 
   public String toString() {
-    return String.format("[%03d] %s (%s)", this.userId, this.nick, this.fullName);
+    return String.format("[%03d] %s (%s)", this.id, this.nick, this.fullName);
   }
+
 
 }

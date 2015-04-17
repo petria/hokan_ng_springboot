@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<html xmlns:wicket="http://wicket.apache.org">
+<body>
+<wicket:panel>
+
+    <span wicket:id="navigator">[dataview navigator]</span>
+    <table cellspacing="0" class="dataview">
+        <tr>
+            <th>Actions</th>
+            <th wicket:id="orderById">ID</th>
+            <th wicket:id="orderByNick">Nick</th>
+            <th>Full name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Flags</th>
+            <th>Mask</th>
+        </tr>
+        <tr wicket:id="sorting">
+            <td>-</td>
+            <td><span wicket:id="id">[id]</span></td>
+            <td><span wicket:id="nick">[nick]</span></td>
+            <td><span wicket:id="fullName">[fullName]</span></td>
+            <td><span wicket:id="email">[email]</span></td>
+            <td><span wicket:id="phone">[phone]</span></td>
+            <td><span wicket:id="flags">[flags]</span></td>
+            <td><span wicket:id="mask">[mask]</span></td>
+        </tr>
+    </table>
+
+</wicket:panel>
+</body>
+</html>

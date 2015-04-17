@@ -20,7 +20,7 @@ public class AccessControlServiceImpl implements AccessControlService {
 
   @Override
   public boolean isAdminUser(User isAdmin) {
-    User user = userService.findById(isAdmin.getUserId());
+    User user = userService.findById(isAdmin.getId());
     if (user == null) {
       log.debug("User not found: {}", user);
       return false;
@@ -40,7 +40,7 @@ public class AccessControlServiceImpl implements AccessControlService {
 
   @Override
   public boolean isLoggedIn(User isLoggedIn) {
-    User user = userService.findById(isLoggedIn.getUserId());
+    User user = userService.findById(isLoggedIn.getId());
     if (user == null) {
       log.debug("User not found: {}", user);
       return false;
@@ -50,7 +50,7 @@ public class AccessControlServiceImpl implements AccessControlService {
 
   @Override
   public User loginUser(User user2) {
-    User user = userService.findById(user2.getUserId());
+    User user = userService.findById(user2.getId());
     if (user == null) {
       log.debug("User not found: {}", user);
       return null;
@@ -62,7 +62,7 @@ public class AccessControlServiceImpl implements AccessControlService {
 
   @Override
   public User logoffUser(User user2) {
-    User user = userService.findById(user2.getUserId());
+    User user = userService.findById(user2.getId());
     if (user == null) {
       log.debug("User not found: {}", user);
       return null;

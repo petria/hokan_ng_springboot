@@ -37,7 +37,7 @@ public class MainTabPanel extends Panel {
     tabs.add(new AbstractTab(new Model<>("Data")) {
       @Override
       public Panel getPanel(String panelId) {
-        return new DataPanel(panelId);
+        return new DatasTabPanel(panelId);
       }
     });
     add(new AjaxTabbedPanel<ITab>("mainTabPanel", tabs) {
