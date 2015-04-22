@@ -5,10 +5,14 @@ import com.martiansoftware.jsap.*;
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.cmdpool.CommandPool;
 import org.freakz.hokan_ng_springboot.bot.cmdpool.CommandRunnable;
+import org.freakz.hokan_ng_springboot.bot.enums.HokanModule;
 import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.events.IrcMessageEvent;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
+import org.freakz.hokan_ng_springboot.bot.jms.JmsMessage;
+import org.freakz.hokan_ng_springboot.bot.jms.PingResponse;
+import org.freakz.hokan_ng_springboot.bot.jms.api.JmsSender;
 import org.freakz.hokan_ng_springboot.bot.jpa.service.ChannelService;
 import org.freakz.hokan_ng_springboot.bot.jpa.service.JoinedUserService;
 import org.freakz.hokan_ng_springboot.bot.jpa.service.NetworkService;
@@ -17,6 +21,8 @@ import org.freakz.hokan_ng_springboot.bot.util.CommandArgs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
+import javax.jms.JMSException;
+import javax.jms.ObjectMessage;
 import java.util.*;
 
 /**
@@ -28,6 +34,9 @@ import java.util.*;
  */
 @Slf4j
 public abstract class Cmd implements HokkanCommand, CommandRunnable {
+
+  @Autowired
+  private JmsSender jmsSender;
 
   @Autowired
   protected ApplicationContext context;
@@ -312,6 +321,17 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
     public InternalRequest request;
     public EngineResponse response;
     public JSAPResult results;
+  }
+
+  public void doServicesRequest(String serviceCommand, IrcMessageEvent ircEvent) {
+    ObjectMessage objectMessage = jmsSender.sendAndGetReply(HokanModule.HokanServices.getQueueName(), "COMMAND", "METAR", false);
+    try {
+      JmsMessage jmsMessage = (JmsMessage) objectMessage.getObject();
+      PingResponse pingResponse = (PingResponse) jmsMessage.getPayLoadObject("PING_RESPONSE");
+    } catch (JMSException e) {
+      log.error("jms", e);
+    }
+
   }
 
 }

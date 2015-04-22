@@ -5,6 +5,7 @@ import java.io.Serializable;
 
 /**
  * Created by Petri Airio (petri.j.airio@gmail.com) on 14.4.2015.
+ *
  */
 public class JmsEnvelope implements Serializable {
 
