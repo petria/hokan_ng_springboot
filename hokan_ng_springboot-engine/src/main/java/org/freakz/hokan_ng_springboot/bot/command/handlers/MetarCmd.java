@@ -38,6 +38,7 @@ public class MetarCmd extends Cmd {
   @Override
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
     doServicesRequest("METAR", request.getIrcEvent());
+    //
 
   }
 
