@@ -327,6 +327,7 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
     ObjectMessage objectMessage = jmsSender.sendAndGetReply(HokanModule.HokanServices.getQueueName(), "COMMAND", "METAR", false);
     try {
       JmsMessage jmsMessage = (JmsMessage) objectMessage.getObject();
+
       PingResponse pingResponse = (PingResponse) jmsMessage.getPayLoadObject("PING_RESPONSE");
     } catch (JMSException e) {
       log.error("jms", e);
