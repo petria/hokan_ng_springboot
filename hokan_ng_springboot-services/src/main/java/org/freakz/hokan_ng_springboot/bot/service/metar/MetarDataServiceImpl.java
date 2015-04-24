@@ -39,7 +39,8 @@ public class MetarDataServiceImpl implements  MetarDataService {
   private String[] fetchMetarData(String stationID) {
     String url = "ftp://tgftp.nws.noaa.gov/data/observations/metar/decoded/" + stationID + ".TXT";
     JarScriptExecutor executor = new JarScriptExecutor("/wget_url.sh", "UTF-8");
-    return executor.executeJarScript(url);
+// TODO    return executor.executeJarScript(url);
+    return new String[] {"DODDO", "fdododo"};
   }
 
   private List<String> getStations(String pattern) {
@@ -67,7 +68,8 @@ public class MetarDataServiceImpl implements  MetarDataService {
 
 
   @Override
-  public List<MetarData> getMetarData(String station) {
+  public List<MetarData> getMetarData(String... parameters) {
+    String station = parameters[0]; // TODO
     List<MetarData> metarDatas = new ArrayList<>();
     List<String> metars = getStations(station);
     if (metars.size() > 0) {

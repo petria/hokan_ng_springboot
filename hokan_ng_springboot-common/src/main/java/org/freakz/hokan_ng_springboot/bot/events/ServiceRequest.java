@@ -12,8 +12,26 @@ public class ServiceRequest implements Serializable {
     METAR_REQUEST
   }
 
-  public ServiceRequest() {
+  private final ServiceRequestType type;
+  private final IrcMessageEvent ircMessageEvent;
+  private final String[] parameters;
+
+  public ServiceRequest(ServiceRequestType type, IrcMessageEvent ircMessageEvent, String... parameters) {
+    this.type = type;
+    this.ircMessageEvent = ircMessageEvent;
+    this.parameters = parameters;
   }
 
+  public ServiceRequestType getType() {
+    return type;
+  }
+
+  public IrcMessageEvent getIrcMessageEvent() {
+    return ircMessageEvent;
+  }
+
+  public String[] getParameters() {
+    return parameters;
+  }
 
 }

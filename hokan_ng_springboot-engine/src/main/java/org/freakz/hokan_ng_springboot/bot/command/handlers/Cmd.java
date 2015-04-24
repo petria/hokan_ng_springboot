@@ -6,12 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.cmdpool.CommandPool;
 import org.freakz.hokan_ng_springboot.bot.cmdpool.CommandRunnable;
 import org.freakz.hokan_ng_springboot.bot.enums.HokanModule;
-import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
-import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
-import org.freakz.hokan_ng_springboot.bot.events.IrcMessageEvent;
+import org.freakz.hokan_ng_springboot.bot.events.*;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
 import org.freakz.hokan_ng_springboot.bot.jms.JmsMessage;
-import org.freakz.hokan_ng_springboot.bot.jms.PingResponse;
 import org.freakz.hokan_ng_springboot.bot.jms.api.JmsSender;
 import org.freakz.hokan_ng_springboot.bot.jpa.service.ChannelService;
 import org.freakz.hokan_ng_springboot.bot.jpa.service.JoinedUserService;
@@ -323,15 +320,17 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
     public JSAPResult results;
   }
 
-  public void doServicesRequest(String serviceCommand, IrcMessageEvent ircEvent) {
-    ObjectMessage objectMessage = jmsSender.sendAndGetReply(HokanModule.HokanServices.getQueueName(), "COMMAND", "METAR", false);
+  public ServiceResponse doServicesRequest(String serviceCommand, IrcMessageEvent ircEvent, String... parameters) {
+    ServiceRequest request = new ServiceRequest(ServiceRequest.ServiceRequestType.METAR_REQUEST, ircEvent, parameters);
+    ObjectMessage objectMessage = jmsSender.sendAndGetReply(HokanModule.HokanServices.getQueueName(), "SERVICE_REQUEST", request, false);
     try {
       JmsMessage jmsMessage = (JmsMessage) objectMessage.getObject();
-
-      PingResponse pingResponse = (PingResponse) jmsMessage.getPayLoadObject("PING_RESPONSE");
+      ServiceResponse serviceResponse = jmsMessage.getServiceResponse();
+      return serviceResponse;
     } catch (JMSException e) {
       log.error("jms", e);
     }
+    return new ServiceResponse();
 
   }
 

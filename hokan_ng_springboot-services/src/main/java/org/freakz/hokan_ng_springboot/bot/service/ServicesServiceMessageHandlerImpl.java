@@ -1,6 +1,8 @@
 package org.freakz.hokan_ng_springboot.bot.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.freakz.hokan_ng_springboot.bot.events.ServiceRequest;
+import org.freakz.hokan_ng_springboot.bot.events.ServiceResponse;
 import org.freakz.hokan_ng_springboot.bot.jms.JmsEnvelope;
 import org.freakz.hokan_ng_springboot.bot.jms.api.JmsServiceMessageHandler;
 import org.freakz.hokan_ng_springboot.bot.models.MetarData;
@@ -23,10 +25,12 @@ public class ServicesServiceMessageHandlerImpl implements JmsServiceMessageHandl
 
   @Override
   public void handleJmsEnvelope(JmsEnvelope envelope) throws Exception {
-    String command = envelope.getMessageIn().getCommand();
-    if (command.equals("METAR")) {
-      List<MetarData> data = metarDataService.getMetarData("ffufu");
-      envelope.getMessageOut().addPayLoadObject("METAR_DATA", data);
+    ServiceRequest request = envelope.getMessageIn().getServiceRequest();
+    if (request.getType() == ServiceRequest.ServiceRequestType.METAR_REQUEST) {
+      List<MetarData> data = metarDataService.getMetarData(request.getParameters());
+      ServiceResponse response = new ServiceResponse();
+      response.setResponseData("METAR_DATA", data);
+      envelope.getMessageOut().addPayLoadObject("SERVICE_RESPONSE", response);
     }
     log.debug("Handling envelope");
 

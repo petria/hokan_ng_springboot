@@ -1,5 +1,8 @@
 package org.freakz.hokan_ng_springboot.bot.jms;
 
+import org.freakz.hokan_ng_springboot.bot.events.ServiceRequest;
+import org.freakz.hokan_ng_springboot.bot.events.ServiceResponse;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,6 +41,16 @@ public class JmsMessage implements Serializable {
       return "<null>";
     }
     return command;
+  }
+
+  public ServiceRequest getServiceRequest() {
+    ServiceRequest request = (ServiceRequest) getPayLoadObject("SERVICE_REQUEST");
+    return request;
+  }
+
+  public ServiceResponse getServiceResponse() {
+    ServiceResponse response = (ServiceResponse) getPayLoadObject("SERVICE_RESPONSE");
+    return response;
   }
 
   public String toString() {

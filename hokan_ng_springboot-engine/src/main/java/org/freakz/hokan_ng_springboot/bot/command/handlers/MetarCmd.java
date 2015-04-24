@@ -4,6 +4,7 @@ import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.UnflaggedOption;
 import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
+import org.freakz.hokan_ng_springboot.bot.events.ServiceResponse;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -37,7 +38,9 @@ public class MetarCmd extends Cmd {
 
   @Override
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    doServicesRequest("METAR", request.getIrcEvent());
+    ServiceResponse serviceResponse = doServicesRequest("METAR", request.getIrcEvent(), results.getString(ARG_STATION));
+    response.addResponse("ffdfd %s", serviceResponse.getResponseData("METAR_DATA"));
+    int foo = 0;
     //
 
   }

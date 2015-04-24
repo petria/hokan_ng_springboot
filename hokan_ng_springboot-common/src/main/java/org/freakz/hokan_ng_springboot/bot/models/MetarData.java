@@ -1,5 +1,7 @@
 package org.freakz.hokan_ng_springboot.bot.models;
 
+import java.io.Serializable;
+
 /**
  * User: petria
  * Date: 11/26/13
@@ -7,7 +9,7 @@ package org.freakz.hokan_ng_springboot.bot.models;
  *
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
-public class MetarData {
+public class MetarData implements Serializable {
 
   private String metarData;
 
