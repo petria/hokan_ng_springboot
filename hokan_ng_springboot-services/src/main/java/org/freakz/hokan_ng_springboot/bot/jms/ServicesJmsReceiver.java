@@ -29,7 +29,7 @@ public class ServicesJmsReceiver extends SpringJmsReceiver {
 
   @Override
   public void handleJmsEnvelope(JmsEnvelope envelope) throws Exception {
-
+    jmsServiceMessageHandler.handleJmsEnvelope(envelope);
   }
 
 /*  @Override
