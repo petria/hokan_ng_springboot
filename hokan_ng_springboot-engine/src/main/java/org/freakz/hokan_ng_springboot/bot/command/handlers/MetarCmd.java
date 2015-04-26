@@ -15,6 +15,7 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_STATION;
  * Created by Petri Airio on 22.4.2015.
  *
  *
+ *
  */
 @Component
 @Scope("prototype")
