@@ -2,11 +2,13 @@ package org.freakz.hokan_ng_springboot.bot.jpa.service;
 
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.Channel;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.ChannelProperty;
+import org.freakz.hokan_ng_springboot.bot.jpa.entity.PropertyName;
 import org.freakz.hokan_ng_springboot.bot.jpa.repository.ChannelPropertyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,5 +42,9 @@ public class ChannelPropertyRepositoryService implements ChannelPropertyService 
   @Transactional
   public void deleteByChannel(Channel object) {
     repository.deleteByChannel(object);
+  }
+
+  public List<Channel> getChannelsWithProperty(PropertyName propChannelDoTvnotify) {
+    return new ArrayList<Channel>();
   }
 }

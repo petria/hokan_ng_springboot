@@ -8,9 +8,6 @@ import java.io.Serializable;
  */
 public class ServiceRequest implements Serializable {
 
-  public enum ServiceRequestType {
-    METAR_REQUEST
-  }
 
   private final ServiceRequestType type;
   private final IrcMessageEvent ircMessageEvent;

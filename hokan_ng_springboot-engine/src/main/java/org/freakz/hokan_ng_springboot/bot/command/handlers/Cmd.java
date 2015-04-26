@@ -320,13 +320,12 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
     public JSAPResult results;
   }
 
-  public ServiceResponse doServicesRequest(String serviceCommand, IrcMessageEvent ircEvent, String... parameters) {
-    ServiceRequest request = new ServiceRequest(ServiceRequest.ServiceRequestType.METAR_REQUEST, ircEvent, parameters);
+  public ServiceResponse doServicesRequest(ServiceRequestType requestType, IrcMessageEvent ircEvent, String... parameters) {
+    ServiceRequest request = new ServiceRequest(requestType, ircEvent, parameters);
     ObjectMessage objectMessage = jmsSender.sendAndGetReply(HokanModule.HokanServices.getQueueName(), "SERVICE_REQUEST", request, false);
     try {
       JmsMessage jmsMessage = (JmsMessage) objectMessage.getObject();
-      ServiceResponse serviceResponse = jmsMessage.getServiceResponse();
-      return serviceResponse;
+      return jmsMessage.getServiceResponse();
     } catch (JMSException e) {
       log.error("jms", e);
     }

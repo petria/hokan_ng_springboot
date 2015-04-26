@@ -1,25 +1,19 @@
 package org.freakz.hokan_ng_springboot.bot.service;
 
-import org.freakz.hokan_ng_springboot.bot.HokanNgSpringBootServices;
 import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * Created by Petri Airio on 24.4.2015.
  *
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = HokanNgSpringBootServices.class)
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@SpringApplicationConfiguration(classes = HokanNgSpringBootServices.class)
 public class TranslateServiceTest {
 
-  @Autowired
+//  @Autowired
   private TranslateService translateService;
 
-  @Test
+//  @Test
   public void testTranslateEngFi() {
     Assert.assertTrue(true);
 /*  TODO

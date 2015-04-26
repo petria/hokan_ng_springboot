@@ -1,5 +1,6 @@
 package org.freakz.hokan_ng_springboot.bot.events;
 
+import org.freakz.hokan_ng_springboot.bot.models.HoroHolder;
 import org.freakz.hokan_ng_springboot.bot.models.MetarData;
 
 import java.io.Serializable;
@@ -33,6 +34,11 @@ public class ServiceResponse implements Serializable {
       return new ArrayList<>();
     }
     return dataList;
+  }
+
+  public HoroHolder getHoroResponse() {
+    HoroHolder hh = (HoroHolder) responseData.get("HORO_DATA");
+    return hh;
   }
 
 }

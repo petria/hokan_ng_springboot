@@ -4,6 +4,7 @@ import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.UnflaggedOption;
 import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
+import org.freakz.hokan_ng_springboot.bot.events.ServiceRequestType;
 import org.freakz.hokan_ng_springboot.bot.events.ServiceResponse;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
 import org.freakz.hokan_ng_springboot.bot.models.MetarData;
@@ -44,7 +45,7 @@ public class MetarCmd extends Cmd {
   @Override
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
     String station = results.getString(ARG_STATION);
-    ServiceResponse serviceResponse = doServicesRequest("METAR", request.getIrcEvent(), station);
+    ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.METAR_REQUEST, request.getIrcEvent(), station);
     List<MetarData> metarDatas = serviceResponse.getMetarResponse();
     if (metarDatas.size() > 0) {
       StringBuilder sb = new StringBuilder();
