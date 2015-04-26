@@ -6,8 +6,11 @@ import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.events.ServiceResponse;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
+import org.freakz.hokan_ng_springboot.bot.models.MetarData;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_STATION;
 
@@ -40,9 +43,22 @@ public class MetarCmd extends Cmd {
 
   @Override
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    ServiceResponse serviceResponse = doServicesRequest("METAR", request.getIrcEvent(), results.getString(ARG_STATION));
-    response.addResponse("ffdfd %s", serviceResponse.getResponseData("METAR_DATA"));
-    int foo = 0;
+    String station = results.getString(ARG_STATION);
+    ServiceResponse serviceResponse = doServicesRequest("METAR", request.getIrcEvent(), station);
+    List<MetarData> metarDatas = serviceResponse.getMetarResponse();
+    if (metarDatas.size() > 0) {
+      StringBuilder sb = new StringBuilder();
+      for (MetarData metarData : metarDatas) {
+        if (sb.length() > 0) {
+          sb.append(" | ");
+        }
+        sb.append(metarData.getMetarData());
+      }
+      response.addResponse(sb.toString());
+    } else {
+      response.addResponse("No Metar data found with: " + station);
+    }
+
     //
 
   }

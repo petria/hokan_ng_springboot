@@ -3,7 +3,7 @@ package org.freakz.hokan_ng_springboot.bot.service.metar;
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.models.MetarData;
 import org.freakz.hokan_ng_springboot.bot.util.FileUtil;
-import org.freakz.hokan_ng_springboot.bot.util.JarScriptExecutor;
+import org.freakz.hokan_ng_springboot.bot.util.HttpPageFetcher;
 import org.freakz.hokan_ng_springboot.bot.util.StringStuff;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,9 +38,14 @@ public class MetarDataServiceImpl implements  MetarDataService {
 
   private String[] fetchMetarData(String stationID) {
     String url = "ftp://tgftp.nws.noaa.gov/data/observations/metar/decoded/" + stationID + ".TXT";
-    JarScriptExecutor executor = new JarScriptExecutor("/wget_url.sh", "UTF-8");
-// TODO    return executor.executeJarScript(url);
-    return new String[] {"DODDO", "fdododo"};
+    HttpPageFetcher pageFetcher = new HttpPageFetcher();
+    try {
+      pageFetcher.fetch(url);
+    } catch (Exception e) {
+      log.error("Metar fetcg error", e);
+      return new String[0];
+    }
+    return pageFetcher.getTextBuffer().toString().split("\n");
   }
 
   private List<String> getStations(String pattern) {

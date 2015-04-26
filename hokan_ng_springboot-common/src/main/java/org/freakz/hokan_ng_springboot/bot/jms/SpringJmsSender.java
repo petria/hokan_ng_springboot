@@ -24,7 +24,7 @@ public class SpringJmsSender implements JmsSender {
 
   public ObjectMessage sendAndGetReply(String destination, String key, Object object, boolean deliveryPersistent) {
 //    log.debug("{}: {} -> {}", destination, key, object);
-    this.jmsTemplate.setReceiveTimeout(2 * 1000);
+    this.jmsTemplate.setReceiveTimeout(10 * 1000);
     this.jmsTemplate.setDeliveryPersistent(deliveryPersistent);
     Message reply = this.jmsTemplate.sendAndReceive(destination, session -> {
           ObjectMessage objectMessage = session.createObjectMessage();

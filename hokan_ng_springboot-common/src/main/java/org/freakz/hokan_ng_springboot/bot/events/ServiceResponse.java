@@ -1,7 +1,11 @@
 package org.freakz.hokan_ng_springboot.bot.events;
 
+import org.freakz.hokan_ng_springboot.bot.models.MetarData;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,6 +25,14 @@ public class ServiceResponse implements Serializable {
 
   public Object getResponseData(String key) {
     return responseData.get(key);
+  }
+
+  public List<MetarData> getMetarResponse() {
+    List<MetarData> dataList = (List<MetarData>) responseData.get("METAR_DATA");
+    if (dataList == null) {
+      return new ArrayList<>();
+    }
+    return dataList;
   }
 
 }
