@@ -21,11 +21,6 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>org.freakz</groupId>
-            <artifactId>hokan_ng_springboot-custom-arthurdo</artifactId>
-            <version>1.0.0-final</version>
-        </dependency>
 
         <dependency>
             <groupId>com.martiansoftware</groupId>
