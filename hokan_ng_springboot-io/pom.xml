@@ -31,8 +31,8 @@
 
         <dependency>
             <groupId>org.freakz</groupId>
-            <artifactId>hokan_ng_springboot-custom-pircbot</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <artifactId>hokan_ng_springboot-custom</artifactId>
+            <version>1.0.0-final</version>
         </dependency>
 
         <dependency>
