@@ -7,6 +7,8 @@ package org.freakz.hokan_ng_springboot.bot.events;
 public enum ServiceRequestType {
 
   HORO_REQUEST,
-  METAR_REQUEST
+  METAR_REQUEST,
+  TRANSLATE_REQUEST
+
 
 }

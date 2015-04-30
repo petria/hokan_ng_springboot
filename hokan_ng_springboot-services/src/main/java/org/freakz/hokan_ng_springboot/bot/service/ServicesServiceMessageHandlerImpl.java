@@ -1,5 +1,6 @@
 package org.freakz.hokan_ng_springboot.bot.service;
 
+import com.google.api.translate.Language;
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.events.ServiceRequest;
 import org.freakz.hokan_ng_springboot.bot.events.ServiceResponse;
@@ -29,6 +30,9 @@ public class ServicesServiceMessageHandlerImpl implements JmsServiceMessageHandl
   private MetarDataService metarDataService;
 
   @Autowired
+  private GoogleTranslatorService translatorService;
+
+  @Autowired
   private UpdaterManagerService updaterManagerService;
 
   @Override
@@ -38,20 +42,23 @@ public class ServicesServiceMessageHandlerImpl implements JmsServiceMessageHandl
     ServiceResponse response = new ServiceResponse();
 
     switch (request.getType()) {
-      case METAR_REQUEST:
-        List<MetarData> data = metarDataService.getMetarData(request.getParameters());
-        response.setResponseData("METAR_DATA", data);
-        envelope.getMessageOut().addPayLoadObject("SERVICE_RESPONSE", response);
-        break;
       case HORO_REQUEST:
         HoroUpdater horoUpdater = (HoroUpdater) updaterManagerService.getUpdater("horoUpdater");
         UpdaterData updaterData = new UpdaterData();
         horoUpdater.getData(updaterData, request.getParameters());
         HoroHolder hh = (HoroHolder) updaterData.getData();
         response.setResponseData("HORO_DATA", hh);
-        envelope.getMessageOut().addPayLoadObject("SERVICE_RESPONSE", response);
+        break;
+      case METAR_REQUEST:
+        List<MetarData> data = metarDataService.getMetarData(request.getParameters());
+        response.setResponseData("METAR_DATA", data);
+        break;
+      case TRANSLATE_REQUEST:
+        String translated = translatorService.getTranslation(request.getParameters(), Language.AUTO_DETECT, Language.FINNISH);
+        response.setResponseData("TRANSLATE_RESPONSE", translated);
         break;
     }
+    envelope.getMessageOut().addPayLoadObject("SERVICE_RESPONSE", response);
   }
 
 }

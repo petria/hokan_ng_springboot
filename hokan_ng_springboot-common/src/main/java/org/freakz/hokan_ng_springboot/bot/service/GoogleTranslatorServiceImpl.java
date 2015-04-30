@@ -23,28 +23,8 @@ public class GoogleTranslatorServiceImpl implements GoogleTranslatorService {
   @Autowired
   private PropertyService propertyService;
 
-
-  public static void main(String[] args) {
-    GoogleAPI.setHttpReferrer("https://github.com/petria/hokan_ng_springboot");
-
-    // Set the Google Translate API key
-    // See: http://code.google.com/apis/language/translate/v2/getting_started.html
-    GoogleAPI.setKey("");
-    String textii = "If you believe that your key has been compromised—for instance, if you notice suspicious activity in your Console traffic reports—then Google recommends generating a new key by clicking the \"Generate new key\" button to the right of the key. Upon doing this, you can decide whether or not to allow up to 24 hours to phase out your old key, during which time both keys are active. Using a phased deactivation gives you time to fully deploy your new key. If, instead, you want to invalidate the old key immediately, then click the \"Delete key\" button to the right of the key.";
-    String translatedText = null;
-    try {
-//      for (String word : textii.split(" ")) {
-        translatedText = Translate.DEFAULT.execute(textii, Language.AUTO_DETECT, Language.FINNISH);
-        System.out.println(" --> " + translatedText);
-//      }
-    } catch (GoogleAPIException e) {
-      e.printStackTrace();
-    }
-    System.out.println(translatedText);
-  }
-
   @Override
-  public String getTranslation(String text, Language from, Language to) {
+  public String getTranslation(String[] text, Language from, Language to) {
     GoogleAPI.setHttpReferrer("https://github.com/petria/hokan_ng_springboot");
 
     // Set the Google Translate API key
@@ -54,12 +34,15 @@ public class GoogleTranslatorServiceImpl implements GoogleTranslatorService {
     GoogleAPI.setKey(apikey.getValue());
     //Translate.DEFAULT.
     String translatedText = null;
+    StringBuilder sb = new StringBuilder();
     try {
-      translatedText = Translate.DEFAULT.execute("Bonjour le monde", null, Language.FINNISH);
+      for (String textLine : text) {
+        translatedText = Translate.DEFAULT.execute(textLine, from, to);
+        sb.append(translatedText);
+      }
     } catch (GoogleAPIException e) {
       e.printStackTrace();
     }
-
-    return null;
+    return sb.toString();
   }
 }
