@@ -27,21 +27,23 @@ public class GoogleTranslatorServiceImpl implements GoogleTranslatorService {
   public String getTranslation(String[] text, Language from, Language to) {
     GoogleAPI.setHttpReferrer("https://github.com/petria/hokan_ng_springboot");
 
-    // Set the Google Translate API key
-    // See: http://code.google.com/apis/language/translate/v2/getting_started.html
     Property apikey = propertyService.findFirstByPropertyName(PropertyName.PROP_SYS_GOOGLE_API_KEY);
-    log.debug("GoogleAPI key: {}", apikey.getValue());
+    if (apikey == null) {
+      log.error("GoogleAPI key missing");
+      return "GoogleAPI key missing";
+    }
+//    log.debug("GoogleAPI key: {}", apikey.getValue());
     GoogleAPI.setKey(apikey.getValue());
-    //Translate.DEFAULT.
-    String translatedText = null;
+
     StringBuilder sb = new StringBuilder();
     try {
       for (String textLine : text) {
-        translatedText = Translate.DEFAULT.execute(textLine, from, to);
+        String translatedText = Translate.DEFAULT.execute(textLine, from, to);
         sb.append(translatedText);
       }
     } catch (GoogleAPIException e) {
-      e.printStackTrace();
+      log.error("GoogleAPI", e);
+      return e.getMessage();
     }
     return sb.toString();
   }
