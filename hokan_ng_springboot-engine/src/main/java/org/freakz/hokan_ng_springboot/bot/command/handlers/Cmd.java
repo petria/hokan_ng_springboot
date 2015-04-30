@@ -87,7 +87,6 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
     } catch (JSAPException e) {
       log.error("Error registering command parameter", e);
     }
-
   }
 
 
@@ -134,12 +133,7 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
   }
 
   protected String buildSeeAlso(Cmd cmd) {
-    Comparator<Cmd> comparator = new Comparator<Cmd>() {
-      @Override
-      public int compare(Cmd cmd1, Cmd cmd2) {
-        return cmd1.getName().compareTo(cmd2.getName());
-      }
-    };
+    Comparator<Cmd> comparator = (cmd1, cmd2) -> cmd1.getName().compareTo(cmd2.getName());
 
     String seeAlsoGroups = "";
     for (HelpGroup group : getCmdHelpGroups(cmd)) {
@@ -321,7 +315,7 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
   }
 
   public ServiceResponse doServicesRequest(ServiceRequestType requestType, IrcMessageEvent ircEvent, String... parameters) {
-    ServiceRequest request = new ServiceRequest(requestType, ircEvent, parameters);
+    ServiceRequest request = new ServiceRequest(requestType, ircEvent, new CommandArgs(ircEvent.getMessage()), parameters);
     ObjectMessage objectMessage = jmsSender.sendAndGetReply(HokanModule.HokanServices.getQueueName(), "SERVICE_REQUEST", request, false);
     try {
       JmsMessage jmsMessage = (JmsMessage) objectMessage.getObject();

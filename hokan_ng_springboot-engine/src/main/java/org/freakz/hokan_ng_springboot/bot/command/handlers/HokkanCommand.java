@@ -19,4 +19,5 @@ public interface HokkanCommand {
 
   void handleLine(InternalRequest request, EngineResponse response) throws Exception;
 
+
 }

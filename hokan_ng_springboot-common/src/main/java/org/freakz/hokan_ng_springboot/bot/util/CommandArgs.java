@@ -1,5 +1,7 @@
 package org.freakz.hokan_ng_springboot.bot.util;
 
+import java.io.Serializable;
+
 /**
  * User: petria
  * Date: 11/7/13
@@ -7,12 +9,14 @@ package org.freakz.hokan_ng_springboot.bot.util;
  *
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
-public class CommandArgs {
+public class CommandArgs implements Serializable {
 
+  private final String line;
   private final String[] args;
 
   public CommandArgs(String line) {
-    args = line.split(" ");
+    this.line = line;
+    this.args = line.split(" ");
   }
 
   public int getArgCount() {
@@ -53,5 +57,8 @@ public class CommandArgs {
     return sb.toString();
   }
 
+  public String getLine() {
+    return line;
+  }
 
 }

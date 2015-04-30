@@ -1,5 +1,7 @@
 package org.freakz.hokan_ng_springboot.bot.events;
 
+import org.freakz.hokan_ng_springboot.bot.util.CommandArgs;
+
 import java.io.Serializable;
 
 /**
@@ -11,11 +13,13 @@ public class ServiceRequest implements Serializable {
 
   private final ServiceRequestType type;
   private final IrcMessageEvent ircMessageEvent;
+  private final CommandArgs commandArgs;
   private final String[] parameters;
 
-  public ServiceRequest(ServiceRequestType type, IrcMessageEvent ircMessageEvent, String... parameters) {
+  public ServiceRequest(ServiceRequestType type, IrcMessageEvent ircMessageEvent, CommandArgs commandArgs, String... parameters) {
     this.type = type;
     this.ircMessageEvent = ircMessageEvent;
+    this.commandArgs = commandArgs;
     this.parameters = parameters;
   }
 
@@ -25,6 +29,10 @@ public class ServiceRequest implements Serializable {
 
   public IrcMessageEvent getIrcMessageEvent() {
     return ircMessageEvent;
+  }
+
+  public CommandArgs getCommandArgs() {
+    return commandArgs;
   }
 
   public String[] getParameters() {
