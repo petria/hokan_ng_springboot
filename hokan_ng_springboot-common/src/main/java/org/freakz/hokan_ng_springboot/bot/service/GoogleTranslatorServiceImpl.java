@@ -25,7 +25,7 @@ public class GoogleTranslatorServiceImpl implements GoogleTranslatorService {
 
   @Override
   public String getTranslation(String[] text, Language from, Language to) {
-    GoogleAPI.setHttpReferrer("https://github.com/petria/hokan_ng_springboot");
+    GoogleAPI.setHttpReferrer("https://github.com/petria/hokan_ng_springboot/");
 
     Property apikey = propertyService.findFirstByPropertyName(PropertyName.PROP_SYS_GOOGLE_API_KEY);
     if (apikey == null) {
