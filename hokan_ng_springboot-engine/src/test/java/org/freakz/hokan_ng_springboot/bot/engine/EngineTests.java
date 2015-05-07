@@ -14,18 +14,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @SpringApplicationConfiguration(classes = HokanNgSpringBootEngine.class)
 public class EngineTests {
 
-//  @Autowired
-//  private TranslateService translateService;
-
 //  @Test
   public void testTranslateEngFi() {
     Assert.assertTrue(true);
-/*  TODO
-
-    List<String> words = translateService.translateEngFi("gay");
-    Assert.assertNotNull(words);
-    Assert.assertTrue(words.size() > 0);*/
   }
-
 
 }
