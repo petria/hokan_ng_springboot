@@ -9,9 +9,11 @@ import org.freakz.hokan_ng_springboot.bot.jms.api.JmsServiceMessageHandler;
 import org.freakz.hokan_ng_springboot.bot.models.HoroHolder;
 import org.freakz.hokan_ng_springboot.bot.models.MetarData;
 import org.freakz.hokan_ng_springboot.bot.service.metar.MetarDataService;
+import org.freakz.hokan_ng_springboot.bot.updaters.DataUpdater;
 import org.freakz.hokan_ng_springboot.bot.updaters.UpdaterData;
 import org.freakz.hokan_ng_springboot.bot.updaters.UpdaterManagerService;
 import org.freakz.hokan_ng_springboot.bot.updaters.horo.HoroUpdater;
+import org.freakz.hokan_ng_springboot.bot.updaters.weather.WeatherData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -40,11 +42,11 @@ public class ServicesServiceMessageHandlerImpl implements JmsServiceMessageHandl
     log.debug("Handling envelope");
     ServiceRequest request = envelope.getMessageIn().getServiceRequest();
     ServiceResponse response = new ServiceResponse();
-
+    UpdaterData updaterData;
     switch (request.getType()) {
       case HORO_REQUEST:
         HoroUpdater horoUpdater = (HoroUpdater) updaterManagerService.getUpdater("horoUpdater");
-        UpdaterData updaterData = new UpdaterData();
+        updaterData = new UpdaterData();
         horoUpdater.getData(updaterData, request.getParameters());
         HoroHolder hh = (HoroHolder) updaterData.getData();
         response.setResponseData("HORO_DATA", hh);
@@ -56,6 +58,13 @@ public class ServicesServiceMessageHandlerImpl implements JmsServiceMessageHandl
       case TRANSLATE_REQUEST:
         String translated = translatorService.getTranslation(request.getParameters(), Language.AUTO_DETECT, Language.FINNISH);
         response.setResponseData("TRANSLATE_RESPONSE", translated);
+        break;
+      case WEATHER_REQUEST:
+        DataUpdater weatherUpdater = updaterManagerService.getUpdater("weatherUpdater");
+        updaterData = new UpdaterData();
+        weatherUpdater.getData(updaterData);
+        List<WeatherData> datas = (List<WeatherData>) updaterData.getData();
+        response.setResponseData("WEATHER_DATA", datas);
         break;
     }
     envelope.getMessageOut().addPayLoadObject("SERVICE_RESPONSE", response);

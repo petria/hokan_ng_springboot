@@ -2,6 +2,7 @@ package org.freakz.hokan_ng_springboot.bot.events;
 
 import org.freakz.hokan_ng_springboot.bot.models.HoroHolder;
 import org.freakz.hokan_ng_springboot.bot.models.MetarData;
+import org.freakz.hokan_ng_springboot.bot.models.WeatherData;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -39,6 +40,14 @@ public class ServiceResponse implements Serializable {
   public HoroHolder getHoroResponse() {
     HoroHolder hh = (HoroHolder) responseData.get("HORO_DATA");
     return hh;
+  }
+
+  public List<WeatherData> getWeatherResponse() {
+    List<WeatherData> dataList = (List<WeatherData>) responseData.get("WEATHER_DATA");
+    if (dataList == null) {
+      return new ArrayList<>();
+    }
+    return dataList;
   }
 
 }

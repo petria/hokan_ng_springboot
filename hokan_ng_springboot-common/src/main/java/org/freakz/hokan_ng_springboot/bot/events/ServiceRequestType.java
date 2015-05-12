@@ -8,7 +8,8 @@ public enum ServiceRequestType {
 
   HORO_REQUEST,
   METAR_REQUEST,
-  TRANSLATE_REQUEST
+  TRANSLATE_REQUEST,
+  WEATHER_REQUEST
 
 
 }
