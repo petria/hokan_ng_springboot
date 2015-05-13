@@ -67,7 +67,7 @@ public abstract class SpringJmsReceiver implements JmsMessageHandler {
         }
 
       } catch (JMSException ex) {
-        ex.printStackTrace();
+        log.error("Jms error", ex);
       }
     });
     return container;

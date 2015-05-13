@@ -1,5 +1,7 @@
 package org.freakz.hokan_ng_springboot.bot.jpa.entity;
 
+import java.io.Serializable;
+
 /**
  * User: petria
  * Date: 11/6/13
@@ -7,7 +9,7 @@ package org.freakz.hokan_ng_springboot.bot.jpa.entity;
  *
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
-public enum IrcServerConfigState {
+public enum IrcServerConfigState implements Serializable {
 
   DISCONNECTED,
   CONNECTED

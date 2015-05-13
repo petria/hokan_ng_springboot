@@ -8,6 +8,7 @@ import java.util.Date;
 
 /**
  * Created by Petri Airio on 8.4.2015.
+ *
  */
 @Entity
 @Table(name = "CHANNEL_STATS")
