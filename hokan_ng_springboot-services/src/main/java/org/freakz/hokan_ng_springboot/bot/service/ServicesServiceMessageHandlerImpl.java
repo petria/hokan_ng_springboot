@@ -8,12 +8,12 @@ import org.freakz.hokan_ng_springboot.bot.jms.JmsEnvelope;
 import org.freakz.hokan_ng_springboot.bot.jms.api.JmsServiceMessageHandler;
 import org.freakz.hokan_ng_springboot.bot.models.HoroHolder;
 import org.freakz.hokan_ng_springboot.bot.models.MetarData;
+import org.freakz.hokan_ng_springboot.bot.models.WeatherData;
 import org.freakz.hokan_ng_springboot.bot.service.metar.MetarDataService;
 import org.freakz.hokan_ng_springboot.bot.updaters.DataUpdater;
 import org.freakz.hokan_ng_springboot.bot.updaters.UpdaterData;
 import org.freakz.hokan_ng_springboot.bot.updaters.UpdaterManagerService;
 import org.freakz.hokan_ng_springboot.bot.updaters.horo.HoroUpdater;
-import org.freakz.hokan_ng_springboot.bot.updaters.weather.WeatherData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 

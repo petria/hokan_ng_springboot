@@ -1,6 +1,7 @@
 package org.freakz.hokan_ng_springboot.bot.updaters.weather;
 
 import lombok.extern.slf4j.Slf4j;
+import org.freakz.hokan_ng_springboot.bot.models.WeatherData;
 import org.freakz.hokan_ng_springboot.bot.updaters.Updater;
 import org.freakz.hokan_ng_springboot.bot.util.HttpPageFetcher;
 import org.freakz.hokan_ng_springboot.bot.util.StringStuff;
@@ -26,7 +27,7 @@ public class WeatherUpdater extends Updater {
   ApplicationContext context;
 
   private final static String URL =
-      "http://www.tiehallinto.fi/alk/tiesaa/tiesaa_maak_";
+      "http://alk.tiehallinto.fi/alk/tiesaa/tiesaa_maak_";
 
   private List<WeatherData> data;
 
