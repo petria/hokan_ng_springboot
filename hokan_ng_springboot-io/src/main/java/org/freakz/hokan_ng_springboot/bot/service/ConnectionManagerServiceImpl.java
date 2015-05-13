@@ -9,10 +9,7 @@ import org.freakz.hokan_ng_springboot.bot.ircengine.connector.AsyncConnector;
 import org.freakz.hokan_ng_springboot.bot.ircengine.connector.Connector;
 import org.freakz.hokan_ng_springboot.bot.ircengine.connector.EngineConnector;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.*;
-import org.freakz.hokan_ng_springboot.bot.jpa.service.ChannelService;
-import org.freakz.hokan_ng_springboot.bot.jpa.service.IrcServerConfigService;
-import org.freakz.hokan_ng_springboot.bot.jpa.service.NetworkService;
-import org.freakz.hokan_ng_springboot.bot.jpa.service.PropertyService;
+import org.freakz.hokan_ng_springboot.bot.jpa.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
@@ -41,6 +38,9 @@ public class ConnectionManagerServiceImpl implements ConnectionManagerService, E
   private IrcServerConfigService ircServerConfigService;
 
   @Autowired
+  private LoggedInUserService loggedInUserService;
+
+  @Autowired
   private NetworkService networkService;
 
   @Autowired
@@ -53,9 +53,15 @@ public class ConnectionManagerServiceImpl implements ConnectionManagerService, E
   private Map<String, Connector> connectors = new HashMap<>();
   private Map<String, IrcServerConfig> configuredServers;
 
+
+  private void invalidateLoggedInUsers() {
+    loggedInUserService.invalidateAll();
+  }
+
   @PostConstruct
   public void postInit() throws HokanException {
     updateServerMap();
+    invalidateLoggedInUsers();
     //		propertyService.setProperty(PropertyName.PROP_SYS_CORE_IO_UPTIME, "" + new Date().getTime());
     //		userService.resetLoggedInUsers();
     //		userService.resetOlpos();

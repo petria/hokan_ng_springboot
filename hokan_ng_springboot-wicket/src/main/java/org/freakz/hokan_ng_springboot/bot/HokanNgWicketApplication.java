@@ -94,7 +94,6 @@ public class HokanNgWicketApplication extends AuthenticatedWebApplication {
     return MySignInPage.class;
   }
 
-
   public NetworkService getNetworkService() {
     return networkService;
   }

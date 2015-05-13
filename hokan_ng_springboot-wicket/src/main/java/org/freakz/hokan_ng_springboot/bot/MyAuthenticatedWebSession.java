@@ -79,4 +79,10 @@ public class MyAuthenticatedWebSession extends AuthenticatedWebSession {
     return this.loggedInUser;
   }
 
+  @Override
+  public void onInvalidate() {
+    super.onInvalidate();
+    log.info("invalidate: {}", loggedInUser);
+  }
+
 }

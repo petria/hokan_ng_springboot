@@ -3,6 +3,7 @@ package org.freakz.hokan_ng_springboot.bot.jpa.service;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.LoggedInState;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.LoggedInUser;
 import org.freakz.hokan_ng_springboot.bot.jpa.repository.LoggedInUserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.List;
 @Service
 public class LoggedInUserRepositoryService implements LoggedInUserService {
 
+  @Autowired
   private LoggedInUserRepository repository;
 
   @Override
