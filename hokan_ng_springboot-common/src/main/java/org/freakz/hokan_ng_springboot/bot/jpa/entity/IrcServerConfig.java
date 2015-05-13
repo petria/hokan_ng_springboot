@@ -10,7 +10,7 @@ import java.io.Serializable;
  * @author Petri Airio (petri.j.airio@gmail.com)
  */
 @Entity
-@Table(name = "IRCSERVERCONFIG")
+@Table(name = "IRC_SERVER_CONFIG")
 public class IrcServerConfig implements Serializable {
 
   @Id

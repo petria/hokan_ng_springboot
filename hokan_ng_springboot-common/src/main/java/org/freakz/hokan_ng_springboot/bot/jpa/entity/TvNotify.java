@@ -9,7 +9,7 @@ import java.io.Serializable;
  * Time: 5:53 PM
  */
 @Entity
-@Table(name = "TVNOTIFY")
+@Table(name = "TV_NOTIFY")
 public class TvNotify implements Serializable {
 
   @Id

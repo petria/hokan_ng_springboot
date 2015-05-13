@@ -9,7 +9,7 @@ import java.util.Date;
  * @author Petri Airio (petri.j.airio@gmail.com)
  */
 @Entity
-@Table(name = "SEARCHREPLACE")
+@Table(name = "SEARCH_REPLACE")
 public class SearchReplace {
 
   @Id

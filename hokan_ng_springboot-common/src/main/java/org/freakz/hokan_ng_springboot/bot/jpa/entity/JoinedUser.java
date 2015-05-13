@@ -10,7 +10,7 @@ import javax.persistence.*;
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
 @Entity
-@Table(name = "JOINEDUSER")
+@Table(name = "JOINED_USER")
 public class JoinedUser {
 
   @Id

@@ -18,14 +18,14 @@ public class LoggedInUser implements Serializable {
   private long id;
 
   @ManyToOne
-  @JoinColumn(name = "USER", referencedColumnName = "ID", nullable = false)
+  @JoinColumn(name = "USER_ID_FK", referencedColumnName = "ID", nullable = false)
   private User user;
 
   @Column(name = "LOGIN_TIME")
   private Date loginTime;
 
-  @Column(name = "FROM")
-  private String from;
+  @Column(name = "CONNECTED_FROM")
+  private String connectedFrom;
 
   @Column(name = "LOGGED_IN_STATE", nullable = false)
   @Enumerated(EnumType.STRING)
@@ -50,12 +50,12 @@ public class LoggedInUser implements Serializable {
     this.loginTime = loginTime;
   }
 
-  public String getFrom() {
-    return from;
+  public String getConnectedFrom() {
+    return connectedFrom;
   }
 
-  public void setFrom(String from) {
-    this.from = from;
+  public void setConnectedFrom(String connectedFrom) {
+    this.connectedFrom = connectedFrom;
   }
 
   public User getUser() {

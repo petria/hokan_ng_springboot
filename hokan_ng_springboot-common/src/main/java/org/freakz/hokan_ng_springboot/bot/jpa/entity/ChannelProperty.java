@@ -17,7 +17,7 @@ import java.io.Serializable;
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
 @Entity
-@Table(name = "CHANNELPROPERTIES")
+@Table(name = "CHANNEL_PROPERTIES")
 public class ChannelProperty extends PropertyBase implements Serializable {
 
   @ManyToOne

@@ -11,7 +11,7 @@ import java.util.Date;
  * @author Petri Airio (petri.j.airio@gmail.com)
  */
 @Entity
-@Table(name = "USERCHANNEL")
+@Table(name = "USER_CHANNEL")
 public class UserChannel implements Serializable {
 
   @Id
