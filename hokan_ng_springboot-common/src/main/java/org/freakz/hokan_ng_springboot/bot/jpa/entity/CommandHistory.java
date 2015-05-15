@@ -1,7 +1,5 @@
 package org.freakz.hokan_ng_springboot.bot.jpa.entity;
 
-import org.freakz.hokan_ng_springboot.bot.enums.HokanModule;
-
 import javax.persistence.*;
 import java.util.Date;
 
@@ -18,17 +16,27 @@ public class CommandHistory {
   @Column(name = "ID")
   private long id;
 
+  @Column(name = "START_TIME")
   private Date startTime;
 
+  @Column(name = "END_TIME")
   private Date endTime;
 
-  private HokanModule hokanModule;
+  @Column(name = "HOKAN_MODULE")
+  private String hokanModule;
 
+  @Column(name = "PID")
   private long pid;
 
+  @Column(name = "ARGS")
   private String args;
 
+  @Column(name = "RUNNABLE")
   private String runnable;
+
+  @Column(name = "COMMAND_STATUS", nullable = false)
+  @Enumerated(EnumType.STRING)
+  private CommandStatus status;
 
   public CommandHistory() {
   }
@@ -79,5 +87,21 @@ public class CommandHistory {
 
   public void setRunnable(String runnable) {
     this.runnable = runnable;
+  }
+
+  public String getHokanModule() {
+    return hokanModule;
+  }
+
+  public void setHokanModule(String hokanModule) {
+    this.hokanModule = hokanModule;
+  }
+
+  public CommandStatus getStatus() {
+    return status;
+  }
+
+  public void setStatus(CommandStatus status) {
+    this.status = status;
   }
 }

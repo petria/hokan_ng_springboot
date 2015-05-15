@@ -3,6 +3,8 @@ package org.freakz.hokan_ng_springboot.bot.updaters;
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.cmdpool.CommandPool;
 import org.freakz.hokan_ng_springboot.bot.cmdpool.CommandRunnable;
+import org.freakz.hokan_ng_springboot.bot.enums.HokanModule;
+import org.freakz.hokan_ng_springboot.bot.service.HokanModuleService;
 import org.freakz.hokan_ng_springboot.bot.util.StringStuff;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -28,6 +30,10 @@ public class UpdateManagerServiceImpl implements UpdaterManagerService, CommandR
   @Autowired
   private CommandPool commandPool;
 
+  @Autowired
+  private HokanModuleService hokanModuleService;
+
+
   private Map<String, DataUpdater> handlers;
   private boolean doRun;
   private boolean firstRun = true;
@@ -39,6 +45,7 @@ public class UpdateManagerServiceImpl implements UpdaterManagerService, CommandR
 
   @PostConstruct
   public void refreshHandlers() {
+    hokanModuleService.setHokanModule(HokanModule.HokanServices);
     handlers = context.getBeansOfType(DataUpdater.class);
     start();
   }

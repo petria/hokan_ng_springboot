@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Slf4j
 public class HokanNgSpringBootEngine {
 
+
   public static void main(String[] args) {
     SpringApplication.run(HokanNgSpringBootEngine.class, args);
   }

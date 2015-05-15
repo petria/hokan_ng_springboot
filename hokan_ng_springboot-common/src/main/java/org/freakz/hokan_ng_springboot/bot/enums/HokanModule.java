@@ -8,7 +8,8 @@ public enum HokanModule {
 
   HokanIo("HokanNGIoQueue"),
   HokanEngine("HokanNGEngineQueue"),
-  HokanServices("HokanNGServicesQueue");
+  HokanServices("HokanNGServicesQueue"),
+  HokanWicket("HokanNGWicketQueue");
 
   private final String queueName;
 
