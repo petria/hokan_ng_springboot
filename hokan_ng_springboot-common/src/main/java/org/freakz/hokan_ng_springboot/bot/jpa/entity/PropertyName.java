@@ -25,6 +25,7 @@ public enum PropertyName {
   PROP_SYS_HTTP_USER_AGENT("sys.HttpUserAgent"),
   PROP_SYS_IGNORE("sys.Ignore"),
   PROP_SYS_MAX_CONNECTION_RETRY("sys.MaxConnectionRetry"),
+  PROP_SYS_PID_COUNTER("sys.PidCounter"),
   PROP_SYS_RAWLOG("sys.RawLog"),
 
   PROP_CHANNEL_DO_JOIN_MESSAGE("channel.DoJoinMessage"),

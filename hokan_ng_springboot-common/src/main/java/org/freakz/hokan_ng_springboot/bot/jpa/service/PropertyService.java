@@ -18,4 +18,9 @@ public interface PropertyService {
   void delete(Property object);
 
   Property findFirstByPropertyName(PropertyName propertyName);
+
+  String getPropertyAsString(PropertyName propertyName, String defaultValue);
+
+  int getPropertyAsInt(PropertyName propertyName, int defaultValue);
+
 }

@@ -1,7 +1,11 @@
 package org.freakz.hokan_ng_springboot.bot.cmdpool;
 
 import lombok.extern.slf4j.Slf4j;
+import org.freakz.hokan_ng_springboot.bot.jpa.entity.Property;
+import org.freakz.hokan_ng_springboot.bot.jpa.entity.PropertyName;
+import org.freakz.hokan_ng_springboot.bot.jpa.service.PropertyService;
 import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -20,7 +24,8 @@ import java.util.concurrent.Executors;
 @Slf4j
 public class CommandPoolImpl implements CommandPool, DisposableBean {
 
-	private static long pidCounter = 1;
+  @Autowired
+	private PropertyService propertyService;
 
 	private ExecutorService executor = Executors.newCachedThreadPool();
 	private List<CommandRunner> activeRunners = new ArrayList<>();
@@ -29,6 +34,17 @@ public class CommandPoolImpl implements CommandPool, DisposableBean {
 	public CommandPoolImpl() {
 	}
 
+  private long getPid() {
+    Property property = propertyService.findFirstByPropertyName(PropertyName.PROP_SYS_PID_COUNTER);
+    if (property == null) {
+      property = new Property(PropertyName.PROP_SYS_PID_COUNTER, "1", "");
+    }
+    long pid = Long.parseLong(property.getValue());
+    property.setValue("" + pid + 1);
+    propertyService.save(property);
+    return pid;
+  }
+
 	@Override
 	public void startRunnable(CommandRunnable runnable) {
 		startRunnable(runnable, null);
@@ -36,18 +52,18 @@ public class CommandPoolImpl implements CommandPool, DisposableBean {
 
 	@Override
 	public void startRunnable(CommandRunnable runnable, Object args) {
-		CommandRunner runner = new CommandRunner(pidCounter, runnable, this, args);
+    long pid = getPid();
+		CommandRunner runner = new CommandRunner(pid, runnable, this, args);
 		activeRunners.add(runner);
 		this.executor.execute(runner);
-		pidCounter++;
 	}
 
 	@Override
 	public void startSyncRunnable(CommandRunnable runnable, Object... args) {
-		CommandRunner runner = new CommandRunner(pidCounter, runnable, this, args);
+    long pid = getPid();
+		CommandRunner runner = new CommandRunner(pid, runnable, this, args);
 		activeRunners.add(runner);
 		runner.run();
-		pidCounter++;
 	}
 
 	@Override

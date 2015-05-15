@@ -39,4 +39,24 @@ public class PropertyRepositoryService implements PropertyService {
   public Property findFirstByPropertyName(PropertyName propertyName) {
     return repository.findFirstByPropertyName(propertyName);
   }
+
+  @Override
+  public String getPropertyAsString(PropertyName propertyName, String defaultValue) {
+    Property property = findFirstByPropertyName(propertyName);
+    if (property == null) {
+      return defaultValue;
+    }
+    return property.getValue();
+  }
+
+  @Override
+  public int getPropertyAsInt(PropertyName propertyName, int defaultValue) {
+    Property property = findFirstByPropertyName(propertyName);
+    if (property == null) {
+      return defaultValue;
+    }
+    return Integer.parseInt(property.getValue());
+  }
+
+
 }
