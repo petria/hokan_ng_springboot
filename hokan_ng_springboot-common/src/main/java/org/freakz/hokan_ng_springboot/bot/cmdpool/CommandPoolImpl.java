@@ -1,14 +1,17 @@
 package org.freakz.hokan_ng_springboot.bot.cmdpool;
 
 import lombok.extern.slf4j.Slf4j;
+import org.freakz.hokan_ng_springboot.bot.jpa.entity.CommandHistory;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.Property;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.PropertyName;
+import org.freakz.hokan_ng_springboot.bot.jpa.service.CommandHistoryService;
 import org.freakz.hokan_ng_springboot.bot.jpa.service.PropertyService;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -27,9 +30,11 @@ public class CommandPoolImpl implements CommandPool, DisposableBean {
   @Autowired
 	private PropertyService propertyService;
 
+  @Autowired
+  private CommandHistoryService commandHistoryService;
+
 	private ExecutorService executor = Executors.newCachedThreadPool();
 	private List<CommandRunner> activeRunners = new ArrayList<>();
-	private List<CommandHistory> commandHistory = new ArrayList<>();
 
 	public CommandPoolImpl() {
 	}
@@ -40,7 +45,7 @@ public class CommandPoolImpl implements CommandPool, DisposableBean {
       property = new Property(PropertyName.PROP_SYS_PID_COUNTER, "1", "");
     }
     long pid = Long.parseLong(property.getValue());
-    property.setValue("" + pid + 1);
+    property.setValue("" + (pid + 1));
     propertyService.save(property);
     return pid;
   }
@@ -53,7 +58,15 @@ public class CommandPoolImpl implements CommandPool, DisposableBean {
 	@Override
 	public void startRunnable(CommandRunnable runnable, Object args) {
     long pid = getPid();
-		CommandRunner runner = new CommandRunner(pid, runnable, this, args);
+    CommandHistory history = new CommandHistory();
+    history.setPid(pid);
+    history.setStartTime(new Date());
+    history.setArgs(args + "");
+    history.setRunnable(runnable.getClass().toString());
+    commandHistoryService.save(history);
+
+		CommandRunner runner = new CommandRunner(pid, runnable, this, args, history);
+
 		activeRunners.add(runner);
 		this.executor.execute(runner);
 	}
@@ -61,13 +74,21 @@ public class CommandPoolImpl implements CommandPool, DisposableBean {
 	@Override
 	public void startSyncRunnable(CommandRunnable runnable, Object... args) {
     long pid = getPid();
-		CommandRunner runner = new CommandRunner(pid, runnable, this, args);
+    CommandHistory history = new CommandHistory();
+    history.setPid(pid);
+    history.setStartTime(new Date());
+    history.setArgs(args.toString());
+    history.setRunnable(runnable.getClass().toString());
+    commandHistoryService.save(history);
+		CommandRunner runner = new CommandRunner(pid, runnable, this, args, history);
 		activeRunners.add(runner);
 		runner.run();
 	}
 
 	@Override
-	public void runnerFinished(CommandRunner runner) {
+	public void runnerFinished(CommandRunner runner, CommandHistory history) {
+    history.setEndTime(new Date());
+    commandHistoryService.save(history);
 		this.activeRunners.remove(runner);
 	}
 
@@ -82,13 +103,4 @@ public class CommandPoolImpl implements CommandPool, DisposableBean {
 		log.info("Runnables size: {}", runnableList.size());
 	}
 
-	@Override
-	public void addCommandHistory(CommandHistory history) {
-		this.commandHistory.add(0, history);
-	}
-
-	@Override
-	public List<CommandHistory> getCommandHistory() {
-		return this.commandHistory;
-	}
 }
