@@ -10,6 +10,5 @@ public enum CommandStatus implements Serializable {
 
   RUNNING,
   FINISHED,
-  ABORTED
-
+  CRASHED
 }

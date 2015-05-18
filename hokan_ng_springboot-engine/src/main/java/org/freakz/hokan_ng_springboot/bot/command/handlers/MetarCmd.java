@@ -59,13 +59,6 @@ public class MetarCmd extends Cmd {
     } else {
       response.addResponse("No Metar data found with: " + station);
     }
-    try {
-      Thread.sleep(10 * 1000);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
-    //
-
   }
 
 }

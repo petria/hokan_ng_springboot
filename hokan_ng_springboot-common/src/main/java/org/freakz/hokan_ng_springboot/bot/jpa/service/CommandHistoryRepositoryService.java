@@ -5,6 +5,8 @@ import org.freakz.hokan_ng_springboot.bot.jpa.repository.CommandHistoryRepositor
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by Petri Airio on 15.5.2015.
  *
@@ -18,6 +20,11 @@ public class CommandHistoryRepositoryService implements CommandHistoryService {
   @Override
   public CommandHistory save(CommandHistory history) {
     return repository.save(history);
+  }
+
+  @Override
+  public List<CommandHistory> findByHokanModule(String module) {
+    return repository.findByHokanModule(module);
   }
 
 }
