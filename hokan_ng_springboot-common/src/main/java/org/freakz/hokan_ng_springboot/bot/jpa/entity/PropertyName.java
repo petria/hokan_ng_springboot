@@ -14,10 +14,6 @@ public enum PropertyName {
 
   PROP_SYS_ACCESS_CONTROL("sys.AccessControl"),
   PROP_SYS_BOT_NICK("sys.BotNick"),
-  PROP_SYS_CORE_ENGINE_UPTIME("sys.CoreEngineUptime"),
-  PROP_SYS_CORE_ENGINE_RUNTIME("sys.CoreEngineRuntime"),
-  PROP_SYS_CORE_IO_UPTIME("sys.CoreIoUptime"),
-  PROP_SYS_CORE_IO_RUNTIME("sys.CoreIoRuntime"),
   PROP_SYS_GOOGLE_API_KEY("sys.GoogleApiKey"),
   PROP_SYS_EXEC("sys.Exec"),
   PROP_SYS_HTTP_PROXY_HOST("sys.HttpProxyHost"),
@@ -27,6 +23,10 @@ public enum PropertyName {
   PROP_SYS_MAX_CONNECTION_RETRY("sys.MaxConnectionRetry"),
   PROP_SYS_PID_COUNTER("sys.PidCounter"),
   PROP_SYS_RAWLOG("sys.RawLog"),
+  PROP_SYS_SESSION_ID_ENGINE("sys.SessionIdEngine"),
+  PROP_SYS_SESSION_ID_IO("sys.SessionIdIo"),
+  PROP_SYS_SESSION_ID_SERVICES("sys.SessionIdServices"),
+  PROP_SYS_SESSION_ID_WICKET("sys.SessionIdWicket"),
 
   PROP_CHANNEL_DO_JOIN_MESSAGE("channel.DoJoinMessage"),
   PROP_CHANNEL_DO_KICK_REJOIN("channel.DoKickRejoin"),
@@ -35,6 +35,7 @@ public enum PropertyName {
   PROP_CHANNEL_DO_STATS("channel.DoStats"),
   PROP_CHANNEL_DO_URL_TITLES("channel.DoUrlTitles"),
   PROP_CHANNEL_DO_WHOLELINE_TRICKERS("channel.DoWholeLineTrickers");
+
   private final String text;
 
   /**

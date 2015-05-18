@@ -101,7 +101,7 @@ public class CommandPoolImpl implements CommandPool, DisposableBean {
 
 	@Override
 	public void runnerFinished(CommandRunner runner, CommandHistory history, Exception error) {
-    log.info("Finished: runner {} - history {} - error {}", runner, history, error);
+    log.info("Finished: runner {} - history {}", runner, history);
     if (error != null) {
       history.setStatus(CommandStatus.ERROR);
       StringWriter sw = new StringWriter();

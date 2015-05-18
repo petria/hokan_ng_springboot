@@ -34,7 +34,7 @@ public class CommandRunner implements Runnable {
 			this.runnable.handleRun(myPid, args);
       this.commandPool.runnerFinished(this, this.history, null);
     } catch (Exception e) {
-			log.error("CommandRunner error", e);
+			log.error("CommandRunner error");
       this.commandPool.runnerFinished(this, this.history, e);
 		}
 
