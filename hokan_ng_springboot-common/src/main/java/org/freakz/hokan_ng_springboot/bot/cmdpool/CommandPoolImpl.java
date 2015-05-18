@@ -12,6 +12,8 @@ import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -63,11 +65,18 @@ public class CommandPoolImpl implements CommandPool, DisposableBean {
   private CommandHistory createCommmandHistory(long pid, CommandRunnable runnable, Object args) {
     CommandHistory history = new CommandHistory();
     history.setHokanModule(hokanModuleService.getHokanModule().toString());
+    history.setSessionId(hokanModuleService.getSessionId());
     history.setPid(pid);
     history.setStartTime(new Date());
-    history.setArgs(args + "");
+    if (args == null) {
+      history.setArgs("<none>");
+    } else {
+      history.setArgs(args.toString());
+    }
     history.setRunnable(runnable.getClass().toString());
     history.setStatus(CommandStatus.RUNNING);
+    history.setStartedBy("<system>");
+    history.setErrorException("");
     commandHistoryService.save(history);
     return history;
   }
@@ -91,9 +100,18 @@ public class CommandPoolImpl implements CommandPool, DisposableBean {
 	}
 
 	@Override
-	public void runnerFinished(CommandRunner runner, CommandHistory history) {
+	public void runnerFinished(CommandRunner runner, CommandHistory history, Exception error) {
+    log.info("Finished: runner {} - history {} - error {}", runner, history, error);
+    if (error != null) {
+      history.setStatus(CommandStatus.ERROR);
+      StringWriter sw = new StringWriter();
+      error.printStackTrace(new PrintWriter(sw));
+      history.setErrorException(sw.getBuffer().toString());
+    } else {
+      history.setStatus(CommandStatus.FINISHED);
+      history.setErrorException("");
+    }
     history.setEndTime(new Date());
-    history.setStatus(CommandStatus.FINISHED);
     commandHistoryService.save(history);
 		this.activeRunners.remove(runner);
 	}

@@ -90,6 +90,9 @@ public class UpdateManagerServiceImpl implements UpdaterManagerService, CommandR
         Calendar now = new GregorianCalendar();
         Calendar next = updater.getNextUpdateTime();
         if (firstRun || now.after(next)) {
+          if (updater.getStatus() == UpdaterStatus.CRASHED) {
+            continue;
+          }
           if (updater.getStatus() != UpdaterStatus.UPDATING) {
             updater.updateData(this.commandPool);
           }
@@ -97,7 +100,7 @@ public class UpdateManagerServiceImpl implements UpdaterManagerService, CommandR
       }
       firstRun = false;
       try {
-        Thread.sleep(5000 * 2);
+        Thread.sleep(1000 * 10);
       } catch (InterruptedException e) {
         // ignore
       }

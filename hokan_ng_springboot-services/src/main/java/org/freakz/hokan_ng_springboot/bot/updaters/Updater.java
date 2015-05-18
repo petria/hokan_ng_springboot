@@ -3,6 +3,7 @@ package org.freakz.hokan_ng_springboot.bot.updaters;
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.cmdpool.CommandPool;
 import org.freakz.hokan_ng_springboot.bot.cmdpool.CommandRunnable;
+import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
 import org.springframework.stereotype.Component;
 
 import java.util.Calendar;
@@ -55,7 +56,7 @@ public abstract class Updater implements DataUpdater, CommandRunnable {
   }
 
   @Override
-  public void handleRun(long myPid, Object args) {
+  public void handleRun(long myPid, Object args) throws HokanException {
     try {
       status = UpdaterStatus.UPDATING;
       doUpdateData();
@@ -64,6 +65,7 @@ public abstract class Updater implements DataUpdater, CommandRunnable {
     } catch (Exception e) {
       log.error("Updater failed", e);
       status = UpdaterStatus.CRASHED;
+      throw new HokanException("Updater failed", e);
     } finally {
       updateCount++;
       lastUpdate = new GregorianCalendar();

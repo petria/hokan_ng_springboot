@@ -16,6 +16,10 @@ public class CommandHistory {
   @Column(name = "ID")
   private long id;
 
+  @Column(name = "SESSION_ID")
+  private long sessionId;
+
+
   @Column(name = "START_TIME")
   private Date startTime;
 
@@ -38,6 +42,13 @@ public class CommandHistory {
   @Enumerated(EnumType.STRING)
   private CommandStatus status;
 
+  @Column(name = "STARTED_BY")
+  private String startedBy;
+
+  @Column(name = "ERROR_EXCEPTION", length = 4096)
+  private String errorException;
+
+
   public CommandHistory() {
   }
 
@@ -47,6 +58,14 @@ public class CommandHistory {
 
   public void setId(long id) {
     this.id = id;
+  }
+
+  public long getSessionId() {
+    return sessionId;
+  }
+
+  public void setSessionId(long sessionId) {
+    this.sessionId = sessionId;
   }
 
   public Date getStartTime() {
@@ -103,5 +122,21 @@ public class CommandHistory {
 
   public void setStatus(CommandStatus status) {
     this.status = status;
+  }
+
+  public String getStartedBy() {
+    return startedBy;
+  }
+
+  public void setStartedBy(String startedBy) {
+    this.startedBy = startedBy;
+  }
+
+  public String getErrorException() {
+    return errorException;
+  }
+
+  public void setErrorException(String errorException) {
+    this.errorException = errorException;
   }
 }

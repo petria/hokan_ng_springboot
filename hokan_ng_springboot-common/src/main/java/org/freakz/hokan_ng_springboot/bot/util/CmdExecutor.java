@@ -1,6 +1,7 @@
 package org.freakz.hokan_ng_springboot.bot.util;
 
 import lombok.extern.slf4j.Slf4j;
+import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -12,7 +13,7 @@ public class CmdExecutor {
 
   private List<String> output;
 
-  public CmdExecutor(String cmd, String inputEncoding) {
+  public CmdExecutor(String cmd, String inputEncoding) throws HokanException {
 
     Process p;
     BufferedReader br;
@@ -36,8 +37,7 @@ public class CmdExecutor {
       p.destroy();
 
     } catch (Exception e) {
-      log.error("Exception", e);
-      output.add("ERROR");
+      throw new HokanException(e);
     }
   }
 

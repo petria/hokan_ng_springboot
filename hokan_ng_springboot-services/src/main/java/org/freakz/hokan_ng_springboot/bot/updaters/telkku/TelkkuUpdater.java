@@ -99,7 +99,6 @@ public class TelkkuUpdater extends Updater {
 
   @Override
   public void doUpdateData() throws Exception {
-    try {
       if (getUpdateCount() == 0) {
         loadOldFetchFile();
       }
@@ -111,9 +110,6 @@ public class TelkkuUpdater extends Updater {
       this.fileUtil.copyFile(fileName, OLD_FETCH_FILE);
       this.fileUtil.deleteTmpFile(fileName);
       this.channelNames = channelNames;
-    } catch (Exception e) {
-      log.error("Update failed", e);
-    }
   }
 
   @Override

@@ -19,7 +19,7 @@ public interface CommandPool {
 
 	void startSyncRunnable(CommandRunnable runnable, Object... args);
 
-	void runnerFinished(CommandRunner runner, CommandHistory history);
+	void runnerFinished(CommandRunner runner, CommandHistory history, Exception error);
 
 	List<CommandRunner> getActiveRunners();
 

@@ -1,7 +1,6 @@
 package org.freakz.hokan_ng_springboot.bot.cmdpool;
 
 import lombok.extern.slf4j.Slf4j;
-import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.CommandHistory;
 
 /**
@@ -33,10 +32,12 @@ public class CommandRunner implements Runnable {
 		Thread.currentThread().setName("[" + myPid + "] CommandRunner: " + runnable);
 		try {
 			this.runnable.handleRun(myPid, args);
-		} catch (HokanException e) {
+      this.commandPool.runnerFinished(this, this.history, null);
+    } catch (Exception e) {
 			log.error("CommandRunner error", e);
+      this.commandPool.runnerFinished(this, this.history, e);
 		}
-		this.commandPool.runnerFinished(this, this.history);
+
 	}
 
 	@Override
