@@ -27,4 +27,9 @@ public class CommandHistoryRepositoryService implements CommandHistoryService {
     return repository.findByHokanModule(module);
   }
 
+  @Override
+  public List<CommandHistory> findByHokanModuleAndSessionId(String module, String sessionId) {
+    return repository.findByHokanModuleAndSessionId(module, Long.parseLong(sessionId));
+  }
+
 }

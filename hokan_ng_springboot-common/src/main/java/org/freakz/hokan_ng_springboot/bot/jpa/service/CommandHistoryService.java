@@ -12,4 +12,7 @@ public interface CommandHistoryService {
   CommandHistory save(CommandHistory history);
 
   List<CommandHistory> findByHokanModule(String module);
+
+  List<CommandHistory> findByHokanModuleAndSessionId(String module, String sessionId);
+
 }

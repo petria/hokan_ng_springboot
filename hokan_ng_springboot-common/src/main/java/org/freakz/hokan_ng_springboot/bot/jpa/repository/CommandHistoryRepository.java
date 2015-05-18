@@ -13,4 +13,6 @@ public interface CommandHistoryRepository extends JpaRepository<CommandHistory, 
 
   List<CommandHistory> findByHokanModule(String module);
 
+  List<CommandHistory> findByHokanModuleAndSessionId(String module, long sessionId);
+
 }
