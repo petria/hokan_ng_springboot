@@ -27,6 +27,7 @@ public enum PropertyName {
   PROP_SYS_SESSION_ID_IO("sys.SessionIdIo"),
   PROP_SYS_SESSION_ID_SERVICES("sys.SessionIdServices"),
   PROP_SYS_SESSION_ID_WICKET("sys.SessionIdWicket"),
+  PROP_SYS_TV_XML_DATA_WATCH_DIR("sys.TvXmlDataWatchDir"),
 
   PROP_CHANNEL_DO_JOIN_MESSAGE("channel.DoJoinMessage"),
   PROP_CHANNEL_DO_KICK_REJOIN("channel.DoKickRejoin"),
@@ -39,9 +40,10 @@ public enum PropertyName {
   private final String text;
 
   /**
-   * @param text
+   *
+    * @param text property name
    */
-  private PropertyName(String text) {
+  PropertyName(String text) {
     this.text = text;
   }
 

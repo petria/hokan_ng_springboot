@@ -75,6 +75,11 @@ public class TelkkuUpdater extends Updater {
     return outputFile.getAbsolutePath();
   }
 
+  private void startTvXmlDataWatcher() {
+
+  }
+
+
   private void loadOldFetchFile() throws Exception {
     File f = new File(OLD_FETCH_FILE);
     if (!f.exists()) {
