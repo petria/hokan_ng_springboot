@@ -15,6 +15,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -49,9 +51,19 @@ public class PsCmd extends Cmd {
       }
     }
     if (allRunning.size() > 0) {
-      response.addResponse("%2s - %-13s - %s\n", "PID", "MODULE", "CLASS");
+      Comparator<CommandHistory> comparator = new Comparator<CommandHistory>() {
+        @Override
+        public int compare(CommandHistory o1, CommandHistory o2) {
+          Long pid1 = o1.getPid();
+          Long pid2 = o2.getPid();
+          return pid1.compareTo(pid2);
+        }
+      };
+      Collections.sort(allRunning, comparator);
+
+      response.addResponse("%2s - %10s - %-13s - %s\n", "PID", "STARTED_BY", "MODULE", "CLASS");
       for (CommandHistory cmd : allRunning) {
-        response.addResponse("%2d - %-13s - %s\n", cmd.getPid(), cmd.getHokanModule(), cmd.getRunnable().replaceAll("class org.freakz.hokan_ng_springboot.bot.", ""));
+        response.addResponse("%2d - %10s - %-13s - %s\n", cmd.getPid(), cmd.getStartedBy(), cmd.getHokanModule(), cmd.getRunnable().replaceAll("class org.freakz.hokan_ng_springboot.bot.", ""));
       }
     }
 

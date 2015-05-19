@@ -13,11 +13,11 @@ import java.util.List;
  */
 public interface CommandPool {
 
-	void startRunnable(CommandRunnable runnable, Object args);
+	void startRunnable(CommandRunnable runnable, String startedBy, Object args);
 
-	void startRunnable(CommandRunnable runnable);
+	void startRunnable(CommandRunnable runnable, String startedBy);
 
-	void startSyncRunnable(CommandRunnable runnable, Object... args);
+	void startSyncRunnable(CommandRunnable runnable, String startedBy, Object... args);
 
 	void runnerFinished(CommandRunner runner, CommandHistory history, Exception error);
 

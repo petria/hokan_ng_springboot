@@ -52,7 +52,7 @@ public abstract class Updater implements DataUpdater, CommandRunnable {
 
   @Override
   public void updateData(CommandPool commandPool) {
-    commandPool.startRunnable(this);
+    commandPool.startRunnable(this, "<system>");
   }
 
   @Override

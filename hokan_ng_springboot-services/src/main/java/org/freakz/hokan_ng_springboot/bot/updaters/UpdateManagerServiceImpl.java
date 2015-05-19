@@ -57,7 +57,7 @@ public class UpdateManagerServiceImpl implements UpdaterManagerService, CommandR
 
   @Override
   public void start() {
-    commandPool.startRunnable(this);
+    commandPool.startRunnable(this, "<system>");
   }
 
   @Override

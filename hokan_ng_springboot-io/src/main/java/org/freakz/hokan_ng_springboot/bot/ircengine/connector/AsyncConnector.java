@@ -60,7 +60,7 @@ public class AsyncConnector implements Connector, CommandRunnable {
 		this.botNick = nick;
 		this.engineConnector = engineConnector;
 		this.configuredServer = configuredServer;
-		commandPool.startRunnable(this);
+		commandPool.startRunnable(this, "<system");
 	}
 
 	@Override

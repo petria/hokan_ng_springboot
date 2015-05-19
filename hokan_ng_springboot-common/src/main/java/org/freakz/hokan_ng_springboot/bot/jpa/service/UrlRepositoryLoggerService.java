@@ -127,7 +127,7 @@ public class UrlRepositoryLoggerService implements UrlLoggerService {
 
       }
     };
-    commandPool.startRunnable(cmdRunnable);
+    commandPool.startRunnable(cmdRunnable, "<system>");
 
   }
 

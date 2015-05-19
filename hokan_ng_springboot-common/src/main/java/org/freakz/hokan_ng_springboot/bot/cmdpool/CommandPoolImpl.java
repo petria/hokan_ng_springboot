@@ -57,12 +57,8 @@ public class CommandPoolImpl implements CommandPool, DisposableBean {
     return pid;
   }
 
-	@Override
-	public void startRunnable(CommandRunnable runnable) {
-		startRunnable(runnable, null);
-	}
 
-  private CommandHistory createCommmandHistory(long pid, CommandRunnable runnable, Object args) {
+  private CommandHistory createCommmandHistory(long pid, CommandRunnable runnable, String startedBy, Object args) {
     CommandHistory history = new CommandHistory();
     history.setHokanModule(hokanModuleService.getHokanModule().toString());
     history.setSessionId(hokanModuleService.getSessionId());
@@ -75,25 +71,29 @@ public class CommandPoolImpl implements CommandPool, DisposableBean {
     }
     history.setRunnable(runnable.getClass().toString());
     history.setStatus(CommandStatus.RUNNING);
-    history.setStartedBy("<system>");
+    history.setStartedBy(startedBy);
     history.setErrorException("");
     commandHistoryService.save(history);
     return history;
   }
 
+  @Override
+	public void startRunnable(CommandRunnable runnable, String startedBy) {
+		startRunnable(runnable, startedBy, null);
+	}
 	@Override
-	public void startRunnable(CommandRunnable runnable, Object args) {
+	public void startRunnable(CommandRunnable runnable, String startedBy, Object args) {
     long pid = getPid();
-    CommandHistory history = createCommmandHistory(pid, runnable, args);
+    CommandHistory history = createCommmandHistory(pid, runnable, startedBy, args);
 		CommandRunner runner = new CommandRunner(pid, runnable, this, args, history);
   	activeRunners.add(runner);
 		this.executor.execute(runner);
 	}
 
 	@Override
-	public void startSyncRunnable(CommandRunnable runnable, Object... args) {
+	public void startSyncRunnable(CommandRunnable runnable, String startedBy, Object... args) {
     long pid = getPid();
-    CommandHistory history = createCommmandHistory(pid, runnable, args);
+    CommandHistory history = createCommmandHistory(pid, runnable, startedBy, args);
 		CommandRunner runner = new CommandRunner(pid, runnable, this, args, history);
 		activeRunners.add(runner);
 		runner.run();

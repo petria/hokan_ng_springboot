@@ -43,7 +43,7 @@ public class OutputQueue implements CommandRunnable {
 	public void init(HokanCore core, boolean useThrottle) {
 		this.core = core;
 		this.useThrottle = useThrottle;
-		this.commandPool.startRunnable(this);
+		this.commandPool.startRunnable(this, "<system>");
 	}
 
 	@Override
