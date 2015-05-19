@@ -23,4 +23,8 @@ public interface PropertyService {
 
   int getPropertyAsInt(PropertyName propertyName, int defaultValue);
 
+  long getPropertyAsLong(PropertyName propertyName, long defaultValue);
+
+  boolean getPropertyAsBoolean(PropertyName propertyName);
+
 }

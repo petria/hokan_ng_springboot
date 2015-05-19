@@ -8,7 +8,6 @@ import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.CommandHistory;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.CommandStatus;
-import org.freakz.hokan_ng_springboot.bot.jpa.entity.Property;
 import org.freakz.hokan_ng_springboot.bot.jpa.service.CommandHistoryService;
 import org.freakz.hokan_ng_springboot.bot.jpa.service.PropertyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,25 +40,21 @@ public class PsCmd extends Cmd {
 
   @Override
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    List<CommandHistory> combined = new ArrayList<>();
+    List<CommandHistory> allRunning = new ArrayList<>();
     for (HokanModule module : HokanModule.values()) {
-      Property p = propertyService.findFirstByPropertyName(module.getModuleProperty());
-      if (p != null) {
-        String sessionId = p.getValue();
-        if (sessionId != null) {
-          List<CommandHistory> list = commandHistoryService.findByHokanModuleAndSessionId(module.toString(), sessionId);
-          for (CommandHistory history : list) {
-            if (history.getStatus() == CommandStatus.RUNNING) {
-              combined.add(history);
-            }
-          }
-        }
+      long sessionId = propertyService.getPropertyAsLong(module.getModuleProperty(), -1);
+      if (sessionId != -1) {
+        List<CommandHistory> running = commandHistoryService.findByHokanModuleAndSessionIdAndCommandStatus(module.toString(), sessionId, CommandStatus.RUNNING);
+        allRunning.addAll(running);
       }
     }
-    for (CommandHistory cmd : combined) {
-      response.addResponse("%2d - %-13s - %s\n", cmd.getPid(), cmd.getHokanModule(), cmd.getRunnable().replaceAll("class org.freakz.hokan_ng_springboot.bot.", ""));
+    if (allRunning.size() > 0) {
+      response.addResponse("%2s - %-13s - %s\n", "PID", "MODULE", "CLASS");
+      for (CommandHistory cmd : allRunning) {
+        response.addResponse("%2d - %-13s - %s\n", cmd.getPid(), cmd.getHokanModule(), cmd.getRunnable().replaceAll("class org.freakz.hokan_ng_springboot.bot.", ""));
+      }
     }
-//    response.addResponse("Running tasks {}", combined.size());
-// TODO
+
   }
+
 }

@@ -58,5 +58,29 @@ public class PropertyRepositoryService implements PropertyService {
     return Integer.parseInt(property.getValue());
   }
 
+  @Override
+  public long getPropertyAsLong(PropertyName propertyName, long defaultValue) {
+    Property property = findFirstByPropertyName(propertyName);
+    if (property == null) {
+      return defaultValue;
+    }
+    return Long.parseLong(property.getValue());
+  }
+
+  @Override
+  public boolean getPropertyAsBoolean(PropertyName propertyName) {
+    Property property = findFirstByPropertyName(propertyName);
+    if (property == null) {
+      return false;
+    }
+    String value = property.getValue();
+    if (value == null) {
+      return false;
+    }
+    if (value.toLowerCase().matches("1|true|on")) {
+      return true;
+    };
+    return false;
+  }
 
 }

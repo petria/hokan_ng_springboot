@@ -19,7 +19,6 @@ public class CommandHistory {
   @Column(name = "SESSION_ID")
   private long sessionId;
 
-
   @Column(name = "START_TIME")
   private Date startTime;
 
@@ -40,7 +39,7 @@ public class CommandHistory {
 
   @Column(name = "COMMAND_STATUS", nullable = false)
   @Enumerated(EnumType.STRING)
-  private CommandStatus status;
+  private CommandStatus commandStatus;
 
   @Column(name = "STARTED_BY")
   private String startedBy;
@@ -117,11 +116,11 @@ public class CommandHistory {
   }
 
   public CommandStatus getStatus() {
-    return status;
+    return commandStatus;
   }
 
-  public void setStatus(CommandStatus status) {
-    this.status = status;
+  public void setStatus(CommandStatus commandStatus) {
+    this.commandStatus = commandStatus;
   }
 
   public String getStartedBy() {

@@ -1,6 +1,7 @@
 package org.freakz.hokan_ng_springboot.bot.jpa.service;
 
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.CommandHistory;
+import org.freakz.hokan_ng_springboot.bot.jpa.entity.CommandStatus;
 
 import java.util.List;
 
@@ -13,6 +14,8 @@ public interface CommandHistoryService {
 
   List<CommandHistory> findByHokanModule(String module);
 
-  List<CommandHistory> findByHokanModuleAndSessionId(String module, String sessionId);
+  List<CommandHistory> findByHokanModuleAndSessionId(String module, long sessionId);
+
+  List<CommandHistory> findByHokanModuleAndSessionIdAndCommandStatus(String module, long sessionId, CommandStatus status);
 
 }
