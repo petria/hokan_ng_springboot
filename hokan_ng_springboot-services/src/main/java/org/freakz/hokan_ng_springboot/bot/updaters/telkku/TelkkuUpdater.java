@@ -1,6 +1,11 @@
 package org.freakz.hokan_ng_springboot.bot.updaters.telkku;
 
 import lombok.extern.slf4j.Slf4j;
+import org.freakz.hokan_ng_springboot.bot.cmdpool.CommandPool;
+import org.freakz.hokan_ng_springboot.bot.cmdpool.CommandRunnable;
+import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
+import org.freakz.hokan_ng_springboot.bot.jpa.entity.PropertyName;
+import org.freakz.hokan_ng_springboot.bot.jpa.service.PropertyService;
 import org.freakz.hokan_ng_springboot.bot.models.TelkkuData;
 import org.freakz.hokan_ng_springboot.bot.models.TelkkuProgram;
 import org.freakz.hokan_ng_springboot.bot.updaters.Updater;
@@ -14,15 +19,20 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import javax.annotation.PostConstruct;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.*;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
+
+import static java.nio.file.StandardWatchEventKinds.ENTRY_CREATE;
 
 /**
  * User: petria
@@ -34,6 +44,12 @@ import java.util.*;
 @Service
 @Slf4j
 public class TelkkuUpdater extends Updater {
+
+  @Autowired
+  private CommandPool commandPool;
+
+  @Autowired
+  private PropertyService propertyService;
 
   private static final String XMLTV_DTD_FILE = "xmltv.dtd";
 
@@ -75,21 +91,83 @@ public class TelkkuUpdater extends Updater {
     return outputFile.getAbsolutePath();
   }
 
+  @PostConstruct
   private void startTvXmlDataWatcher() {
 
+    String watchFolder = propertyService.getPropertyAsString(PropertyName.PROP_SYS_TV_XML_DATA_WATCH_DIR, null);
+    if (watchFolder == null) {
+      log.error("Can't start telkku data watcher!");
+      return;
+    }
+    final Path path = Paths.get(watchFolder);
+
+    log.debug("Watching path: " + path);
+
+    // We obtain the file system of the Path
+
+
+    CommandRunnable runnable = new CommandRunnable() {
+      @Override
+      public void handleRun(long myPid, Object args) throws HokanException {
+        WatchService service;
+        try {
+          FileSystem fs = path.getFileSystem();
+          service = fs.newWatchService();
+          path.register(service, ENTRY_CREATE);
+        } catch (Exception e) {
+          log.error("watch", e);
+          return;
+        }
+
+        // Start the infinite polling loop
+        WatchKey key = null;
+        while (true) {
+          try {
+            key = service.poll(5, TimeUnit.SECONDS);
+          } catch (InterruptedException e) {
+            //
+          }
+          if (key == null) {
+            continue;
+          }
+
+          // Dequeueing events
+          WatchEvent.Kind<?> kind;
+          for (WatchEvent<?> watchEvent : key.pollEvents()) {
+            // Get the type of the event
+            kind = watchEvent.kind();
+            if (ENTRY_CREATE == kind) {
+              Path newPath = ((WatchEvent<Path>) watchEvent).context();
+              String file = path.toString() + "/" + newPath.getFileName();
+              try {
+                loadFetchFile(file);
+              } catch (Exception e) {
+                log.error("Load telkku data", e);
+              }
+            }
+          }
+
+          if (!key.reset()) {
+            break; //loop
+          }
+        }
+
+      }
+    };
+    commandPool.startRunnable(runnable, "<system>");
   }
 
 
-  private void loadOldFetchFile() throws Exception {
-    File f = new File(OLD_FETCH_FILE);
+  private void loadFetchFile(String file) throws Exception {
+    File f = new File(file);
     if (!f.exists()) {
-      log.info("No {} found!", OLD_FETCH_FILE);
+      log.info("No {} found!", file);
       return;
     }
-    log.info("Loading {}", OLD_FETCH_FILE);
+    log.info("Loading {}", file);
 
     List<String> channelNames = new ArrayList<>();
-    this.programList = readXmlFile(OLD_FETCH_FILE, channelNames);
+    this.programList = readXmlFile(file, channelNames);
     this.channelNames = channelNames;
     this.updateCount++;
 
@@ -104,17 +182,17 @@ public class TelkkuUpdater extends Updater {
 
   @Override
   public void doUpdateData() throws Exception {
-      if (getUpdateCount() == 0) {
-        loadOldFetchFile();
-      }
-      String fileName = runTvGrab();
-      log.info("Tv data file: {}", fileName);
+    if (getUpdateCount() == 0) {
+      loadFetchFile(OLD_FETCH_FILE);
+    }
+    String fileName = runTvGrab();
+    log.info("Tv data file: {}", fileName);
 
-      List<String> channelNames = new ArrayList<>();
-      this.programList = readXmlFile(fileName, channelNames);
-      this.fileUtil.copyFile(fileName, OLD_FETCH_FILE);
-      this.fileUtil.deleteTmpFile(fileName);
-      this.channelNames = channelNames;
+    List<String> channelNames = new ArrayList<>();
+    this.programList = readXmlFile(fileName, channelNames);
+    this.fileUtil.copyFile(fileName, OLD_FETCH_FILE);
+    this.fileUtil.deleteTmpFile(fileName);
+    this.channelNames = channelNames;
   }
 
   @Override
