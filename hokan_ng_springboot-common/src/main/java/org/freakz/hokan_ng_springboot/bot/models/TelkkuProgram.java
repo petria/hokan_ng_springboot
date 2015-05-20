@@ -2,6 +2,7 @@ package org.freakz.hokan_ng_springboot.bot.models;
 
 import org.freakz.hokan_ng_springboot.bot.util.StringStuff;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -11,7 +12,7 @@ import java.util.Date;
  *
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
-public class TelkkuProgram implements Comparable {
+public class TelkkuProgram implements Comparable, Serializable {
 
   private static int idCounter = 1;
 

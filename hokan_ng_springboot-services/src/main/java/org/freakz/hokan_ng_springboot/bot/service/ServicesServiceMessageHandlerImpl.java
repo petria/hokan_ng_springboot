@@ -8,12 +8,14 @@ import org.freakz.hokan_ng_springboot.bot.jms.JmsEnvelope;
 import org.freakz.hokan_ng_springboot.bot.jms.api.JmsServiceMessageHandler;
 import org.freakz.hokan_ng_springboot.bot.models.HoroHolder;
 import org.freakz.hokan_ng_springboot.bot.models.MetarData;
+import org.freakz.hokan_ng_springboot.bot.models.TvNowData;
 import org.freakz.hokan_ng_springboot.bot.models.WeatherData;
 import org.freakz.hokan_ng_springboot.bot.service.metar.MetarDataService;
 import org.freakz.hokan_ng_springboot.bot.updaters.DataUpdater;
 import org.freakz.hokan_ng_springboot.bot.updaters.UpdaterData;
 import org.freakz.hokan_ng_springboot.bot.updaters.UpdaterManagerService;
 import org.freakz.hokan_ng_springboot.bot.updaters.horo.HoroUpdater;
+import org.freakz.hokan_ng_springboot.bot.updaters.telkku.TelkkuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -30,6 +32,9 @@ public class ServicesServiceMessageHandlerImpl implements JmsServiceMessageHandl
 
   @Autowired
   private MetarDataService metarDataService;
+
+  @Autowired
+  private TelkkuService telkkuService;
 
   @Autowired
   private GoogleTranslatorService translatorService;
@@ -54,6 +59,10 @@ public class ServicesServiceMessageHandlerImpl implements JmsServiceMessageHandl
       case METAR_REQUEST:
         List<MetarData> data = metarDataService.getMetarData(request.getParameters());
         response.setResponseData("METAR_DATA", data);
+        break;
+      case TV_NOW_REQUEST:
+        TvNowData tvNowData = telkkuService.getTvNowData();
+        response.setResponseData("TV_NOW_DATA", tvNowData);
         break;
       case TRANSLATE_REQUEST:
         String translated = translatorService.getTranslation(request.getParameters(), Language.AUTO_DETECT, Language.FINNISH);

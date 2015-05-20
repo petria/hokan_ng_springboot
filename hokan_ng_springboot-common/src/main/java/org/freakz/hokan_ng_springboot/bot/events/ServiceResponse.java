@@ -2,6 +2,7 @@ package org.freakz.hokan_ng_springboot.bot.events;
 
 import org.freakz.hokan_ng_springboot.bot.models.HoroHolder;
 import org.freakz.hokan_ng_springboot.bot.models.MetarData;
+import org.freakz.hokan_ng_springboot.bot.models.TvNowData;
 import org.freakz.hokan_ng_springboot.bot.models.WeatherData;
 
 import java.io.Serializable;
@@ -48,6 +49,14 @@ public class ServiceResponse implements Serializable {
       return new ArrayList<>();
     }
     return dataList;
+  }
+
+  public TvNowData getTvNowData() {
+    TvNowData tvNowData = (TvNowData) responseData.get("TV_NOW_DATA");
+    if (tvNowData == null) {
+      return new TvNowData();
+    }
+    return tvNowData;
   }
 
 }

@@ -8,6 +8,7 @@ import org.freakz.hokan_ng_springboot.bot.jpa.service.ChannelPropertyService;
 import org.freakz.hokan_ng_springboot.bot.jpa.service.TvNotifyService;
 import org.freakz.hokan_ng_springboot.bot.models.TelkkuData;
 import org.freakz.hokan_ng_springboot.bot.models.TelkkuProgram;
+import org.freakz.hokan_ng_springboot.bot.models.TvNowData;
 import org.freakz.hokan_ng_springboot.bot.updaters.UpdaterManagerService;
 import org.freakz.hokan_ng_springboot.bot.util.StringStuff;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -146,6 +147,21 @@ public class TelkkuServiceImpl implements TelkkuService {
   @Override
   public String[] getChannels() {
     return new String[]{"YLE TV1", "YLE TV2", "MTV3", "Nelonen", "Kutonen", "JIM", "Sub", "YLE Teema", "TV5", "Fox", "Yle Fem"};
+  }
+
+  @Override
+  public TvNowData getTvNowData() {
+    Map<String, TelkkuProgram> nowData = new HashMap<>();
+    Map<String, TelkkuProgram> nextData = new HashMap<>();
+    Date date = new Date();
+    for (String channel : getChannels()) {
+      TelkkuProgram current = getCurrentProgram(date, channel);
+      TelkkuProgram next = getNextProgram(current, channel);
+      nowData.put(channel, current);
+      nextData.put(channel, next);
+
+    }
+    return new TvNowData(getChannels(), nowData, nextData);
   }
 
   private static class Notify {
