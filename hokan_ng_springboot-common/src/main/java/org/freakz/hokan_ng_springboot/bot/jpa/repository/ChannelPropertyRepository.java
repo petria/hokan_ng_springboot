@@ -2,6 +2,7 @@ package org.freakz.hokan_ng_springboot.bot.jpa.repository;
 
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.Channel;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.ChannelProperty;
+import org.freakz.hokan_ng_springboot.bot.jpa.entity.PropertyName;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -15,5 +16,7 @@ public interface ChannelPropertyRepository extends JpaRepository<ChannelProperty
   List<ChannelProperty> findByChannel(Channel channel);
 
   void deleteByChannel(Channel object);
+
+  ChannelProperty findByPropertyName(PropertyName propertyName);
 
 }

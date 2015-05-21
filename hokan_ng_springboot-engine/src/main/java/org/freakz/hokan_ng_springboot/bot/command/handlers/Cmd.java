@@ -208,7 +208,7 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
     isPrivate = ircMessageEvent.isPrivate();
     isToBot = ircMessageEvent.isToMe();
     isMasterUser = accessControlService.isAdminUser(request.getUser());
-    isChannelOp = false; // TODO accessControlService.isChannelOp(ircMessageEvent, request.getChannel());
+    isChannelOp = accessControlService.isChannelOp(request.getUser(), request.getChannel());
 
     boolean ret = true;
 

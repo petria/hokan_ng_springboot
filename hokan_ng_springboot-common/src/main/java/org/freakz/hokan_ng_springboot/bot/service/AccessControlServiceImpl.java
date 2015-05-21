@@ -35,7 +35,7 @@ public class AccessControlServiceImpl implements AccessControlService {
 
   @Override
   public boolean isChannelOp(User user, Channel Channel) {
-    return true;
+    return true; // TODO
   }
 
   @Override

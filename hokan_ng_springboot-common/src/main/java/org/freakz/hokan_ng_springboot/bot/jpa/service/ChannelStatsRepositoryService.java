@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * Created by Petri Airio on 8.4.2015.
+ *
  */
 @Service
 @Slf4j

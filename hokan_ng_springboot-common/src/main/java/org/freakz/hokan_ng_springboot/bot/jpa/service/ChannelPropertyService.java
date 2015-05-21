@@ -22,4 +22,6 @@ public interface ChannelPropertyService {
 
   List<Channel> getChannelsWithProperty(PropertyName propChannelDoTvnotify);
 
+  ChannelProperty setChannelProperty(Channel theChannel, PropertyName propertyName, String value);
+
 }

@@ -47,4 +47,16 @@ public class ChannelPropertyRepositoryService implements ChannelPropertyService 
   public List<Channel> getChannelsWithProperty(PropertyName propChannelDoTvnotify) {
     return new ArrayList<Channel>();
   }
+
+  @Override
+  public ChannelProperty setChannelProperty(Channel theChannel, PropertyName propertyName, String value) {
+    ChannelProperty property = repository.findByPropertyName(propertyName);
+    if (property == null) {
+      property = new ChannelProperty(theChannel, propertyName, value, "");
+    } else {
+      property.setValue(value);
+    }
+    return repository.save(property);
+  }
+
 }

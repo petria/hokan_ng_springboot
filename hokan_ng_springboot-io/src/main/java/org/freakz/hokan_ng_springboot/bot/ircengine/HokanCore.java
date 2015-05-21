@@ -461,7 +461,7 @@ TODO
         nw.addToLinesSent(1);
       }
     }
-    if (stats != null) {
+    if (stats != null && ch != null) {
       this.channelStatsService.save(stats);
     }
     this.networkService.save(nw);
