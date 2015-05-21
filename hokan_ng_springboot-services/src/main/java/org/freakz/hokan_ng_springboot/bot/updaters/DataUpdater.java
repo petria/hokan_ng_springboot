@@ -22,9 +22,9 @@ public interface DataUpdater {
 
   void updateData(CommandPool commandPool);
 
-  void getData(UpdaterData updaterData, String... args);
+  void getData(UpdaterData updaterData, Object... args);
 
-  UpdaterData getData(String... args);
+  UpdaterData getData(Object... args);
 
   UpdaterStatus getStatus();
 

@@ -73,8 +73,8 @@ public class MetarDataServiceImpl implements  MetarDataService {
 
 
   @Override
-  public List<MetarData> getMetarData(String... parameters) {
-    String station = parameters[0]; // TODO
+  public List<MetarData> getMetarData(Object... parameters) {
+    String station = (String) parameters[0]; // TODO
     List<MetarData> metarDatas = new ArrayList<>();
     List<String> metars = getStations(station);
     if (metars.size() > 0) {

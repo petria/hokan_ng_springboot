@@ -27,7 +27,7 @@ public class CurrencyUpdater extends Updater {
   }
 
   @Override
-  public Object doGetData(String... args) {
+  public Object doGetData(Object... args) {
     return null;  //To change body of implemented methods use File | Settings | File Templates.
   }
 }

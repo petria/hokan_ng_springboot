@@ -39,6 +39,9 @@ public class TelkkuProgram implements Comparable, Serializable {
     this.notifyDone = false;
   }
 
+  public TelkkuProgram() {
+  }
+
   /**
    * @param o Other TelkkuProgram object
    * @return compare result of this and other object

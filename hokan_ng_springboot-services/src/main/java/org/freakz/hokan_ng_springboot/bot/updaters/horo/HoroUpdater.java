@@ -59,8 +59,8 @@ public class HoroUpdater extends Updater {
   }
 
   @Override
-  public Object doGetData(String... args) {
-    return this.getHoro(args[0]);
+  public Object doGetData(Object... args) {
+    return this.getHoro((String) args[0]);
   }
 
 

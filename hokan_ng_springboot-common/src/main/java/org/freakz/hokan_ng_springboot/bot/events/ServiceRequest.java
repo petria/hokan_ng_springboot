@@ -14,9 +14,9 @@ public class ServiceRequest implements Serializable {
   private final ServiceRequestType type;
   private final IrcMessageEvent ircMessageEvent;
   private final CommandArgs commandArgs;
-  private final String[] parameters;
+  private final Object[] parameters;
 
-  public ServiceRequest(ServiceRequestType type, IrcMessageEvent ircMessageEvent, CommandArgs commandArgs, String... parameters) {
+  public ServiceRequest(ServiceRequestType type, IrcMessageEvent ircMessageEvent, CommandArgs commandArgs, Object... parameters) {
     this.type = type;
     this.ircMessageEvent = ircMessageEvent;
     this.commandArgs = commandArgs;
@@ -35,7 +35,7 @@ public class ServiceRequest implements Serializable {
     return commandArgs;
   }
 
-  public String[] getParameters() {
+  public Object[] getParameters() {
     return parameters;
   }
 

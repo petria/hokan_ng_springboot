@@ -1,9 +1,6 @@
 package org.freakz.hokan_ng_springboot.bot.events;
 
-import org.freakz.hokan_ng_springboot.bot.models.HoroHolder;
-import org.freakz.hokan_ng_springboot.bot.models.MetarData;
-import org.freakz.hokan_ng_springboot.bot.models.TvNowData;
-import org.freakz.hokan_ng_springboot.bot.models.WeatherData;
+import org.freakz.hokan_ng_springboot.bot.models.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -44,19 +41,23 @@ public class ServiceResponse implements Serializable {
   }
 
   public List<WeatherData> getWeatherResponse() {
-    List<WeatherData> dataList = (List<WeatherData>) responseData.get("WEATHER_DATA");
-    if (dataList == null) {
+    List<WeatherData> data = (List<WeatherData>) responseData.get("WEATHER_DATA");
+    if (data == null) {
       return new ArrayList<>();
     }
-    return dataList;
+    return data;
   }
 
   public TvNowData getTvNowData() {
-    TvNowData tvNowData = (TvNowData) responseData.get("TV_NOW_DATA");
-    if (tvNowData == null) {
+    TvNowData data = (TvNowData) responseData.get("TV_NOW_DATA");
+    if (data == null) {
       return new TvNowData();
     }
-    return tvNowData;
+    return data;
+  }
+
+  public TelkkuProgram getTvInfoData() {
+    return (TelkkuProgram) responseData.get("TV_INFO_DATA");
   }
 
 }

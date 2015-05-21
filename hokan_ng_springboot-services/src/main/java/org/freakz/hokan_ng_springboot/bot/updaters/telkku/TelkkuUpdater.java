@@ -196,7 +196,7 @@ public class TelkkuUpdater extends Updater {
   }
 
   @Override
-  public Object doGetData(String... args) {
+  public Object doGetData(Object... args) {
     return new TelkkuData(channelNames, programList, getLastUpdateTime());
   }
 

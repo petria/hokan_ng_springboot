@@ -77,18 +77,18 @@ public abstract class Updater implements DataUpdater, CommandRunnable {
   public abstract void doUpdateData() throws Exception;
 
   @Override
-  public void getData(UpdaterData data, String... args) {
+  public void getData(UpdaterData data, Object... args) {
     data.setData(doGetData(args));
   }
 
   @Override
-  public UpdaterData getData(String... args) {
+  public UpdaterData getData(Object... args) {
     UpdaterData data = new UpdaterData();
     data.setData(doGetData(args));
     return data;
   }
 
-  public abstract Object doGetData(String... args);
+  public abstract Object doGetData(Object... args);
 
   @Override
   public UpdaterStatus getStatus() {

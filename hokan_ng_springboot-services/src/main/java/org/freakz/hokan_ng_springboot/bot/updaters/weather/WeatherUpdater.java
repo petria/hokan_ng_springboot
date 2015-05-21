@@ -35,7 +35,7 @@ public class WeatherUpdater extends Updater {
   }
 
   @Override
-  public Object doGetData(String... args) {
+  public Object doGetData(Object... args) {
     return sortData(data, true);
   }
 
