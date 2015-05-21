@@ -12,6 +12,9 @@ import java.util.List;
  */
 public interface ChannelService {
 
+
+  Channel findOne(long id);
+
   List<Channel> findChannels(Network network, ChannelState joined);
 
   List<Channel> findAll();

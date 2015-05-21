@@ -22,6 +22,12 @@ public class ChannelRepositoryService implements ChannelService {
 
   @Override
   @Transactional(readOnly = true)
+  public Channel findOne(long id) {
+    return repository.findOne(id);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
   public List<Channel> findChannels(Network network, ChannelState channelState) {
     return repository.findByNetworkAndChannelState(network, channelState);
   }
