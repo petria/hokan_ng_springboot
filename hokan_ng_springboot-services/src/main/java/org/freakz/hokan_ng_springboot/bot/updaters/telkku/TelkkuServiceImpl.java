@@ -174,10 +174,10 @@ public class TelkkuServiceImpl implements TelkkuService, CommandRunnable {
   @Override
   public void handleRun(long myPid, Object args) throws HokanException {
     while (true) {
-      notifyWatcher();
       try {
+        notifyWatcher();
         Thread.sleep(30 * 1000);
-      } catch (InterruptedException e) {
+      } catch (Exception e) {
         log.debug("interrupted");
       }
     }

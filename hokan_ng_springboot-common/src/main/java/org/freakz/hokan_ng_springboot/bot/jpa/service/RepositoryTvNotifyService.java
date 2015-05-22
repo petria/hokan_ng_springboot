@@ -5,6 +5,7 @@ import org.freakz.hokan_ng_springboot.bot.jpa.entity.Channel;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.TvNotify;
 import org.freakz.hokan_ng_springboot.bot.jpa.repository.TvNotifyRepository;
 import org.freakz.hokan_ng_springboot.bot.models.TelkkuProgram;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -18,6 +19,7 @@ import java.util.List;
 @Slf4j
 public class RepositoryTvNotifyService implements TvNotifyService {
 
+  @Autowired
   private TvNotifyRepository repository;
 
   @Override
@@ -27,7 +29,7 @@ public class RepositoryTvNotifyService implements TvNotifyService {
 
   @Override
   public List<TvNotify> getTvNotifies(Channel channel) {
-    return null;
+    return repository.findByChannel(channel);
   }
 
   @Override
