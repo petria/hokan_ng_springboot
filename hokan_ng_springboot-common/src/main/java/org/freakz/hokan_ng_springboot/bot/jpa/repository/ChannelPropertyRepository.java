@@ -17,6 +17,8 @@ public interface ChannelPropertyRepository extends JpaRepository<ChannelProperty
 
   void deleteByChannel(Channel object);
 
-  ChannelProperty findByPropertyName(PropertyName propertyName);
+  List<ChannelProperty> findByPropertyName(PropertyName propertyName);
+
+  ChannelProperty findFirstByChannelAndPropertyName(Channel theChannel, PropertyName propertyName);
 
 }

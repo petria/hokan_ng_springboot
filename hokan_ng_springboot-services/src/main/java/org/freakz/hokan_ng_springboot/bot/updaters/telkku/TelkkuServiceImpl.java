@@ -1,6 +1,9 @@
 package org.freakz.hokan_ng_springboot.bot.updaters.telkku;
 
 import lombok.extern.slf4j.Slf4j;
+import org.freakz.hokan_ng_springboot.bot.cmdpool.CommandPool;
+import org.freakz.hokan_ng_springboot.bot.cmdpool.CommandRunnable;
+import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.Channel;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.PropertyName;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.TvNotify;
@@ -12,10 +15,9 @@ import org.freakz.hokan_ng_springboot.bot.models.TvNowData;
 import org.freakz.hokan_ng_springboot.bot.updaters.UpdaterManagerService;
 import org.freakz.hokan_ng_springboot.bot.util.StringStuff;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.*;
 
 /**
@@ -27,7 +29,7 @@ import java.util.*;
  */
 @Service
 @Slf4j
-public class TelkkuServiceImpl implements TelkkuService {
+public class TelkkuServiceImpl implements TelkkuService, CommandRunnable {
     //, CoreEventHandler {
 
   @Autowired
@@ -40,7 +42,7 @@ public class TelkkuServiceImpl implements TelkkuService {
   private TvNotifyService notifyService;
 
   @Autowired
-  private ApplicationContext context;
+  private CommandPool commandPool;
 
   public TelkkuServiceImpl() {
 
@@ -164,13 +166,30 @@ public class TelkkuServiceImpl implements TelkkuService {
     return new TvNowData(getChannels(), nowData, nextData);
   }
 
+  @PostConstruct
+  private void startRunner() {
+    commandPool.startRunnable(this, null);
+  }
+
+  @Override
+  public void handleRun(long myPid, Object args) throws HokanException {
+    while (true) {
+      notifyWatcher();
+      try {
+        Thread.sleep(30 * 1000);
+      } catch (InterruptedException e) {
+        log.debug("interrupted");
+      }
+    }
+  }
+
   private static class Notify {
     public Channel channel;
     public TvNotify notify;
     public TelkkuProgram program;
   }
 
-  @Scheduled(initialDelay = 5000, fixedDelay = 30000)
+
   public void notifyWatcher() {
     List<Channel> channels = channelPropertyService.getChannelsWithProperty(PropertyName.PROP_CHANNEL_DO_TVNOTIFY);
     Calendar future = new GregorianCalendar();

@@ -44,13 +44,18 @@ public class ChannelPropertyRepositoryService implements ChannelPropertyService 
     repository.deleteByChannel(object);
   }
 
-  public List<Channel> getChannelsWithProperty(PropertyName propChannelDoTvnotify) {
-    return new ArrayList<Channel>();
+  public List<Channel> getChannelsWithProperty(PropertyName propertyName) {
+    List<ChannelProperty> properties = repository.findByPropertyName(propertyName);
+    List<Channel> channels = new ArrayList<>();
+    for (ChannelProperty property : properties) {
+      channels.add(property.getChannel());
+    }
+    return channels;
   }
 
   @Override
   public ChannelProperty setChannelProperty(Channel theChannel, PropertyName propertyName, String value) {
-    ChannelProperty property = repository.findByPropertyName(propertyName);
+    ChannelProperty property = repository.findFirstByChannelAndPropertyName(theChannel, propertyName);
     if (property == null) {
       property = new ChannelProperty(theChannel, propertyName, value, "");
     } else {
