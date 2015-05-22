@@ -338,6 +338,38 @@ public class HokanCore extends PircBot implements HokanCoreService {
     this.channelService.save(ch);
   }
 
+  private Map<String, Method> methodMap = null;
+
+  private void buildMethodMap() {
+    Class clazz = HokanCore.class;
+    Method[] methods = clazz.getMethods();
+    this.methodMap = new HashMap<>();
+    for (Method method : methods) {
+      methodMap.put(method.getName(), method);
+    }
+    log.info("Built method map, size {}", methodMap.size());
+
+  }
+
+  private Method getEngineMethod(String name) { //}, int args) {
+    if (this.methodMap == null) {
+      buildMethodMap();
+    }
+    List<Method> matches = new ArrayList<>();
+    for (Method method : methodMap.values()) {
+      if (method.getName().equals(name)) { // && method.getGenericParameterTypes().length == args) {
+        matches.add(method);
+      }
+    }
+    if (matches.size() == 1) {
+      return matches.get(0);
+    } else if (matches.size() > 1) {
+      log.info("ffufu"); // TODO
+      return matches.get(0);
+    }
+    return null;
+  }
+
 
   //  @Override
   @SuppressWarnings({"ThrowableResultOfMethodCallIgnored"})
@@ -373,7 +405,7 @@ TODO
 
       log.info("Executing engine method : " + methodName);
       log.info("Engine method args      : " + StringStuff.arrayToString(methodArgs, ", "));
-      Method method = null; // TODO getEngineMethod(methodName);
+      Method method = getEngineMethod(methodName);
       if (method != null) {
         String[] args = new String[method.getParameterTypes().length];
         int i = 0;

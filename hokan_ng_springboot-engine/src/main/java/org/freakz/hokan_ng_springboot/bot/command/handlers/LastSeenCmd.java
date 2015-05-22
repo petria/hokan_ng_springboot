@@ -72,15 +72,20 @@ public class LastSeenCmd extends Cmd {
     List<UserChannel> userChannels = userChannelService.findByUser(hUser);
     if (userChannels.size() > 0) {
       UserChannel channel = userChannels.get(0);
-      String ret = hUser.getNick() + " was last time seen on ";
+      String ret = hUser.getNick();
       ret += channel.getChannel().getChannelName();
       String[] format = {"00", "00", "00", "0"};
       Date lastSpoke = channel.getLastMessageTime();
-      long temp = lastSpoke.getTime();
-      Uptime uptime = new Uptime(temp);
-      Integer[] ut = uptime.getTimeDiff();
-      String ret2 = StringStuff.fillTemplate(" and last spoke %3 days and %2:%1:%0 ago", ut, format);
-      ret += ret2;
+      if (lastSpoke != null) {
+        ret += " was last time seen on ";
+        long temp = lastSpoke.getTime();
+        Uptime uptime = new Uptime(temp);
+        Integer[] ut = uptime.getTimeDiff();
+        String ret2 = StringStuff.fillTemplate(" and last spoke %3 days and %2:%1:%0 ago", ut, format);
+        ret += ret2;
+      } else {
+        ret += " has not spoken yet!";
+      }
       response.addResponse(ret);
     } else {
       response.addResponse("%s not seen on any known channel!", nick);

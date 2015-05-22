@@ -28,9 +28,6 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_ID;
 @Scope("prototype")
 public class TvInfoCmd extends Cmd {
 
-//  @Autowired
-//  private TelkkuService tv;
-
   public TvInfoCmd() {
     super();
     setHelp("Shows info description of given tv program ID.");
