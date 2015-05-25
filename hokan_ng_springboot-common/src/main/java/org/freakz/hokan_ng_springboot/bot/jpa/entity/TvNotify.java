@@ -15,7 +15,7 @@ public class TvNotify implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "ID")
-  private long notifyId;
+  private long Id;
 
   @ManyToOne
   @JoinColumn(name = "CHANNEL_ID_FK", referencedColumnName = "ID", nullable = false)
@@ -24,9 +24,11 @@ public class TvNotify implements Serializable {
   @Column(name = "NOTIFY_PATTERN")
   private String notifyPattern;
 
+  @Column(name = "NOTIFY_DESCRIPTION")
+  private String notifyDescription;
+
   @Column(name = "NOTIFY_OWNER")
   private String notifyOwner;
-
 
   @Column(name = "ONLY_ONCE")
   private int onlyOnce;
@@ -46,11 +48,19 @@ public class TvNotify implements Serializable {
   }
 
   public long getId() {
-    return notifyId;
+    return Id;
   }
 
-  public void setId(long notifyId) {
-    this.notifyId = notifyId;
+  public void setId(long id) {
+    Id = id;
+  }
+
+  public Channel getChannel() {
+    return channel;
+  }
+
+  public void setChannel(Channel channel) {
+    this.channel = channel;
   }
 
   public String getNotifyPattern() {
@@ -61,20 +71,20 @@ public class TvNotify implements Serializable {
     this.notifyPattern = notifyPattern;
   }
 
+  public String getNotifyDescription() {
+    return notifyDescription;
+  }
+
+  public void setNotifyDescription(String notifyDescription) {
+    this.notifyDescription = notifyDescription;
+  }
+
   public String getNotifyOwner() {
     return notifyOwner;
   }
 
   public void setNotifyOwner(String notifyOwner) {
     this.notifyOwner = notifyOwner;
-  }
-
-  public Channel getNotifyChannel() {
-    return channel;
-  }
-
-  public void setNotifyChannel(Channel channel) {
-    this.channel = channel;
   }
 
   public int getOnlyOnce() {

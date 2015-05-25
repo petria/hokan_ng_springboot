@@ -3,7 +3,10 @@ package org.freakz.hokan_ng_springboot.bot.updaters.telkku;
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.cmdpool.CommandPool;
 import org.freakz.hokan_ng_springboot.bot.cmdpool.CommandRunnable;
+import org.freakz.hokan_ng_springboot.bot.enums.HokanModule;
+import org.freakz.hokan_ng_springboot.bot.events.TvNotifyRequest;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
+import org.freakz.hokan_ng_springboot.bot.jms.api.JmsSender;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.Channel;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.PropertyName;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.TvNotify;
@@ -30,19 +33,22 @@ import java.util.*;
 @Service
 @Slf4j
 public class TelkkuServiceImpl implements TelkkuService, CommandRunnable {
-    //, CoreEventHandler {
-
-  @Autowired
-  private UpdaterManagerService updaterManagerService;
 
   @Autowired
   private ChannelPropertyService channelPropertyService;
 
   @Autowired
+  private CommandPool commandPool;
+
+  @Autowired
+  private JmsSender jmsSender;
+
+  @Autowired
   private TvNotifyService notifyService;
 
   @Autowired
-  private CommandPool commandPool;
+  private UpdaterManagerService updaterManagerService;
+
 
   public TelkkuServiceImpl() {
 
@@ -187,7 +193,7 @@ public class TelkkuServiceImpl implements TelkkuService, CommandRunnable {
     public Channel channel;
     public TvNotify notify;
     public TelkkuProgram program;
-  }
+ }
 
 
   public void notifyWatcher() {
@@ -221,9 +227,7 @@ public class TelkkuServiceImpl implements TelkkuService, CommandRunnable {
   }
 
   private void sendNotifies(List<Notify> toNotify) {
-/* TODO
 
-   AsyncCoreMessageSender sender = context.getBean(AsyncCoreMessageSender.class);
     for (Notify n : toNotify) {
       String note = String.format("Kohta alkaa -> [%s] %s %s (%s)",
           n.program.getChannel(),
@@ -231,13 +235,12 @@ public class TelkkuServiceImpl implements TelkkuService, CommandRunnable {
           n.program.getProgram(),
           n.program.getId()
       );
-      CoreRequest request = new CoreRequest();
-      request.setTargetChannelId(n.channel.getChannelId());
-      request.setMessage(note);
-      sender.sendRequest(request, this);
+      TvNotifyRequest request = new TvNotifyRequest();
+      request.setTargetChannelId(n.channel.getId());
+      request.setNotifyMessage(note);
+      jmsSender.send(HokanModule.HokanIo.getQueueName(), "TV_NOTIFY_REQUEST", request, false);
       n.program.setNotifyDone(true);
-    }*/
+    }
   }
-
 
 }

@@ -3,6 +3,7 @@ package org.freakz.hokan_ng_springboot.bot.service;
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.enums.HokanModule;
 import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
+import org.freakz.hokan_ng_springboot.bot.events.TvNotifyRequest;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanServiceException;
 import org.freakz.hokan_ng_springboot.bot.ircengine.HokanCore;
@@ -96,10 +97,10 @@ public class ConnectionManagerServiceImpl implements ConnectionManagerService, E
         this.botNick = "HokanNG2";
       }
     } catch (Exception e) {
-      log.error("Error occured {}", e);
+      log.error("Error did occur {}", e);
       return false;
     }
-    return botNick != null && botNick.length() > 0;
+    return botNick.length() > 0;
   }
 
   public HokanCore getConnectedEngine(Network network) {
@@ -259,6 +260,22 @@ public class ConnectionManagerServiceImpl implements ConnectionManagerService, E
     } else {
       log.warn("No active HokanCore found!");
     }
-
   }
+
+  @Override
+  public void handleTvNotifyRequest(TvNotifyRequest tvNotifyRequest) {
+    Channel channel = channelService.findOne(tvNotifyRequest.getTargetChannelId());
+    if (channel == null) {
+      log.warn("Can't notify, no channel with id: {}", tvNotifyRequest.getTargetChannelId());
+      return;
+    }
+    HokanCore core = getConnectedEngine(channel.getNetwork());
+    if (core == null) {
+      log.warn("Can't notify, no HokanCore for channel: {}", channel);
+      return;
+    }
+    core.handleSendMessage(channel.getChannelName(), tvNotifyRequest.getNotifyMessage());
+    log.debug("TvNotify sent to: {}", channel.getChannelName());
+  }
+
 }

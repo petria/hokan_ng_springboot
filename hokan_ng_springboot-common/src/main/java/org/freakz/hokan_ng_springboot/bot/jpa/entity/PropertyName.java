@@ -31,7 +31,7 @@ public enum PropertyName {
 
   PROP_CHANNEL_DO_JOIN_MESSAGE("channel.DoJoinMessage"),
   PROP_CHANNEL_DO_KICK_REJOIN("channel.DoKickRejoin"),
-  PROP_CHANNEL_DO_TVNOTIFY("channel.DoTvNotify"),
+  PROP_CHANNEL_DO_TVNOTIFY("channel.TvNotifyRequest"),
   PROP_CHANNEL_DO_SEARCH_REPLACE("channel.DoSearchReplace"),
   PROP_CHANNEL_DO_STATS("channel.DoStats"),
   PROP_CHANNEL_DO_URL_TITLES("channel.DoUrlTitles"),
@@ -75,7 +75,7 @@ public enum PropertyName {
   public static final String PROP_CHANNEL_DO_JOIN_MSGS = "channel.DoJoinMsgs";
   public static final String PROP_CHANNEL_DO_LOGIN_OPS = "channel.DoLoginOps";
   public static final String PROP_CHANNEL_DO_SR = "channel.DoSR";
-  public static final String PROP_CHANNEL_DO_TVNOTIFY = "channel.DoTvNotify";
+  public static final String PROP_CHANNEL_DO_TVNOTIFY = "channel.TvNotifyRequest";
   public static final String PROP_CHANNEL_DO_URL_TITLES = "channel.DoUrlTitles";
   public static final String PROP_CHANNEL_STATS_TIME = "channel.StatsTime";
   public static final String PROP_CHANNEL_TVNOTIFY_MAX_IDLE = "channel.TvNotifyMaxIdle";

@@ -21,14 +21,6 @@ public class EngineCommunicatorImpl implements EngineCommunicator {
   public String sendToEngine(IrcMessageEvent event) {
     try {
       jmsSender.send("HokanNGEngineQueue", "EVENT", event, false);
-/*      ObjectMessage reply = jmsSender.sendAndGetReply("HokanNGEngineQueue", "EVENT", event);
-      if (reply != null) {
-        JmsMessage jmsMessage = (JmsMessage) reply.getObject();
-        log.info("reply: {}", jmsMessage);
-        return "reply: " + jmsMessage.getPayLoadObject("REPLY");
-      }
-      return "No reply!";
-*/
     } catch (Exception e) {
       log.error("error", e);
     }
