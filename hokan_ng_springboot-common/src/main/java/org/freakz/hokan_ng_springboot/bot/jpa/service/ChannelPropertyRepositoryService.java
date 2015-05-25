@@ -44,11 +44,16 @@ public class ChannelPropertyRepositoryService implements ChannelPropertyService 
     repository.deleteByChannel(object);
   }
 
-  public List<Channel> getChannelsWithProperty(PropertyName propertyName) {
+  public List<Channel> getChannelsWithProperty(PropertyName propertyName, String valueMatcher) {
     List<ChannelProperty> properties = repository.findByPropertyName(propertyName);
     List<Channel> channels = new ArrayList<>();
     for (ChannelProperty property : properties) {
-      channels.add(property.getChannel());
+      String value = property.getValue();
+      if (value != null) {
+        if (value.matches(valueMatcher)) {
+          channels.add(property.getChannel());
+        }
+      }
     }
     return channels;
   }

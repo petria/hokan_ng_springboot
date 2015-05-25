@@ -197,7 +197,7 @@ public class TelkkuServiceImpl implements TelkkuService, CommandRunnable {
 
 
   public void notifyWatcher() {
-    List<Channel> channels = channelPropertyService.getChannelsWithProperty(PropertyName.PROP_CHANNEL_DO_TVNOTIFY);
+    List<Channel> channels = channelPropertyService.getChannelsWithProperty(PropertyName.PROP_CHANNEL_DO_TVNOTIFY, "true|1");
     Calendar future = new GregorianCalendar();
     future.add(Calendar.MINUTE, 5);
     List<Notify> toNotify = new ArrayList<>();

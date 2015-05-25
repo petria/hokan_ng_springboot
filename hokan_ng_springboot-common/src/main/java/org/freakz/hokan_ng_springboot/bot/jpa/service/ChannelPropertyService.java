@@ -20,7 +20,7 @@ public interface ChannelPropertyService {
 
   void deleteByChannel(Channel object);
 
-  List<Channel> getChannelsWithProperty(PropertyName propChannelDoTvnotify);
+  List<Channel> getChannelsWithProperty(PropertyName propChannelDoTvnotify, String valueMatcher);
 
   ChannelProperty setChannelProperty(Channel theChannel, PropertyName propertyName, String value);
 
