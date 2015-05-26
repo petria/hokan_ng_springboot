@@ -1,6 +1,6 @@
 package org.freakz.hokan_ng_springboot.bot.jpa.service;
 
-import org.freakz.hokan_ng_springboot.bot.jpa.entity.Property;
+import org.freakz.hokan_ng_springboot.bot.jpa.entity.PropertyEntity;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.PropertyName;
 
 import java.util.List;
@@ -11,13 +11,13 @@ import java.util.List;
  */
 public interface PropertyService {
 
-  List<Property> findAll();
+  List<PropertyEntity> findAll();
 
-  Property save(Property property);
+  PropertyEntity save(PropertyEntity property);
 
-  void delete(Property object);
+  void delete(PropertyEntity object);
 
-  Property findFirstByPropertyName(PropertyName propertyName);
+  PropertyEntity findFirstByPropertyName(PropertyName propertyName);
 
   String getPropertyAsString(PropertyName propertyName, String defaultValue);
 
@@ -25,6 +25,6 @@ public interface PropertyService {
 
   long getPropertyAsLong(PropertyName propertyName, long defaultValue);
 
-  boolean getPropertyAsBoolean(PropertyName propertyName);
+  boolean getPropertyAsBoolean(PropertyName propertyName, boolean defaultValue);
 
 }

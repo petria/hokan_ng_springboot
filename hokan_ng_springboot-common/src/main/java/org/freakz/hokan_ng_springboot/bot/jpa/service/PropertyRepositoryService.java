@@ -1,7 +1,7 @@
 package org.freakz.hokan_ng_springboot.bot.jpa.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.freakz.hokan_ng_springboot.bot.jpa.entity.Property;
+import org.freakz.hokan_ng_springboot.bot.jpa.entity.PropertyEntity;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.PropertyName;
 import org.freakz.hokan_ng_springboot.bot.jpa.repository.PropertyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,72 +15,29 @@ import java.util.List;
  */
 @Service
 @Slf4j
-public class PropertyRepositoryService implements PropertyService {
+public class PropertyRepositoryService extends PropertyBase implements PropertyService {
 
   @Autowired
   private PropertyRepository repository;
 
   @Override
-  public List<Property> findAll() {
+  public List<PropertyEntity> findAll() {
     return repository.findAll();
   }
 
   @Override
-  public Property save(Property property) {
+  public PropertyEntity save(PropertyEntity property) {
     return repository.save(property);
   }
 
   @Override
-  public void delete(Property object) {
+  public void delete(PropertyEntity object) {
     repository.delete(object);
   }
 
   @Override
-  public Property findFirstByPropertyName(PropertyName propertyName) {
+  public PropertyEntity findFirstByPropertyName(PropertyName propertyName) {
     return repository.findFirstByPropertyName(propertyName);
-  }
-
-  @Override
-  public String getPropertyAsString(PropertyName propertyName, String defaultValue) {
-    Property property = findFirstByPropertyName(propertyName);
-    if (property == null) {
-      return defaultValue;
-    }
-    return property.getValue();
-  }
-
-  @Override
-  public int getPropertyAsInt(PropertyName propertyName, int defaultValue) {
-    Property property = findFirstByPropertyName(propertyName);
-    if (property == null) {
-      return defaultValue;
-    }
-    return Integer.parseInt(property.getValue());
-  }
-
-  @Override
-  public long getPropertyAsLong(PropertyName propertyName, long defaultValue) {
-    Property property = findFirstByPropertyName(propertyName);
-    if (property == null) {
-      return defaultValue;
-    }
-    return Long.parseLong(property.getValue());
-  }
-
-  @Override
-  public boolean getPropertyAsBoolean(PropertyName propertyName) {
-    Property property = findFirstByPropertyName(propertyName);
-    if (property == null) {
-      return false;
-    }
-    String value = property.getValue();
-    if (value == null) {
-      return false;
-    }
-    if (value.toLowerCase().matches("1|true|on")) {
-      return true;
-    };
-    return false;
   }
 
 }

@@ -6,6 +6,7 @@ import org.freakz.hokan_ng_springboot.bot.events.ServiceRequest;
 import org.freakz.hokan_ng_springboot.bot.events.ServiceResponse;
 import org.freakz.hokan_ng_springboot.bot.jms.JmsEnvelope;
 import org.freakz.hokan_ng_springboot.bot.jms.api.JmsServiceMessageHandler;
+import org.freakz.hokan_ng_springboot.bot.jpa.entity.Channel;
 import org.freakz.hokan_ng_springboot.bot.models.*;
 import org.freakz.hokan_ng_springboot.bot.service.metar.MetarDataService;
 import org.freakz.hokan_ng_springboot.bot.updaters.DataUpdater;
@@ -16,6 +17,7 @@ import org.freakz.hokan_ng_springboot.bot.updaters.telkku.TelkkuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,6 +27,7 @@ import java.util.List;
  */
 @Controller
 @Slf4j
+@SuppressWarnings("unchecked")
 public class ServicesServiceMessageHandlerImpl implements JmsServiceMessageHandler {
 
   @Autowired
@@ -57,10 +60,17 @@ public class ServicesServiceMessageHandlerImpl implements JmsServiceMessageHandl
         List<MetarData> data = metarDataService.getMetarData(request.getParameters());
         response.setResponseData("METAR_DATA", data);
         break;
+      case TV_DAY_REQUEST:
+        Channel channel = (Channel) request.getParameters()[0];
+        Date date = (Date) request.getParameters()[1];
+        List<TelkkuProgram> tvDayData = telkkuService.getChannelDailyNotifiedPrograms(channel, date);
+        response.setResponseData("TV_DAY_DATA", tvDayData);
+        break;
       case TV_INFO_REQUEST:
         int id = (int) request.getParameters()[0];
         TelkkuProgram program = telkkuService.findProgramById(id);
         response.setResponseData("TV_INFO_DATA", program);
+        break;
       case TV_NOW_REQUEST:
         TvNowData tvNowData = telkkuService.getTvNowData();
         response.setResponseData("TV_NOW_DATA", tvNowData);

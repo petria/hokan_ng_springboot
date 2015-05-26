@@ -3,7 +3,7 @@ package org.freakz.hokan_ng_springboot.bot.cmdpool;
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.CommandHistory;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.CommandStatus;
-import org.freakz.hokan_ng_springboot.bot.jpa.entity.Property;
+import org.freakz.hokan_ng_springboot.bot.jpa.entity.PropertyEntity;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.PropertyName;
 import org.freakz.hokan_ng_springboot.bot.jpa.service.CommandHistoryService;
 import org.freakz.hokan_ng_springboot.bot.jpa.service.PropertyService;
@@ -47,9 +47,9 @@ public class CommandPoolImpl implements CommandPool, DisposableBean {
 	}
 
   private long getPid() {
-    Property property = propertyService.findFirstByPropertyName(PropertyName.PROP_SYS_PID_COUNTER);
+    PropertyEntity property = propertyService.findFirstByPropertyName(PropertyName.PROP_SYS_PID_COUNTER);
     if (property == null) {
-      property = new Property(PropertyName.PROP_SYS_PID_COUNTER, "1", "");
+      property = new PropertyEntity(PropertyName.PROP_SYS_PID_COUNTER, "1", "");
     }
     long pid = Long.parseLong(property.getValue());
     property.setValue("" + (pid + 1));

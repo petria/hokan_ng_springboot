@@ -11,7 +11,7 @@ import java.io.Serializable;
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
 @MappedSuperclass
-public class PropertyBase implements Serializable {
+public class PropertyEntityBase implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -28,10 +28,10 @@ public class PropertyBase implements Serializable {
   @Column(name = "FLAGS")
   private String flags;
 
-  public PropertyBase() {
+  public PropertyEntityBase() {
   }
 
-  public PropertyBase(PropertyName propertyName, String value, String flags) {
+  public PropertyEntityBase(PropertyName propertyName, String value, String flags) {
     this.propertyName = propertyName;
     this.value = value;
     this.flags = flags;

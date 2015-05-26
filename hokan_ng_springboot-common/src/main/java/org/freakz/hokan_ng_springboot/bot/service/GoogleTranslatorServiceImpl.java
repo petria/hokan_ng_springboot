@@ -6,7 +6,7 @@ import com.google.api.GoogleAPIException;
 import com.google.api.translate.Language;
 import com.google.api.translate.Translate;
 import lombok.extern.slf4j.Slf4j;
-import org.freakz.hokan_ng_springboot.bot.jpa.entity.Property;
+import org.freakz.hokan_ng_springboot.bot.jpa.entity.PropertyEntity;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.PropertyName;
 import org.freakz.hokan_ng_springboot.bot.jpa.service.PropertyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ public class GoogleTranslatorServiceImpl implements GoogleTranslatorService {
   public String getTranslation(String[] text, Language from, Language to) {
     GoogleAPI.setHttpReferrer("https://github.com/petria/hokan_ng_springboot/");
 
-    Property apikey = propertyService.findFirstByPropertyName(PropertyName.PROP_SYS_GOOGLE_API_KEY);
+    PropertyEntity apikey = propertyService.findFirstByPropertyName(PropertyName.PROP_SYS_GOOGLE_API_KEY);
     if (apikey == null) {
       log.error("GoogleAPI key missing");
       return "GoogleAPI key missing";

@@ -11,12 +11,12 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "PROPERTIES")
-public class Property extends PropertyBase implements Serializable {
+public class PropertyEntity extends PropertyEntityBase implements Serializable {
 
-  public Property() {
+  public PropertyEntity() {
   }
 
-  public Property(PropertyName propertyName, String value, String flags) {
+  public PropertyEntity(PropertyName propertyName, String value, String flags) {
     super(propertyName, value, flags);
   }
 

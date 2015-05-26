@@ -12,6 +12,7 @@ import java.util.Map;
  * Created by Petri Airio (petri.j.airio@gmail.com) on 24.4.2015.
  *
  */
+@SuppressWarnings("unchecked")
 public class ServiceResponse implements Serializable {
 
   private final Map<String, Object> responseData = new HashMap<>();
@@ -58,6 +59,14 @@ public class ServiceResponse implements Serializable {
 
   public TelkkuProgram getTvInfoData() {
     return (TelkkuProgram) responseData.get("TV_INFO_DATA");
+  }
+
+  public List<TelkkuProgram> getTvDayData() {
+    List<TelkkuProgram> data = (List<TelkkuProgram>) responseData.get("TV_DAY_DATA");
+    if (data == null) {
+      return new ArrayList<>();
+    }
+    return data;
   }
 
 }

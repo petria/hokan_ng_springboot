@@ -8,7 +8,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.freakz.hokan_ng_springboot.bot.Services;
-import org.freakz.hokan_ng_springboot.bot.jpa.entity.Property;
+import org.freakz.hokan_ng_springboot.bot.jpa.entity.PropertyEntity;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.PropertyName;
 import org.wicketstuff.egrid.EditableGrid;
 import org.wicketstuff.egrid.column.AbstractEditablePropertyColumn;
@@ -35,13 +35,13 @@ public class EditableSystemPropertiesPanel extends Panel {
     feedbackPanel = new FeedbackPanel("feedBack");
     feedbackPanel.setOutputMarkupPlaceholderTag(true);
     add(feedbackPanel);
-    EditableListDataProvider<Property, String> provider = new EditableListDataProvider<>(Services.getPropertyService().findAll());
-    EditableGrid editableGrid = new EditableGrid<Property, String>("systemPropertiesGrid", getColumns(), provider, 10, Property.class) {
+    EditableListDataProvider<PropertyEntity, String> provider = new EditableListDataProvider<>(Services.getPropertyService().findAll());
+    EditableGrid editableGrid = new EditableGrid<PropertyEntity, String>("systemPropertiesGrid", getColumns(), provider, 10, PropertyEntity.class) {
       private static final long serialVersionUID = 1L;
 
       @Override
-      protected void onAdd(AjaxRequestTarget target, Property newRow) {
-        Property saved = Services.getPropertyService().save(newRow);
+      protected void onAdd(AjaxRequestTarget target, PropertyEntity newRow) {
+        PropertyEntity saved = Services.getPropertyService().save(newRow);
         newRow.setId(saved.getId());
         info("Added!");
         target.add(feedbackPanel);
@@ -60,14 +60,14 @@ public class EditableSystemPropertiesPanel extends Panel {
       }
 
       @Override
-      protected void onDelete(AjaxRequestTarget target, IModel<Property> rowModel) {
+      protected void onDelete(AjaxRequestTarget target, IModel<PropertyEntity> rowModel) {
         Services.getPropertyService().delete(rowModel.getObject());
         log.debug("deleted");
         target.add(feedbackPanel);
       }
 
       @Override
-      protected void onSave(AjaxRequestTarget target, IModel<Property> rowModel) {
+      protected void onSave(AjaxRequestTarget target, IModel<PropertyEntity> rowModel) {
         log.debug("save");
         Services.getPropertyService().save(rowModel.getObject());
         target.add(feedbackPanel);
@@ -77,14 +77,14 @@ public class EditableSystemPropertiesPanel extends Panel {
 
   }
 
-  private List<? extends IColumn<Property, String>> getColumns() {
-    List<AbstractEditablePropertyColumn<Property, String>> columns = new ArrayList<>();
+  private List<? extends IColumn<PropertyEntity, String>> getColumns() {
+    List<AbstractEditablePropertyColumn<PropertyEntity, String>> columns = new ArrayList<>();
 
-    columns.add(new AbstractEditablePropertyColumn<Property, String>(new Model<String>("Property name"), "propertyName") {
+    columns.add(new AbstractEditablePropertyColumn<PropertyEntity, String>(new Model<String>("PropertyEntity name"), "propertyName") {
       private static final long serialVersionUID = 1L;
 
       public EditableCellPanel getEditableCellPanel(String componentId) {
-        return new EditableRequiredDropDownCellPanel<Property, String>(componentId, this, PropertyName.getValuesLike("sys.*"));
+        return new EditableRequiredDropDownCellPanel<PropertyEntity, String>(componentId, this, PropertyName.getValuesLike("sys.*"));
       }
     });
 

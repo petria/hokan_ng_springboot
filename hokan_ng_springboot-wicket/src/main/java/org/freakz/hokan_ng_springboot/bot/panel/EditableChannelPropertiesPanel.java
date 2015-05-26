@@ -9,7 +9,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.freakz.hokan_ng_springboot.bot.Services;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.Channel;
-import org.freakz.hokan_ng_springboot.bot.jpa.entity.ChannelProperty;
+import org.freakz.hokan_ng_springboot.bot.jpa.entity.ChannelPropertyEntity;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.PropertyName;
 import org.wicketstuff.egrid.EditableGrid;
 import org.wicketstuff.egrid.column.AbstractEditablePropertyColumn;
@@ -38,14 +38,14 @@ public class EditableChannelPropertiesPanel extends Panel {
     feedbackPanel.setOutputMarkupPlaceholderTag(true);
     add(feedbackPanel);
 
-    EditableListDataProvider<ChannelProperty, String> provider = new EditableListDataProvider<>(Services.getChannelPropertyService().findByChannel(channel));
-    EditableGrid editableGrid = new EditableGrid<ChannelProperty, String>("channelPropertiesGrid", getColumns(), provider, 10, ChannelProperty.class) {
+    EditableListDataProvider<ChannelPropertyEntity, String> provider = new EditableListDataProvider<>(Services.getChannelPropertyService().findByChannel(channel));
+    EditableGrid editableGrid = new EditableGrid<ChannelPropertyEntity, String>("channelPropertiesGrid", getColumns(), provider, 10, ChannelPropertyEntity.class) {
       private static final long serialVersionUID = 1L;
 
       @Override
-      protected void onAdd(AjaxRequestTarget target, ChannelProperty newRow) {
+      protected void onAdd(AjaxRequestTarget target, ChannelPropertyEntity newRow) {
         newRow.setChannel(channel);
-        ChannelProperty saved = Services.getChannelPropertyService().save(newRow);
+        ChannelPropertyEntity saved = Services.getChannelPropertyService().save(newRow);
         newRow.setId(saved.getId());
         info("Added!");
         target.add(feedbackPanel);
@@ -64,14 +64,14 @@ public class EditableChannelPropertiesPanel extends Panel {
       }
 
       @Override
-      protected void onDelete(AjaxRequestTarget target, IModel<ChannelProperty> rowModel) {
+      protected void onDelete(AjaxRequestTarget target, IModel<ChannelPropertyEntity> rowModel) {
         Services.getChannelPropertyService().delete(rowModel.getObject());
         log.debug("deleted");
         target.add(feedbackPanel);
       }
 
       @Override
-      protected void onSave(AjaxRequestTarget target, IModel<ChannelProperty> rowModel) {
+      protected void onSave(AjaxRequestTarget target, IModel<ChannelPropertyEntity> rowModel) {
         log.debug("save");
         Services.getChannelPropertyService().save(rowModel.getObject());
         target.add(feedbackPanel);
@@ -81,13 +81,13 @@ public class EditableChannelPropertiesPanel extends Panel {
 
   }
 
-  private List<? extends IColumn<ChannelProperty, String>> getColumns() {
-    List<AbstractEditablePropertyColumn<ChannelProperty, String>> columns = new ArrayList<>();
-    columns.add(new AbstractEditablePropertyColumn<ChannelProperty, String>(new Model<String>("Property name"), "propertyName") {
+  private List<? extends IColumn<ChannelPropertyEntity, String>> getColumns() {
+    List<AbstractEditablePropertyColumn<ChannelPropertyEntity, String>> columns = new ArrayList<>();
+    columns.add(new AbstractEditablePropertyColumn<ChannelPropertyEntity, String>(new Model<String>("PropertyEntity name"), "propertyName") {
       private static final long serialVersionUID = 1L;
 
       public EditableCellPanel getEditableCellPanel(String componentId) {
-        return new EditableRequiredDropDownCellPanel<ChannelProperty, String>(componentId, this, PropertyName.getValuesLike("channel.*"));
+        return new EditableRequiredDropDownCellPanel<ChannelPropertyEntity, String>(componentId, this, PropertyName.getValuesLike("channel.*"));
       }
     });
     columns.add(new RequiredEditableTextFieldColumn<>(new Model<>("value"), "value", false));

@@ -1,7 +1,7 @@
 package org.freakz.hokan_ng_springboot.bot.jpa.service;
 
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.Channel;
-import org.freakz.hokan_ng_springboot.bot.jpa.entity.ChannelProperty;
+import org.freakz.hokan_ng_springboot.bot.jpa.entity.ChannelPropertyEntity;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.PropertyName;
 
 import java.util.List;
@@ -12,16 +12,20 @@ import java.util.List;
  */
 public interface ChannelPropertyService {
 
-  List<ChannelProperty> findByChannel(Channel channel);
+  ChannelPropertyEntity findFirstByChannelAndPropertyName(Channel channel, PropertyName propertyName);
 
-  ChannelProperty save(ChannelProperty newRow);
+  List<ChannelPropertyEntity> findByChannel(Channel channel);
 
-  void delete(ChannelProperty object);
+  ChannelPropertyEntity save(ChannelPropertyEntity newRow);
+
+  void delete(ChannelPropertyEntity object);
 
   void deleteByChannel(Channel object);
 
   List<Channel> getChannelsWithProperty(PropertyName propChannelDoTvnotify, String valueMatcher);
 
-  ChannelProperty setChannelProperty(Channel theChannel, PropertyName propertyName, String value);
+  ChannelPropertyEntity setChannelProperty(Channel theChannel, PropertyName propertyName, String value);
+
+  boolean getChannelPropertyAsBoolean(Channel channel, PropertyName propertyName, boolean b);
 
 }

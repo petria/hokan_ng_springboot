@@ -7,7 +7,7 @@ import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.Channel;
-import org.freakz.hokan_ng_springboot.bot.jpa.entity.ChannelProperty;
+import org.freakz.hokan_ng_springboot.bot.jpa.entity.ChannelPropertyEntity;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.PropertyName;
 import org.freakz.hokan_ng_springboot.bot.jpa.service.ChannelPropertyService;
 import org.freakz.hokan_ng_springboot.bot.util.StringStuff;
@@ -96,8 +96,8 @@ public class ChanSetCmd extends Cmd {
       response.addResponse("Invalid property: %s", split[0]);
       return;
     }
-    ChannelProperty chanProp = properties.setChannelProperty(theChannel, propertyName, split[1]);
-    response.addResponse("Property set: %s", chanProp.toString());
+    ChannelPropertyEntity chanProp = properties.setChannelProperty(theChannel, propertyName, split[1]);
+    response.addResponse("PropertyEntity set: %s", chanProp.toString());
   }
 
 }

@@ -1,7 +1,7 @@
 package org.freakz.hokan_ng_springboot.bot.jpa.service;
 
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.Channel;
-import org.freakz.hokan_ng_springboot.bot.jpa.entity.ChannelProperty;
+import org.freakz.hokan_ng_springboot.bot.jpa.entity.ChannelPropertyEntity;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.PropertyName;
 import org.freakz.hokan_ng_springboot.bot.jpa.repository.ChannelPropertyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,25 +16,25 @@ import java.util.List;
  *
  */
 @Service
-public class ChannelPropertyRepositoryService implements ChannelPropertyService {
+public class ChannelPropertyRepositoryService extends PropertyBase implements ChannelPropertyService {
 
   @Autowired
   private ChannelPropertyRepository repository;
 
   @Override
-  public List<ChannelProperty> findByChannel(Channel channel) {
+  public List<ChannelPropertyEntity> findByChannel(Channel channel) {
     return repository.findByChannel(channel);
   }
 
   @Override
   @Transactional
-  public ChannelProperty save(ChannelProperty newRow) {
+  public ChannelPropertyEntity save(ChannelPropertyEntity newRow) {
     return repository.save(newRow);
   }
 
   @Override
   @Transactional
-  public void delete(ChannelProperty object) {
+  public void delete(ChannelPropertyEntity object) {
     repository.delete(object);
   }
 
@@ -45,9 +45,9 @@ public class ChannelPropertyRepositoryService implements ChannelPropertyService 
   }
 
   public List<Channel> getChannelsWithProperty(PropertyName propertyName, String valueMatcher) {
-    List<ChannelProperty> properties = repository.findByPropertyName(propertyName);
+    List<ChannelPropertyEntity> properties = repository.findByPropertyName(propertyName);
     List<Channel> channels = new ArrayList<>();
-    for (ChannelProperty property : properties) {
+    for (ChannelPropertyEntity property : properties) {
       String value = property.getValue();
       if (value != null) {
         if (value.matches(valueMatcher)) {
@@ -59,14 +59,24 @@ public class ChannelPropertyRepositoryService implements ChannelPropertyService 
   }
 
   @Override
-  public ChannelProperty setChannelProperty(Channel theChannel, PropertyName propertyName, String value) {
-    ChannelProperty property = repository.findFirstByChannelAndPropertyName(theChannel, propertyName);
+  public ChannelPropertyEntity setChannelProperty(Channel theChannel, PropertyName propertyName, String value) {
+    ChannelPropertyEntity property = repository.findFirstByChannelAndPropertyName(theChannel, propertyName);
     if (property == null) {
-      property = new ChannelProperty(theChannel, propertyName, value, "");
+      property = new ChannelPropertyEntity(theChannel, propertyName, value, "");
     } else {
       property.setValue(value);
     }
     return repository.save(property);
+  }
+
+  @Override
+  public ChannelPropertyEntity findFirstByChannelAndPropertyName(Channel channel, PropertyName propertyName) {
+    return repository.findFirstByChannelAndPropertyName(channel, propertyName);
+  }
+
+  @Override
+  public boolean getChannelPropertyAsBoolean(Channel channel, PropertyName propertyName, boolean value) {
+    return super.getChannelPropertyAsBoolean(channel, propertyName, value);
   }
 
 }

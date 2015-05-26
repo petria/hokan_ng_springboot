@@ -172,6 +172,22 @@ public class TelkkuServiceImpl implements TelkkuService, CommandRunnable {
     return new TvNowData(getChannels(), nowData, nextData);
   }
 
+  @Override
+  public List<TelkkuProgram> getChannelDailyNotifiedPrograms(Channel channel, Date day) {
+    List<TelkkuProgram> matches = new ArrayList<>();
+    List<TelkkuProgram> daily = findDailyPrograms(day);
+    List<TvNotify> notifies = notifyService.getTvNotifies(channel);
+    for (TelkkuProgram prg : daily) {
+      for (TvNotify notify : notifies) {
+        if (StringStuff.match(prg.getProgram(), ".*" + notify.getNotifyPattern() + ".*", true)) {
+          matches.add(prg);
+        }
+      }
+    }
+    return matches;
+  }
+
+
   @PostConstruct
   private void startRunner() {
     commandPool.startRunnable(this, null);

@@ -35,7 +35,7 @@ public class StaticStrings {
   public static final String ARG_PASSWORD = "Password";
   public static final String ARG_PLACE = "Place";
   public static final String ARG_PROGRAM = "Program";
-  public static final String ARG_PROPERTY = "Property";
+  public static final String ARG_PROPERTY = "PropertyEntity";
   public static final String ARG_PHONE = "Phone";
   public static final String ARG_NICK = "Nick";
   public static final String ARG_REPLACE = "Replace";

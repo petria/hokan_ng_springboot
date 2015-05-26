@@ -1,5 +1,6 @@
 package org.freakz.hokan_ng_springboot.bot.updaters.telkku;
 
+import org.freakz.hokan_ng_springboot.bot.jpa.entity.Channel;
 import org.freakz.hokan_ng_springboot.bot.models.TelkkuProgram;
 import org.freakz.hokan_ng_springboot.bot.models.TvNowData;
 
@@ -30,4 +31,6 @@ public interface TelkkuService {
   List<TelkkuProgram> findDailyPrograms(Date day);
 
   TvNowData getTvNowData();
+
+  List<TelkkuProgram> getChannelDailyNotifiedPrograms(Channel channel, Date day);
 }

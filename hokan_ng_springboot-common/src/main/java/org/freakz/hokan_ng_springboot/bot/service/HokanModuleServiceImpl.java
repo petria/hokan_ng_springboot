@@ -2,7 +2,7 @@ package org.freakz.hokan_ng_springboot.bot.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.enums.HokanModule;
-import org.freakz.hokan_ng_springboot.bot.jpa.entity.Property;
+import org.freakz.hokan_ng_springboot.bot.jpa.entity.PropertyEntity;
 import org.freakz.hokan_ng_springboot.bot.jpa.service.PropertyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -31,9 +31,9 @@ public class HokanModuleServiceImpl implements HokanModuleService {
     this.module = module;
     this.sessionId = new Date().getTime();
     log.info("Module set to {}", module.toString());
-    Property property = propertyService.findFirstByPropertyName(module.getModuleProperty());
+    PropertyEntity property = propertyService.findFirstByPropertyName(module.getModuleProperty());
     if (property == null) {
-      property = new Property(module.getModuleProperty(), "", "");
+      property = new PropertyEntity(module.getModuleProperty(), "", "");
     }
     property.setValue(this.sessionId + "");
     propertyService.save(property);

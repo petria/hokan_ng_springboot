@@ -18,17 +18,17 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "CHANNEL_PROPERTIES")
-public class ChannelProperty extends PropertyBase implements Serializable {
+public class ChannelPropertyEntity extends PropertyEntityBase implements Serializable {
 
   @ManyToOne
   @OnDelete(action = OnDeleteAction.CASCADE)
   @JoinColumn(name = "CHANNEL", referencedColumnName = "ID", nullable = false)
   private Channel channel;
 
-  public ChannelProperty() {
+  public ChannelPropertyEntity() {
   }
 
-  public ChannelProperty(Channel channel, PropertyName property, String value, String flags) {
+  public ChannelPropertyEntity(Channel channel, PropertyName property, String value, String flags) {
     super(property, value, flags);
     this.channel = channel;
   }
