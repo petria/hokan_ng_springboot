@@ -7,6 +7,7 @@ import org.freakz.hokan_ng_springboot.bot.cmdpool.CommandPool;
 import org.freakz.hokan_ng_springboot.bot.cmdpool.CommandRunnable;
 import org.freakz.hokan_ng_springboot.bot.enums.HokanModule;
 import org.freakz.hokan_ng_springboot.bot.events.*;
+import org.freakz.hokan_ng_springboot.bot.exception.HokanEngineException;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
 import org.freakz.hokan_ng_springboot.bot.jms.JmsMessage;
 import org.freakz.hokan_ng_springboot.bot.jms.api.JmsSender;
@@ -160,7 +161,7 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
     return seeAlsoHelp;
   }
 
-  public void handleLine(InternalRequest request, EngineResponse response) throws Exception {
+  public void handleLine(InternalRequest request, EngineResponse response)  {
     IrcMessageEvent ircEvent = request.getIrcEvent();
     CommandArgs args = new CommandArgs(ircEvent.getMessage());
 
@@ -191,7 +192,8 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
           wrapper.request = request;
           wrapper.response = response;
           wrapper.results = results;
-          commandPool.startSyncRunnable(this, request.getUser().getNick(), wrapper);
+//          commandPool.startSyncRunnable(this, request.getUser().getNick(), wrapper);
+          commandPool.startRunnable(this, request.getUser().getNick(), wrapper);
         }
       }
     }
@@ -199,9 +201,22 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
 
   @Override
   public void handleRun(long myPid, Object args) throws HokanException {
-    ArgsWrapper wrapper = (ArgsWrapper) ((Object[]) args)[0];
-    handleRequest(wrapper.request, wrapper.response, wrapper.results);
+    ArgsWrapper wrapper = (ArgsWrapper) args;
+    try {
+      handleRequest(wrapper.request, wrapper.response, wrapper.results);
+    } catch (Exception e) {
+      HokanEngineException engineException = new HokanEngineException(e, getClass().getName());
+      wrapper.response.setException(engineException);
+      log.error("Command handler returned exception {}", e);
+    }
+    sendReply(wrapper.response);
   }
+
+  private void sendReply(EngineResponse response) {
+    log.debug("Sending response: {}", response);
+    jmsSender.send("HokanNGIoQueue", "ENGINE_RESPONSE", response, false);
+  }
+
 
   public abstract void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException;
 
@@ -248,7 +263,7 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
     }
 
     if (isAdminUserOnly() && !isAdminUser) {
-      response.setResponseMessage("Master user only: " + getName());
+      response.setResponseMessage("Admin user only: " + getName());
       response.setReplyTo(ircMessageEvent.getSender());
       ret = false;
     }

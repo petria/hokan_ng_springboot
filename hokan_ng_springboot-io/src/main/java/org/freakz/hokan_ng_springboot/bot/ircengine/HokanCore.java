@@ -20,7 +20,6 @@ import java.util.*;
 
 /**
  * Created by AirioP on 17.2.2015.
- *
  */
 @Component
 @Scope("prototype")
@@ -377,20 +376,13 @@ public class HokanCore extends PircBot implements HokanCoreService {
   public void handleEngineResponse(EngineResponse response) {
     log.debug("Handle: {}", response);
 
-/*    if (response.getException() != null) {
-      String error = " failed: " + response.getException();
-      String message;
-      String target;
-      if (response.getRequest().getIrcEvent() instanceof IrcMessageEvent) {
-        message = response.getRequest().getIrcEvent().getSender() + ": " + error;
-        target = response.getRequest().getIrcEvent().getChannel();
-      } else {
-        message = error;
-        target = response.getRequest().getIrcEvent().getSender();
-      }
+    if (response.getException() != null) {
+      String error = " failed: " + response.getException().getMessage();
+      String message = response.getIrcMessageEvent().getSender() + ": " + error;
+      String target = response.getIrcMessageEvent().getChannel();
       sendMessage(target, message);
       return;
-    }*/
+    }
 
     handleSendMessage(response);
 /*    if (response.getCommandClass() != null) {

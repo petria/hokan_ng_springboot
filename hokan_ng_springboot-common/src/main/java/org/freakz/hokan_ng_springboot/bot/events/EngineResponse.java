@@ -17,7 +17,7 @@ public class EngineResponse implements Serializable {
 
   private int responseStatus;
   private String responseMessage = "";
-  private String exception;
+  private Throwable exception;
   private String replyTo;
   private String commandClass;
   private boolean noSearchReplace;
@@ -66,11 +66,11 @@ public class EngineResponse implements Serializable {
     this.engineMethodCalls = engineMethodCalls;
   }
 
-  public String getException() {
+  public Throwable getException() {
     return exception;
   }
 
-  public void setException(String exception) {
+  public void setException(Throwable exception) {
     this.exception = exception;
   }
 

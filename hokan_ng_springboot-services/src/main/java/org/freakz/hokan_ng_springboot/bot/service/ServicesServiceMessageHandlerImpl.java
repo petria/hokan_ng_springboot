@@ -76,7 +76,7 @@ public class ServicesServiceMessageHandlerImpl implements JmsServiceMessageHandl
         response.setResponseData("TV_NOW_DATA", tvNowData);
         break;
       case TRANSLATE_REQUEST:
-        String translated = translatorService.getTranslation((String[]) request.getParameters(), Language.AUTO_DETECT, Language.FINNISH);
+        String translated = translatorService.getTranslation(request.getParameters(), Language.AUTO_DETECT, Language.FINNISH);
         response.setResponseData("TRANSLATE_RESPONSE", translated);
         break;
       case WEATHER_REQUEST:

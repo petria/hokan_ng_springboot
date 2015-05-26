@@ -17,7 +17,7 @@ public interface HokkanCommand {
 
   String getName();
 
-  void handleLine(InternalRequest request, EngineResponse response) throws Exception;
+  void handleLine(InternalRequest request, EngineResponse response);
 
 
 }
