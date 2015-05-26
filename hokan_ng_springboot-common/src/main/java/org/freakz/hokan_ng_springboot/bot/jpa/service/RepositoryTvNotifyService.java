@@ -4,11 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.Channel;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.TvNotify;
 import org.freakz.hokan_ng_springboot.bot.jpa.repository.TvNotifyRepository;
-import org.freakz.hokan_ng_springboot.bot.models.TelkkuProgram;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -24,7 +22,9 @@ public class RepositoryTvNotifyService implements TvNotifyService {
 
   @Override
   public TvNotify addTvNotify(Channel channel, String pattern, String owner) {
-    return null;
+    TvNotify notify = new TvNotify(pattern, owner, channel, false);
+    notify.setNotifyDescription("");
+    return repository.save(notify);
   }
 
   @Override
@@ -33,8 +33,8 @@ public class RepositoryTvNotifyService implements TvNotifyService {
   }
 
   @Override
-  public TvNotify getTvNotify(Channel channel, String pattern) {
-    return null;
+  public TvNotify getTvNotify(Channel channel, String notifyPattern) {
+    return repository.findFirstByChannelAndNotifyPattern(channel, notifyPattern);
   }
 
   @Override
@@ -44,6 +44,7 @@ public class RepositoryTvNotifyService implements TvNotifyService {
 
   @Override
   public int delTvNotifies(Channel channel) {
+    repository.delete(getTvNotifies(channel));
     return 0;
   }
 
@@ -52,8 +53,9 @@ public class RepositoryTvNotifyService implements TvNotifyService {
     repository.delete(notify);
   }
 
-  @Override
+/*  @Override
   public List<TelkkuProgram> getChannelDailyNotifiedPrograms(Channel channel, Date day) {
     return null;
-  }
+  }*/
+
 }

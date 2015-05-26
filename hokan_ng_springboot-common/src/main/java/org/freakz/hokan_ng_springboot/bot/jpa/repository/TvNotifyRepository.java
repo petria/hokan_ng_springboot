@@ -14,4 +14,6 @@ public interface TvNotifyRepository extends JpaRepository<TvNotify, Long> {
 
   List<TvNotify> findByChannel(Channel channel);
 
+  TvNotify findFirstByChannelAndNotifyPattern(Channel channel, String notifyPattern);
+
 }
