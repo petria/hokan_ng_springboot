@@ -32,7 +32,7 @@ public class RawCmd extends Cmd {
         .setGreedy(false);
     registerParameter(flg);
 
-    setMasterUserOnly(true);
+    setAdminUserOnly(true);
   }
 
   @Override

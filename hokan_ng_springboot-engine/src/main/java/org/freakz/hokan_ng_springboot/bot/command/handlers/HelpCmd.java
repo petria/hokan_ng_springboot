@@ -68,11 +68,11 @@ public class HelpCmd extends Cmd {
 
       for (Cmd cmd : commands) {
 
-        if (cmd.isChannelOpOnly() && !isChannelOp && !isMasterUser) {
+        if (cmd.isChannelOpOnly() && !isChannelOp && !isAdminUser) {
           continue;
         }
 
-        if (cmd.isMasterUserOnly() && (!isMasterUser)) {
+        if (cmd.isAdminUserOnly() && (!isAdminUser)) {
           continue;
         }
 
@@ -88,8 +88,8 @@ public class HelpCmd extends Cmd {
         if (cmd.loggedInOnly) {
           flags += "L";
         }
-        if (cmd.masterUserOnly) {
-          flags += "M";
+        if (cmd.adminUserOnly) {
+          flags += "A";
         }
         if (cmd.privateOnly) {
           flags += "P";
@@ -100,12 +100,12 @@ public class HelpCmd extends Cmd {
       }
       sb.append("\nTry '!help <command>' to get detailed help\n");
       sb.append("B: to bot only ");
-      if (isMasterUser || isChannelOp) {
+      if (isAdminUser || isChannelOp) {
         sb.append("C: channel op only ");
       }
       sb.append("L: logged in only ");
-      if (isMasterUser) {
-        sb.append("M: master user only ");
+      if (isAdminUser) {
+        sb.append("A: admin user only ");
       }
       sb.append("P: private msg only");
 

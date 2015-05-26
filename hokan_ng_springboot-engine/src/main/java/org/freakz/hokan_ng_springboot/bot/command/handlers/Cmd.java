@@ -45,13 +45,14 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
   protected boolean loggedInOnly;
   protected boolean channelOnly;
   protected boolean privateOnly;
-  protected boolean masterUserOnly;
+  protected boolean adminUserOnly;
   protected boolean toBotOnly;
+
   protected boolean isChannelOp;
   protected boolean isLoggedIn;
   protected boolean isPublic;
   protected boolean isPrivate;
-  protected boolean isMasterUser;
+  protected boolean isAdminUser;
   protected boolean isToBot;
 
   @Autowired
@@ -95,18 +96,18 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
   }
 
   public void addToHelpGroup(HelpGroup helpGroup, Cmd cmd) {
-    List<Cmd> cmds = this.helpGroups.get(helpGroup);
+    List<Cmd> cmds = helpGroups.get(helpGroup);
     if (cmds == null) {
       cmds = new ArrayList<>();
-      this.helpGroups.put(helpGroup, cmds);
+      helpGroups.put(helpGroup, cmds);
     }
     cmds.add(cmd);
   }
 
   public List<HelpGroup> getCmdHelpGroups(Cmd cmd) {
     List<HelpGroup> inGroups = new ArrayList<>();
-    for (HelpGroup group : this.helpGroups.keySet()) {
-      List<Cmd> cmds = this.helpGroups.get(group);
+    for (HelpGroup group : helpGroups.keySet()) {
+      List<Cmd> cmds = helpGroups.get(group);
       if (cmds.contains(cmd)) {
         inGroups.add(group);
       }
@@ -116,7 +117,7 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
 
   public List<Cmd> getOtherCmdsInGroup(HelpGroup group, Cmd cmd) {
     List<Cmd> otherCmds = new ArrayList<>();
-    for (Cmd cmdInGroup : this.helpGroups.get(group)) {
+    for (Cmd cmdInGroup : helpGroups.get(group)) {
       if (cmdInGroup != cmd) {
         otherCmds.add(cmdInGroup);
       }
@@ -207,42 +208,42 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
     isPublic = !ircMessageEvent.isPrivate();
     isPrivate = ircMessageEvent.isPrivate();
     isToBot = ircMessageEvent.isToMe();
-    isMasterUser = accessControlService.isAdminUser(request.getUser());
+    isAdminUser = accessControlService.isAdminUser(request.getUser());
     isChannelOp = accessControlService.isChannelOp(request.getUser(), request.getChannel());
 
     boolean ret = true;
 
-    if (isLoggedInOnly() && !isLoggedIn && !isMasterUser) {
+    if (isLoggedInOnly() && !isLoggedIn && !isAdminUser) {
       response.setResponseMessage("LoggedIn only: " + getName());
       response.setReplyTo(ircMessageEvent.getSender());
       ret = false;
     }
 
-    if (isToBotOnly() && !isToBot && !isMasterUser) {
+    if (isToBotOnly() && !isToBot && !isAdminUser) {
       response.setResponseMessage("Can be used via message to Bot only: " + getName());
       response.setReplyTo(ircMessageEvent.getSender());
       ret = false;
     }
 
-    if (isChannelOnly() && !isPublic && !isMasterUser) {
+    if (isChannelOnly() && !isPublic && !isAdminUser) {
       response.setResponseMessage("Can be used via channel messages only: " + getName());
       response.setReplyTo(ircMessageEvent.getSender());
       ret = false;
     }
 
-    if (isPrivateOnly() && isPublic && !isMasterUser) {
+    if (isPrivateOnly() && isPublic && !isAdminUser) {
       response.setResponseMessage("Can be used via private messages only: " + getName());
       response.setReplyTo(ircMessageEvent.getSender());
       ret = false;
     }
 
-    if (isChannelOpOnly() && !isChannelOp && !isMasterUser) {
+    if (isChannelOpOnly() && !isChannelOp && !isAdminUser) {
       response.setResponseMessage("ChannelOp only: " + getName());
       response.setReplyTo(ircMessageEvent.getSender());
       ret = false;
     }
 
-    if (isMasterUserOnly() && !isMasterUser) {
+    if (isAdminUserOnly() && !isAdminUser) {
       response.setResponseMessage("Master user only: " + getName());
       response.setReplyTo(ircMessageEvent.getSender());
       ret = false;
@@ -284,12 +285,12 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
     this.privateOnly = privateOnly;
   }
 
-  public boolean isMasterUserOnly() {
-    return masterUserOnly;
+  public boolean isAdminUserOnly() {
+    return this.adminUserOnly;
   }
 
-  public void setMasterUserOnly(boolean masterUserOnly) {
-    this.masterUserOnly = masterUserOnly;
+  public void setAdminUserOnly(boolean adminUserOnly) {
+    this.adminUserOnly = adminUserOnly;
   }
 
   public boolean isToBotOnly() {

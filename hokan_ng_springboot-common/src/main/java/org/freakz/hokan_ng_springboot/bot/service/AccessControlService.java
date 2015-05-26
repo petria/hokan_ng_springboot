@@ -13,7 +13,6 @@ public interface AccessControlService {
 
   boolean isChannelOp(User user, Channel Channel);
 
-
   boolean isLoggedIn(User isLoggedIn);
 
   User loginUser(User user2);
