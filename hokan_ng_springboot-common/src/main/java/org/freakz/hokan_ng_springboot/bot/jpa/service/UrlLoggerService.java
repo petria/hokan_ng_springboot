@@ -23,4 +23,8 @@ public interface UrlLoggerService {
 
   Url findOne(long id);
 
+  List findTopSender();
+
+  List findTopSenderByChannel(String channel);
+
 }

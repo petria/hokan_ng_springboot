@@ -221,4 +221,14 @@ public class UrlRepositoryLoggerService implements UrlLoggerService {
   public Url findOne(long id) {
     return repository.findOne(id);
   }
+
+  @Override
+  public List findTopSender() {
+    return repository.findTopSender();
+  }
+
+  @Override
+  public List findTopSenderByChannel(String channel) {
+    return repository.findTopSenderByChannel(channel);
+  }
 }

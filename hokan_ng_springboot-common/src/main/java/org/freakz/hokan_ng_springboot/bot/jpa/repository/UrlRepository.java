@@ -2,6 +2,7 @@ package org.freakz.hokan_ng_springboot.bot.jpa.repository;
 
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.Url;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -16,5 +17,11 @@ public interface UrlRepository extends JpaRepository<Url, Long> {
   List<Url> findByUrlLikeOrUrlTitleLikeOrderByCreatedDesc(String url, String title);
 
   List<Url> findByUrlLikeOrUrlTitleLikeAndSenderInOrderByCreatedDesc(String url, String title, List<String> senders);
+
+  @Query("SELECT url, count(url) FROM Url url GROUP BY url.sender ORDER BY 2 DESC")
+  List findTopSender();
+
+  @Query("SELECT url, count(url) FROM Url url WHERE url.channel = ?1 GROUP BY url.sender ORDER BY 2 DESC")
+  List findTopSenderByChannel(String channel);
 
 }

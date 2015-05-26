@@ -7,9 +7,7 @@ import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.Url;
-import org.freakz.hokan_ng_springboot.bot.jpa.service.UrlLoggerService;
 import org.freakz.hokan_ng_springboot.bot.util.StringStuff;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -29,9 +27,6 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_URL_PATT
 @Scope("prototype")
 @Slf4j
 public class FindUrlCmd extends Cmd {
-
-  @Autowired
-  private UrlLoggerService urlLoggerService;
 
   public FindUrlCmd() {
     super();
