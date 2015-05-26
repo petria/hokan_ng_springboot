@@ -7,6 +7,7 @@ import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
@@ -20,17 +21,30 @@ import org.freakz.hokan_ng_springboot.bot.jpa.entity.User;
 @Slf4j
 public class UserEditorPanel extends Panel {
 
+  final private FeedbackPanel feedbackPanel;
+
   public UserEditorPanel(String id, ModalWindow window, final User user) {
     super(id);
+
+    feedbackPanel = new FeedbackPanel("feedBack");
+    feedbackPanel.setOutputMarkupPlaceholderTag(true);
+    add(feedbackPanel);
+
     add(new Label("editUserLabel", user.toString()));
     Form<User> form = new Form<>("form", new CompoundPropertyModel<>(user));
-    form.add(new TextField<String>("fullName").setRequired(true).setLabel(new Model<>("String")));
-    form.add(new TextField<String>("email").setRequired(true).setLabel(new Model<>("String")));
-    form.add(new TextField<String>("phone").setRequired(true).setLabel(new Model<>("String")));
+    form.add(new TextField<String>("fullName").setRequired(false).setLabel(new Model<>("String")));
+    form.add(new TextField<String>("email").setRequired(false).setLabel(new Model<>("String")));
+    form.add(new TextField<String>("phone").setRequired(false).setLabel(new Model<>("String")));
     form.add(new TextField<String>("mask").setRequired(true).setLabel(new Model<>("String")));
-    form.add(new TextField<String>("flags").setRequired(true).setLabel(new Model<>("String")));
+    form.add(new TextField<String>("flags").setRequired(false).setLabel(new Model<>("String")));
 
     form.add(new AjaxButton("save-button", form) {
+
+      @Override
+      protected void onError(AjaxRequestTarget target, Form<?> form) {
+        target.add(feedbackPanel);
+      }
+
       @Override
       protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
         User user = (User) form.getModelObject();
@@ -40,6 +54,11 @@ public class UserEditorPanel extends Panel {
       }
     });
     form.add(new AjaxButton("cancel-button", form) {
+      @Override
+      protected void onError(AjaxRequestTarget target, Form<?> form) {
+        target.add(feedbackPanel);
+      }
+
       @Override
       protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
         log.debug("cancel");
