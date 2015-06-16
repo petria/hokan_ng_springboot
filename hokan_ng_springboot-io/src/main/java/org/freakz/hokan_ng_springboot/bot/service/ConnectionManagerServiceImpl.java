@@ -1,7 +1,6 @@
 package org.freakz.hokan_ng_springboot.bot.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.freakz.hokan_ng_springboot.bot.enums.HokanModule;
 import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.events.TvNotifyRequest;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
@@ -64,7 +63,7 @@ public class ConnectionManagerServiceImpl implements ConnectionManagerService, E
 
   @PostConstruct
   public void postInit() throws HokanException {
-    hokanModuleService.setHokanModule(HokanModule.HokanIo);
+//    hokanModuleService.setHokanModule(HokanModule.HokanIo);
     updateServerMap();
     invalidateLoggedInUsers();
     //		propertyService.setProperty(PropertyName.PROP_SYS_CORE_IO_UPTIME, "" + new Date().getTime());

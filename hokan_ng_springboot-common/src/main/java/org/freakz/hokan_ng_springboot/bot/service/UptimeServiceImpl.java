@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * Created by Petri Airio (petri.j.airio@gmail.com) on 9.4.2015.
+ *
  */
 @Service
 @Scope("singleton")

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 
+import javax.annotation.PostConstruct;
 import java.util.Date;
 
 /**
@@ -32,6 +33,11 @@ public class EngineServiceMessageHandlerImpl implements JmsServiceMessageHandler
   @Autowired
   private CommandHandlerService commandHandlerService;
 
+
+  @PostConstruct
+  public void postConstruct() {
+//    hokanModuleService.setHokanModule(HokanModule.HokanEngine);
+  }
 
   @Override
   public void handleJmsEnvelope(JmsEnvelope envelope) throws Exception {

@@ -8,7 +8,7 @@ import org.apache.wicket.util.crypt.CharEncoding;
 import org.freakz.hokan_ng_springboot.bot.jpa.service.*;
 import org.freakz.hokan_ng_springboot.bot.page.HokanBasePage;
 import org.freakz.hokan_ng_springboot.bot.page2.MySignInPage;
-import org.freakz.hokan_ng_springboot.bot.wicketservices.HokanStatusService;
+import org.freakz.hokan_ng_springboot.bot.service.HokanStatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -16,6 +16,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /*
@@ -26,6 +27,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableJpaRepositories({"org.freakz.hokan_ng_springboot.bot"})
 @EnableAutoConfiguration
 @EnableTransactionManagement
+@EnableScheduling
 public class HokanNgWicketApplication extends AuthenticatedWebApplication {
 
   @Autowired

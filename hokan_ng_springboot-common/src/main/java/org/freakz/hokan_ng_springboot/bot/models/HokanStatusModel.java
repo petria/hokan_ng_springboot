@@ -1,4 +1,4 @@
-package org.freakz.hokan_ng_springboot.bot.model;
+package org.freakz.hokan_ng_springboot.bot.models;
 
 import org.freakz.hokan_ng_springboot.bot.jms.PingResponse;
 

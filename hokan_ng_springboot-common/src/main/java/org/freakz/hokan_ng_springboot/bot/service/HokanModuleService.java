@@ -8,7 +8,7 @@ import org.freakz.hokan_ng_springboot.bot.enums.HokanModule;
  */
 public interface HokanModuleService {
 
-  void setHokanModule(HokanModule module);
+//  void setHokanModule(HokanModule module);
 
   HokanModule getHokanModule();
 

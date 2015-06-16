@@ -5,16 +5,18 @@ import org.freakz.hokan_ng_springboot.bot.enums.HokanModule;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.PropertyEntity;
 import org.freakz.hokan_ng_springboot.bot.jpa.service.PropertyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.Date;
 
 /**
  * Created by Petri Airio on 15.5.2015.
  *
  */
-@Service
+@Component
 @Scope("singleton")
 @Slf4j
 public class HokanModuleServiceImpl implements HokanModuleService {
@@ -24,11 +26,15 @@ public class HokanModuleServiceImpl implements HokanModuleService {
 
   private long sessionId;
 
+  @Value("${hokan.module}")
+  private String hokanModule;
+
   private HokanModule module;
 
-  @Override
-  public void setHokanModule(HokanModule module) {
-    this.module = module;
+  @PostConstruct
+  public void setHokanModule() {
+    log.debug("hokanModule: {}", hokanModule);
+    this.module = HokanModule.valueOf(hokanModule);
     this.sessionId = new Date().getTime();
     log.info("Module set to {}", module.toString());
     PropertyEntity property = propertyService.findFirstByPropertyName(module.getModuleProperty());

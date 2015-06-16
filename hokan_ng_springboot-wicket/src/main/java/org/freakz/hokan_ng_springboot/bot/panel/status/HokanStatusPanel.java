@@ -8,7 +8,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.util.time.Duration;
 import org.freakz.hokan_ng_springboot.bot.Services;
 import org.freakz.hokan_ng_springboot.bot.enums.HokanModule;
-import org.freakz.hokan_ng_springboot.bot.model.HokanStatusModel;
+import org.freakz.hokan_ng_springboot.bot.models.HokanStatusModel;
 
 import java.awt.*;
 import java.util.Random;
