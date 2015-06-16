@@ -37,6 +37,9 @@ public class HokanStatusServiceImpl implements HokanStatusService, CommandRunnab
   @Autowired
   private HokanModuleService hokanModuleService;
 
+  @Autowired
+  private UptimeService uptimeService;
+
   private Map<HokanModule, HokanStatusModel> statusModelMap = new HashMap<>();
   private boolean activated = true;
   private boolean doRun;
@@ -63,9 +66,17 @@ public class HokanStatusServiceImpl implements HokanStatusService, CommandRunnab
 
   private void updateStatuses() {
     HokanModule thisModule = hokanModuleService.getHokanModule();
-    log.debug("thisModule: {}", thisModule);
+//    log.debug("thisModule: {}", thisModule);
     if (activated) {
       for (HokanModule module : HokanModule.values()) {
+        if (module == thisModule) {
+          HokanStatusModel status = new HokanStatusModel("<online>");
+          PingResponse pingResponse = new PingResponse();
+          pingResponse.setUptime(uptimeService.getUptime());
+          status.setPingResponse(pingResponse);
+          statusModelMap.put(module, status);
+          continue;
+        }
         ObjectMessage objectMessage = jmsSender.sendAndGetReply(module.getQueueName(), "COMMAND", "PING", false);
         if (objectMessage == null) {
           statusModelMap.put(module, new HokanStatusModel("<offline>"));

@@ -46,12 +46,20 @@ public class UptimeCmd extends Cmd {
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
     JarScriptExecutor cmdExecutor = new JarScriptExecutor("/uptime.sh", "UTF-8");
     String[] sysUptime = cmdExecutor.executeJarScript();
-    String uptime1 = String.format("%15s     :%s\n", "System", sysUptime[0]);
+    String sysUt = "<n/a>";
+    if (sysUptime != null && sysUptime.length > 0) {
+      sysUt = sysUptime[0];
+    }
+    String uptime1 = String.format("%-13s     :%s\n", "System", sysUt);
     response.addResponse(uptime1);
     for (HokanModule module : HokanModule.values()) {
       HokanStatusModel statusModel = statusService.getHokanStatus(module);
-      Uptime ut = statusModel.getPingResponse().getUptime();
-      String moduleUptime = String.format("%15s     :%s\n", module, ut.toString());
+      String modUt = "<n/a>";
+      if (statusModel.getPingResponse() != null) {
+        Uptime ut = statusModel.getPingResponse().getUptime();
+        modUt = ut.toString();
+      }
+      String moduleUptime = String.format("%-13s     :%s\n", module, modUt);
       response.addResponse(moduleUptime);
     }
   }
