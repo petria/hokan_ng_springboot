@@ -190,7 +190,7 @@ public class TelkkuServiceImpl implements TelkkuService, CommandRunnable {
 
   @PostConstruct
   private void startRunner() {
-    commandPool.startRunnable(this, null);
+    commandPool.startRunnable(this, "<system>");
   }
 
   @Override

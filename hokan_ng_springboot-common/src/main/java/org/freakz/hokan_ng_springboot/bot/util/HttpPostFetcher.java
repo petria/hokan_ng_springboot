@@ -1,6 +1,9 @@
 package org.freakz.hokan_ng_springboot.bot.util;
 
 import lombok.extern.slf4j.Slf4j;
+import org.freakz.hokan_ng_springboot.bot.jpa.entity.PropertyName;
+import org.freakz.hokan_ng_springboot.bot.jpa.service.PropertyService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -22,9 +25,9 @@ import java.net.*;
 @Scope("prototype")
 public class HttpPostFetcher {
 
-/*  @Autowired
-  private Properties properties;
-*/
+  @Autowired
+  private PropertyService properties;
+
   private StringBuilder htmlBuffer;
 
   public HttpPostFetcher() {
@@ -33,8 +36,8 @@ public class HttpPostFetcher {
   public void fetch(String urlStr, String encoding, String... params) throws IOException {
 
     URL url = new URL(urlStr);
-    String proxyHost = null; // TODO properties.getPropertyAsString(PropertyName.PROP_SYS_HTTP_PROXY_HOST, null);
-    int proxyPort = -1; // TODO properties.getPropertyAsInt(PropertyName.PROP_SYS_HTTP_PROXY_PORT, -1);
+    String proxyHost = properties.getPropertyAsString(PropertyName.PROP_SYS_HTTP_PROXY_HOST, null);
+    int proxyPort = properties.getPropertyAsInt(PropertyName.PROP_SYS_HTTP_PROXY_PORT, -1);
 
     URLConnection conn;
     if (proxyHost != null && proxyPort != -1) {
@@ -47,8 +50,7 @@ public class HttpPostFetcher {
     }
 
     HttpURLConnection connection = (HttpURLConnection) conn;
-//   TODO  conn.setRequestProperty("User-Agent", properties.getPropertyAsString(PropertyName.PROP_SYS_HTTP_USER_AGENT, HTTP_USER_AGENT));
-    connection.setRequestProperty("User-Agent", "Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:33.0) Gecko/20100101 Firefox/33.0");
+    conn.setRequestProperty("User-Agent", StaticStrings.HTTP_USER_AGENT);
     connection.setRequestMethod("POST");
     connection.setDoOutput(true);
 

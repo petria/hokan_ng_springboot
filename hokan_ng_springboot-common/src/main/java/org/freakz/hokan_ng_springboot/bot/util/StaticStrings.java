@@ -54,7 +54,7 @@ public class StaticStrings {
 
 
   public static final String HTTP_USER_AGENT
-      = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:28.0) Gecko/20100101 Firefox/28.0";
+      = "User-Agent\", \"Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:38.0) Gecko/20100101 Firefox/38.0";
 
 
   public static final String UNKNOWN

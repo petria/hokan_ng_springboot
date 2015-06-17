@@ -43,13 +43,14 @@ public class HokanStatusServiceImpl implements HokanStatusService, CommandRunnab
   private Map<HokanModule, HokanStatusModel> statusModelMap = new HashMap<>();
   private boolean activated = true;
   private boolean doRun;
-
+  private HokanModule thisModule;
   @PostConstruct
   public void start() {
     for (HokanModule module : HokanModule.values()) {
       statusModelMap.put(module, new HokanStatusModel("<unknown>"));
     }
     doRun = true;
+    thisModule = hokanModuleService.getHokanModule();
     commandPool.startRunnable(this, "<system>");
   }
 
@@ -65,7 +66,6 @@ public class HokanStatusServiceImpl implements HokanStatusService, CommandRunnab
 
 
   private void updateStatuses() {
-    HokanModule thisModule = hokanModuleService.getHokanModule();
 //    log.debug("thisModule: {}", thisModule);
     if (activated) {
       for (HokanModule module : HokanModule.values()) {
