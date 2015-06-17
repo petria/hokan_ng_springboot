@@ -79,6 +79,10 @@ public class ServicesServiceMessageHandlerImpl implements JmsServiceMessageHandl
         String translated = translatorService.getTranslation(request.getParameters(), Language.AUTO_DETECT, Language.FINNISH);
         response.setResponseData("TRANSLATE_RESPONSE", translated);
         break;
+      case UPDATERS_LIST:
+        List<DataUpdaterModel> modelList = updaterManagerService.getDataUpdaterModelList();
+        response.setResponseData("UPDATE_LIST_RESPONSE", modelList);
+        break;
       case WEATHER_REQUEST:
         DataUpdater weatherUpdater = updaterManagerService.getUpdater("weatherUpdater");
         updaterData = new UpdaterData();

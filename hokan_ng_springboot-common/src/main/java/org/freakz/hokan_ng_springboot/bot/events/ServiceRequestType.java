@@ -12,6 +12,8 @@ public enum ServiceRequestType {
   TV_DAY_REQUEST,
   TV_INFO_REQUEST,
   TV_NOW_REQUEST,
+  UPDATERS_LIST,
+  UPDATERS_START,
   WEATHER_REQUEST
 
 }

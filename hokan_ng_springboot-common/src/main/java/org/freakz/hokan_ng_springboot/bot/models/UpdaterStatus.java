@@ -1,4 +1,4 @@
-package org.freakz.hokan_ng_springboot.bot.updaters;
+package org.freakz.hokan_ng_springboot.bot.models;
 
 /**
  * User: petria

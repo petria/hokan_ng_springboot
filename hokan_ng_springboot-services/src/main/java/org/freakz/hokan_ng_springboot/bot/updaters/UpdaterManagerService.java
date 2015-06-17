@@ -1,5 +1,7 @@
 package org.freakz.hokan_ng_springboot.bot.updaters;
 
+import org.freakz.hokan_ng_springboot.bot.models.DataUpdaterModel;
+
 import java.util.List;
 
 /**
@@ -10,6 +12,8 @@ import java.util.List;
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
 public interface UpdaterManagerService {
+
+  List<DataUpdaterModel> getDataUpdaterModelList();
 
   List<DataUpdater> getUpdaterList();
 

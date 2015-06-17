@@ -2,6 +2,7 @@ package org.freakz.hokan_ng_springboot.bot.updaters;
 
 
 import org.freakz.hokan_ng_springboot.bot.cmdpool.CommandPool;
+import org.freakz.hokan_ng_springboot.bot.models.UpdaterStatus;
 
 import java.util.Calendar;
 

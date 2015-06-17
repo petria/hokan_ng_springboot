@@ -36,6 +36,7 @@ public class WeatherCmd extends Cmd {
 
   public WeatherCmd() {
     super();
+    setHelp("Queries weather from http://alk.tiehallinto.fi/alk/tiesaa/");
 
     FlaggedOption flg = new FlaggedOption(ARG_COUNT)
         .setStringParser(JSAP.INTEGER_PARSER)
@@ -63,7 +64,7 @@ public class WeatherCmd extends Cmd {
 
     String place = results.getString(ARG_PLACE).toLowerCase();
 
-    ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.WEATHER_REQUEST, request.getIrcEvent(), place);
+    ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.WEATHER_REQUEST, request.getIrcEvent(), ".*");
     List<WeatherData> datas = serviceResponse.getWeatherResponse();
     if (datas.size() == 0) {
       response.setResponseMessage("Weather data not ready yet!");

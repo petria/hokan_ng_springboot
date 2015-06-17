@@ -3,6 +3,8 @@ package org.freakz.hokan_ng_springboot.bot.updaters;
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.cmdpool.CommandPool;
 import org.freakz.hokan_ng_springboot.bot.cmdpool.CommandRunnable;
+import org.freakz.hokan_ng_springboot.bot.models.DataUpdaterModel;
+import org.freakz.hokan_ng_springboot.bot.models.UpdaterStatus;
 import org.freakz.hokan_ng_springboot.bot.service.HokanModuleService;
 import org.freakz.hokan_ng_springboot.bot.util.StringStuff;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +46,6 @@ public class UpdateManagerServiceImpl implements UpdaterManagerService, CommandR
 
   @PostConstruct
   public void refreshHandlers() {
-//    hokanModuleService.setHokanModule(HokanModule.HokanServices);
     handlers = context.getBeansOfType(DataUpdater.class);
     start();
   }
@@ -57,6 +58,21 @@ public class UpdateManagerServiceImpl implements UpdaterManagerService, CommandR
   @Override
   public void start() {
     commandPool.startRunnable(this, "<system>");
+  }
+
+  @Override
+  public List<DataUpdaterModel> getDataUpdaterModelList() {
+    List<DataUpdaterModel> modelList = new ArrayList<>();
+    for (DataUpdater updater : this.handlers.values()) {
+      DataUpdaterModel model = new DataUpdaterModel();
+      model.setName(updater.getUpdaterName());
+      model.setStatus(updater.getStatus());
+      model.setCount(updater.getUpdateCount());
+      model.setNextUpdate(updater.getNextUpdateTime().getTime());
+      model.setLastUpdate(updater.getLastUpdateTime().getTime());
+      modelList.add(model);
+    }
+    return modelList;
   }
 
   @Override
