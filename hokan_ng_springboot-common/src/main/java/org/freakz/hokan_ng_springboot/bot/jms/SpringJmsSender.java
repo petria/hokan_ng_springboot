@@ -3,6 +3,7 @@ package org.freakz.hokan_ng_springboot.bot.jms;
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.jms.api.JmsSender;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.InvalidDestinationException;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
 
@@ -63,11 +64,15 @@ public class SpringJmsSender implements JmsSender {
 
   public void sendJmsMessage(Destination destination, JmsMessage jmsMessage) {
 //    log.debug("{}: ", destination);
-    this.jmsTemplate.send(destination, session -> {
-      ObjectMessage objectMessage = session.createObjectMessage();
-      objectMessage.setObject(jmsMessage);
-      return objectMessage;
-    });
+    try {
+      this.jmsTemplate.send(destination, session -> {
+        ObjectMessage objectMessage = session.createObjectMessage();
+        objectMessage.setObject(jmsMessage);
+        return objectMessage;
+      });
+    } catch (InvalidDestinationException ex) {
+      // ignore
+    }
   }
 
 }

@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -50,13 +51,26 @@ public class JarScriptExecutor {
       bw.close();
 
       String tmpScriptName = tmpFile.getAbsolutePath();
-      String[] cmdArray = new String[2 + args.length];
+/*      String[] cmdArray = new String[2 + args.length];
       cmdArray[0] = SHELL;
+      cmdArray[1] = tmpScriptName;*/
+      List<String> cmdList = new ArrayList<>();
+//      cmdList.add("cmd.exe");
+//      cmdList.add("/c");
+      cmdList.add(SHELL);
+      cmdList.add(tmpScriptName);
+      cmdList.addAll(Arrays.asList(args));
+      String[] stringArray = cmdList.toArray(new String[cmdList.size()]);
+      Process p = Runtime.getRuntime().exec(stringArray);
+
+/*      String[] cmdArray = new String[3 + args.length];
+      cmdArray[0] = "cmd.exe";
+      cmdArray[1] = "/c";
       cmdArray[1] = tmpScriptName;
       System.arraycopy(args, 0, cmdArray, 2, args.length);
-
-
       Process p = Runtime.getRuntime().exec(cmdArray);
+*/
+
       int ret = p.waitFor();
       log.info("Process {} ended: {}", p, ret);
 
