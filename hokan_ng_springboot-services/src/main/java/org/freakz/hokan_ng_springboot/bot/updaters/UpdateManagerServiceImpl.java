@@ -96,6 +96,22 @@ public class UpdateManagerServiceImpl implements UpdaterManagerService, CommandR
   }
 
   @Override
+  public DataUpdaterModel startUpdaterByName(String updaterName) {
+    DataUpdater updater = getUpdater(updaterName);
+    if (updater != null) {
+      startUpdater(updater);
+      DataUpdaterModel model = new DataUpdaterModel();
+      model.setName(updater.getUpdaterName());
+      model.setStatus(updater.getStatus());
+      model.setCount(updater.getUpdateCount());
+      model.setNextUpdate(updater.getNextUpdateTime().getTime());
+      model.setLastUpdate(updater.getLastUpdateTime().getTime());
+      return model;
+    }
+    return null;
+  }
+
+  @Override
   public void handleRun(long myPid, Object args) {
     doRun = true;
     log.info("<< Starting update service: {} >>", myPid);

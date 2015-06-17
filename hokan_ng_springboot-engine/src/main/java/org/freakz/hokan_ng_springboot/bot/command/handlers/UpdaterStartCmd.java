@@ -5,9 +5,14 @@ import com.martiansoftware.jsap.UnflaggedOption;
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
+import org.freakz.hokan_ng_springboot.bot.events.ServiceRequestType;
+import org.freakz.hokan_ng_springboot.bot.events.ServiceResponse;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
+import org.freakz.hokan_ng_springboot.bot.models.DataUpdaterModel;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_UPDATER;
 
@@ -36,6 +41,13 @@ public class UpdaterStartCmd extends Cmd {
 
   @Override
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+    String updater = results.getString(ARG_UPDATER);
+    ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.UPDATERS_START, request.getIrcEvent(), updater);
+    List<DataUpdaterModel> modelList = serviceResponse.getStartUpdaterListData();
+    for (DataUpdaterModel model : modelList) {
+      String txt = String.format("%15s - %9s - %6d - %s\n", model.getName(), model.getStatus(),model.getCount(), model.getNextUpdate());
+      response.addResponse(txt);
+    }
 
   }
 }

@@ -70,11 +70,18 @@ public class ServiceResponse implements Serializable {
   }
 
   public List<DataUpdaterModel> getUpdaterListData() {
-    List<DataUpdaterModel> data = (List<DataUpdaterModel>) responseData.get("UPDATE_LIST_RESPONSE");
+    List<DataUpdaterModel> data = (List<DataUpdaterModel>) responseData.get("UPDATER_LIST_RESPONSE");
     if (data == null) {
       return new ArrayList<>();
     }
     return data;
   }
 
+  public List<DataUpdaterModel> getStartUpdaterListData() {
+    List<DataUpdaterModel> data = (List<DataUpdaterModel>) responseData.get("START_UPDATER_LIST_RESPONSE");
+    if (data == null) {
+      return new ArrayList<>();
+    }
+    return data;
+  }
 }

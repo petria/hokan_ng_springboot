@@ -17,6 +17,7 @@ import org.freakz.hokan_ng_springboot.bot.updaters.telkku.TelkkuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -81,7 +82,18 @@ public class ServicesServiceMessageHandlerImpl implements JmsServiceMessageHandl
         break;
       case UPDATERS_LIST:
         List<DataUpdaterModel> modelList = updaterManagerService.getDataUpdaterModelList();
-        response.setResponseData("UPDATE_LIST_RESPONSE", modelList);
+        response.setResponseData("UPDATER_LIST_RESPONSE", modelList);
+        break;
+      case UPDATERS_START:
+        List<DataUpdaterModel> startedUpdaters = new ArrayList<>();
+        for (Object toStart : request.getParameters()) {
+          String updater = (String) toStart;
+          DataUpdaterModel model = updaterManagerService.startUpdaterByName(updater);
+          if (model != null) {
+            startedUpdaters.add(model);
+          }
+        }
+        response.setResponseData("START_UPDATER_LIST_RESPONSE", startedUpdaters);
         break;
       case WEATHER_REQUEST:
         DataUpdater weatherUpdater = updaterManagerService.getUpdater("weatherUpdater");

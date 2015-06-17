@@ -24,4 +24,7 @@ public interface UpdaterManagerService {
   void start();
 
   void startUpdater(DataUpdater updater);
+
+  DataUpdaterModel startUpdaterByName(String updater);
+
 }
