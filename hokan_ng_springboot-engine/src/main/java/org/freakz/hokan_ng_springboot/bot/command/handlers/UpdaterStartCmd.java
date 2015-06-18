@@ -44,9 +44,14 @@ public class UpdaterStartCmd extends Cmd {
     String updater = results.getString(ARG_UPDATER);
     ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.UPDATERS_START, request.getIrcEvent(), updater);
     List<DataUpdaterModel> modelList = serviceResponse.getStartUpdaterListData();
-    for (DataUpdaterModel model : modelList) {
-      String txt = String.format("%15s - %9s - %6d - %s\n", model.getName(), model.getStatus(),model.getCount(), model.getNextUpdate());
-      response.addResponse(txt);
+    if (modelList.size() > 0) {
+      response.addResponse("Started following updaters:");
+      for (DataUpdaterModel model : modelList) {
+        String txt = String.format("%15s\n", model.getName());
+        response.addResponse(txt);
+      }
+    } else {
+      response.addResponse("No updaters started!");
     }
 
   }
