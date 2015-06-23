@@ -1,7 +1,11 @@
 package org.freakz.hokan_ng_springboot.bot.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.models.KelikameratUrl;
+import org.freakz.hokan_ng_springboot.bot.models.KelikameratWeatherData;
 import org.freakz.hokan_ng_springboot.bot.updaters.kelikamerat.KelikameratUpdater;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -15,6 +19,7 @@ import java.util.List;
  * Created by Petri Airio on 18.6.2015.
  *
  */
+@Slf4j
 public class KelikameratWeatherTest {
 
   String[] urls =
@@ -43,20 +48,33 @@ public class KelikameratWeatherTest {
   public void testWeatherParse() throws IOException {
 
     Document doc = Jsoup.connect("http://www.kelikamerat.info/kelikamerat/Varsinais-Suomi/Turku/tie-40/kt40_Ravattula").get();
-    Elements elements = doc.getElementsByClass("air-temp-on-image");
-    Element test = elements.get(0);
-    test = test.getElementById("air-temp-image");
-    String air = test.text();
+    Elements elements = doc.getElementsByClass("weather-details");
+    Element title = doc.getElementsByTag("title").get(0);
+    String titleText = doc.getElementsByTag("title").get(0).text();
+    titleText = titleText.replaceFirst("Kelikamerat - ", "").replaceFirst("\\| Kelikamerat", "").trim();
+    Element div = elements.get(0);
+    Element table = div.child(0);
+    Element tbody = table.child(0);
+    String air = tbody.child(0).child(1).text();;
+    String road = tbody.child(1).child(1).text();;
+    String ground = tbody.child(2).child(1).text();;
+    String humidity = tbody.child(3).child(1).text();;
+    String dewPoint = tbody.child(4).child(1).text();;
+
+    Elements elements2 = doc.getElementsByClass("date-time");
+    String timestamp = elements2.get(0).text().substring(12);
+    String pattern = "dd.MM.yyyy hh:mm:ss";
+    DateTime dateTime  = DateTime.parse(timestamp, DateTimeFormat.forPattern(pattern));
     int x = 0;
   }
 
   @Test
-  public void testParseLocations() throws IOException {
-    Document doc = Jsoup.connect("http://www.kelikamerat.info/kelikamerat/Etel%C3%A4-Savo").get();
-    Elements elements = doc.getElementsByClass("road-camera");
-    Element div = elements.get(0);
-    Element href =     div.child(0);
-    String url = href.baseUri() + href.attributes().get("href");
+  public void testUpdateUrl() throws IOException {
+    KelikameratUpdater updater = new KelikameratUpdater();
+    KelikameratUrl url = new KelikameratUrl();
+    url.setStationUrl("http://www.kelikamerat.info/kelikamerat/Varsinais-Suomi/Turku/tie-40/kt40_Ravattula");
+    KelikameratWeatherData data= updater.updateKelikameratWeatherData(url);
+    int xx = 0;
   }
 
   @Test
@@ -64,6 +82,10 @@ public class KelikameratWeatherTest {
     KelikameratUpdater updater = new KelikameratUpdater();
     updater.updateStations();
     List<KelikameratUrl> urlList = updater.getStationUrls();
+    for (KelikameratUrl url : urlList) {
+      KelikameratWeatherData data = updater.updateKelikameratWeatherData(url);
+      log.debug("{}", String.format("%s: %f", data.getPlace(), data.getAir()));
+    }
     int x = 0;
   }
 
