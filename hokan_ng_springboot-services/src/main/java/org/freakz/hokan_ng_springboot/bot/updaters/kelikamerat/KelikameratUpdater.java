@@ -14,10 +14,7 @@ import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Petri Airio on 22.6.2015.
@@ -154,6 +151,13 @@ public class KelikameratUpdater extends Updater {
       return this.weatherDataList;
     }
     return null;
+  }
+
+  @Override
+  public Calendar calculateNextUpdate() {
+    Calendar cal = new GregorianCalendar();
+    cal.add(Calendar.MINUTE, 30);
+    return cal;
   }
 
   @SuppressWarnings("unchecked")
