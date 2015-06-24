@@ -3,6 +3,8 @@ package org.freakz.hokan_ng_springboot.bot.updaters.kelikamerat;
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.models.KelikameratUrl;
 import org.freakz.hokan_ng_springboot.bot.models.KelikameratWeatherData;
+import org.freakz.hokan_ng_springboot.bot.updaters.Updater;
+import org.freakz.hokan_ng_springboot.bot.util.StringStuff;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.jsoup.Jsoup;
@@ -13,6 +15,8 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -22,7 +26,7 @@ import java.util.List;
 @Component
 //@Scope("prototype")
 @Slf4j
-public class KelikameratUpdater {
+public class KelikameratUpdater extends Updater {
 
   private static final String BASE_ULR = "http://www.kelikamerat.info";
 
@@ -48,10 +52,11 @@ public class KelikameratUpdater {
           "http://www.kelikamerat.info/kelikamerat/Varsinais-Suomi"
       };
 
-  private List<KelikameratUrl> stationUrls = new ArrayList<>();
+  private List<KelikameratUrl> stationUrls;
+  private List<KelikameratWeatherData> weatherDataList;
 
   public void updateStations() throws IOException {
-    stationUrls.clear();
+    List<KelikameratUrl> stations = new ArrayList<>();
     for (String url : KELIKAMERAT_URLS) {
       Document doc = Jsoup.connect(url).get();
       Elements elements = doc.getElementsByClass("road-camera");
@@ -60,31 +65,23 @@ public class KelikameratUpdater {
         Element href =     div.child(0);
         String hrefUrl = BASE_ULR + href.attributes().get("href");
         KelikameratUrl kelikameratUrl = new KelikameratUrl(url, hrefUrl);
-        stationUrls.add(kelikameratUrl);
+        stations.add(kelikameratUrl);
       }
     }
+    this.stationUrls = stations;
   }
 
-  private float parseFloat(String str) {
+  private Float parseFloat(String str) {
     String f = str.split(" ")[0];
     if (!f.equals("-")) {
       return Float.parseFloat(f);
     } else {
-      return Float.NaN;
-    }
-  }
-
-  private int parseInt(String str) {
-    String f = str.split(" ")[0];
-    if (!f.equals("-")) {
-      return Integer.parseInt(f);
-    } else {
-      return -1;
+      return null;
     }
   }
 
   public KelikameratWeatherData updateKelikameratWeatherData(KelikameratUrl url) {
-    Document doc = null;
+    Document doc;
     try {
       doc = Jsoup.connect(url.getStationUrl()).get();
     } catch (IOException e) {
@@ -102,6 +99,9 @@ public class KelikameratUpdater {
     KelikameratWeatherData data = new KelikameratWeatherData();
     data.setPlace(titleText);
     data.setUrl(url);
+
+    int idx = url.getStationUrl().lastIndexOf("/");
+    data.setPlaceFromUrl(StringStuff.htmlEntitiesToText(url.getStationUrl().substring(idx + 1)));
 
     String air = tbody.child(0).child(1).text();
     data.setAir(parseFloat(air));
@@ -121,7 +121,7 @@ public class KelikameratUpdater {
     Elements elements2 = doc.getElementsByClass("date-time");
     if (elements2.size() > 0) {
       String timestamp = elements2.get(0).text().substring(12);
-      String pattern = "dd.MM.yyyy hh:mm:ss";
+      String pattern = "dd.MM.yyyy HH:mm:ss";
       DateTime dateTime  = DateTime.parse(timestamp, DateTimeFormat.forPattern(pattern));
       data.setTime(dateTime);
     }
@@ -131,5 +131,65 @@ public class KelikameratUpdater {
 
   public List<KelikameratUrl> getStationUrls() {
     return stationUrls;
+  }
+
+  @Override
+  public void doUpdateData() throws Exception {
+    if (this.stationUrls == null) {
+      updateStations();
+    }
+    List<KelikameratWeatherData> weatherDataList = new ArrayList<>();
+    for (KelikameratUrl url : this.stationUrls) {
+      KelikameratWeatherData data = updateKelikameratWeatherData(url);
+      weatherDataList.add(data);
+//      log.debug("{}", String.format("%s: %1.2f °C", data.getPlaceFromUrl(), data.getAir()));
+    }
+    this.weatherDataList = weatherDataList;
+  }
+
+  @Override
+  public Object doGetData(Object... args) {
+    if (this.weatherDataList != null) {
+//      return sortData(this.weatherDataList, true);
+      return this.weatherDataList;
+    }
+    return null;
+  }
+
+  @SuppressWarnings("unchecked")
+  public List<KelikameratWeatherData> sortData(List<KelikameratWeatherData> v, boolean reverse) {
+
+    KelikameratWeatherComparator comparator = new KelikameratWeatherComparator(reverse);
+
+    Collections.sort(v, comparator);
+
+    KelikameratWeatherData wd = null;
+    for (int xx = 0; xx < v.size(); xx++) {
+      wd = v.get(xx);
+      wd.setPos(xx + 1);
+    }
+    if (wd != null) {
+      wd.setCount(v.size());
+    }
+    return v;
+  }
+
+
+  public static class KelikameratWeatherComparator implements Comparator {
+    private boolean reverse;
+
+    public KelikameratWeatherComparator(boolean reverse) {
+      this.reverse = reverse;
+    }
+
+    public int compare(Object o1, Object o2) {
+      KelikameratWeatherData w1 = (KelikameratWeatherData) o1;
+      KelikameratWeatherData w2 = (KelikameratWeatherData) o2;
+      int comp = w1.compareTo(w2);
+      if (reverse) {
+        comp = comp * -1;
+      }
+      return comp;
+    }
   }
 }

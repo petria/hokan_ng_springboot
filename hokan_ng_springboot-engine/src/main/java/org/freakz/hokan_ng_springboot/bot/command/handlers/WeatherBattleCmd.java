@@ -7,8 +7,7 @@ import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.events.ServiceRequestType;
 import org.freakz.hokan_ng_springboot.bot.events.ServiceResponse;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
-import org.freakz.hokan_ng_springboot.bot.models.WeatherData;
-import org.freakz.hokan_ng_springboot.bot.util.StringStuff;
+import org.freakz.hokan_ng_springboot.bot.models.KelikameratWeatherData;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -38,6 +37,10 @@ public class WeatherBattleCmd extends Cmd {
 
   }
 
+  private String formatWeather(KelikameratWeatherData d) {
+    return String.format("%s %2.2f°C (%d/%d)", d.getPlaceFromUrl(), d.getAir(), d.getPos(), d.getCount());
+  }
+
   @Override
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
     String[] places = results.getStringArray(ARG_PLACE);
@@ -46,21 +49,21 @@ public class WeatherBattleCmd extends Cmd {
       regexp = String.format(".*%s.*|%s", plc, regexp);
     }
     ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.WEATHER_REQUEST, request.getIrcEvent(), ".*");
-    List<WeatherData> datas = serviceResponse.getWeatherResponse();
-    WeatherData winner = null;
-    for (WeatherData data  : datas) {
-      if (data.getCity().matches(regexp)) {
+    List<KelikameratWeatherData> datas = serviceResponse.getWeatherResponse();
+    KelikameratWeatherData winner = null;
+    for (KelikameratWeatherData data  : datas) {
+      if (data.getPlaceFromUrl().matches(regexp)) {
         if (winner == null) {
           winner = data;
         } else {
-          if (data.getTemp1() > winner.getTemp1()) {
+          if (data.getAir() > winner.getAir()) {
             winner = data;
           }
         }
       }
     }
     if (winner != null) {
-      response.addResponse("%s", StringStuff.fillTemplate(FORMAT, winner.getData()));
+      response.addResponse("%s", formatWeather(winner));
     } else {
       response.addResponse("Canada!!!");
     }

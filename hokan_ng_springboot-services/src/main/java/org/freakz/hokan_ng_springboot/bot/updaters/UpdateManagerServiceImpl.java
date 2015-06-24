@@ -68,8 +68,12 @@ public class UpdateManagerServiceImpl implements UpdaterManagerService, CommandR
       model.setName(updater.getUpdaterName());
       model.setStatus(updater.getStatus());
       model.setCount(updater.getUpdateCount());
-      model.setNextUpdate(updater.getNextUpdateTime().getTime());
-      model.setLastUpdate(updater.getLastUpdateTime().getTime());
+      if (updater.getNextUpdateTime() != null) {
+        model.setNextUpdate(updater.getNextUpdateTime().getTime());
+      }
+      if (updater.getLastUpdateTime() != null) {
+        model.setLastUpdate(updater.getLastUpdateTime().getTime());
+      }
       modelList.add(model);
     }
     return modelList;

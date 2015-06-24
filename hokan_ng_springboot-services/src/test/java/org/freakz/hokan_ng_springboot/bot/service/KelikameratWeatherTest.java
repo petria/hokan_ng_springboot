@@ -84,7 +84,7 @@ public class KelikameratWeatherTest {
     List<KelikameratUrl> urlList = updater.getStationUrls();
     for (KelikameratUrl url : urlList) {
       KelikameratWeatherData data = updater.updateKelikameratWeatherData(url);
-      log.debug("{}", String.format("%s: %f", data.getPlace(), data.getAir()));
+      log.debug("{}", String.format("%s: %1.2f °C", data.getPlaceFromUrl(), data.getAir()));
     }
     int x = 0;
   }

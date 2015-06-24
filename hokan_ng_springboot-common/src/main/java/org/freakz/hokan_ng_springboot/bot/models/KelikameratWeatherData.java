@@ -8,20 +8,24 @@ import java.io.Serializable;
  * Created by Petri Airio on 23.6.2015.
  *
  */
-public class KelikameratWeatherData implements Serializable {
+public class KelikameratWeatherData implements Comparable, Serializable {
 
   private DateTime time;
 
   private KelikameratUrl url;
 
   private String place;
+  private String placeFromUrl;
 
-  private float air;
-  private float road;
-  private float ground;
+  private Float air;
+  private Float road;
+  private Float ground;
 
-  private float humidity;
-  private float devPoint;
+  private Float humidity;
+  private Float dewPoint;
+  private int pos;
+  private int count;
+
 
   public KelikameratWeatherData() {
   }
@@ -50,55 +54,81 @@ public class KelikameratWeatherData implements Serializable {
     this.url = url;
   }
 
-  public float getAir() {
+  public Float getAir() {
     return air;
   }
 
-  public void setAir(float air) {
+  public void setAir(Float air) {
     this.air = air;
   }
 
-  public float getRoad() {
+  public Float getRoad() {
     return road;
   }
 
-  public void setRoad(float road) {
+  public void setRoad(Float road) {
     this.road = road;
   }
 
-  public float getGround() {
+  public Float getGround() {
     return ground;
   }
 
-  public void setGround(float ground) {
+  public void setGround(Float ground) {
     this.ground = ground;
   }
 
-  public float getHumidity() {
+  public Float getHumidity() {
     return humidity;
   }
 
-  public void setHumidity(float humidity) {
+  public void setHumidity(Float humidity) {
     this.humidity = humidity;
   }
 
-  public float getDewPoint() {
-    return devPoint;
+  public Float getDewPoint() {
+    return dewPoint;
   }
 
-  public void setDewPoint(float devPoint) {
-    this.devPoint = devPoint;
+  public void setDewPoint(Float dewPoint) {
+    this.dewPoint = dewPoint;
   }
 
-  /*
+  public void setPlaceFromUrl(String placeFromUrl) {
+    this.placeFromUrl = placeFromUrl;
+  }
 
-     String air = tbody.child(0).child(1).text();;
-    String road = tbody.child(1).child(1).text();;
-    String ground = tbody.child(2).child(1).text();;
-    String humidity = tbody.child(3).child(1).text();;
-    String dewPoint = tbody.child(4).child(1).text();;
+  public String getPlaceFromUrl() {
+    return this.placeFromUrl;
+  }
 
-    Elements elements2 = doc.getElementsByClass("map-top-bar");
-    String timestamp = elements2.get(0).child(0).text();
-   */
+  @Override
+  public int compareTo(Object other) {
+    KelikameratWeatherData w1 = this;
+    KelikameratWeatherData w2 = (KelikameratWeatherData) other;
+
+    if (w1.getAir() > w2.getAir()) {
+      return 1;
+    }
+    if (w1.getAir() < w2.getAir()) {
+      return -1;
+    }
+    return 0;
+  }
+
+  public void setPos(int i) {
+    this.pos = i;
+  }
+
+  public void setCount(int size) {
+    this.count = size;
+  }
+
+  public int getPos() {
+    return pos;
+  }
+
+  public int getCount() {
+    return count;
+  }
 }

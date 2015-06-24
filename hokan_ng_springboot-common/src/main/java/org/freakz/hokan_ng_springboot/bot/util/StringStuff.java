@@ -395,9 +395,11 @@ public class StringStuff {
   private final static String[] entityTable = {
       "&Auml;", "Ä",
       "&auml;", "ä",
+      "%C3%A4", "ä",
 
       "&Ouml;", "Ö",
       "&ouml;", "ö",
+      "%C3%B6", "ö",
 
       "&Aring;", "Å",
       "&aring;", "å",

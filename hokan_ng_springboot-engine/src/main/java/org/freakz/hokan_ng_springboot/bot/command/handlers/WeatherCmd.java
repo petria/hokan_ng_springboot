@@ -9,7 +9,7 @@ import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.events.ServiceRequestType;
 import org.freakz.hokan_ng_springboot.bot.events.ServiceResponse;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
-import org.freakz.hokan_ng_springboot.bot.models.WeatherData;
+import org.freakz.hokan_ng_springboot.bot.models.KelikameratWeatherData;
 import org.freakz.hokan_ng_springboot.bot.util.StringStuff;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -58,6 +58,11 @@ public class WeatherCmd extends Cmd {
     return "!saa.*";
   }
 
+  private String formatWeather(KelikameratWeatherData d) {
+    return String.format("%s: ilma %2.2f°C tie %2.2f°C maa %2.2f°C",
+        d.getPlaceFromUrl(), d.getAir(), d.getRoad(), d.getGround());
+  }
+
   @Override
 //  @SuppressWarnings("unchecked")
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
@@ -65,7 +70,7 @@ public class WeatherCmd extends Cmd {
     String place = results.getString(ARG_PLACE).toLowerCase();
 
     ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.WEATHER_REQUEST, request.getIrcEvent(), ".*");
-    List<WeatherData> datas = serviceResponse.getWeatherResponse();
+    List<KelikameratWeatherData> datas = serviceResponse.getWeatherResponse();
     if (datas.size() == 0) {
       response.setResponseMessage("Weather data not ready yet!");
       return;
@@ -75,23 +80,27 @@ public class WeatherCmd extends Cmd {
 
     if (place.equals("minmax")) {
 
-      WeatherData max = datas.get(0);
-      WeatherData min = datas.get(datas.size() - 1);
+      KelikameratWeatherData max = datas.get(0);
+      KelikameratWeatherData min = datas.get(datas.size() - 1);
 
       sb.append("Min: ");
-      sb.append(StringStuff.fillTemplate(FORMAT_MINMAX, min.getData()));
+      sb.append(formatWeather(min));
       sb.append(" Max: ");
-      sb.append(StringStuff.fillTemplate(FORMAT_MINMAX, max.getData()));
+      sb.append(formatWeather(max));
 
     } else {
 
       int xx = 0;
-      for (WeatherData wd : datas) {
-        if (StringStuff.match(wd.getCity(), ".*" + place + ".*")) {
+      String regexp = ".*" + place + ".*";
+      for (KelikameratWeatherData wd : datas) {
+        if (StringStuff.match(wd.getPlaceFromUrl(), regexp) || StringStuff.match(wd.getUrl().getStationUrl(), regexp)) {
+          if (wd.getAir() == null) {
+            continue;
+          }
           if (xx != 0) {
             sb.append(", ");
           }
-          sb.append(StringStuff.fillTemplate(FORMAT, wd.getData()));
+          sb.append(formatWeather(wd));
           xx++;
           if (xx > results.getInt(ARG_COUNT)) {
             break;

@@ -96,10 +96,10 @@ public class ServicesServiceMessageHandlerImpl implements JmsServiceMessageHandl
         response.setResponseData("START_UPDATER_LIST_RESPONSE", startedUpdaters);
         break;
       case WEATHER_REQUEST:
-        DataUpdater weatherUpdater = updaterManagerService.getUpdater("weatherUpdater");
+        DataUpdater weatherUpdater = updaterManagerService.getUpdater("kelikameratUpdater");
         updaterData = new UpdaterData();
         weatherUpdater.getData(updaterData);
-        List<WeatherData> datas = (List<WeatherData>) updaterData.getData();
+        List<KelikameratWeatherData> datas = (List<KelikameratWeatherData>) updaterData.getData();
         response.setResponseData("WEATHER_DATA", datas);
         break;
     }

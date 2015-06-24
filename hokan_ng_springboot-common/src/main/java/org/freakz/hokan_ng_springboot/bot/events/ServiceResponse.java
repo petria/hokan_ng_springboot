@@ -41,8 +41,8 @@ public class ServiceResponse implements Serializable {
     return hh;
   }
 
-  public List<WeatherData> getWeatherResponse() {
-    List<WeatherData> data = (List<WeatherData>) responseData.get("WEATHER_DATA");
+  public List<KelikameratWeatherData> getWeatherResponse() {
+    List<KelikameratWeatherData> data = (List<KelikameratWeatherData>) responseData.get("WEATHER_DATA");
     if (data == null) {
       return new ArrayList<>();
     }
