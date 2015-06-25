@@ -65,9 +65,16 @@ public class UpdateManagerServiceImpl implements UpdaterManagerService, CommandR
     List<DataUpdaterModel> modelList = new ArrayList<>();
     for (DataUpdater updater : this.handlers.values()) {
       DataUpdaterModel model = new DataUpdaterModel();
+
       model.setName(updater.getUpdaterName());
       model.setStatus(updater.getStatus());
       model.setCount(updater.getUpdateCount());
+      model.setDataFetched(updater.getDataFetched());
+      model.setItemsFetched(updater.getItemsFetched());
+      model.setItemCount(updater.getItemmCount());
+      model.setLastUpdateRuntime(updater.getLastUpdateRuntime());
+      model.setTotalUpdateRuntime(updater.getTotalUpdateRuntime());
+
       if (updater.getNextUpdateTime() != null) {
         model.setNextUpdate(updater.getNextUpdateTime().getTime());
       }

@@ -31,6 +31,16 @@ public interface DataUpdater {
 
   long getUpdateCount();
 
+  long getDataFetched();
+
+  long getItemsFetched();
+
+  long getItemmCount();
+
+  long getLastUpdateRuntime();
+
+  long getTotalUpdateRuntime();
+
   String getUpdaterName();
 
 

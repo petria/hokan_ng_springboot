@@ -12,6 +12,13 @@ public class DataUpdaterModel implements Serializable {
   private String name;
   private UpdaterStatus status;
   private long count;
+  protected long dataFetched = 0;
+  protected long itemsFetched = 0;
+  protected long itemCount = 0;
+
+  protected long lastUpdateRuntime = 0;
+  protected long totalUpdateRuntime = 0;
+
   private Date nextUpdate;
   private Date LastUpdate;
 
@@ -40,6 +47,46 @@ public class DataUpdaterModel implements Serializable {
 
   public void setCount(long count) {
     this.count = count;
+  }
+
+  public long getDataFetched() {
+    return dataFetched;
+  }
+
+  public void setDataFetched(long dataFetched) {
+    this.dataFetched = dataFetched;
+  }
+
+  public long getItemsFetched() {
+    return itemsFetched;
+  }
+
+  public void setItemsFetched(long itemsFetched) {
+    this.itemsFetched = itemsFetched;
+  }
+
+  public long getItemCount() {
+    return itemCount;
+  }
+
+  public void setItemCount(long itemCount) {
+    this.itemCount = itemCount;
+  }
+
+  public long getLastUpdateRuntime() {
+    return lastUpdateRuntime;
+  }
+
+  public void setLastUpdateRuntime(long lastUpdateRuntime) {
+    this.lastUpdateRuntime = lastUpdateRuntime;
+  }
+
+  public long getTotalUpdateRuntime() {
+    return totalUpdateRuntime;
+  }
+
+  public void setTotalUpdateRuntime(long totalUpdateRuntime) {
+    this.totalUpdateRuntime = totalUpdateRuntime;
   }
 
   public Date getNextUpdate() {

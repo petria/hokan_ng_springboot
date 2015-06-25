@@ -21,7 +21,15 @@ import java.util.GregorianCalendar;
 @Slf4j
 public abstract class Updater implements DataUpdater, CommandRunnable {
 
-  protected long updateCount;
+  protected long updateCount = 0;
+
+  protected long dataFetched = 0;
+  protected long itemsFetched = 0;
+  protected long itemCount = 0;
+
+  protected long lastUpdateRuntime = 0;
+  protected long totalUpdateRuntime = 0;
+
   private Calendar nextUpdate = new GregorianCalendar();
   private Calendar lastUpdate;
   protected UpdaterStatus status;
@@ -60,7 +68,11 @@ public abstract class Updater implements DataUpdater, CommandRunnable {
   public void handleRun(long myPid, Object args) throws HokanException {
     try {
       status = UpdaterStatus.UPDATING;
+      long startTime = System.currentTimeMillis();
       doUpdateData();
+      long duration = (startTime - System.currentTimeMillis()) / 1000;
+      this.lastUpdateRuntime = duration;
+      this.totalUpdateRuntime += duration;
       status = UpdaterStatus.IDLE;
 
     } catch (Exception e) {
@@ -99,6 +111,31 @@ public abstract class Updater implements DataUpdater, CommandRunnable {
   @Override
   public long getUpdateCount() {
     return this.updateCount;
+  }
+
+  @Override
+  public long getDataFetched() {
+    return this.dataFetched;
+  }
+
+  @Override
+  public long getItemsFetched() {
+    return this.itemsFetched;
+  }
+
+  @Override
+  public long getItemmCount() {
+    return this.itemCount;
+  }
+
+  @Override
+  public long getLastUpdateRuntime() {
+    return this.lastUpdateRuntime;
+  }
+
+  @Override
+  public long getTotalUpdateRuntime() {
+    return this.totalUpdateRuntime;
   }
 
 }

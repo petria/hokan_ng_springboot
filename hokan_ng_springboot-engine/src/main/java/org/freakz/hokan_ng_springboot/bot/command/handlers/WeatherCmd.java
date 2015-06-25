@@ -55,11 +55,11 @@ public class WeatherCmd extends Cmd {
 
   @Override
   public String getMatchPattern() {
-    return "!saa.*";
+    return "!saa.*|!weather.*";
   }
 
   private String formatWeather(KelikameratWeatherData d) {
-    return String.format("%s: ilma %2.2f°C tie %2.2f°C maa %2.2f°C",
+    return String.format("%s: ilma %2.1f°C tie %2.1f°C maa %2.1f°C",
         d.getPlaceFromUrl(), d.getAir(), d.getRoad(), d.getGround());
   }
 

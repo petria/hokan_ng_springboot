@@ -57,6 +57,8 @@ public class KelikameratUpdater extends Updater {
     for (String url : KELIKAMERAT_URLS) {
       Document doc = Jsoup.connect(url).get();
       Elements elements = doc.getElementsByClass("road-camera");
+      this.dataFetched += doc.html().length();
+      this.itemsFetched++;
       for (int xx = 0 ; xx < elements.size(); xx++) {
         Element div = elements.get(xx);
         Element href =     div.child(0);
@@ -81,11 +83,14 @@ public class KelikameratUpdater extends Updater {
     Document doc;
     try {
       doc = Jsoup.connect(url.getStationUrl()).get();
+      this.dataFetched += doc.html().length();
+      this.itemsFetched++;
     } catch (IOException e) {
       log.error("Can't update data: {}", url);
       return null;
     }
     String titleText = doc.getElementsByTag("title").get(0).text();
+
     titleText = titleText.replaceFirst("Kelikamerat - ", "").replaceFirst("\\| Kelikamerat", "").trim();
 
     Elements elements = doc.getElementsByClass("weather-details");
@@ -141,6 +146,7 @@ public class KelikameratUpdater extends Updater {
       weatherDataList.add(data);
 //      log.debug("{}", String.format("%s: %1.2f °C", data.getPlaceFromUrl(), data.getAir()));
     }
+    this.itemCount = weatherDataList.size();
     this.weatherDataList = weatherDataList;
   }
 
