@@ -61,9 +61,9 @@ public class PsCmd extends Cmd {
       };
       Collections.sort(allRunning, comparator);
 
-      response.addResponse("%2s - %10s - %-13s - %s\n", "PID", "STARTED_BY", "MODULE", "CLASS");
+      response.addResponse("%5s - %10s - %-13s - %s\n", "PID", "STARTED_BY", "MODULE", "CLASS");
       for (CommandHistory cmd : allRunning) {
-        response.addResponse("%2d - %10s - %-13s - %s\n", cmd.getPid(), cmd.getStartedBy(), cmd.getHokanModule(), cmd.getRunnable().replaceAll("class org.freakz.hokan_ng_springboot.bot.", ""));
+        response.addResponse("%5d - %10s - %-13s - %s\n", cmd.getPid(), cmd.getStartedBy(), cmd.getHokanModule(), cmd.getRunnable().replaceAll("class org.freakz.hokan_ng_springboot.bot.", ""));
       }
     }
 
