@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.models.KelikameratUrl;
 import org.freakz.hokan_ng_springboot.bot.models.KelikameratWeatherData;
 import org.freakz.hokan_ng_springboot.bot.updaters.kelikamerat.KelikameratUpdater;
+import org.freakz.hokan_ng_springboot.bot.util.StringStuff;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.jsoup.Jsoup;
@@ -83,8 +84,8 @@ public class KelikameratWeatherTest {
     updater.updateStations();
     List<KelikameratUrl> urlList = updater.getStationUrls();
     for (KelikameratUrl url : urlList) {
-      KelikameratWeatherData data = updater.updateKelikameratWeatherData(url);
-      log.debug("{}", String.format("%s: %1.2f °C", data.getPlaceFromUrl(), data.getAir()));
+      KelikameratWeatherData d = updater.updateKelikameratWeatherData(url);
+      log.debug("{}", StringStuff.formatWeather(d));
     }
     int x = 0;
   }
