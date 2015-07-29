@@ -39,7 +39,7 @@ public class SpringJmsSender implements JmsSender {
   }
 
   public void send(String destination, String key, Object object, boolean deliveryPersistent) {
-//    log.debug("{}: {} -> {}", destination, key, object);
+    log.debug("{}: {} -> {}", destination, key, object);
     this.jmsTemplate.setDeliveryPersistent(deliveryPersistent);
     this.jmsTemplate.send(destination, session -> {
           ObjectMessage objectMessage = session.createObjectMessage();

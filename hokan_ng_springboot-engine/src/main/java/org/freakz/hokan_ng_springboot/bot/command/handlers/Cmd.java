@@ -214,7 +214,7 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
 
   private void sendReply(EngineResponse response) {
     log.debug("Sending response: {}", response);
-    jmsSender.send("HokanNGIoQueue", "ENGINE_RESPONSE", response, false);
+    jmsSender.send(HokanModule.HokanIo.getQueueName(), "ENGINE_RESPONSE", response, false);
   }
 
 
