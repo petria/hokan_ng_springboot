@@ -113,4 +113,10 @@ public class EngineResponse implements Serializable {
   public IrcMessageEvent getIrcMessageEvent() {
     return this.ircMessageEvent;
   }
+
+  @Override
+  public String toString() {
+    return String.format("\nreplyTo: %s\nresponseMessage: %s", replyTo, responseMessage);
+  }
+
 }
