@@ -69,6 +69,9 @@ public class HokanStatusServiceImpl implements HokanStatusService, CommandRunnab
 //    log.debug("thisModule: {}", thisModule);
     if (activated) {
       for (HokanModule module : HokanModule.values()) {
+        if (module == HokanModule.HokanWicket) {
+          continue;
+        }
         if (module == thisModule) {
           HokanStatusModel status = new HokanStatusModel("<online>");
           PingResponse pingResponse = new PingResponse();
