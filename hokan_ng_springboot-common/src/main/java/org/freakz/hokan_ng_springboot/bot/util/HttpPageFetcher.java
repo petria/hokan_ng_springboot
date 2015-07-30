@@ -1,9 +1,7 @@
 package org.freakz.hokan_ng_springboot.bot.util;
 
-
 import com.arthurdo.parser.HtmlStreamTokenizer;
 import lombok.extern.slf4j.Slf4j;
-import org.freakz.hokan_ng_springboot.bot.jpa.entity.PropertyName;
 import org.freakz.hokan_ng_springboot.bot.jpa.service.PropertyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -11,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.net.*;
-
 
 /**
  */
@@ -47,8 +44,8 @@ public class HttpPageFetcher {
   public void fetch(String urlStr, String encoding) throws Exception {
 
     URL url = new URL(urlStr);
-    String proxyHost = properties.getPropertyAsString(PropertyName.PROP_SYS_HTTP_PROXY_HOST, null);
-    int proxyPort = properties.getPropertyAsInt(PropertyName.PROP_SYS_HTTP_PROXY_PORT, -1);
+    String proxyHost = null; //properties.getPropertyAsString(PropertyName.PROP_SYS_HTTP_PROXY_HOST, null);
+    int proxyPort = -1; //properties.getPropertyAsInt(PropertyName.PROP_SYS_HTTP_PROXY_PORT, -1);
 
     URLConnection conn;
     if (proxyHost != null && proxyPort != -1) {
