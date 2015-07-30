@@ -20,6 +20,7 @@ import java.util.*;
 
 /**
  * Created by AirioP on 17.2.2015.
+ *
  */
 @Component
 @Scope("prototype")
@@ -332,10 +333,20 @@ public class HokanCore extends PircBot implements HokanCoreService {
       handleBuiltInCommands(ircEvent);
     }
 */
-    String result = engineCommunicator.sendToEngine(ircEvent);
-    log.info(">>> sent to engine: {}", result);
-
     this.channelService.save(ch);
+    boolean ignore = true;
+    String flags = user.getFlags();
+    if (flags != null) {
+      if (flags.contains("I")) {
+        ignore = true;
+      }
+    }
+    if (ignore) {
+      log.debug("Ignoring: {}", user);
+    } else {
+      String result = engineCommunicator.sendToEngine(ircEvent);
+      log.info(">>> sent to engine: {}", result);
+    }
   }
 
   private Map<String, Method> methodMap = null;
