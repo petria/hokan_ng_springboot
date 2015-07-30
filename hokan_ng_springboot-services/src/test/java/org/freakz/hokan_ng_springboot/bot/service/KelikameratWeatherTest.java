@@ -64,7 +64,7 @@ public class KelikameratWeatherTest {
 
     Elements elements2 = doc.getElementsByClass("date-time");
     String timestamp = elements2.get(0).text().substring(12);
-    String pattern = "dd.MM.yyyy hh:mm:ss";
+    String pattern = "dd.MM.yyyy HH:mm:ss";
     DateTime dateTime  = DateTime.parse(timestamp, DateTimeFormat.forPattern(pattern));
     int x = 0;
   }
@@ -78,7 +78,7 @@ public class KelikameratWeatherTest {
     int xx = 0;
   }
 
-  @Test
+//  @Test
   public void testUpdater() throws IOException {
     KelikameratUpdater updater = new KelikameratUpdater();
     updater.updateStations();

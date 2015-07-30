@@ -80,7 +80,7 @@ public class UsersPanel extends Panel {
 
       }
     };
-    dataView.setItemsPerPage(15L);
+    dataView.setItemsPerPage(50L);
 
     add(new OrderByBorder("orderById", "id", dp) {
       private static final long serialVersionUID = 1L;

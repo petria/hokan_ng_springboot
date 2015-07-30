@@ -2,6 +2,7 @@ package org.freakz.hokan_ng_springboot.bot.engine;
 
 import org.freakz.hokan_ng_springboot.bot.HokanNgSpringBootEngine;
 import org.junit.Assert;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -14,7 +15,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @SpringApplicationConfiguration(classes = HokanNgSpringBootEngine.class)
 public class EngineTests {
 
-//  @Test
+  @Test
   public void testTranslateEngFi() {
     Assert.assertTrue(true);
   }
