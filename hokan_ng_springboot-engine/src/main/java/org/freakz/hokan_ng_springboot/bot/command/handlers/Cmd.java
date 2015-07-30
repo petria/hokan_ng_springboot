@@ -169,7 +169,7 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
 
     if (args.hasArgs() && args.getArgs().equals("?")) {
       response.setResponseMessage("Usage: " + getName() + " " + jsap.getUsage() + "\n" + "Help: " + jsap.getHelp() + buildSeeAlso(this));
-
+      sendReply(response);
     } else {
 
       boolean parseRes;

@@ -29,7 +29,7 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_NIMI_OR_
 @Slf4j
 public class NimipaivaCmd extends Cmd {
 
-  private static final String NIMIPAIVAT_TXT = "/Nimipäivät.txt";
+  private static final String NIMIPAIVAT_TXT = "/Nimipaivat.txt";
 
   private List<String> nimiPvmList = new ArrayList<>();
 
@@ -55,7 +55,7 @@ public class NimipaivaCmd extends Cmd {
         fileUtil.copyResourceToTmpFile(NIMIPAIVAT_TXT, contents);
         this.nimiPvmList = Arrays.asList(contents.toString().split("\n"));
       } catch (IOException e) {
-        throw new HokanException("Nimipäivät.txt", e);
+        throw new HokanException("Nimipaivat.txt", e);
       }
     }
     for (String nimiPvm : nimiPvmList) {
