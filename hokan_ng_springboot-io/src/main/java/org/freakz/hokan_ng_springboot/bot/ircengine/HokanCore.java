@@ -334,7 +334,7 @@ public class HokanCore extends PircBot implements HokanCoreService {
     }
 */
     this.channelService.save(ch);
-    boolean ignore = true;
+    boolean ignore = false;
     String flags = user.getFlags();
     if (flags != null) {
       if (flags.contains("I")) {
