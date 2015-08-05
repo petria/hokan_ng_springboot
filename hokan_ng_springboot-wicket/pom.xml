@@ -19,11 +19,35 @@
         <start-class>org.freakz.hokan_ng_springboot.bot.HokanNgWicketApplication</start-class>
         <java.version>1.8</java.version>
         <tomcat.version>8.0.20</tomcat.version>
-        <wicket.version>6.19.0</wicket.version>
+        <wicket.version>6.20.0</wicket.version>
+        <wicket.bootsrap.version>0.9.7</wicket.bootsrap.version>
+
     </properties>
 
 
     <dependencies>
+
+        <!-- Twitter Bootstrap -->
+        <dependency>
+            <groupId>de.agilecoders.wicket</groupId>
+            <artifactId>wicket-bootstrap-core</artifactId>
+            <version>${wicket.bootsrap.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>de.agilecoders.wicket</groupId>
+            <artifactId>wicket-bootstrap-extensions</artifactId>
+            <version>${wicket.bootsrap.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>de.agilecoders.wicket</groupId>
+            <artifactId>wicket-bootstrap-themes</artifactId>
+            <version>${wicket.bootsrap.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>de.agilecoders.wicket</groupId>
+            <artifactId>wicket-bootstrap-less</artifactId>
+            <version>${wicket.bootsrap.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.wicketstuff</groupId>
@@ -94,6 +118,22 @@
         </dependency>
     </dependencies>
     <build>
+        <resources>
+            <resource>
+                <filtering>false</filtering>
+                <directory>src/main/resources</directory>
+            </resource>
+            <resource>
+                <filtering>false</filtering>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**</include>
+                </includes>
+                <excludes>
+                    <exclude>**/*.java</exclude>
+                </excludes>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

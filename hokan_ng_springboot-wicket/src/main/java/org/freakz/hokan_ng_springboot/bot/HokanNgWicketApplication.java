@@ -1,12 +1,22 @@
 package org.freakz.hokan_ng_springboot.bot;
 
+import de.agilecoders.wicket.core.Bootstrap;
+import de.agilecoders.wicket.core.settings.BootstrapSettings;
+import de.agilecoders.wicket.core.settings.IBootstrapSettings;
+import de.agilecoders.wicket.core.settings.ThemeProvider;
+import de.agilecoders.wicket.less.BootstrapLess;
+import de.agilecoders.wicket.themes.markup.html.bootswatch.BootswatchTheme;
+import de.agilecoders.wicket.themes.markup.html.bootswatch.BootswatchThemeProvider;
 import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.request.Url;
+import org.apache.wicket.request.resource.UrlResourceReference;
+import org.apache.wicket.resource.JQueryResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.crypt.CharEncoding;
+import org.freakz.hokan_ng_springboot.bot.example.HomePage;
 import org.freakz.hokan_ng_springboot.bot.jpa.service.*;
-import org.freakz.hokan_ng_springboot.bot.page.HokanBasePage;
 import org.freakz.hokan_ng_springboot.bot.page2.MySignInPage;
 import org.freakz.hokan_ng_springboot.bot.service.HokanStatusService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +71,7 @@ public class HokanNgWicketApplication extends AuthenticatedWebApplication {
 
   @Override
   public Class<? extends WebPage> getHomePage() {
-    return HokanBasePage.class;
+    return HomePage.class;
   }
 
   public static void main(String[] args) {
@@ -74,18 +84,24 @@ public class HokanNgWicketApplication extends AuthenticatedWebApplication {
     getRequestCycleSettings().setResponseRequestEncoding(CharEncoding.UTF_8);
     getMarkupSettings().setDefaultMarkupEncoding(CharEncoding.UTF_8);
     getComponentInstantiationListeners().add(new SpringComponentInjector(this, applicationContext));
-/*    SecurePackageResourceGuard guard = new SecurePackageResourceGuard() {
-      @Override
-      public boolean accept(Class<?> scope, String absolutePath) {
-        return true;
-//        return super.accept(scope, absolutePath);
-      }
-    };
-    guard.addPattern("+*.png");
-    guard.setAllowAccessToRootResources(true);
-    getResourceSettings().setPackageResourceGuard(guard);*/
+    configureBootstrap();
+    addResourceReplacement(JQueryResourceReference.get(),
+        new UrlResourceReference(
+            Url.parse("http://code.jquery.com/jquery-1.11.0.min.js")));
+
   }
 
+  private void configureBootstrap() {
+
+    final IBootstrapSettings settings = new BootstrapSettings();
+    settings.useCdnResources(true);
+
+    final ThemeProvider themeProvider = new BootswatchThemeProvider(BootswatchTheme.Spacelab);
+    settings.setThemeProvider(themeProvider);
+
+    Bootstrap.install(this, settings);
+    BootstrapLess.install(this);
+  }
   @Override
   protected Class<? extends AbstractAuthenticatedWebSession> getWebSessionClass() {
     return MyAuthenticatedWebSession.class;
