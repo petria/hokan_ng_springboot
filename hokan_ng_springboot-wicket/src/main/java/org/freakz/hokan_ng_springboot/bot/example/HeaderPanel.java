@@ -29,12 +29,12 @@ import java.util.List;
 
 /**
  * Created by dbeer on 12/12/13.
+ *
  */
 public class HeaderPanel extends Panel {
 
     public HeaderPanel(String id) {
         super(id);
-
         add(navbar());
     }
 
@@ -42,7 +42,7 @@ public class HeaderPanel extends Panel {
         Navbar navbar = new Navbar("navbar");
         navbar.setInverted(true);
         navbar.setPosition(Navbar.Position.TOP);
-        navbar.setBrandName(Model.of("Wicket-Bootstrap3 Sample"));
+        navbar.setBrandName(Model.of("Hokan the Bot"));
 
         DropDownButton dropdown = new NavbarDropDownButton(Model.of("DropDown")) {
 
@@ -51,6 +51,8 @@ public class HeaderPanel extends Panel {
                 final List<AbstractLink> subMenu = new ArrayList<AbstractLink>();
                 subMenu.add(new MenuBookmarkablePageLink(UserAccountPage.class, Model.of("Account"))
                                 .setIconType(FontAwesomeIconType.user));
+              subMenu.add(new MenuBookmarkablePageLink(UrlsPage.class, Model.of("Urls"))
+                  .setIconType(FontAwesomeIconType.user));
                 return subMenu;
             }
 

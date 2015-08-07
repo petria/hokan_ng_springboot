@@ -68,7 +68,6 @@ public class HokanNgWicketApplication extends AuthenticatedWebApplication {
   private UserService userService;
 
 
-
   @Override
   public Class<? extends WebPage> getHomePage() {
     return HomePage.class;
@@ -85,6 +84,7 @@ public class HokanNgWicketApplication extends AuthenticatedWebApplication {
     getMarkupSettings().setDefaultMarkupEncoding(CharEncoding.UTF_8);
     getComponentInstantiationListeners().add(new SpringComponentInjector(this, applicationContext));
     configureBootstrap();
+
     addResourceReplacement(JQueryResourceReference.get(),
         new UrlResourceReference(
             Url.parse("http://code.jquery.com/jquery-1.11.0.min.js")));
@@ -95,13 +95,13 @@ public class HokanNgWicketApplication extends AuthenticatedWebApplication {
 
     final IBootstrapSettings settings = new BootstrapSettings();
     settings.useCdnResources(true);
-
     final ThemeProvider themeProvider = new BootswatchThemeProvider(BootswatchTheme.Spacelab);
     settings.setThemeProvider(themeProvider);
 
     Bootstrap.install(this, settings);
     BootstrapLess.install(this);
   }
+
   @Override
   protected Class<? extends AbstractAuthenticatedWebSession> getWebSessionClass() {
     return MyAuthenticatedWebSession.class;

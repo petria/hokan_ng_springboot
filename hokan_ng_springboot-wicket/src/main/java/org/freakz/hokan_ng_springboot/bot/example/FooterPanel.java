@@ -16,17 +16,15 @@
 
 package org.freakz.hokan_ng_springboot.bot.example;
 
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 
 /**
- * Created by dbeer on 12/12/13.
  */
 public final class FooterPanel extends Panel {
 
     public FooterPanel(String id) {
         super(id);
 
-        add(new Label("wicket-version", getApplication().getFrameworkSettings().getVersion()));
+//        add(new Label("wicket-version", getApplication().getFrameworkSettings().getVersion()));
     }
 }

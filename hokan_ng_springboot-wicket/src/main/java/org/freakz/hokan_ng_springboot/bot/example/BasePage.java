@@ -17,7 +17,6 @@
 package org.freakz.hokan_ng_springboot.bot.example;
 
 import de.agilecoders.wicket.core.Bootstrap;
-import de.agilecoders.wicket.core.markup.html.bootstrap.html.ChromeFrameMetaTag;
 import de.agilecoders.wicket.core.markup.html.bootstrap.html.HtmlTag;
 import de.agilecoders.wicket.core.markup.html.bootstrap.html.MetaTag;
 import de.agilecoders.wicket.core.markup.html.bootstrap.html.OptimizedMobileViewportMetaTag;
@@ -29,9 +28,10 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 /**
- * Created by dbeer on 12/12/13.
+ *
  */
 public class BasePage extends WebPage {
+
 
     public BasePage() {
         super();
@@ -44,9 +44,7 @@ public class BasePage extends WebPage {
 
         add(new OptimizedMobileViewportMetaTag("viewport"));
         add(new MetaTag("description", Model.of("description"), Model.of("Tansu")));
-        add(new MetaTag("author", Model.of("author"), Model.of("Copper Arrow Software Services")));
-        add(new ChromeFrameMetaTag("chrome-frame"));
-
+        add(new MetaTag("author", Model.of("author"), Model.of("Petri Airio")));
         //add header panel
         add(new HeaderPanel("header"));
         add(new FooterPanel("footer"));
@@ -58,6 +56,7 @@ public class BasePage extends WebPage {
 
         Bootstrap.renderHead(response);
         response.render(CssHeaderItem.forReference(FontAwesomeCssReference.instance()));
+
     }
 
 }
