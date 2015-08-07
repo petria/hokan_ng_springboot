@@ -20,49 +20,66 @@ import de.agilecoders.wicket.core.markup.html.bootstrap.button.dropdown.MenuBook
 import de.agilecoders.wicket.core.markup.html.bootstrap.image.GlyphIconType;
 import de.agilecoders.wicket.core.markup.html.bootstrap.navbar.*;
 import de.agilecoders.wicket.extensions.markup.html.bootstrap.icon.FontAwesomeIconType;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
+import org.freakz.hokan_ng_springboot.bot.MyAuthenticatedWebSession;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by dbeer on 12/12/13.
- *
  */
+@Slf4j
 public class HeaderPanel extends Panel {
 
-    public HeaderPanel(String id) {
-        super(id);
-        add(navbar());
-    }
+  public HeaderPanel(String id) {
+    super(id);
+    add(navbar());
+  }
 
-    private Navbar navbar() {
-        Navbar navbar = new Navbar("navbar");
-        navbar.setInverted(true);
-        navbar.setPosition(Navbar.Position.TOP);
-        navbar.setBrandName(Model.of("Hokan the Bot"));
+  private Navbar navbar() {
+    Navbar navbar = new Navbar("navbar");
+    navbar.setInverted(true);
+    navbar.setPosition(Navbar.Position.TOP);
+    navbar.setBrandName(Model.of("Hokan the Bot"));
 
-        DropDownButton dropdown = new NavbarDropDownButton(Model.of("DropDown")) {
+    DropDownButton dropdown = new NavbarDropDownButton(Model.of("DropDown")) {
 
-            @Override
-            protected List<AbstractLink> newSubMenuButtons(String buttonMarkupId) {
-                final List<AbstractLink> subMenu = new ArrayList<AbstractLink>();
-                subMenu.add(new MenuBookmarkablePageLink(UserAccountPage.class, Model.of("Account"))
-                                .setIconType(FontAwesomeIconType.user));
-              subMenu.add(new MenuBookmarkablePageLink(UrlsPage.class, Model.of("Urls"))
-                  .setIconType(FontAwesomeIconType.user));
-                return subMenu;
-            }
+      @Override
+      protected List<AbstractLink> newSubMenuButtons(String buttonMarkupId) {
+        final List<AbstractLink> subMenu = new ArrayList<AbstractLink>();
+        subMenu.add(new MenuBookmarkablePageLink(UserAccountPage.class, Model.of("Account"))
+            .setIconType(FontAwesomeIconType.user));
+        subMenu.add(new MenuBookmarkablePageLink(UrlsPage.class, Model.of("Urls"))
+            .setIconType(FontAwesomeIconType.user));
+        return subMenu;
+      }
 
-        };
+    };
 
-        navbar.addComponents(new ImmutableNavbarComponent(dropdown, Navbar.ComponentPosition.RIGHT));
+    navbar.addComponents(new ImmutableNavbarComponent(dropdown, Navbar.ComponentPosition.RIGHT));
+    final MyAuthenticatedWebSession session = (MyAuthenticatedWebSession) AuthenticatedWebSession.get();
 
-        navbar.addComponents(NavbarComponents.transform(Navbar.ComponentPosition.RIGHT, new NavbarButton<HomePage>(HomePage.class, Model.of("Home"))
-                .setIconType(GlyphIconType.home)));
+    NavbarAjaxLink navbarAjaxLink = new NavbarAjaxLink(Model.of("logout")) {
+      @Override
+      public void onClick(AjaxRequestTarget ajaxRequestTarget) {
+        log.debug("Logging off!");
+        session.logoffUser();
+        getSession().invalidate();
+        setResponsePage(HomePage.class);
 
-        return navbar;
-    }
+      }
+    };
+    navbarAjaxLink.setIconType(GlyphIconType.logout);
+
+    navbar.addComponents(NavbarComponents.transform(Navbar.ComponentPosition.RIGHT,
+        new NavbarButton<HomePage>(HomePage.class, Model.of("Home")).setIconType(GlyphIconType.home),
+        navbarAjaxLink));
+
+    return navbar;
+  }
 }
