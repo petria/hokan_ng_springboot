@@ -42,6 +42,8 @@ public class HeaderPanel extends Panel {
   }
 
   private Navbar navbar() {
+    final MyAuthenticatedWebSession session = (MyAuthenticatedWebSession) AuthenticatedWebSession.get();
+
     Navbar navbar = new Navbar("navbar");
     navbar.setInverted(true);
     navbar.setPosition(Navbar.Position.TOP);
@@ -60,9 +62,20 @@ public class HeaderPanel extends Panel {
       }
 
     };
-
     navbar.addComponents(new ImmutableNavbarComponent(dropdown, Navbar.ComponentPosition.RIGHT));
-    final MyAuthenticatedWebSession session = (MyAuthenticatedWebSession) AuthenticatedWebSession.get();
+
+    DropDownButton settingsDropDown = new NavbarDropDownButton(Model.of("Settings")) {
+
+      @Override
+      protected List<AbstractLink> newSubMenuButtons(String buttonMarkupId) {
+        final List<AbstractLink> subMenu = new ArrayList<AbstractLink>();
+        subMenu.add(new MenuBookmarkablePageLink(SystemPropertiesPage.class, Model.of("System properties"))
+            .setIconType(FontAwesomeIconType.question_circle));
+        return subMenu;
+      }
+    };
+    navbar.addComponents(new ImmutableNavbarComponent(settingsDropDown, Navbar.ComponentPosition.RIGHT));
+
 
     NavbarAjaxLink navbarAjaxLink = new NavbarAjaxLink(Model.of("logout")) {
       @Override
