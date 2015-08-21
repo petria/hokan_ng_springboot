@@ -252,7 +252,7 @@ public class ConnectionManagerServiceImpl implements ConnectionManagerService, E
 
   @Override
   public void handleEngineResponse(EngineResponse response) {
-    log.debug("Handle: {}", response);
+//    log.debug("Handle: {}", response);
     HokanCore core = this.connectedEngines.get(response.getIrcMessageEvent().getNetwork());
     if (core != null) {
       core.handleEngineResponse(response);

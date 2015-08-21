@@ -8,7 +8,6 @@ import org.freakz.hokan_ng_springboot.bot.ircengine.connector.EngineConnector;
 import org.freakz.hokan_ng_springboot.bot.jms.EngineCommunicator;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.*;
 import org.freakz.hokan_ng_springboot.bot.jpa.service.*;
-import org.freakz.hokan_ng_springboot.bot.service.IrcLogService;
 import org.freakz.hokan_ng_springboot.bot.util.IRCUtility;
 import org.freakz.hokan_ng_springboot.bot.util.StringStuff;
 import org.jibble.pircbot.PircBot;

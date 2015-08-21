@@ -47,7 +47,6 @@ public class FindUrlCmd extends Cmd {
 
   @Override
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    InternalRequest ir = (InternalRequest) request;
     String urlPattern = results.getString(ARG_URL_PATTERN);
     String nick = results.getString(ARG_NICK);
     List<Url> urlList;

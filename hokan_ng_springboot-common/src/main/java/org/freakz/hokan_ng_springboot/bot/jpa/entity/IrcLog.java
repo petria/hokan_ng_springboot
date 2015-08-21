@@ -1,5 +1,7 @@
 package org.freakz.hokan_ng_springboot.bot.jpa.entity;
 
+import org.freakz.hokan_ng_springboot.bot.util.StringStuff;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -71,4 +73,10 @@ public class IrcLog  implements Serializable {
   public void setMessage(String message) {
     this.message = message;
   }
+
+  public String toString() {
+    String date = StringStuff.formatTime(this.timeStamp, StringStuff.STRING_STUFF_DF_DDMMYYYYHHMM);
+    return String.format("[%s] %s -> %-10s: %s", date, sender, target, message);
+  }
+
 }

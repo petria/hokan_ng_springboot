@@ -9,6 +9,7 @@ import java.util.List;
 
 /**
  * Created by Petri Airio on 7.4.2015.
+ *
  */
 public interface UserChannelRepository extends JpaRepository<UserChannel, Long> {
 

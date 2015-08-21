@@ -13,6 +13,8 @@ public class StaticStrings {
   public static final String ARG_AMOUNT = "Amount";
   public static final String ARG_CHANNEL = "Channel";
   public static final String ARG_CHANNEL_ID = "ChannelId";
+  public static final String ARG_CITY_1 = "City1";
+  public static final String ARG_CITY_2 = "City2";
   public static final String ARG_COUNT = "Count";
   public static final String ARG_COMMAND = "Command";
   public static final String ARG_EMAIL = "Email";
@@ -24,8 +26,7 @@ public class StaticStrings {
   public static final String ARG_ID = "ID";
   public static final String ARG_ID_OR_SEARCH = "ID/SEARCH";
   public static final String ARG_JOIN_MSG = "JoinMsg";
-  public static final String ARG_CITY_1 = "City1";
-  public static final String ARG_CITY_2 = "City2";
+  public static final String ARG_LOG_PATTERN = "LogPattern";
   public static final String ARG_MASK = "Mask";
   public static final String ARG_MESSAGE = "Message";
   public static final String ARG_NAME = "Name";

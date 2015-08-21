@@ -11,6 +11,7 @@ public enum HelpGroup {
 
   ALIAS("Alias help group"),
   CHANNELS("Channels help group"),
+  LOGS("IRC logs group"),
   NETWORK("Network help group"),
   PROCESS("Process help group"),
   PROPERTIES("Properties help group"),
@@ -18,7 +19,8 @@ public enum HelpGroup {
   TV("TV help group"),
   UPDATERS("Updaters help group"),
   USERS("Users help group"),
-  URLS("Urls help group");
+  URLS("Urls help group")
+  ;
 
   private String helpText;
 
