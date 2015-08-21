@@ -53,6 +53,11 @@ public class IrcLogRepositoryService implements IrcLogService {
     return repository.findByTimeStampBetween(saet.getStartTime().toDate(), saet.getEndTime().toDate());
   }
 
+  @Override
+  public List<IrcLog> findByTimeStampBetweenAndTargetContaining(StartAndEndTime saet, String target) {
+    return repository.findByTimeStampBetweenAndTargetContaining(saet.getStartTime().toDate(), saet.getEndTime().toDate(), target);
+  }
+
   private List<IrcLog> sortLogs(List<IrcLog> allRows) {
     Comparator<? super IrcLog> comparator = (o1, o2) -> o1.getTimeStamp().compareTo(o2.getTimeStamp());
     Collections.sort(allRows, comparator);

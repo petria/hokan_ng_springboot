@@ -14,4 +14,6 @@ public interface IrcLogRepository extends JpaRepository<IrcLog, Long> {
 
   List<IrcLog> findByTimeStampBetween(Date start, Date end);
 
+  List<IrcLog> findByTimeStampBetweenAndTargetContaining(Date start, Date end, String target);
+
 }

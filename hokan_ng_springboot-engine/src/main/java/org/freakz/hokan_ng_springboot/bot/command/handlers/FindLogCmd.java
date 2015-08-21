@@ -41,7 +41,7 @@ public class FindLogCmd extends Cmd {
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
     String logPattern = results.getString(ARG_LOG_PATTERN);
     List<IrcLog> ircLogs = ircLogService.findMatchingLogRows(logPattern);
-//    List<IrcLog> test = ircLogService.findByTimeStampBetween(TimeUtil.getStartAndEndTimeForDay(DateTime.now().minusDays(1)));
+//    List<IrcLog> test = ircLogService.findByTimeStampBetweenAndTarget(TimeUtil.getStartAndEndTimeForDay(DateTime.now()), "FFFuf");
 
     if (ircLogs.size() > 0) {
       int max = SHOW_MAX;
