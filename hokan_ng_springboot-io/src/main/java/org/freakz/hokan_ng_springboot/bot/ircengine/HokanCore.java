@@ -8,6 +8,7 @@ import org.freakz.hokan_ng_springboot.bot.ircengine.connector.EngineConnector;
 import org.freakz.hokan_ng_springboot.bot.jms.EngineCommunicator;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.*;
 import org.freakz.hokan_ng_springboot.bot.jpa.service.*;
+import org.freakz.hokan_ng_springboot.bot.service.IrcLogService;
 import org.freakz.hokan_ng_springboot.bot.util.IRCUtility;
 import org.freakz.hokan_ng_springboot.bot.util.StringStuff;
 import org.jibble.pircbot.PircBot;
@@ -35,6 +36,9 @@ public class HokanCore extends PircBot implements HokanCoreService {
 
   @Autowired
   private EngineCommunicator engineCommunicator;
+
+  @Autowired
+  private IrcLogService ircLogService;
 
   @Autowired
   private JoinedUserService joinedUsersService;
@@ -268,7 +272,13 @@ public class HokanCore extends PircBot implements HokanCoreService {
   }
 
   @Override
+  protected void onPrivateMessage(String sender, String login, String hostname, String message) {
+    this.ircLogService.addIrcLog(new Date(), sender, getName(), message);
+  }
+
+  @Override
   protected void onMessage(String channel, String sender, String login, String hostname, String message) {
+    this.ircLogService.addIrcLog(new Date(), sender, channel, message);
     String toMe = getName() + ": ";
     boolean isToMe = false;
     if (message.startsWith(toMe)) {
