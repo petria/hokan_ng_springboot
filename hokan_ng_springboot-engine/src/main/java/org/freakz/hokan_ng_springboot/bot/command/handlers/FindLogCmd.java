@@ -49,7 +49,9 @@ public class FindLogCmd extends Cmd {
         response.addResponse("LOG: %s\n", log.toString());
         max--;
         if (max == 0) {
-          response.addResponse("... %d matches more", ircLogs.size() - SHOW_MAX);
+          if (ircLogs.size() - SHOW_MAX > 0) {
+            response.addResponse("... %d matches more", ircLogs.size() - SHOW_MAX);
+          }
           break;
         }
       }
