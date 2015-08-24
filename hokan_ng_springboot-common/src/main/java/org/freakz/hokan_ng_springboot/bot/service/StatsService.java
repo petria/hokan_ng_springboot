@@ -9,7 +9,6 @@ import org.joda.time.DateTime;
  */
 public interface StatsService {
 
-  DailyStats getDailyStats(DateTime day);
-
+  DailyStats getDailyStats(DateTime day, String channel);
 
 }

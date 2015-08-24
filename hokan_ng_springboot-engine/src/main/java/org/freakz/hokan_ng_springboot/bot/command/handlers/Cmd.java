@@ -13,6 +13,7 @@ import org.freakz.hokan_ng_springboot.bot.jms.JmsMessage;
 import org.freakz.hokan_ng_springboot.bot.jms.api.JmsSender;
 import org.freakz.hokan_ng_springboot.bot.jpa.service.*;
 import org.freakz.hokan_ng_springboot.bot.service.AccessControlService;
+import org.freakz.hokan_ng_springboot.bot.service.StatsService;
 import org.freakz.hokan_ng_springboot.bot.util.CommandArgs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -73,14 +74,10 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
   protected NetworkService networkService;
 
   @Autowired
-  protected UrlLoggerService urlLoggerService;
-
-/*  @Autowired
-  protected SearchReplaceService searchReplaceService;
+  protected StatsService statsService;
 
   @Autowired
   protected UrlLoggerService urlLoggerService;
-*/
 
   public Cmd() {
     jsap = new JSAP();
