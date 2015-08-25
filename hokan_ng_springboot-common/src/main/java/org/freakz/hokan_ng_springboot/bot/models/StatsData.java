@@ -13,8 +13,8 @@ public class StatsData implements Serializable {
   private int lines;
 
 
-  public StatsData(String nickUpper) {
-    this.nick = nickUpper;
+  public StatsData(String nickLower) {
+    this.nick = nickLower;
     this.words = 0;
     this.lines = 0;
   }
