@@ -27,12 +27,20 @@ public class StatsData implements Serializable {
     this.nick = nick;
   }
 
+  public void addToWords(int amount) {
+    this.words += amount;
+  }
+
   public int getWords() {
     return words;
   }
 
   public void setWords(int words) {
     this.words = words;
+  }
+
+  public void addToLines(int amount) {
+    this.lines += amount;
   }
 
   public int getLines() {

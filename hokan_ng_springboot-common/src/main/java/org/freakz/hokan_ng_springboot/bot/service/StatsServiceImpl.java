@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.IrcLog;
 import org.freakz.hokan_ng_springboot.bot.jpa.service.IrcLogService;
 import org.freakz.hokan_ng_springboot.bot.models.DailyStats;
+import org.freakz.hokan_ng_springboot.bot.models.StatsData;
 import org.freakz.hokan_ng_springboot.bot.util.TimeUtil;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,15 +25,13 @@ public class StatsServiceImpl implements StatsService {
 
   @Override
   public DailyStats getDailyStats(DateTime day, String channel) {
-    List<IrcLog> logsForDay = ircLogService.findByTimeStampBetweenAndTargetContaining(TimeUtil.getStartAndEndTimeForDay(DateTime.now()), channel);
+    List<IrcLog> logsForDay = ircLogService.findByTimeStampBetweenAndTargetContaining(TimeUtil.getStartAndEndTimeForDay(day), channel);
     DailyStats dailyStats = new DailyStats();
     if (logsForDay.size() == 0) {
       dailyStats.setError("No stats for day: " + day.toString());
     } else {
       processLogs(dailyStats, logsForDay);
     }
-
-//    ircLogService.findByTimeStampBetweenAndTargetContaining()
     return dailyStats;
   }
 
@@ -40,6 +39,9 @@ public class StatsServiceImpl implements StatsService {
     for (IrcLog ircLog : logsForDay) {
       String sender = ircLog.getSender();
       String[] words = ircLog.getMessage().split(" ");
+      StatsData statsData = dailyStats.getStatsDataForNick(sender);
+      statsData.addToLines(1);
+      statsData.addToWords(words.length);
     }
   }
 
