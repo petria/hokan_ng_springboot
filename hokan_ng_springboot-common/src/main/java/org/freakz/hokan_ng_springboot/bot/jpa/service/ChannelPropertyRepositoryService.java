@@ -79,4 +79,9 @@ public class ChannelPropertyRepositoryService extends PropertyBase implements Ch
     return super.getChannelPropertyAsBoolean(channel, propertyName, value);
   }
 
+  @Override
+  public String getChannelPropertyAsString(Channel channel, PropertyName propertyName, String value) {
+    return super.getChannelPropertyAsString(channel, propertyName, value);
+  }
+
 }

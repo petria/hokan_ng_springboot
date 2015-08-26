@@ -28,4 +28,6 @@ public interface ChannelPropertyService {
 
   boolean getChannelPropertyAsBoolean(Channel channel, PropertyName propertyName, boolean b);
 
+  String getChannelPropertyAsString(Channel channel, PropertyName propertyName, String s);
+
 }

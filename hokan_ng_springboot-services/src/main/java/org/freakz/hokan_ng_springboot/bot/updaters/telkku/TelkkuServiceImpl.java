@@ -201,6 +201,7 @@ public class TelkkuServiceImpl implements TelkkuService, CommandRunnable {
         Thread.sleep(30 * 1000);
       } catch (Exception e) {
         log.debug("interrupted");
+        break;
       }
     }
   }
