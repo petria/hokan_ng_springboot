@@ -1,5 +1,7 @@
 package org.freakz.hokan_ng_springboot.bot.jpa.entity;
 
+import org.freakz.hokan_ng_springboot.bot.util.StringStuff;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +53,7 @@ public enum PropertyName {
   public static List<PropertyName> getValuesLike(String pattern) {
     List<PropertyName> values = new ArrayList<>();
     for (PropertyName name : values()) {
-      if (name.toString().toLowerCase().matches(pattern)) {
+      if (StringStuff.match(name.toString(), pattern, true)) {
         values.add(name);
       }
     }
