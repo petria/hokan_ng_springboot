@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.cmdpool.CommandPool;
 import org.freakz.hokan_ng_springboot.bot.cmdpool.CommandRunnable;
 import org.freakz.hokan_ng_springboot.bot.enums.HokanModule;
-import org.freakz.hokan_ng_springboot.bot.events.TvNotifyRequest;
+import org.freakz.hokan_ng_springboot.bot.events.NotifyRequest;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
 import org.freakz.hokan_ng_springboot.bot.jms.api.JmsSender;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.Channel;
@@ -252,7 +252,7 @@ public class TelkkuServiceImpl implements TelkkuService, CommandRunnable {
           n.program.getProgram(),
           n.program.getId()
       );
-      TvNotifyRequest request = new TvNotifyRequest();
+      NotifyRequest request = new NotifyRequest();
       request.setTargetChannelId(n.channel.getId());
       request.setNotifyMessage(note);
       jmsSender.send(HokanModule.HokanIo.getQueueName(), "TV_NOTIFY_REQUEST", request, false);

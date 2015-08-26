@@ -3,17 +3,26 @@ package org.freakz.hokan_ng_springboot.bot.service.stats;
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.cmdpool.CommandPool;
 import org.freakz.hokan_ng_springboot.bot.cmdpool.CommandRunnable;
+import org.freakz.hokan_ng_springboot.bot.enums.HokanModule;
+import org.freakz.hokan_ng_springboot.bot.events.NotifyRequest;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
 import org.freakz.hokan_ng_springboot.bot.jms.api.JmsSender;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.Channel;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.PropertyName;
 import org.freakz.hokan_ng_springboot.bot.jpa.service.ChannelPropertyService;
-import org.freakz.hokan_ng_springboot.bot.jpa.service.PropertyService;
+import org.freakz.hokan_ng_springboot.bot.models.StatsData;
+import org.freakz.hokan_ng_springboot.bot.models.StatsMapper;
+import org.freakz.hokan_ng_springboot.bot.service.StatsService;
+import org.freakz.hokan_ng_springboot.bot.util.StringStuff;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Petri Airio on 26.8.2015.
@@ -33,13 +42,14 @@ public class StatsNotifyServiceImpl implements StatsNotifyService, CommandRunnab
   private JmsSender jmsSender;
 
   @Autowired
-  private PropertyService propertyService;
-
+  private StatsService statsService;
 
   @PostConstruct
   private void startRunner() {
     commandPool.startRunnable(this, "<system>");
   }
+
+  private Map<String, String> sentNotifies = new HashMap<>();
 
   @Override
   public void handleRun(long myPid, Object args) throws HokanException {
@@ -58,7 +68,32 @@ public class StatsNotifyServiceImpl implements StatsNotifyService, CommandRunnab
     List<Channel> channelList = channelPropertyService.getChannelsWithProperty(PropertyName.PROP_CHANNEL_DO_STATS, ".*");
     for (Channel channel : channelList) {
       String time = channelPropertyService.getChannelPropertyAsString(channel, PropertyName.PROP_CHANNEL_DO_STATS, "--");
-      
+      String timeNow = StringStuff.formatTime(new Date(), StringStuff.STRING_STUFF_DF_HHMM);
+      if (timeNow.matches(time)) {
+        String sentDay = StringStuff.formatTime(new Date(), StringStuff.STRING_STUFF_DF_DDMMYYYY);
+        if (this.sentNotifies.get(sentDay+time) != null)  {
+          continue;
+        }
+        DateTime yesterday = DateTime.now().minusDays(1);
+        StatsMapper statsMapper = statsService.getDailyStatsForChannel(yesterday, channel.getChannelName());
+
+        if (!statsMapper.hasError()) {
+          List<StatsData> statsDatas = statsMapper.getStatsData();
+          String res = StringStuff.formatTime(yesterday.toDate(), StringStuff.STRING_STUFF_DF_DDMMYYYY )+ " top words:";
+          int i = 1;
+          for (StatsData statsData : statsDatas) {
+            res += " " + i + ") " + statsData.getNick() + "=" + statsData.getWords();
+            i++;
+          }
+          NotifyRequest notifyRequest = new NotifyRequest();
+          notifyRequest.setNotifyMessage(res);
+          notifyRequest.setTargetChannelId(channel.getId());
+          jmsSender.send(HokanModule.HokanIo.getQueueName(), "STATS_NOTIFY_REQUEST", notifyRequest, false);
+          this.sentNotifies.put(sentDay+time, time);
+        } else {
+          log.warn("Could not create stats notify request!");
+        }
+      }
     }
   }
 

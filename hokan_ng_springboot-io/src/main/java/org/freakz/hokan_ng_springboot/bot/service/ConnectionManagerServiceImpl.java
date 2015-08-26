@@ -2,7 +2,7 @@ package org.freakz.hokan_ng_springboot.bot.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
-import org.freakz.hokan_ng_springboot.bot.events.TvNotifyRequest;
+import org.freakz.hokan_ng_springboot.bot.events.NotifyRequest;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanServiceException;
 import org.freakz.hokan_ng_springboot.bot.ircengine.HokanCore;
@@ -262,10 +262,10 @@ public class ConnectionManagerServiceImpl implements ConnectionManagerService, E
   }
 
   @Override
-  public void handleTvNotifyRequest(TvNotifyRequest tvNotifyRequest) {
-    Channel channel = channelService.findOne(tvNotifyRequest.getTargetChannelId());
+  public void handleTvNotifyRequest(NotifyRequest notifyRequest) {
+    Channel channel = channelService.findOne(notifyRequest.getTargetChannelId());
     if (channel == null) {
-      log.warn("Can't notify, no channel with id: {}", tvNotifyRequest.getTargetChannelId());
+      log.warn("Can't notify, no channel with id: {}", notifyRequest.getTargetChannelId());
       return;
     }
     HokanCore core = getConnectedEngine(channel.getNetwork());
@@ -273,8 +273,24 @@ public class ConnectionManagerServiceImpl implements ConnectionManagerService, E
       log.warn("Can't notify, no HokanCore for channel: {}", channel);
       return;
     }
-    core.handleSendMessage(channel.getChannelName(), tvNotifyRequest.getNotifyMessage());
-    log.debug("TvNotify sent to: {}", channel.getChannelName());
+    core.handleSendMessage(channel.getChannelName(), notifyRequest.getNotifyMessage());
+    log.debug("Tv Notify sent to: {}", channel.getChannelName());
   }
 
+  @Override
+  public void handleStatsNotifyRequest(NotifyRequest notifyRequest) {
+    Channel channel = channelService.findOne(notifyRequest.getTargetChannelId());
+    if (channel == null) {
+      log.warn("Can't notify, no channel with id: {}", notifyRequest.getTargetChannelId());
+      return;
+    }
+    HokanCore core = getConnectedEngine(channel.getNetwork());
+    if (core == null) {
+      log.warn("Can't notify, no HokanCore for channel: {}", channel);
+      return;
+    }
+    core.handleSendMessage(channel.getChannelName(), notifyRequest.getNotifyMessage());
+    log.debug("Stats Notify sent to: {}", channel.getChannelName());
+
+  }
 }

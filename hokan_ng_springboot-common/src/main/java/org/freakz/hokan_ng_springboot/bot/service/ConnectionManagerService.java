@@ -1,7 +1,7 @@
 package org.freakz.hokan_ng_springboot.bot.service;
 
 import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
-import org.freakz.hokan_ng_springboot.bot.events.TvNotifyRequest;
+import org.freakz.hokan_ng_springboot.bot.events.NotifyRequest;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanServiceException;
 
 /**
@@ -26,6 +26,8 @@ public interface ConnectionManagerService {
 
   void handleEngineResponse(EngineResponse response);
 
-  void handleTvNotifyRequest(TvNotifyRequest tvNotifyRequest);
+  void handleTvNotifyRequest(NotifyRequest notifyRequest);
+
+  void handleStatsNotifyRequest(NotifyRequest notifyRequest);
 
 }

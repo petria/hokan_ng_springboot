@@ -498,8 +498,10 @@ TODO
     for (String line : lines) {
       String[] split = IRCUtility.breakUpMessageByIRCLineLength(channel, line);
       for (String l : split) {
-        String raw = "PRIVMSG " + channel + " :" + prefix + l + postfix;
+        String msg = prefix + l + postfix;
+        String raw = "PRIVMSG " + channel + " :" + msg;
         this.outputQueue.addLine(raw);
+        this.ircLogService.addIrcLog(new Date(), getNick(), channel, msg);
         if (ch != null) {
           stats.addToLinesSent(1);
         }

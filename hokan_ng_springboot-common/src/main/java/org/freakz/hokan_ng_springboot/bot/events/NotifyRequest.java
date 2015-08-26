@@ -6,12 +6,12 @@ import java.io.Serializable;
  * Created by Petri Airio on 25.5.2015.
  *
  */
-public class TvNotifyRequest implements Serializable {
+public class NotifyRequest implements Serializable {
 
   private long targetChannelId;
   private String notifyMessage;
 
-  public TvNotifyRequest() {
+  public NotifyRequest() {
   }
 
   public long getTargetChannelId() {

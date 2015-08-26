@@ -2,7 +2,7 @@ package org.freakz.hokan_ng_springboot.bot.jms;
 
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
-import org.freakz.hokan_ng_springboot.bot.events.TvNotifyRequest;
+import org.freakz.hokan_ng_springboot.bot.events.NotifyRequest;
 import org.freakz.hokan_ng_springboot.bot.service.ConnectionManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -29,19 +29,27 @@ public class IoJmsReceiver extends SpringJmsReceiver {
       handleEngineReply(envelope);
     } else if (envelope.getMessageIn().getPayLoadObject("TV_NOTIFY_REQUEST") != null) {
       handleTvNotify(envelope);
+    } else if (envelope.getMessageIn().getPayLoadObject("STATS_NOTIFY_REQUEST") != null) {
+      handleStatsNotify(envelope);
     }
 
   }
 
+  private void handleStatsNotify(JmsEnvelope envelope) {
+    NotifyRequest notifyRequest = (NotifyRequest) envelope.getMessageIn().getPayLoadObject("STATS_NOTIFY_REQUEST");
+    log.debug("handling NotifyRequest: {}", notifyRequest);
+    connectionManagerService.handleStatsNotifyRequest(notifyRequest);
+
+  }
+
   private void handleTvNotify(JmsEnvelope envelope) {
-    TvNotifyRequest tvNotifyRequest = (TvNotifyRequest) envelope.getMessageIn().getPayLoadObject("TV_NOTIFY_REQUEST");
-    log.debug("handling TvNotifyRequest: {}", tvNotifyRequest);
-    connectionManagerService.handleTvNotifyRequest(tvNotifyRequest);
+    NotifyRequest notifyRequest = (NotifyRequest) envelope.getMessageIn().getPayLoadObject("TV_NOTIFY_REQUEST");
+    log.debug("handling NotifyRequest: {}", notifyRequest);
+    connectionManagerService.handleTvNotifyRequest(notifyRequest);
   }
 
   private void handleEngineReply(JmsEnvelope envelope) {
     EngineResponse response = (EngineResponse) envelope.getMessageIn().getPayLoadObject("ENGINE_RESPONSE");
-//    log.debug("handling engine response: {}", response);
     connectionManagerService.handleEngineResponse(response);
   }
 

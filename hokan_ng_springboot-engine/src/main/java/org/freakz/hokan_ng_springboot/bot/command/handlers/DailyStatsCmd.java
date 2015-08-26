@@ -7,6 +7,7 @@ import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
 import org.freakz.hokan_ng_springboot.bot.models.StatsData;
 import org.freakz.hokan_ng_springboot.bot.models.StatsMapper;
+import org.freakz.hokan_ng_springboot.bot.util.StringStuff;
 import org.joda.time.DateTime;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -33,10 +34,10 @@ public class DailyStatsCmd extends Cmd {
     StatsMapper statsMapper = statsService.getDailyStatsForChannel(today, request.getChannel().getChannelName());
     if (!statsMapper.hasError()) {
       List<StatsData> statsDatas = statsMapper.getStatsData();
-      String res = "Daily Top Words:";
+      String res = StringStuff.formatTime(today.toDate(), StringStuff.STRING_STUFF_DF_DDMMYYYY)+ " top words:";
       int i = 1;
       for (StatsData statsData : statsDatas) {
-        res += " " + i + ") " + statsData.getNick() + ": " + statsData.getWords();
+        res += " " + i + ") " + statsData.getNick() + "=" + statsData.getWords();
         i++;
       }
       response.addResponse(res);
