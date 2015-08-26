@@ -11,7 +11,6 @@ import java.util.List;
 
 /**
  * Created by Petri Airio on 27.3.2015.
- *
  */
 @Service
 @Slf4j
@@ -38,6 +37,18 @@ public class PropertyRepositoryService extends PropertyBase implements PropertyS
   @Override
   public PropertyEntity findFirstByPropertyName(PropertyName propertyName) {
     return repository.findFirstByPropertyName(propertyName);
+  }
+
+  @Override
+  public long getNextPid() {
+    PropertyEntity property = repository.findFirstByPropertyName(PropertyName.PROP_SYS_PID_COUNTER);
+    if (property == null) {
+      property = new PropertyEntity(PropertyName.PROP_SYS_PID_COUNTER, "1", "");
+    }
+    long pid = Long.parseLong(property.getValue());
+    property.setValue("" + (pid + 1));
+    repository.save(property);
+    return pid;
   }
 
 }

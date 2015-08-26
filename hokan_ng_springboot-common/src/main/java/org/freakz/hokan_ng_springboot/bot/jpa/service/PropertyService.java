@@ -27,4 +27,6 @@ public interface PropertyService {
 
   boolean getPropertyAsBoolean(PropertyName propertyName, boolean defaultValue);
 
+  long getNextPid();
+
 }

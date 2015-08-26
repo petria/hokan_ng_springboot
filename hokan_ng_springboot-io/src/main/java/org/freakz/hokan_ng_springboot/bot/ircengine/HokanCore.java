@@ -46,6 +46,9 @@ public class HokanCore extends PircBot implements HokanCoreService {
   private NetworkService networkService;
 
   @Autowired
+  private PropertyService propertyService;
+
+  @Autowired
   private UserChannelService userChannelService;
 
   @Autowired
@@ -58,10 +61,14 @@ public class HokanCore extends PircBot implements HokanCoreService {
   private OutputQueue outputQueue;
 
   private EngineConnector engineConnector;
+
   private IrcServerConfig ircServerConfig;
+
   private Map<String, String> serverProperties = new HashMap<>();
 
   private Map<String, List<String>> whoQueries = new HashMap<>();
+
+  private Map<String, ConfirmResponse> confirmResponseMap = new HashMap<>();
 
   public void init(String botName, IrcServerConfig ircServerConfig) {
     this.ircServerConfig = ircServerConfig;
@@ -273,6 +280,10 @@ public class HokanCore extends PircBot implements HokanCoreService {
   @Override
   protected void onPrivateMessage(String sender, String login, String hostname, String message) {
     this.ircLogService.addIrcLog(new Date(), sender, getName(), message);
+    int confirmLong = propertyService.getPropertyAsInt(PropertyName.PROP_SYS_CONFIRM_LONG_MESSAGES, -1);
+    if (confirmLong > 0) {
+      handleConfirmMessages(sender, message);
+    }
   }
 
   @Override
@@ -391,10 +402,33 @@ public class HokanCore extends PircBot implements HokanCoreService {
   }
 
 
-  //  @Override
+  private void handleConfirmMessages(String sender, String message) {
+    ConfirmResponse confirmResponse = confirmResponseMap.get(message);
+    if (confirmResponse != null) {
+      int foo = 0;
+    }
+  }
+
+   // @Override
   @SuppressWarnings({"ThrowableResultOfMethodCallIgnored"})
   public void handleEngineResponse(EngineResponse response) {
 //    log.debug("Handle: {}", response);
+    int confirmLong = propertyService.getPropertyAsInt(PropertyName.PROP_SYS_CONFIRM_LONG_MESSAGES, -1);
+    if (confirmLong > 0) {
+      int lines = response.getResponseMessage().split("\n").length;
+      if (lines > confirmLong) {
+
+        ConfirmResponse confirmResponse = new ConfirmResponse(response);
+        String confirmKey = String.format("%s-%d", response.getIrcMessageEvent().getSender(), propertyService.getNextPid());
+        confirmResponseMap.put(confirmKey, confirmResponse);
+        String message = String.format("Your command caused too much output: %d / max %d - ", lines, confirmLong);
+        message += String.format("To send it confirm with: %s", confirmKey);
+        String raw = "PRIVMSG " + response.getIrcMessageEvent().getSender() + " :" + message;
+        this.outputQueue.addLine(raw);
+        return;
+      }
+    }
+
 
     if (response.getException() != null) {
       String error = " failed: " + response.getException().getMessage();
@@ -437,7 +471,6 @@ TODO
       } else {
         log.error("Couldn't find method for: " + methodName);
       }
-
     }
   }
 
