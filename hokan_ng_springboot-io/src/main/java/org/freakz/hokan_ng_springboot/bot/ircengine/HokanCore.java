@@ -394,7 +394,7 @@ public class HokanCore extends PircBot implements HokanCoreService {
   //  @Override
   @SuppressWarnings({"ThrowableResultOfMethodCallIgnored"})
   public void handleEngineResponse(EngineResponse response) {
-    log.debug("Handle: {}", response);
+//    log.debug("Handle: {}", response);
 
     if (response.getException() != null) {
       String error = " failed: " + response.getException().getMessage();

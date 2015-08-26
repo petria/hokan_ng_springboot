@@ -7,13 +7,13 @@ import java.util.*;
  * Created by Petri Airio on 21.8.2015.
  *
  */
-public class DailyStats implements Serializable {
+public class StatsMapper implements Serializable {
 
 
   private String error;
   private Map<String, StatsData> statsDataMap = new HashMap<>();
 
-  public DailyStats() {
+  public StatsMapper() {
   }
 
   public String getError() {

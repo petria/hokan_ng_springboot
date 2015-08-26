@@ -64,4 +64,8 @@ public class IrcLogRepositoryService implements IrcLogService {
     return allRows;
   }
 
+  @Override
+  public List<IrcLog> findByTarget(String target) {
+    return repository.findByTarget(target);
+  }
 }

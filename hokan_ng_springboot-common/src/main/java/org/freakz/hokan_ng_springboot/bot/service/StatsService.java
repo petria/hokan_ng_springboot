@@ -1,6 +1,6 @@
 package org.freakz.hokan_ng_springboot.bot.service;
 
-import org.freakz.hokan_ng_springboot.bot.models.DailyStats;
+import org.freakz.hokan_ng_springboot.bot.models.StatsMapper;
 import org.joda.time.DateTime;
 
 /**
@@ -9,6 +9,8 @@ import org.joda.time.DateTime;
  */
 public interface StatsService {
 
-  DailyStats getDailyStats(DateTime day, String channel);
+  StatsMapper getDailyStatsForChannel(DateTime day, String channel);
+
+  StatsMapper getStatsForChannel(String channel);
 
 }

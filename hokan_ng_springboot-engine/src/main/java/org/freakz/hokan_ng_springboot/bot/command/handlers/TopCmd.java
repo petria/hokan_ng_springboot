@@ -1,39 +1,47 @@
 package org.freakz.hokan_ng_springboot.bot.command.handlers;
 
 import com.martiansoftware.jsap.JSAPResult;
+import com.martiansoftware.jsap.UnflaggedOption;
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
 import org.freakz.hokan_ng_springboot.bot.models.StatsData;
 import org.freakz.hokan_ng_springboot.bot.models.StatsMapper;
-import org.joda.time.DateTime;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_CHANNEL;
+
 /**
- * Created by Petri Airio on 24.8.2015.
+ * Created by Petri Airio on 26.8.2015.
  *
  */
 @Component
 @Scope("prototype")
 @Slf4j
-public class DailyStatsCmd extends Cmd {
+public class TopCmd extends Cmd {
 
-  public DailyStatsCmd() {
+  public TopCmd() {
     super();
-    setHelp("Show daily stats, words written to specific channel.");
+    setHelp("Calculates top statistics from the logs.");
+
+    UnflaggedOption uflg = new UnflaggedOption(ARG_CHANNEL)
+        .setRequired(false)
+        .setGreedy(false);
+    registerParameter(uflg);
+
   }
 
   @Override
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    DateTime today = DateTime.now();
-    StatsMapper statsMapper = statsService.getDailyStatsForChannel(today, request.getChannel().getChannelName());
+    String channel = results.getString(ARG_CHANNEL, request.getChannel().getChannelName());
+    StatsMapper statsMapper = statsService.getStatsForChannel(channel);
     if (!statsMapper.hasError()) {
       List<StatsData> statsDatas = statsMapper.getStatsData();
-      String res = "Daily Top Words:";
+      String res = "Top words for channel " + channel + ": ";
       int i = 1;
       for (StatsData statsData : statsDatas) {
         res += " " + i + ") " + statsData.getNick() + ": " + statsData.getWords();
@@ -43,6 +51,6 @@ public class DailyStatsCmd extends Cmd {
     } else {
       response.addResponse(statsMapper.getError());
     }
-  }
 
+  }
 }

@@ -41,7 +41,7 @@ public class IoJmsReceiver extends SpringJmsReceiver {
 
   private void handleEngineReply(JmsEnvelope envelope) {
     EngineResponse response = (EngineResponse) envelope.getMessageIn().getPayLoadObject("ENGINE_RESPONSE");
-    log.debug("handling engine response: {}", response);
+//    log.debug("handling engine response: {}", response);
     connectionManagerService.handleEngineResponse(response);
   }
 

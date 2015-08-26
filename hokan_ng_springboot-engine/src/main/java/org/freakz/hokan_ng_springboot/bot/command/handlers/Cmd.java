@@ -183,6 +183,7 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
 
       if (!parseRes) {
         response.setResponseMessage("Invalid arguments, usage: " + getName() + " " + jsap.getUsage());
+        sendReply(response);
       } else {
         if (checkAccess(request, response)) {
           ArgsWrapper wrapper = new ArgsWrapper();

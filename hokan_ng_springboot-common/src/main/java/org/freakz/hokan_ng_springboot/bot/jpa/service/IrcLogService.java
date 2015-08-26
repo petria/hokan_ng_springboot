@@ -20,4 +20,6 @@ public interface IrcLogService {
 
   List<IrcLog> findByTimeStampBetweenAndTargetContaining(StartAndEndTime startAndEndTime, String target);
 
+  List<IrcLog> findByTarget(String target);
+
 }
