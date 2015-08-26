@@ -403,32 +403,14 @@ public class HokanCore extends PircBot implements HokanCoreService {
 
 
   private void handleConfirmMessages(String sender, String message) {
-    ConfirmResponse confirmResponse = confirmResponseMap.get(message);
+    ConfirmResponse confirmResponse = confirmResponseMap.get(message.trim());
     if (confirmResponse != null) {
-      int foo = 0;
+      doHandleEngineResponse(confirmResponse.getResponse());
+      confirmResponseMap.remove(confirmResponse);
     }
   }
 
-   // @Override
-  @SuppressWarnings({"ThrowableResultOfMethodCallIgnored"})
-  public void handleEngineResponse(EngineResponse response) {
-//    log.debug("Handle: {}", response);
-    int confirmLong = propertyService.getPropertyAsInt(PropertyName.PROP_SYS_CONFIRM_LONG_MESSAGES, -1);
-    if (confirmLong > 0) {
-      int lines = response.getResponseMessage().split("\n").length;
-      if (lines > confirmLong) {
-
-        ConfirmResponse confirmResponse = new ConfirmResponse(response);
-        String confirmKey = String.format("%s-%d", response.getIrcMessageEvent().getSender(), propertyService.getNextPid());
-        confirmResponseMap.put(confirmKey, confirmResponse);
-        String message = String.format("Your command caused too much output: %d / max %d - ", lines, confirmLong);
-        message += String.format("To send it confirm with: %s", confirmKey);
-        String raw = "PRIVMSG " + response.getIrcMessageEvent().getSender() + " :" + message;
-        this.outputQueue.addLine(raw);
-        return;
-      }
-    }
-
+  private void doHandleEngineResponse(EngineResponse response) {
 
     if (response.getException() != null) {
       String error = " failed: " + response.getException().getMessage();
@@ -472,6 +454,27 @@ TODO
         log.error("Couldn't find method for: " + methodName);
       }
     }
+  }
+
+   // @Override
+  @SuppressWarnings({"ThrowableResultOfMethodCallIgnored"})
+  public void handleEngineResponse(EngineResponse response) {
+//    log.debug("Handle: {}", response);
+    int confirmLong = propertyService.getPropertyAsInt(PropertyName.PROP_SYS_CONFIRM_LONG_MESSAGES, -1);
+    if (confirmLong > 0) {
+      int lines = response.getResponseMessage().split("\n").length;
+      if (lines > confirmLong) {
+        ConfirmResponse confirmResponse = new ConfirmResponse(response);
+        String confirmKey = String.format("C%d", propertyService.getNextPid());
+        confirmResponseMap.put(confirmKey, confirmResponse);
+        String message = String.format("Your command caused too much output: %d / max %d - ", lines, confirmLong);
+        message += String.format("To send it confirm with: %s", confirmKey);
+        String raw = "PRIVMSG " + response.getIrcMessageEvent().getSender() + " :" + message;
+        this.outputQueue.addLine(raw);
+        return;
+      }
+    }
+    doHandleEngineResponse(response);
   }
 
   protected void handleSendMessage(EngineResponse response) {
