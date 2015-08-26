@@ -6,6 +6,7 @@ import org.freakz.hokan_ng_springboot.bot.cmdpool.CommandRunnable;
 import org.freakz.hokan_ng_springboot.bot.core.HokanCoreService;
 import org.freakz.hokan_ng_springboot.bot.events.IrcMessageEvent;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.Channel;
+import org.freakz.hokan_ng_springboot.bot.jpa.entity.PropertyName;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.Url;
 import org.freakz.hokan_ng_springboot.bot.jpa.repository.UrlRepository;
 import org.freakz.hokan_ng_springboot.bot.util.HttpPageFetcher;
@@ -27,7 +28,6 @@ import java.util.regex.Pattern;
 
 /**
  * Created by Petri Airio (petri.j.airio@gmail.com) on 15.4.2015.
- *
  */
 @Service
 @Slf4j
@@ -38,6 +38,9 @@ public class UrlRepositoryLoggerService implements UrlLoggerService {
 
   @Autowired
   private CommandPool commandPool;
+
+  @Autowired
+  private ChannelPropertyService channelPropertyService;
 
   @Autowired
   private UrlRepository repository;
@@ -112,18 +115,13 @@ public class UrlRepositoryLoggerService implements UrlLoggerService {
           if (isWanha) {
             title = title + " | wanha" + wanhaAadd;
           }
-          boolean titles = true; // TODO properties.getChannelPropertyAsBoolean(ch, PropertyName.PROP_CHANNEL_DO_URL_TITLES, false);
+          boolean titles = channelPropertyService.getChannelPropertyAsBoolean(ch, PropertyName.PROP_CHANNEL_DO_URL_TITLES, false);
           if (titles) {
             processReply(iEvent, title, core);
           }
-
         } else {
           log.info("Could not find title for url: " + url);
         }
-//        } else {
-//          title = url;
-//        }
-
 
       }
     };
