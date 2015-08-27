@@ -31,7 +31,7 @@ public class UpdaterListCmd extends Cmd {
     ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.UPDATERS_LIST, request.getIrcEvent(), ".*");
     List<DataUpdaterModel> modelList = serviceResponse.getUpdaterListData();
     for (DataUpdaterModel model : modelList) {
-      String txt = String.format("%15s - %9s - %6d - %s\n", model.getName(), model.getStatus(),model.getCount(), model.getNextUpdate());
+      String txt = String.format("%20s - %9s - %6d - %s\n", model.getName(), model.getStatus(),model.getCount(), model.getNextUpdate());
       response.addResponse(txt);
     }
   }
