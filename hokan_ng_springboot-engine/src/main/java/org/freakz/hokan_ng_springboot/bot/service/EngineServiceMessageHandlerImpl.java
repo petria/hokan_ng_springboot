@@ -42,7 +42,7 @@ public class EngineServiceMessageHandlerImpl implements JmsServiceMessageHandler
   @Override
   public void handleJmsEnvelope(JmsEnvelope envelope) throws Exception {
     IrcMessageEvent event = (IrcMessageEvent) envelope.getMessageIn().getPayLoadObject("EVENT");
-    log.debug("Handling event: {}", event);
+//    log.debug("Handling event: {}", event);
     if (event == null) {
       log.debug("Nothing to do!");
     }
