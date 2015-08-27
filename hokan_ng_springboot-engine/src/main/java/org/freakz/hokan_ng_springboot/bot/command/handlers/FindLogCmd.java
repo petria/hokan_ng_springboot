@@ -50,7 +50,7 @@ public class FindLogCmd extends Cmd {
         max--;
         if (max == 0) {
           if (ircLogs.size() - SHOW_MAX > 0) {
-            response.addResponse("... %d matches more", ircLogs.size() - SHOW_MAX);
+            response.addResponse("... %d matching rows more", ircLogs.size() - SHOW_MAX);
           }
           break;
         }
