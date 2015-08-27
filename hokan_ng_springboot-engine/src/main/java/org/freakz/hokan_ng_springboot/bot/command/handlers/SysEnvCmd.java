@@ -22,6 +22,8 @@ public class SysEnvCmd extends Cmd {
     super();
     setHelp("Shows system properties.");
     addToHelpGroup(HelpGroup.PROPERTIES, this);
+
+    setAdminUserOnly(true);
   }
 
   @Override

@@ -32,6 +32,7 @@ public class SysSetCmd extends Cmd {
         .setGreedy(false);
     registerParameter(flg);
 
+    setAdminUserOnly(true);
   }
 
   @Override
