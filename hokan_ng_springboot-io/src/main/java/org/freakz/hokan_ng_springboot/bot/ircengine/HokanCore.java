@@ -9,6 +9,8 @@ import org.freakz.hokan_ng_springboot.bot.jms.EngineCommunicator;
 import org.freakz.hokan_ng_springboot.bot.jms.ServiceCommunicator;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.*;
 import org.freakz.hokan_ng_springboot.bot.jpa.service.*;
+import org.freakz.hokan_ng_springboot.bot.service.AccessControlService;
+import org.freakz.hokan_ng_springboot.bot.util.CommandArgs;
 import org.freakz.hokan_ng_springboot.bot.util.IRCUtility;
 import org.freakz.hokan_ng_springboot.bot.util.StringStuff;
 import org.jibble.pircbot.PircBot;
@@ -29,10 +31,16 @@ import java.util.*;
 public class HokanCore extends PircBot implements HokanCoreService {
 
   @Autowired
+  private AccessControlService accessControlService;
+
+  @Autowired
   private ChannelService channelService;
 
   @Autowired
   private ChannelStatsService channelStatsService;
+
+  @Autowired
+  private ChannelPropertyService channelPropertyService;
 
   @Autowired
   private EngineCommunicator engineCommunicator;
@@ -386,20 +394,17 @@ public class HokanCore extends PircBot implements HokanCoreService {
     userChannel.setLastMessageTime(new Date());
     userChannelService.save(userChannel);
 
-    serviceCommunicator.sendServiceRequest(ircEvent, ServiceRequestType.CATCH_URLS_REQUEST);
-//    urlLoggerService.catchUrls(ircEvent, ch, this);
-
-/*
-    boolean wlt = properties.getChannelPropertyAsBoolean(ch, PropertyName.PROP_CHANNEL_DO_WHOLELINE_TRICKERS, false);
+    boolean wlt = channelPropertyService.getChannelPropertyAsBoolean(ch, PropertyName.PROP_CHANNEL_DO_WHOLELINE_TRICKERS, false);
     if (wlt || ircEvent.isToMe()) {
       WholeLineTrickers wholeLineTrickers = new WholeLineTrickers(this);
       wholeLineTrickers.checkWholeLineTrickers(ircEvent);
     }
+    serviceCommunicator.sendServiceRequest(ircEvent, ServiceRequestType.CATCH_URLS_REQUEST);
 
-    if (accessControlService.isMasterUser(ircEvent)) {
+    if (accessControlService.isAdminUser(user)) {
       handleBuiltInCommands(ircEvent);
     }
-*/
+
     this.channelService.save(ch);
     boolean ignore = false;
     String flags = user.getFlags();
@@ -413,6 +418,60 @@ public class HokanCore extends PircBot implements HokanCoreService {
     } else {
       String result = engineCommunicator.sendToEngine(ircEvent);
       log.info(">>> sent to engine: {}", result);
+    }
+  }
+
+  private void handleBuiltInCommands(IrcMessageEvent ircEvent) {
+    String message = ircEvent.getMessage();
+    CommandArgs args = new CommandArgs(ircEvent.getMessage());
+    if (message.startsWith("!qset ")) {
+
+      boolean ok = outputQueue.setQueueValues(args.getArgs());
+      handleSendMessage(ircEvent.getChannel(), "!qset: " + ok);
+      String info = String.format("Throttle[%s]: sleepTime %d - maxLines - %d - fullLineLength %d - fullLineSleepTime %d - throttleBaseSleepTime %d",
+          outputQueue.isUsingThrottle() + "",
+          outputQueue.defSleepTime, outputQueue.defMaxLines,
+          outputQueue.defFullLineLength, outputQueue.defFullLineSleepTime,
+          outputQueue.defThrottleBaseSleepTime);
+
+      handleSendMessage(ircEvent.getChannel(), info);
+    } else if (message.equals("!clist")) {
+      if (confirmResponseMap.size() > 0) {
+        String cList = "";
+        for (ConfirmResponse confirmResponse : confirmResponseMap.values()) {
+          cList += "  " + confirmResponse.toString() ;
+        }
+        handleSendMessage(ircEvent.getChannel(), "Confirmation list: " + cList);
+      } else {
+        handleSendMessage(ircEvent.getChannel(), "Confirmation list is empty!");
+      }
+    } else if (message.equals("!cclear")) {
+
+      confirmResponseMap.clear();
+      handleSendMessage(ircEvent.getChannel(), "Confirmation list cleared!");
+
+    } else if (message.equals("!qclear")) {
+
+      outputQueue.clearOutQueue();
+      handleSendMessage(ircEvent.getChannel(), "OutQueue cleared!");
+
+    } else if (message.startsWith("!qthrottle")) {
+
+      outputQueue.setThrottle(StringStuff.parseBooleanString(args.getArgs()));
+      handleSendMessage(ircEvent.getChannel(), String.format("Throttle[%s]", outputQueue.isUsingThrottle() + ""));
+
+    } else if (message.equals("!qinfo")) {
+      String info = String.format("Throttle[%s]: sleepTime %d - maxLines - %d - fullLineLength %d - fullLineSleepTime %d - throttleBaseSleepTime %d",
+          outputQueue.isUsingThrottle() + "",
+          outputQueue.defSleepTime, outputQueue.defMaxLines,
+          outputQueue.defFullLineLength, outputQueue.defFullLineSleepTime,
+          outputQueue.defThrottleBaseSleepTime);
+
+      handleSendMessage(ircEvent.getChannel(), info);
+
+    } else if (message.equals("!methodmap")) {
+      log.info("Re-building method map!");
+      buildMethodMap();
     }
   }
 

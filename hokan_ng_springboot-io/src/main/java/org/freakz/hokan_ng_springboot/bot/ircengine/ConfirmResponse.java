@@ -1,6 +1,7 @@
 package org.freakz.hokan_ng_springboot.bot.ircengine;
 
 import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
+import org.freakz.hokan_ng_springboot.bot.util.StringStuff;
 import org.joda.time.DateTime;
 
 import java.io.Serializable;
@@ -33,5 +34,11 @@ public class ConfirmResponse implements Serializable {
 
   public void setResponse(EngineResponse response) {
     this.response = response;
+  }
+
+  @Override
+  public String toString() {
+    return String.format("%s: %s", StringStuff.formatNiceDate(created.toDate(), false),
+        response.getIrcMessageEvent().getSender());
   }
 }
