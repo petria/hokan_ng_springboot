@@ -193,8 +193,9 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
           wrapper.request = request;
           wrapper.response = response;
           wrapper.results = results;
-//          commandPool.startSyncRunnable(this, request.getUser().getNick(), wrapper);
           commandPool.startRunnable(this, request.getUser().getNick(), wrapper);
+        } else {
+          sendReply(response);
         }
       }
     }

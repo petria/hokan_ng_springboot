@@ -213,6 +213,11 @@ public class HokanCore extends PircBot implements HokanCoreService {
   }
 
   @Override
+  protected void onJoin(String channel, String sender, String login, String hostname) {
+    sendWhoQuery(channel);
+  }
+
+  @Override
   protected void onOp(String channel, String sourceNick, String sourceLogin, String sourceHostname, String recipient) {
     sendWhoQuery(channel);
   }
@@ -282,8 +287,38 @@ public class HokanCore extends PircBot implements HokanCoreService {
     this.ircLogService.addIrcLog(new Date(), sender, getName(), message);
     int confirmLong = propertyService.getPropertyAsInt(PropertyName.PROP_SYS_CONFIRM_LONG_MESSAGES, -1);
     if (confirmLong > 0) {
-      handleConfirmMessages(sender, message);
+      if (handleConfirmMessages(sender, message)) {
+        log.info("Confirm message handled!");
+        return;
+      }
     }
+
+    IrcMessageEvent ircEvent = (IrcMessageEvent) IrcEventFactory.createIrcMessageEvent(getName(), getNetwork().getName(), "@privmsg", sender, login, hostname, message);
+    ircEvent.setPrivate(true);
+
+    Network nw = getNetwork();
+    nw.addToLinesReceived(1);
+    this.networkService.save(nw);
+
+    User user = getUser(ircEvent);
+    Channel ch = getChannel(ircEvent);
+
+    urlLoggerService.catchUrls(ircEvent, ch, this);
+
+    boolean ignore = false;
+    String flags = user.getFlags();
+    if (flags != null) {
+      if (flags.contains("I")) {
+        ignore = true;
+      }
+    }
+    if (ignore) {
+      log.debug("Ignoring: {}", user);
+    } else {
+      String result = engineCommunicator.sendToEngine(ircEvent);
+      log.info(">>> sent to engine: {}", result);
+    }
+
   }
 
   @Override
@@ -402,12 +437,14 @@ public class HokanCore extends PircBot implements HokanCoreService {
   }
 
 
-  private void handleConfirmMessages(String sender, String message) {
+  private boolean handleConfirmMessages(String sender, String message) {
     ConfirmResponse confirmResponse = confirmResponseMap.get(message.trim());
     if (confirmResponse != null) {
       doHandleEngineResponse(confirmResponse.getResponse());
       confirmResponseMap.remove(confirmResponse);
+      return true;
     }
+    return false;
   }
 
   private void doHandleEngineResponse(EngineResponse response) {
