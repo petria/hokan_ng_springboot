@@ -94,9 +94,9 @@ public class UrlRepositoryLoggerService implements UrlLoggerService {
           title = StringStuff.htmlEntitiesToText(title);
           title = title.replaceAll("\t", "");
 
+          log.debug("title: '{}'", title);
 
           Url entity = repository.findFirstByUrlLikeOrUrlTitleLikeOrderByCreatedDesc(url, url);
-
           entity.setUrlTitle(title);
           repository.save(entity);
 
