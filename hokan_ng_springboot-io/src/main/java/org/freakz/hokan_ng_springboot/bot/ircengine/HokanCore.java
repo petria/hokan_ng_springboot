@@ -244,7 +244,13 @@ public class HokanCore extends PircBot implements HokanCoreService {
       if (split.length >= 6) {
         String channel = split[1];
         List<String> whoReplies = whoQueries.get(channel.toLowerCase());
+        if (whoReplies == null) {
+          log.debug("was null?? --> {}", whoQueries);
+          whoReplies = new ArrayList<>();
+          whoQueries.put(channel.toLowerCase(), whoReplies);
+        }
         whoReplies.add(line);
+
       } else {
         log.info("SKIPPED WHO REPLY: {}", line);
       }
