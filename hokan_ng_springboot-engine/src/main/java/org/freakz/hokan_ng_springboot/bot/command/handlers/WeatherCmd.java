@@ -88,7 +88,9 @@ public class WeatherCmd extends Cmd {
       int xx = 0;
       String regexp = ".*" + place + ".*";
       for (KelikameratWeatherData wd : datas) {
-        if (StringStuff.match(wd.getPlaceFromUrl(), regexp) || StringStuff.match(wd.getUrl().getStationUrl(), regexp)) {
+        String placeFromUrl = wd.getPlaceFromUrl();
+        String stationFromUrl = wd.getUrl().getStationUrl();
+        if (StringStuff.match(placeFromUrl, regexp) || StringStuff.match(stationFromUrl, regexp)) {
           if (wd.getAir() == null) {
             continue;
           }

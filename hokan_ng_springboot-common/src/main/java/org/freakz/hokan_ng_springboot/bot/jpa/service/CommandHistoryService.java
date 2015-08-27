@@ -10,6 +10,7 @@ import java.util.List;
  *
  */
 public interface CommandHistoryService {
+
   CommandHistory save(CommandHistory history);
 
   List<CommandHistory> findByHokanModule(String module);

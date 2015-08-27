@@ -1,8 +1,5 @@
 package org.freakz.hokan_ng_springboot.bot.jpa.service;
 
-import org.freakz.hokan_ng_springboot.bot.core.HokanCoreService;
-import org.freakz.hokan_ng_springboot.bot.events.IrcMessageEvent;
-import org.freakz.hokan_ng_springboot.bot.jpa.entity.Channel;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.Url;
 
 import java.util.List;
@@ -12,8 +9,6 @@ import java.util.List;
  *
  */
 public interface UrlLoggerService {
-
-  void catchUrls(IrcMessageEvent iEvent, Channel ch, HokanCoreService core);
 
   List<Url> findByUrl(String url);
 

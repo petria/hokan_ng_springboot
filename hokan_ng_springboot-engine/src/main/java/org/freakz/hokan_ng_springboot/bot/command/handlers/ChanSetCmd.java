@@ -90,7 +90,6 @@ public class ChanSetCmd extends Cmd {
       return;
     }
 
-
     PropertyName propertyName = getPropertyName(split[0]);
     if (propertyName == null) {
       response.addResponse("Invalid property: %s", split[0]);

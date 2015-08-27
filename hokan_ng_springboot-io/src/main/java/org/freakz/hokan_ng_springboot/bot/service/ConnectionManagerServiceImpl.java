@@ -293,4 +293,21 @@ public class ConnectionManagerServiceImpl implements ConnectionManagerService, E
     log.debug("Stats Notify sent to: {}", channel.getChannelName());
 
   }
+
+  @Override
+  public void handleNotifyRequest(NotifyRequest notifyRequest) {
+    Channel channel = channelService.findOne(notifyRequest.getTargetChannelId());
+    if (channel == null) {
+      log.warn("Can't notify, no channel with id: {}", notifyRequest.getTargetChannelId());
+      return;
+    }
+    HokanCore core = getConnectedEngine(channel.getNetwork());
+    if (core == null) {
+      log.warn("Can't notify, no HokanCore for channel: {}", channel);
+      return;
+    }
+    core.handleSendMessage(channel.getChannelName(), notifyRequest.getNotifyMessage());
+    log.debug("NotifyRequest sent to: {}", channel.getChannelName());
+  }
+
 }

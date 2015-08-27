@@ -9,6 +9,7 @@ import org.freakz.hokan_ng_springboot.bot.jms.api.JmsServiceMessageHandler;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.Channel;
 import org.freakz.hokan_ng_springboot.bot.models.*;
 import org.freakz.hokan_ng_springboot.bot.service.metar.MetarDataService;
+import org.freakz.hokan_ng_springboot.bot.service.urls.UrlCatchService;
 import org.freakz.hokan_ng_springboot.bot.updaters.DataUpdater;
 import org.freakz.hokan_ng_springboot.bot.updaters.UpdaterData;
 import org.freakz.hokan_ng_springboot.bot.updaters.UpdaterManagerService;
@@ -43,13 +44,20 @@ public class ServicesServiceMessageHandlerImpl implements JmsServiceMessageHandl
   @Autowired
   private UpdaterManagerService updaterManagerService;
 
+  @Autowired
+  private UrlCatchService urlCatchService;
+
   @Override
   public void handleJmsEnvelope(JmsEnvelope envelope) throws Exception {
-    log.debug("Handling envelope");
+//    log.debug("Handling envelope");
     ServiceRequest request = envelope.getMessageIn().getServiceRequest();
     ServiceResponse response = new ServiceResponse();
     UpdaterData updaterData;
     switch (request.getType()) {
+      case CATCH_URLS_REQUEST:
+//        log.debug("Catching urls!");
+        urlCatchService.catchUrls(request.getIrcMessageEvent());
+        break;
       case HORO_REQUEST:
         HoroUpdater horoUpdater = (HoroUpdater) updaterManagerService.getUpdater("horoUpdater");
         updaterData = new UpdaterData();

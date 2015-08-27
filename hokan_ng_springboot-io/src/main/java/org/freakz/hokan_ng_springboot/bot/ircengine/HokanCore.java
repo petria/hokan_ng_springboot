@@ -6,6 +6,7 @@ import org.freakz.hokan_ng_springboot.bot.events.*;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
 import org.freakz.hokan_ng_springboot.bot.ircengine.connector.EngineConnector;
 import org.freakz.hokan_ng_springboot.bot.jms.EngineCommunicator;
+import org.freakz.hokan_ng_springboot.bot.jms.ServiceCommunicator;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.*;
 import org.freakz.hokan_ng_springboot.bot.jpa.service.*;
 import org.freakz.hokan_ng_springboot.bot.util.IRCUtility;
@@ -52,7 +53,10 @@ public class HokanCore extends PircBot implements HokanCoreService {
   private UserChannelService userChannelService;
 
   @Autowired
-  private UrlLoggerService urlLoggerService;
+  private ServiceCommunicator serviceCommunicator;
+
+//  @Autowired
+//  private UrlLoggerService urlLoggerService;
 
   @Autowired
   private UserService userService;
@@ -309,7 +313,8 @@ public class HokanCore extends PircBot implements HokanCoreService {
     User user = getUser(ircEvent);
     Channel ch = getChannel(ircEvent);
 
-    urlLoggerService.catchUrls(ircEvent, ch, this);
+//    urlLoggerService.catchUrls(ircEvent, ch, this);
+    serviceCommunicator.sendServiceRequest(ircEvent, ServiceRequestType.CATCH_URLS_REQUEST);
 
     boolean ignore = false;
     String flags = user.getFlags();
@@ -381,7 +386,8 @@ public class HokanCore extends PircBot implements HokanCoreService {
     userChannel.setLastMessageTime(new Date());
     userChannelService.save(userChannel);
 
-    urlLoggerService.catchUrls(ircEvent, ch, this);
+    serviceCommunicator.sendServiceRequest(ircEvent, ServiceRequestType.CATCH_URLS_REQUEST);
+//    urlLoggerService.catchUrls(ircEvent, ch, this);
 
 /*
     boolean wlt = properties.getChannelPropertyAsBoolean(ch, PropertyName.PROP_CHANNEL_DO_WHOLELINE_TRICKERS, false);

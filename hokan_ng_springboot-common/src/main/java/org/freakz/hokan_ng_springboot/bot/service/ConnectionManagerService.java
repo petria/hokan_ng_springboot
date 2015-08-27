@@ -30,4 +30,7 @@ public interface ConnectionManagerService {
 
   void handleStatsNotifyRequest(NotifyRequest notifyRequest);
 
+  void handleNotifyRequest(NotifyRequest notifyRequest);
+
+
 }

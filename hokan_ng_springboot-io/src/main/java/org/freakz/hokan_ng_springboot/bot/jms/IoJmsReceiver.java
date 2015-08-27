@@ -28,24 +28,18 @@ public class IoJmsReceiver extends SpringJmsReceiver {
     if (envelope.getMessageIn().getPayLoadObject("ENGINE_RESPONSE") != null) {
       handleEngineReply(envelope);
     } else if (envelope.getMessageIn().getPayLoadObject("TV_NOTIFY_REQUEST") != null) {
-      handleTvNotify(envelope);
+      handleNotify(envelope, "TV_NOTIFY_REQUEST");
     } else if (envelope.getMessageIn().getPayLoadObject("STATS_NOTIFY_REQUEST") != null) {
-      handleStatsNotify(envelope);
+      handleNotify(envelope, "STATS_NOTIFY_REQUEST");
+    } else if (envelope.getMessageIn().getPayLoadObject("URLS_NOTIFY_REQUEST") != null) {
+      handleNotify(envelope, "URLS_NOTIFY_REQUEST");
     }
-
   }
 
-  private void handleStatsNotify(JmsEnvelope envelope) {
-    NotifyRequest notifyRequest = (NotifyRequest) envelope.getMessageIn().getPayLoadObject("STATS_NOTIFY_REQUEST");
+  private void handleNotify(JmsEnvelope envelope, String payload) {
+    NotifyRequest notifyRequest = (NotifyRequest) envelope.getMessageIn().getPayLoadObject(payload);
     log.debug("handling NotifyRequest: {}", notifyRequest);
-    connectionManagerService.handleStatsNotifyRequest(notifyRequest);
-
-  }
-
-  private void handleTvNotify(JmsEnvelope envelope) {
-    NotifyRequest notifyRequest = (NotifyRequest) envelope.getMessageIn().getPayLoadObject("TV_NOTIFY_REQUEST");
-    log.debug("handling NotifyRequest: {}", notifyRequest);
-    connectionManagerService.handleTvNotifyRequest(notifyRequest);
+    connectionManagerService.handleNotifyRequest(notifyRequest);
   }
 
   private void handleEngineReply(JmsEnvelope envelope) {

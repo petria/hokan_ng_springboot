@@ -143,7 +143,9 @@ public class KelikameratUpdater extends Updater {
     List<KelikameratWeatherData> weatherDataList = new ArrayList<>();
     for (KelikameratUrl url : this.stationUrls) {
       KelikameratWeatherData data = updateKelikameratWeatherData(url);
-      weatherDataList.add(data);
+      if (data != null) {
+        weatherDataList.add(data);
+      }
 //      log.debug("{}", String.format("%s: %1.2f °C", data.getPlaceFromUrl(), data.getAir()));
     }
     this.itemCount = weatherDataList.size();
