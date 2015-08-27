@@ -42,7 +42,6 @@ public class SysSetCmd extends Cmd {
       response.addResponse("Syntax error, usage: %s <PropertyName>=<Value>", getName());
       return;
     }
-//    PropertyName test = PropertyName.valueOf(split[0]);
     List<PropertyName> propertyNameList = PropertyName.getValuesLike(split[0]);
     if (propertyNameList.size() != 1) {
       response.addResponse("Invalid property: %s", split[0]);

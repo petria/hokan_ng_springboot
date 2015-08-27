@@ -96,7 +96,7 @@ public class ChanSetCmd extends Cmd {
       return;
     }
     ChannelPropertyEntity chanProp = properties.setChannelProperty(theChannel, propertyName, split[1]);
-    response.addResponse("PropertyEntity set: %s", chanProp.toString());
+    response.addResponse("Channel property set to: %s", chanProp.toString());
   }
 
 }
