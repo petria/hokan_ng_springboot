@@ -150,7 +150,9 @@ public class UrlCatchServiceImpl implements UrlCatchService {
       Url entity = urlRepository.findFirstByUrlLikeOrUrlTitleLikeOrderByCreatedDesc(url, url);
       entity.setUrlTitle(title);
       urlRepository.save(entity);
-
+      if (title.length() == 0) {
+        return;
+      }
 
       if (url.contains("http://www.imdb.com/title/")) {
         try {
