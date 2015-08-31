@@ -14,7 +14,6 @@ import org.freakz.hokan_ng_springboot.bot.jpa.repository.UrlRepository;
 import org.freakz.hokan_ng_springboot.bot.jpa.service.ChannelPropertyRepositoryService;
 import org.freakz.hokan_ng_springboot.bot.jpa.service.ChannelService;
 import org.freakz.hokan_ng_springboot.bot.jpa.service.NetworkService;
-import org.freakz.hokan_ng_springboot.bot.util.HttpPageFetcher;
 import org.freakz.hokan_ng_springboot.bot.util.StringStuff;
 import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +27,7 @@ import java.util.regex.Pattern;
 
 /**
  * Created by Petri Airio on 27.8.2015.
+ *
  */
 @Service
 @Slf4j
@@ -58,14 +58,7 @@ public class UrlCatchServiceImpl implements UrlCatchService {
   public void catchUrls(IrcMessageEvent ircMessageEvent) {
     Network network = networkService.getNetwork(ircMessageEvent.getNetwork());
     Channel channel = channelService.findByNetworkAndChannelName(network, ircMessageEvent.getChannel());
-
     catchUrls(ircMessageEvent, channel);
-
-/*    NotifyRequest notifyRequest = new NotifyRequest();
-    notifyRequest.setNotifyMessage("Urls findings!");
-    notifyRequest.setTargetChannelId(channel.getId());
-    jmsSender.send(HokanModule.HokanIo.getQueueName(), "URLS_NOTIFY_REQUEST", notifyRequest, false);
-*/
   }
 
   public long logUrl(IrcMessageEvent iEvent, String url) {
@@ -116,19 +109,10 @@ public class UrlCatchServiceImpl implements UrlCatchService {
   }
 
   public String getIMDBData(String url) throws Exception {
-    HttpPageFetcher page = context.getBean(HttpPageFetcher.class);
-    page.fetch(url, "UTF-8");
-
-    String html = page.getHtmlBuffer().toString().replaceAll("\n|\r", "");
-    Pattern pattern = Pattern.compile("<span itemprop=\"ratingValue\">(.*?)</span>.*<span itemprop=\"ratingCount\">(.*?)</span> users</a>");
-    Matcher matcher = pattern.matcher(html);
-    String ratings = null;
-    if (matcher.find()) {
-      String rating = matcher.group(1);
-      String users = matcher.group(2);
-      ratings = String.format("Ratings: %s/10 from %s users", rating, users);
-    }
-    return ratings;
+    org.jsoup.nodes.Document doc = Jsoup.connect(url).get();
+    String rating = doc.getElementsByAttributeValue("itemprop", "ratingValue").get(0).text();
+    String users = doc.getElementsByAttributeValue("itemprop", "ratingCount").get(0).text();
+    return String.format("Ratings: %s/10 from %s users", rating, users);
   }
 
   public void getTitleNew(final String url, final Channel ch, final boolean isWanha, final String wanhaAadd) {

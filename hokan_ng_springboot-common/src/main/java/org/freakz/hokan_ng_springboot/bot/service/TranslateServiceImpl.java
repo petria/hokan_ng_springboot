@@ -1,9 +1,6 @@
 package org.freakz.hokan_ng_springboot.bot.service;
 
 
-import org.freakz.hokan_ng_springboot.bot.util.HttpPageFetcher;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,8 +18,8 @@ import java.util.regex.Pattern;
 @Service
 public class TranslateServiceImpl implements TranslateService {
 
-  @Autowired
-  ApplicationContext context;
+//  @Autowired
+//  ApplicationContext context;
 
   private static final String FI_ENG_BASE_URL = "http://ilmainensanakirja.fi/sanakirja_suomi-englanti/";
   private static final String FI_ENG_REGEXP = "<td valign=\"top\" id=\"searchResultNum\">.*?</td> <td>   <h3>    <a href=\"/sanakirja_englanti-suomi/.*?\">(.*?)</a>";
@@ -34,10 +31,10 @@ public class TranslateServiceImpl implements TranslateService {
   private List<String> doTranslate(String baseUrl, String regexp, String keyword) {
     List<String> results = new ArrayList<String>();
     try {
-      HttpPageFetcher httpPageFetcher = context.getBean(HttpPageFetcher.class);
-      httpPageFetcher.fetch(baseUrl + keyword, "UTF-8");
+//      HttpPageFetcher httpPageFetcher = context.getBean(HttpPageFetcher.class);
+//      httpPageFetcher.fetch(baseUrl + keyword, "UTF-8"); TODO
 
-      String html = httpPageFetcher.getHtmlBuffer().toString();
+      String html = ""; // httpPageFetcher.getHtmlBuffer().toString();
       html = html.replaceAll("\n|\r", "");
 
       Pattern pattern = Pattern.compile(regexp);
