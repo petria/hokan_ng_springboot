@@ -63,6 +63,12 @@ public class JoinedCmd extends Cmd {
             List<JoinedUser> joinedUsers = joinedUsersService.findJoinedUsers(channel);
             sb.append("    ");
             for (JoinedUser joinedUser : joinedUsers) {
+              if (joinedUser.isOp()) {
+                sb.append("@");
+              }
+              if (joinedUser.hasVoice()) {
+                sb.append("+");
+              }
               sb.append(joinedUser.getUser().getNick());
               sb.append(" ");
             }
