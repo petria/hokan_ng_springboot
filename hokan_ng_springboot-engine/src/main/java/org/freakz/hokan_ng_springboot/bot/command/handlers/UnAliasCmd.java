@@ -7,8 +7,6 @@ import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.Alias;
-import org.freakz.hokan_ng_springboot.bot.jpa.service.AliasService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -26,8 +24,6 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_ALIAS;
 @Slf4j
 public class UnAliasCmd extends Cmd {
 
-  @Autowired
-  private AliasService aliasService;
 
   public UnAliasCmd() {
     super();

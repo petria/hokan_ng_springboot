@@ -59,6 +59,9 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
   protected AccessControlService accessControlService;
 
   @Autowired
+  protected AliasService aliasService;
+
+  @Autowired
   protected ChannelService channelService;
 
   @Autowired
@@ -81,6 +84,9 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
 
   @Autowired
   protected UrlLoggerService urlLoggerService;
+
+  @Autowired
+  protected SearchReplaceService searchReplaceService;
 
   public Cmd() {
     jsap = new JSAP();

@@ -1,6 +1,7 @@
 package org.freakz.hokan_ng_springboot.bot.jpa.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "SEARCH_REPLACE")
-public class SearchReplace {
+public class SearchReplace implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,7 +31,6 @@ public class SearchReplace {
   private Date created;
 
   public SearchReplace() {
-    this.created = new Date();
   }
 
   public SearchReplace(String owner, String search, String replace) {
@@ -38,6 +38,7 @@ public class SearchReplace {
     this.owner = owner;
     this.theSearch = search;
     this.theReplace = replace;
+    this.created = new Date();
   }
 
 

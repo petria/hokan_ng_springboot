@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * Created by AirioP on 17.2.2015.
@@ -63,8 +64,8 @@ public class HokanCore extends PircBot implements HokanCoreService {
   @Autowired
   private ServiceCommunicator serviceCommunicator;
 
-//  @Autowired
-//  private UrlLoggerService urlLoggerService;
+  @Autowired
+  private SearchReplaceService searchReplaceService;
 
   @Autowired
   private UserService userService;
@@ -593,7 +594,7 @@ TODO
       if (!response.isNoSearchReplace()) {
         if (!response.getIrcMessageEvent().isPrivate()) {
           Channel ch = getChannel(response.getIrcMessageEvent().getChannel());
-//          doSr = properties.getChannelPropertyAsBoolean(ch, PropertyName.PROP_CHANNEL_DO_SEARCH_REPLACE, false);
+          doSr = channelPropertyService.getChannelPropertyAsBoolean(ch, PropertyName.PROP_CHANNEL_DO_SEARCH_REPLACE, false);
         }
       }
       handleSendMessage(channel, message, doSr,
@@ -602,7 +603,7 @@ TODO
   }
 
   private String handleSearchReplace(String message) {
-/*    List<SearchReplace> searchReplaces = searchReplaceService.getSearchReplaces();
+    List<SearchReplace> searchReplaces = searchReplaceService.findAll();
     for (SearchReplace sr : searchReplaces) {
       try {
         message = Pattern.compile(sr.getSearch(), Pattern.CASE_INSENSITIVE).matcher(message).replaceAll(sr.getReplace());
@@ -611,8 +612,6 @@ TODO
         break;
       }
     }
-    TODO
-    */
     return message;
   }
 
