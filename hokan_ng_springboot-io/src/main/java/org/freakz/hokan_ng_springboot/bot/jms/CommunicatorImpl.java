@@ -6,9 +6,14 @@ import org.freakz.hokan_ng_springboot.bot.events.IrcMessageEvent;
 import org.freakz.hokan_ng_springboot.bot.events.ServiceRequest;
 import org.freakz.hokan_ng_springboot.bot.events.ServiceRequestType;
 import org.freakz.hokan_ng_springboot.bot.jms.api.JmsSender;
+import org.freakz.hokan_ng_springboot.bot.jpa.entity.Alias;
+import org.freakz.hokan_ng_springboot.bot.jpa.service.AliasService;
 import org.freakz.hokan_ng_springboot.bot.util.CommandArgs;
+import org.freakz.hokan_ng_springboot.bot.util.StringStuff;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Created by Petri Airio on 9.4.2015.
@@ -19,17 +24,50 @@ import org.springframework.stereotype.Service;
 public class CommunicatorImpl implements EngineCommunicator, ServiceCommunicator {
 
   @Autowired
+  private AliasService aliasService;
+
+  @Autowired
   private JmsSender jmsSender;
+
+  private boolean resolveAlias(IrcMessageEvent event) {
+    String line = event.getMessage();
+    List<Alias> aliases = aliasService.findAll();
+    for (Alias alias : aliases) {
+      if (line.startsWith(alias.getAlias())) {
+        String message = event.getMessage();
+        String aliasMessage = message.replaceFirst(alias.getAlias(), alias.getCommand());
+        event.setMessage(aliasMessage);
+        return true;
+      }
+    }
+    return false;
+  }
 
   @Override
   public String sendToEngine(IrcMessageEvent event) {
     try {
-      jmsSender.send(HokanModule.HokanEngine.getQueueName(), "EVENT", event, false);
+      boolean aliased = resolveAlias(event);
+      String message = event.getMessage();
+      boolean between = StringStuff.isInBetween(message, "&&", ' ');
+      log.info("Aliased: {} - between = {}", aliased, between);
+      if (!message.startsWith("!alias") && between) {
+        String[] split = message.split("\\&\\&");
+        for (String splitted : split) {
+          IrcMessageEvent splitEvent = (IrcMessageEvent) event.clone();
+          String trimmed = splitted.trim();
+          splitEvent.setOutputPrefix(trimmed + " :: ");
+          splitEvent.setMessage(trimmed);
+          jmsSender.send(HokanModule.HokanEngine.getQueueName(), "EVENT", splitEvent, false);
+        }
+      } else {
+        jmsSender.send(HokanModule.HokanEngine.getQueueName(), "EVENT", event, false);
+      }
     } catch (Exception e) {
       log.error("error", e);
     }
     return "Sent!";
   }
+
 
   @Override
   public void sendServiceRequest(IrcMessageEvent ircEvent, ServiceRequestType requestType) {

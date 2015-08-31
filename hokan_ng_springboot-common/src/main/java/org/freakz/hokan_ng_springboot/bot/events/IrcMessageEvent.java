@@ -18,6 +18,10 @@ public class IrcMessageEvent extends IrcEvent implements Serializable, Cloneable
   private boolean isToMe;
   private boolean isBotOp;
 
+  private String outputPrefix;
+  private String outputPostfix;
+
+
   public IrcMessageEvent() {
     super();
   }
@@ -68,5 +72,21 @@ public class IrcMessageEvent extends IrcEvent implements Serializable, Cloneable
 
   public void setBotOp(boolean isBotOp) {
     this.isBotOp = isBotOp;
+  }
+
+  public String getOutputPrefix() {
+    return outputPrefix;
+  }
+
+  public void setOutputPrefix(String outputPrefix) {
+    this.outputPrefix = outputPrefix;
+  }
+
+  public String getOutputPostfix() {
+    return outputPostfix;
+  }
+
+  public void setOutputPostfix(String outputPostfix) {
+    this.outputPostfix = outputPostfix;
   }
 }

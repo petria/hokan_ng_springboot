@@ -596,7 +596,8 @@ TODO
 //          doSr = properties.getChannelPropertyAsBoolean(ch, PropertyName.PROP_CHANNEL_DO_SEARCH_REPLACE, false);
         }
       }
-      handleSendMessage(channel, message, doSr, "", "");
+      handleSendMessage(channel, message, doSr,
+          response.getIrcMessageEvent().getOutputPrefix(), response.getIrcMessageEvent().getOutputPostfix());
     }
   }
 
