@@ -14,6 +14,7 @@ import org.freakz.hokan_ng_springboot.bot.jpa.repository.UrlRepository;
 import org.freakz.hokan_ng_springboot.bot.jpa.service.ChannelPropertyRepositoryService;
 import org.freakz.hokan_ng_springboot.bot.jpa.service.ChannelService;
 import org.freakz.hokan_ng_springboot.bot.jpa.service.NetworkService;
+import org.freakz.hokan_ng_springboot.bot.util.StaticStrings;
 import org.freakz.hokan_ng_springboot.bot.util.StringStuff;
 import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,7 +110,7 @@ public class UrlCatchServiceImpl implements UrlCatchService {
   }
 
   public String getIMDBData(String url) throws Exception {
-    org.jsoup.nodes.Document doc = Jsoup.connect(url).get();
+    org.jsoup.nodes.Document doc = Jsoup.connect(url).userAgent(StaticStrings.HTTP_USER_AGENT).get();
     String rating = doc.getElementsByAttributeValue("itemprop", "ratingValue").get(0).text();
     String users = doc.getElementsByAttributeValue("itemprop", "ratingCount").get(0).text();
     return String.format("Ratings: %s/10 from %s users", rating, users);
@@ -118,7 +119,7 @@ public class UrlCatchServiceImpl implements UrlCatchService {
   public void getTitleNew(final String url, final Channel ch, final boolean isWanha, final String wanhaAadd) {
     org.jsoup.nodes.Document doc;
     try {
-      doc = Jsoup.connect(url).get();
+      doc = Jsoup.connect(url).userAgent(StaticStrings.HTTP_USER_AGENT).get();
     } catch (IOException e) {
       log.error("Can't get title for: {}", url);
       return;

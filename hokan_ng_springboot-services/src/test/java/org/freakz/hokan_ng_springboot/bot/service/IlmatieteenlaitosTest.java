@@ -1,6 +1,7 @@
 package org.freakz.hokan_ng_springboot.bot.service;
 
 
+import org.freakz.hokan_ng_springboot.bot.util.StaticStrings;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -15,7 +16,7 @@ public class IlmatieteenlaitosTest {
 
   public static void main(String[] args) throws Exception {
 
-    Document doc = Jsoup.connect("http://en.ilmatieteenlaitos.fi/weather/sastamala").get();
+    Document doc = Jsoup.connect("http://en.ilmatieteenlaitos.fi/weather/sastamala").userAgent(StaticStrings.HTTP_USER_AGENT).get();
     Elements elements = doc.getElementsByClass("time-stamp");
     Element data = elements.get(0);
     String txt = data.text();
