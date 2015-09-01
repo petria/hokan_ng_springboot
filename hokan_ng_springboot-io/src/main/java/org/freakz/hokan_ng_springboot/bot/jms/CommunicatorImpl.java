@@ -71,7 +71,7 @@ public class CommunicatorImpl implements EngineCommunicator, ServiceCommunicator
 
   @Override
   public void sendServiceRequest(IrcMessageEvent ircEvent, ServiceRequestType requestType) {
-    ServiceRequest request = new ServiceRequest(requestType, ircEvent, new CommandArgs(ircEvent.getMessage()), null);
+    ServiceRequest request = new ServiceRequest(requestType, ircEvent, new CommandArgs(ircEvent.getMessage()), (Object[])null);
     try {
       jmsSender.send(HokanModule.HokanServices.getQueueName(), "SERVICE_REQUEST", request, false);
     } catch (Exception e) {

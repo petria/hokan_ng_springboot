@@ -3,13 +3,13 @@ package org.freakz.hokan_ng_springboot.bot.service.metar;
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.models.MetarData;
 import org.freakz.hokan_ng_springboot.bot.util.FileUtil;
-import org.freakz.hokan_ng_springboot.bot.util.HttpPageFetcher;
 import org.freakz.hokan_ng_springboot.bot.util.StringStuff;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
  */
 @Service
 @Slf4j
-public class MetarDataServiceImpl implements  MetarDataService {
+public class MetarDataServiceImpl implements MetarDataService {
 
   @Autowired
   private FileUtil fileUtil;
@@ -37,15 +37,30 @@ public class MetarDataServiceImpl implements  MetarDataService {
   }
 
   private String[] fetchMetarData(String stationID) {
-    String url = "ftp://tgftp.nws.noaa.gov/data/observations/metar/decoded/" + stationID + ".TXT";
-    HttpPageFetcher pageFetcher = new HttpPageFetcher();
+
+    StringBuilder buffer = new StringBuilder();
     try {
-      pageFetcher.fetch(url);
+
+      String urlStr = "ftp://tgftp.nws.noaa.gov/data/observations/metar/decoded/" + stationID + ".TXT";
+      URL url = new URL(urlStr);
+      URLConnection conn = url.openConnection();
+      InputStream in = conn.getInputStream();
+      InputStreamReader isr = new InputStreamReader(in);
+      BufferedReader br =
+          new BufferedReader(isr);
+      String l;
+      do {
+        l = br.readLine();
+        if (l != null) {
+          buffer.append(l);
+          buffer.append("\n");
+        }
+      } while (l != null);
+
     } catch (Exception e) {
-      log.error("Metar fetcg error", e);
-      return new String[0];
+      //
     }
-    return pageFetcher.getTextBuffer().toString().split("\n");
+    return buffer.toString().split("\n");
   }
 
   private List<String> getStations(String pattern) {

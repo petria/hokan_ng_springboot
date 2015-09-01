@@ -3,10 +3,12 @@ package org.freakz.hokan_ng_springboot.bot.updaters.horo;
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.models.HoroHolder;
 import org.freakz.hokan_ng_springboot.bot.updaters.Updater;
-import org.freakz.hokan_ng_springboot.bot.util.HttpPageFetcher;
+import org.freakz.hokan_ng_springboot.bot.util.StaticStrings;
 import org.freakz.hokan_ng_springboot.bot.util.StringStuff;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -19,24 +21,14 @@ import java.util.*;
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
 @Component
-//@Scope("prototype")
+//@Scope("singleton")
 @Slf4j
 public class HoroUpdater extends Updater {
-
-  @Autowired
-  ApplicationContext context;
 
   public final static String[] HORO_NAMES =
       {"Oinas", "Härkä", "Kaksoset", "Rapu", "Leijona", "Neitsyt",
           "Vaaka", "Skorpioni", "Jousimies", "Kauris",
           "Vesimies", "Kalat"};
-
-  public final static String[] HORO_DATES =
-      {
-          "21.3. - 19.4.", "20.4. - 20.5.", "21.5. - 20.6.", "21.6. - 22.7.",
-          "23.7. - 22.8.", "23.8. - 22.9.", "23.9. - 23.10.", "24.10. - 22.11.",
-          "23.11. - 21.12.", "22.12. - 19.1.", "20.1. - 19.2.", "20.2. - 20.3."
-      };
 
   private List<HoroHolder> horos;
 
@@ -65,30 +57,15 @@ public class HoroUpdater extends Updater {
 
 
   public List<HoroHolder> updateIL() throws Exception {
-    List<HoroHolder> horos = new ArrayList<HoroHolder>();
-    String url = "http://www.iltalehti.fi/viihde/horoskooppi1_ho.shtml";
-    HttpPageFetcher page = context.getBean(HttpPageFetcher.class);
-    page.fetch(url, "ISO-8859-1");
-
-    String horoLine = page.findLine("Oinas 21.*", false);
-
-    horoLine = horoLine.replaceAll("Oinas 21\\.3\\. - 19\\.4\\.", "");
-    horoLine = horoLine.replaceAll("Härkä 20\\.4\\. - 20\\.5\\.", "|");
-    horoLine = horoLine.replaceAll("Kaksoset 21.5. - 20.6.", "|");
-    horoLine = horoLine.replaceAll("Rapu 21.6. - 22.7.", "|");
-    horoLine = horoLine.replaceAll("Leijona 23.7. - 22.8.", "|");
-    horoLine = horoLine.replaceAll("Neitsyt 23.8. - 22.9.", "|");
-    horoLine = horoLine.replaceAll("Vaaka 23.9. - 23.10.", "|");
-    horoLine = horoLine.replaceAll("Skorpioni 24.10. - 22.11.", "|");
-    horoLine = horoLine.replaceAll("Jousimies 23.11. - 21.12.", "|");
-    horoLine = horoLine.replaceAll("Kauris 22.12. - 19.1.", "|");
-    horoLine = horoLine.replaceAll("Vesimies 20.1. - 19.2.", "|");
-    horoLine = horoLine.replaceAll("Kalat 20.2. - 20.3.", "|");
-
-    String[] horosTxt = horoLine.split("\\|");
+    List<HoroHolder> horos = new ArrayList<>();
+    Document doc = Jsoup.connect("http://www.iltalehti.fi/viihde/horoskooppi1_ho.shtml").userAgent(StaticStrings.HTTP_USER_AGENT).get();
+    Elements container = doc.getElementsByAttributeValue("id", "container_keski");
+    Elements pees = container.select("p");
     int i = 0;
-    for (String txt : horosTxt) {
-      HoroHolder hh = new HoroHolder(i, txt);
+    for (int horo = 1; horo < 25; horo += 2) {
+//      Element ee1 = pees.get(horo);
+      Element ee2 = pees.get(horo + 1);
+      HoroHolder hh = new HoroHolder(i, ee2.text());
       i++;
       horos.add(hh);
     }
@@ -98,7 +75,7 @@ public class HoroUpdater extends Updater {
   private HoroHolder generateHolder(int horoIdx) {
     String horoTxt = "Mugalabuglala baubuaagugug tsimszalabimpero!";
     if (horos.size() != 0) {
-      List<String> textList = new ArrayList<String>();
+      List<String> textList = new ArrayList<>();
       for (HoroHolder hh : horos) {
         String txt = hh.getHoroscopeText();
         String[] split = txt.split("\\. ");

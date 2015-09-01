@@ -71,7 +71,7 @@ public class HttpPostFetcher {
     if (encoding != null) {
       headerEncoding = encoding;
     } else {
-      headerEncoding = HttpPageFetcher.getEncodingFromHeaders(connection);
+      headerEncoding = getEncodingFromHeaders(connection);
     }
 
     InputStream in = connection.getInputStream();
@@ -98,5 +98,38 @@ public class HttpPostFetcher {
     return htmlBuffer.toString();
   }
 
+  public String getEncodingFromHeaders(URLConnection conn) {
+    String encoding = "utf-8";
+    try {
+      // Create a URLConnection object for a URL
+//      URL url = new URL(urlStr);
+//      URLConnection conn = url.openConnection();
+
+      // List all the response headers from the server.
+      // Note: The first call to getHeaderFieldKey() will implicit send
+      // the HTTP request to the server.
+      for (int i = 0; ; i++) {
+        String headerName = conn.getHeaderFieldKey(i);
+        String headerValue = conn.getHeaderField(i);
+//        System.out.println(headerName + " = " + headerValue);
+        if (headerName == null && headerValue == null) {
+          // No more headers
+          break;
+        }
+        if (headerName != null && headerName.equalsIgnoreCase("Content-Type")) {
+          String val = headerValue.toLowerCase();
+          if (val.matches(".*8859.*")) {
+            encoding = "8859_1";
+          } else {
+            encoding = "UTF-8";
+          }
+        }
+      }
+    } catch (Exception e) {
+      //
+    }
+
+    return encoding;
+  }
 
 }

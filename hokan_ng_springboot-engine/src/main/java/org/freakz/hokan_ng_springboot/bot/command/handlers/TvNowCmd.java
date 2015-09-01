@@ -43,7 +43,7 @@ public class TvNowCmd extends Cmd {
 
     String currentLine = "";
     String nextLine = "";
-    ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.TV_NOW_REQUEST, request.getIrcEvent(), null);
+    ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.TV_NOW_REQUEST, request.getIrcEvent(), (Object[]) null);
     TvNowData tvNowData = serviceResponse.getTvNowData();
 
 
