@@ -78,4 +78,15 @@ public class JSoupTest {
 
   }
 
+  @Test
+  public void testGetGoogleCurrencies() throws IOException {
+    String url = "https://www.google.com/finance/converter";
+    Document doc = Jsoup.connect(url).userAgent(StaticStrings.HTTP_USER_AGENT).get();
+    Elements options = doc.getElementsByTag("option");
+    for (Element element : options) {
+      String attr = element.attr("value");
+      System.out.println(attr + " -> " +element.text());
+    }
+    int foo = 0;
+  }
 }

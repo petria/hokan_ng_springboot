@@ -7,6 +7,8 @@ package org.freakz.hokan_ng_springboot.bot.events;
 public enum ServiceRequestType {
 
   CATCH_URLS_REQUEST,
+  CURRENCY_CONVERT_REQUEST,
+  CURRENCY_LIST_REQUEST,
   HORO_REQUEST,
   METAR_REQUEST,
   TRANSLATE_REQUEST,

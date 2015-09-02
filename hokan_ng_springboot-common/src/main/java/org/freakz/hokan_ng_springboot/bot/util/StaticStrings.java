@@ -17,6 +17,7 @@ public class StaticStrings {
   public static final String ARG_CITY_2 = "City2";
   public static final String ARG_COUNT = "Count";
   public static final String ARG_COMMAND = "Command";
+  public static final String ARG_CURRENCY = "Currency";
   public static final String ARG_EMAIL = "Email";
   public static final String ARG_EXPRESSION = "expression";
   public static final String ARG_FLAGS = "Flags";
@@ -53,10 +54,8 @@ public class StaticStrings {
   public static final String ARG_VERBOSE = "Verbose";
   public static final String ARG_WORD = "Word";
 
-
   public static final String HTTP_USER_AGENT
       = "User-Agent\", \"Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:38.0) Gecko/20100101 Firefox/38.0";
-
 
   public static final String UNKNOWN
       = "<unknown>";
