@@ -8,8 +8,11 @@ import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.events.ServiceRequestType;
 import org.freakz.hokan_ng_springboot.bot.events.ServiceResponse;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
+import org.freakz.hokan_ng_springboot.bot.models.GoogleCurrency;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_CURRENCY;
 
@@ -26,7 +29,7 @@ public class CurrencyListCmd extends Cmd {
     super();
     setHelp("Shows / searches from know currencies to use with !currencyconvert.");
     UnflaggedOption flg = new UnflaggedOption(ARG_CURRENCY)
-        .setRequired(true)
+        .setRequired(false)
         .setGreedy(false);
     registerParameter(flg);
 
@@ -38,7 +41,16 @@ public class CurrencyListCmd extends Cmd {
 
     ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.CURRENCY_LIST_REQUEST,
         request.getIrcEvent(), currency);
-    response.addResponse("TODO!");
+    List<GoogleCurrency> currencyList = serviceResponse.getCurrencyListResponse();
+    if (currency == null) {
+      String resp = "Known currencies:";
+      for (GoogleCurrency googleCurrency : currencyList) {
+        resp += " " + googleCurrency.getShortName();
+      }
+      response.addResponse(resp);
+    } else {
+      response.addResponse("TODO!");
+    }
 
   }
 

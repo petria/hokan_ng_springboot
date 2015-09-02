@@ -86,7 +86,11 @@ public class ServiceResponse implements Serializable {
   }
 
   public String getCurrencyConvertResponse() {
-    String convertResponse = (String) responseData.get("CURRENCY_CONVERT_RESPONSE");
-    return convertResponse;
+    return (String) responseData.get("CURRENCY_CONVERT_RESPONSE");
   }
+
+  public List<GoogleCurrency> getCurrencyListResponse() {
+    return (List<GoogleCurrency>) responseData.get("CURRENCY_LIST_RESPONSE");
+  }
+
 }
