@@ -2,7 +2,6 @@ package org.freakz.hokan_ng_springboot.bot.updaters.currency;
 
 
 import lombok.extern.slf4j.Slf4j;
-import org.freakz.hokan_ng_springboot.bot.updaters.Updater;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -17,16 +16,16 @@ import java.util.Map;
  */
 @Component
 @Slf4j
-public class CurrencyUpdater extends Updater {
+public class CurrencyUpdater {  //extends Updater {
 
   private Map<String, CurrencyValue> values = new HashMap<>();
 
-  @Override
+//  @Override
   public void doUpdateData() throws Exception {
     //To change body of implemented methods use File | Settings | File Templates.
   }
 
-  @Override
+//  @Override
   public Object doGetData(Object... args) {
     return null;  //To change body of implemented methods use File | Settings | File Templates.
   }

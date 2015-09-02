@@ -64,4 +64,18 @@ public class JSoupTest {
     int foo = 0;
   }
 
+  @Test
+  public void testGoogleCurrencyJsoup() throws IOException {
+    String amount = "145";
+    String from = "GBP";
+    String to = "EUR";
+    String url = "http://www.google.com/finance/converter?a=" + amount + "&from=" + from + "&to=" + to;
+    Document doc = Jsoup.connect(url).userAgent(StaticStrings.HTTP_USER_AGENT).get();
+    Elements value = doc.getElementsByAttributeValue("id", "currency_converter_result");
+
+    String conv = value.get(0).text();
+    int foo = 0;
+
+  }
+
 }
