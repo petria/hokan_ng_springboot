@@ -119,7 +119,7 @@ public class UrlCatchServiceImpl implements UrlCatchService {
   public void getTitleNew(final String url, final Channel ch, final boolean isWanha, final String wanhaAadd) {
     org.jsoup.nodes.Document doc;
     try {
-      doc = Jsoup.connect(url).userAgent(StaticStrings.HTTP_USER_AGENT).get();
+      doc = Jsoup.connect(url).get();
     } catch (IOException e) {
       log.error("Can't get title for: {}", url);
       return;
