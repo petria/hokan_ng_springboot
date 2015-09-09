@@ -19,6 +19,8 @@ public interface ChannelService {
 
   List<Channel> findAll();
 
+  List<Channel> findByChannelNameLike(String like);
+
   List<Channel> findByNetwork(Network network);
 
   Channel findByNetworkAndChannelName(Network network, String channelName);

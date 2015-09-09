@@ -20,4 +20,6 @@ public interface ChannelRepository extends JpaRepository<Channel, Long> {
 
   Channel findByNetworkAndChannelName(Network network, String channelName);
 
+  List<Channel> findByChannelNameLike(String like);
+
 }
