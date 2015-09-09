@@ -13,10 +13,7 @@ public class UrlsPage extends BasePage {
 
   public UrlsPage(final PageParameters parameters) {
     super(parameters);
-
     addPanels();
-//    addLink();
-//    add(new Label("version", getApplication().getFrameworkSettings().getVersion()));
   }
 
   private void addPanels() {

@@ -49,7 +49,7 @@ public class HeaderPanel extends Panel {
     navbar.setPosition(Navbar.Position.TOP);
     navbar.setBrandName(Model.of("Hokan the Bot"));
 
-    DropDownButton dropdown = new NavbarDropDownButton(Model.of("Data")) {
+    DropDownButton dropdown = new NavbarDropDownButton(Model.of("Datas")) {
 
       @Override
       protected List<AbstractLink> newSubMenuButtons(String buttonMarkupId) {
@@ -66,12 +66,18 @@ public class HeaderPanel extends Panel {
     navbar.addComponents(new ImmutableNavbarComponent(dropdown, Navbar.ComponentPosition.RIGHT));
 
     if (session.getUser().getFlags().contains("A")) {
-      DropDownButton settingsDropDown = new NavbarDropDownButton(Model.of("Settings")) {
 
+      DropDownButton settingsDropDown = new NavbarDropDownButton(Model.of("Configurations")) {
         @Override
         protected List<AbstractLink> newSubMenuButtons(String buttonMarkupId) {
           final List<AbstractLink> subMenu = new ArrayList<AbstractLink>();
           subMenu.add(new MenuBookmarkablePageLink(SystemPropertiesPage.class, Model.of("System properties"))
+              .setIconType(FontAwesomeIconType.question_circle));
+          subMenu.add(new MenuBookmarkablePageLink(IrcServerConfigsPage.class, Model.of("Irc Server Configs"))
+              .setIconType(FontAwesomeIconType.question_circle));
+          subMenu.add(new MenuBookmarkablePageLink(NetworkConfigsPage.class, Model.of("Network Configs"))
+              .setIconType(FontAwesomeIconType.question_circle));
+          subMenu.add(new MenuBookmarkablePageLink(ChannelConfigsPage.class, Model.of("Channel Configs"))
               .setIconType(FontAwesomeIconType.question_circle));
           return subMenu;
         }
