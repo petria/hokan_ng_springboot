@@ -26,7 +26,7 @@ import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
-import org.freakz.hokan_ng_springboot.bot.MyAuthenticatedWebSession;
+import org.freakz.hokan_ng_springboot.bot.HokanAuthenticatedWebSession;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,21 +42,22 @@ public class HeaderPanel extends Panel {
   }
 
   private Navbar navbar() {
-    final MyAuthenticatedWebSession session = (MyAuthenticatedWebSession) AuthenticatedWebSession.get();
+    final HokanAuthenticatedWebSession session = (HokanAuthenticatedWebSession) AuthenticatedWebSession.get();
 
     Navbar navbar = new Navbar("navbar");
     navbar.setInverted(true);
     navbar.setPosition(Navbar.Position.TOP);
     navbar.setBrandName(Model.of("Hokan the Bot"));
 
-    DropDownButton dropdown = new NavbarDropDownButton(Model.of("DropDown")) {
+    DropDownButton dropdown = new NavbarDropDownButton(Model.of("Data")) {
 
       @Override
       protected List<AbstractLink> newSubMenuButtons(String buttonMarkupId) {
         final List<AbstractLink> subMenu = new ArrayList<AbstractLink>();
-        subMenu.add(new MenuBookmarkablePageLink(UserAccountPage.class, Model.of("Account"))
-            .setIconType(FontAwesomeIconType.user));
         subMenu.add(new MenuBookmarkablePageLink(UrlsPage.class, Model.of("Urls"))
+            .setIconType(FontAwesomeIconType.user));
+
+        subMenu.add(new MenuBookmarkablePageLink(UsersPage.class, Model.of("Users"))
             .setIconType(FontAwesomeIconType.user));
         return subMenu;
       }
@@ -64,17 +65,19 @@ public class HeaderPanel extends Panel {
     };
     navbar.addComponents(new ImmutableNavbarComponent(dropdown, Navbar.ComponentPosition.RIGHT));
 
-    DropDownButton settingsDropDown = new NavbarDropDownButton(Model.of("Settings")) {
+    if (session.getUser().getFlags().contains("A")) {
+      DropDownButton settingsDropDown = new NavbarDropDownButton(Model.of("Settings")) {
 
-      @Override
-      protected List<AbstractLink> newSubMenuButtons(String buttonMarkupId) {
-        final List<AbstractLink> subMenu = new ArrayList<AbstractLink>();
-        subMenu.add(new MenuBookmarkablePageLink(SystemPropertiesPage.class, Model.of("System properties"))
-            .setIconType(FontAwesomeIconType.question_circle));
-        return subMenu;
-      }
-    };
-    navbar.addComponents(new ImmutableNavbarComponent(settingsDropDown, Navbar.ComponentPosition.RIGHT));
+        @Override
+        protected List<AbstractLink> newSubMenuButtons(String buttonMarkupId) {
+          final List<AbstractLink> subMenu = new ArrayList<AbstractLink>();
+          subMenu.add(new MenuBookmarkablePageLink(SystemPropertiesPage.class, Model.of("System properties"))
+              .setIconType(FontAwesomeIconType.question_circle));
+          return subMenu;
+        }
+      };
+      navbar.addComponents(new ImmutableNavbarComponent(settingsDropDown, Navbar.ComponentPosition.RIGHT));
+    }
 
 
     NavbarAjaxLink navbarAjaxLink = new NavbarAjaxLink(Model.of("logout")) {
@@ -84,15 +87,11 @@ public class HeaderPanel extends Panel {
         session.logoffUser();
         getSession().invalidate();
         setResponsePage(HomePage.class);
-
       }
     };
     navbarAjaxLink.setIconType(GlyphIconType.logout);
 
-    navbar.addComponents(NavbarComponents.transform(Navbar.ComponentPosition.RIGHT,
-        new NavbarButton<HomePage>(HomePage.class, Model.of("Home")).setIconType(GlyphIconType.home),
-        navbarAjaxLink));
-
+    navbar.addComponents(NavbarComponents.transform(Navbar.ComponentPosition.RIGHT, navbarAjaxLink));
     return navbar;
   }
 }

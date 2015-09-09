@@ -18,7 +18,7 @@ import org.freakz.hokan_ng_springboot.bot.service.AccessControlService;
 import java.util.List;
 
 @Slf4j
-public class MyAuthenticatedWebSession extends AuthenticatedWebSession {
+public class HokanAuthenticatedWebSession extends AuthenticatedWebSession {
 
   @SpringBean
   private UserService userService;
@@ -28,7 +28,7 @@ public class MyAuthenticatedWebSession extends AuthenticatedWebSession {
 
   private User loggedInUser;
 
-  public MyAuthenticatedWebSession(Request request) {
+  public HokanAuthenticatedWebSession(Request request) {
     super(request);
     Injector.get().inject(this);
   }

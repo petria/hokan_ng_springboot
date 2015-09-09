@@ -1,4 +1,4 @@
-package org.freakz.hokan_ng_springboot.bot.page2;
+package org.freakz.hokan_ng_springboot.bot.example;
 
 import org.apache.wicket.authroles.authentication.panel.SignInPanel;
 import org.apache.wicket.markup.html.WebPage;
@@ -10,12 +10,12 @@ import org.freakz.hokan_ng_springboot.bot.jpa.service.UserService;
  * Created by Petri Airio on 19.3.2015.
  *
  */
-public final class MySignInPage extends WebPage {
+public final class HokanSignInPage extends WebPage {
 
     @SpringBean
     private UserService userService;
 
-    public MySignInPage() {
+    public HokanSignInPage() {
         this(null);
     }
 
@@ -24,7 +24,7 @@ public final class MySignInPage extends WebPage {
      *
      * @param parameters The page parameters
      */
-    public MySignInPage(final PageParameters parameters) {
+    public HokanSignInPage(final PageParameters parameters) {
         // That is all you need to add a logon panel to your application with rememberMe
         // functionality based on Cookies. Meaning username and password are persisted in a Cookie.
         // Please see ISecuritySettings#getAuthenticationStrategy() for details.
