@@ -56,7 +56,7 @@ public class KelikameratUpdater extends Updater {
   public void updateStations() throws IOException {
     List<KelikameratUrl> stations = new ArrayList<>();
     for (String url : KELIKAMERAT_URLS) {
-      Document doc = Jsoup.connect(url).userAgent(StaticStrings.HTTP_USER_AGENT).get();
+      Document doc = Jsoup.connect(url).get();
       Elements elements = doc.getElementsByClass("road-camera");
       this.dataFetched += doc.html().length();
       this.itemsFetched++;
