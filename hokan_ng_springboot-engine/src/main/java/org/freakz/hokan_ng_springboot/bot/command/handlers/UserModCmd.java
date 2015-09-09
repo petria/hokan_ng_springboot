@@ -45,7 +45,6 @@ public class UserModCmd extends Cmd {
     addToHelpGroup(HelpGroup.USERS, this);
 
     Switch sw = new Switch(ARG_VERBOSE)
-        .setDefault("false")
         .setShortFlag('v');
     registerParameter(sw);
 

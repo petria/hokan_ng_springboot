@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.models.KelikameratUrl;
 import org.freakz.hokan_ng_springboot.bot.models.KelikameratWeatherData;
 import org.freakz.hokan_ng_springboot.bot.updaters.Updater;
-import org.freakz.hokan_ng_springboot.bot.util.StaticStrings;
 import org.freakz.hokan_ng_springboot.bot.util.StringStuff;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -56,7 +55,7 @@ public class KelikameratUpdater extends Updater {
   public void updateStations() throws IOException {
     List<KelikameratUrl> stations = new ArrayList<>();
     for (String url : KELIKAMERAT_URLS) {
-      Document doc = Jsoup.connect(url).userAgent(StaticStrings.HTTP_USER_AGENT).get();
+      Document doc = Jsoup.connect(url).get();
       Elements elements = doc.getElementsByClass("road-camera");
       this.dataFetched += doc.html().length();
       this.itemsFetched++;
@@ -83,11 +82,11 @@ public class KelikameratUpdater extends Updater {
   public KelikameratWeatherData updateKelikameratWeatherData(KelikameratUrl url) {
     Document doc;
     try {
-      doc = Jsoup.connect(url.getStationUrl()).userAgent(StaticStrings.HTTP_USER_AGENT).get();
+      doc = Jsoup.connect(url.getStationUrl()).get();
       this.dataFetched += doc.html().length();
       this.itemsFetched++;
     } catch (IOException e) {
-      log.error("Can't update data: {}", url);
+      log.error("Can't update data: {}", url.getStationUrl());
       return null;
     }
     String titleText = doc.getElementsByTag("title").get(0).text();

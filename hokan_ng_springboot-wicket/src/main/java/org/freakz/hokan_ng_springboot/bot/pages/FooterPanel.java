@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.freakz.hokan_ng_springboot.bot.example;
+package org.freakz.hokan_ng_springboot.bot.pages;
 
 import org.apache.wicket.markup.html.panel.Panel;
 

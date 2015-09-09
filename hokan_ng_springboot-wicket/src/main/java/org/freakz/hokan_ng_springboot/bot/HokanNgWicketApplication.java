@@ -15,9 +15,9 @@ import org.apache.wicket.request.resource.UrlResourceReference;
 import org.apache.wicket.resource.JQueryResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.crypt.CharEncoding;
-import org.freakz.hokan_ng_springboot.bot.example.HomePage;
 import org.freakz.hokan_ng_springboot.bot.jpa.service.*;
-import org.freakz.hokan_ng_springboot.bot.page2.MySignInPage;
+import org.freakz.hokan_ng_springboot.bot.pages.HokanSignInPage;
+import org.freakz.hokan_ng_springboot.bot.pages.HomePage;
 import org.freakz.hokan_ng_springboot.bot.service.HokanStatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -84,6 +84,7 @@ public class HokanNgWicketApplication extends AuthenticatedWebApplication {
     getMarkupSettings().setDefaultMarkupEncoding(CharEncoding.UTF_8);
     getComponentInstantiationListeners().add(new SpringComponentInjector(this, applicationContext));
     configureBootstrap();
+    mountPage("/login", HokanSignInPage.class);
 
     addResourceReplacement(JQueryResourceReference.get(),
         new UrlResourceReference(
@@ -104,12 +105,12 @@ public class HokanNgWicketApplication extends AuthenticatedWebApplication {
 
   @Override
   protected Class<? extends AbstractAuthenticatedWebSession> getWebSessionClass() {
-    return MyAuthenticatedWebSession.class;
+    return HokanAuthenticatedWebSession.class;
   }
 
   @Override
   protected Class<? extends WebPage> getSignInPageClass() {
-    return MySignInPage.class;
+    return HokanSignInPage.class;
   }
 
   public NetworkService getNetworkService() {

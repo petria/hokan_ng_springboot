@@ -40,6 +40,12 @@ public class ChannelRepositoryService implements ChannelService {
 
   @Override
   @Transactional(readOnly = true)
+  public List<Channel> findByChannelNameLike(String like) {
+    return repository.findByChannelNameLike(like);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
   public List<Channel> findByNetwork(Network network) {
     return repository.findByNetwork(network);
   }

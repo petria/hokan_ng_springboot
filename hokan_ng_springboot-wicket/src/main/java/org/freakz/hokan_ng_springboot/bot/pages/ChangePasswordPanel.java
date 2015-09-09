@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.freakz.hokan_ng_springboot.bot.example;
+package org.freakz.hokan_ng_springboot.bot.pages;
 
 import de.agilecoders.wicket.core.markup.html.bootstrap.button.BootstrapButton;
 import de.agilecoders.wicket.core.markup.html.bootstrap.button.Buttons;
@@ -22,9 +22,8 @@ import de.agilecoders.wicket.core.markup.html.bootstrap.form.BootstrapForm;
 import de.agilecoders.wicket.core.markup.html.bootstrap.form.FormBehavior;
 import de.agilecoders.wicket.core.markup.html.bootstrap.form.FormGroup;
 import de.agilecoders.wicket.core.markup.html.bootstrap.form.FormType;
-import org.apache.wicket.markup.html.form.EmailTextField;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 
@@ -32,32 +31,36 @@ import org.apache.wicket.model.Model;
  *
  * @author dbeer
  */
-public class UserProfilePanel extends Panel {
+public class ChangePasswordPanel extends Panel {
+    
+    Form<Void> form;
 
-    public UserProfilePanel() {
+    public ChangePasswordPanel() {
         super("panel");
-        add(UserProfile());
+        add(addChangePassword());
     }
-
-    public UserProfilePanel(String id) {
+    
+    public ChangePasswordPanel(String id) {
         super(id);
-        add(UserProfile());
+        add(addChangePassword());
     }
-
-    private Form<Void> UserProfile() {
-        final TextField name = new TextField("name", Model.of("Joe Blogs"));
-        final EmailTextField email = new EmailTextField("email", Model.of("joe@example.com"));
-        Form<Void> form = new BootstrapForm<Void>("form");
+    
+    private Form<Void> addChangePassword() {
+        final PasswordTextField password = new PasswordTextField("password");
+        final PasswordTextField confirmPassword = new PasswordTextField("confirmPassword");
+        form = new BootstrapForm<Void>("form");
         form.add(new FormBehavior().type(FormType.Horizontal));
+        form.setOutputMarkupId(true);
+        form.setOutputMarkupPlaceholderTag(true);
         
-        FormGroup formGroupInfo =  new FormGroup("formGroupInfo", Model.of("Name"));
-        formGroupInfo.add(name);
-        formGroupInfo.add(email);
-        form.add(formGroupInfo);
+        FormGroup formGroupPassword =  new FormGroup("formGroupPassword", Model.of("Password"));
+        formGroupPassword.add(password);
+        form.add(formGroupPassword);
         
-        FormGroup formGroupEmail =  new FormGroup("formGroupEmail", Model.of("Email Address"));
-        formGroupEmail.add(email);
-        form.add(formGroupEmail);
+        FormGroup formGroupConfirmPassword =  new FormGroup("formGroupConfirmPassword", Model.of("Confirm Password"));
+        formGroupConfirmPassword.add(confirmPassword);
+        form.add(formGroupConfirmPassword);
+        
         
         FormGroup formGrouButton = new FormGroup("formGroupButton");
         BootstrapButton submitButton = new BootstrapButton("submit-button", Buttons.Type.Default);
