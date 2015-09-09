@@ -34,6 +34,7 @@ public class StaticStrings {
   public static final String ARG_NIMI_OR_PVM = "Nimi/Pvm";
   public static final String ARG_NEW_PASSWORD1 = "NewPassword1";
   public static final String ARG_NEW_PASSWORD2 = "NewPassword2";
+  public static final String ARG_OLD_PASSWORD = "OldPassword";
   public static final String ARG_PASSWORD = "Password";
   public static final String ARG_PLACE = "Place";
   public static final String ARG_PROGRAM = "Program";

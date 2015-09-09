@@ -676,4 +676,25 @@ public class StringStuff {
         , d.getAir(), d.getRoad(), d.getGround());
   }
 
+  public static String getSHA1Password(String password) {
+    try {
+      MessageDigest messageDigest = MessageDigest.getInstance("SHA-1");
+      byte[] digest = messageDigest.digest(password.getBytes("UTF-8"));
+      byte[] bytes = messageDigest.digest(password.getBytes());
+      StringBuffer hexString = new StringBuffer();
+
+      for (byte aByte : bytes) {
+        String val = Integer.toHexString(0xFF & aByte);
+        if (val.length() == 1) {
+          hexString.append("0");
+        }
+        hexString.append(val);
+      }
+      return hexString.toString();
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+
 }

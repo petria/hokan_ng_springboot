@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.Channel;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.User;
 import org.freakz.hokan_ng_springboot.bot.jpa.service.UserService;
+import org.freakz.hokan_ng_springboot.bot.util.StringStuff;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +37,15 @@ public class AccessControlServiceImpl implements AccessControlService {
   @Override
   public boolean isChannelOp(User user, Channel Channel) {
     return true; // TODO
+  }
+
+  @Override
+  public boolean authenticate(User user, String password) {
+    String sha1Password = StringStuff.getSHA1Password(password);
+    if (user.getPassword().equals(sha1Password)) {
+      return true;
+    }
+    return false;
   }
 
   @Override

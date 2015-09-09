@@ -15,6 +15,8 @@ public interface AccessControlService {
 
   boolean isLoggedIn(User isLoggedIn);
 
+  boolean authenticate(User user, String password);
+
   User loginUser(User user2);
 
   User logoffUser(User user2);
