@@ -1,4 +1,4 @@
-package org.freakz.hokan_ng_springboot.bot.example;
+package org.freakz.hokan_ng_springboot.bot.pages;
 
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.freakz.hokan_ng_springboot.bot.panel.users.UsersPanel;
