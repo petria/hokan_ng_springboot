@@ -78,10 +78,6 @@ public class InternalRequest implements Serializable {
     return user;
   }
 
-  public void updateUser() {
-    userService.save(user);
-  }
-
   public UserChannel getUserChannel() {
     return userChannel;
   }
