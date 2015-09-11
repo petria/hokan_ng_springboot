@@ -48,7 +48,7 @@ public class ConnectionManagerServiceImpl implements ConnectionManagerService, E
   private PropertyService propertyService;
 
   @Autowired
-  private HokanModuleService hokanModuleService;
+  private UserRepositoryService userService;
 
   private String botNick;
 
@@ -59,6 +59,7 @@ public class ConnectionManagerServiceImpl implements ConnectionManagerService, E
 
   private void invalidateLoggedInUsers() {
     loggedInUserService.invalidateAll();
+    userService.setAllLoggedIn(0);
   }
 
   @PostConstruct

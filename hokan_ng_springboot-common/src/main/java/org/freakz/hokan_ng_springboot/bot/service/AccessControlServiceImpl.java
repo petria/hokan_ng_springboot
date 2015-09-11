@@ -53,6 +53,8 @@ public class AccessControlServiceImpl implements AccessControlService {
   public boolean authenticate(User user, String password) {
     String sha1Password = StringStuff.getSHA1Password(password);
     if (user.getPassword().equals(sha1Password)) {
+      user.setLoggedIn(1);
+      userService.save(user);
       return true;
     }
     return false;
