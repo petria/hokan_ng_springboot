@@ -48,7 +48,7 @@ public class NimipaivaCmd extends Cmd {
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
     String nimiOrPvm = results.getString(ARG_NIMI_OR_PVM);
 
-    if (nimiPvmList == null) {
+    if (nimiPvmList == null || nimiPvmList.size() == 0) {
       FileUtil fileUtil = new FileUtil();
       StringBuilder contents = new StringBuilder();
       try {
