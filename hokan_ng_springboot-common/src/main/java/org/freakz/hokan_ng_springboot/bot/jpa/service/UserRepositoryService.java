@@ -54,6 +54,17 @@ public class UserRepositoryService implements UserService {
       }
     }
     return null;
-
   }
+
+  @Override
+  @Transactional
+  public void setAllLoggedIn(int value) {
+    List<User> all = findAll();
+    for (User user : all) {
+      user.setLoggedIn(value);
+    }
+    userRepository.save(all);
+    log.debug("Logged in value set to: {} for {} users", value, all.size());
+  }
+
 }

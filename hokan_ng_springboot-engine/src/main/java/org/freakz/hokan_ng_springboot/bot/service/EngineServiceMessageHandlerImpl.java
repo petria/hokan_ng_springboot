@@ -45,7 +45,9 @@ public class EngineServiceMessageHandlerImpl implements JmsServiceMessageHandler
 //    log.debug("Handling event: {}", event);
     if (event == null) {
       log.debug("Nothing to do!");
+      return;
     }
+
     Cmd handler = commandHandlerService.getCommandHandler(event.getMessage());
 
     if (handler != null) {

@@ -1,5 +1,6 @@
 package org.freakz.hokan_ng_springboot.bot.command.handlers;
 
+import com.martiansoftware.jsap.FlaggedOption;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.UnflaggedOption;
 import lombok.extern.slf4j.Slf4j;
@@ -27,9 +28,15 @@ public class PasswordCmd extends Cmd {
 
   public PasswordCmd() {
     super();
-    setHelp("PasswordCmd help");
+    setHelp("Sets user password.");
     addToHelpGroup(HelpGroup.USERS, this);
     setPrivateOnly(true);
+
+    FlaggedOption flaggedOption = new FlaggedOption(ARG_NICK)
+        .setRequired(false)
+        .setLongFlag("nick")
+        .setShortFlag('n');
+    registerParameter(flaggedOption);
 
     UnflaggedOption flg = new UnflaggedOption(ARG_OLD_PASSWORD)
         .setRequired(true)
@@ -50,19 +57,38 @@ public class PasswordCmd extends Cmd {
 
   @Override
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    User user = request.getUser();
+    String target = results.getString(ARG_NICK, "me");
+    User user;
+    if (target.equals("me")) {
+      user = request.getUser();
+    } else {
+      if (accessControlService.isAdminUser(request.getUser())) {
+        user = userService.findFirstByNick(target);
+      } else {
+        response.addResponse("Only Admins can log off other users!");
+        return;
+      }
+    }
+
+    if (user == null) {
+      response.addResponse("No User found with: " + target);
+      return;
+    }
+
     String oldPassword = results.getString(ARG_OLD_PASSWORD);
     boolean authOk = accessControlService.authenticate(user, oldPassword);
     if (!authOk) {
-      response.addResponse("Old password incorrect!");
-      return;
+      if (!accessControlService.isAdminUser(request.getUser())) {
+        response.addResponse("Old password incorrect!");
+        return;
+      }
     }
     String password1 = results.getString(ARG_NEW_PASSWORD1);
     String password2 = results.getString(ARG_NEW_PASSWORD2);
     if (password1.equals(password2)) {
-      request.getUser().setPassword(StringStuff.getSHA1Password(password1));
-      request.updateUser();
-      response.addResponse("Password changed to: %s", password1);
+      user.setPassword(StringStuff.getSHA1Password(password1));
+      userService.save(user);
+      response.addResponse("%s password changed to: %s", user.getNick(), password1);
     } else {
       response.addResponse("New passwords mismatch!");
     }

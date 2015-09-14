@@ -8,10 +8,6 @@ import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.User;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.UserChannel;
-import org.freakz.hokan_ng_springboot.bot.jpa.service.UserChannelService;
-import org.freakz.hokan_ng_springboot.bot.jpa.service.UserService;
-import org.freakz.hokan_ng_springboot.bot.service.AccessControlService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -30,15 +26,6 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_NICK;
 @Slf4j
 @Scope("prototype")
 public class UserViewCmd extends Cmd {
-
-  @Autowired
-  private AccessControlService accessControlService;
-
-  @Autowired
-  private UserService userService;
-
-  @Autowired
-  private UserChannelService userChannelService;
 
   public UserViewCmd() {
     super();
@@ -84,10 +71,8 @@ public class UserViewCmd extends Cmd {
 
     List<UserChannel> userChannels = userChannelService.findByUser(hUser);
     for (UserChannel channel : userChannels) {
-      ret += "  " + channel.getChannel().getChannelName();
-      ret += " - " + channel.getLastMessageTime() + "\n";
+      ret += "  " + channel.getChannel().getChannelName() + "\n";
     }
-
     response.addResponse(ret);
   }
 

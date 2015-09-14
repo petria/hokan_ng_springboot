@@ -20,5 +20,6 @@ public interface UserService {
 
   User getUserByMask(String mask);
 
+  void setAllLoggedIn(int value);
 
 }

@@ -80,13 +80,20 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
   protected PropertyService propertyService;
 
   @Autowired
+  protected SearchReplaceService searchReplaceService;
+
+  @Autowired
   protected StatsService statsService;
 
   @Autowired
   protected UrlLoggerService urlLoggerService;
 
   @Autowired
-  protected SearchReplaceService searchReplaceService;
+  protected UserService userService;
+
+  @Autowired
+  protected UserChannelService userChannelService;
+
 
   public Cmd() {
     jsap = new JSAP();

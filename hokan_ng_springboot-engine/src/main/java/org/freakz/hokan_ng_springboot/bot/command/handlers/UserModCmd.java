@@ -7,14 +7,9 @@ import com.martiansoftware.jsap.UnflaggedOption;
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
-import org.freakz.hokan_ng_springboot.bot.events.IrcEvent;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.User;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.UserChannel;
-import org.freakz.hokan_ng_springboot.bot.jpa.service.UserChannelService;
-import org.freakz.hokan_ng_springboot.bot.jpa.service.UserService;
-import org.freakz.hokan_ng_springboot.bot.service.AccessControlService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -32,12 +27,6 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.*;
 @Scope("prototype")
 public class UserModCmd extends Cmd {
 
-  @Autowired
-  private AccessControlService accessControlService;
-  @Autowired
-  private UserChannelService userChannelService;
-  @Autowired
-  private UserService userService;
 
   public UserModCmd() {
     super();
@@ -102,7 +91,6 @@ public class UserModCmd extends Cmd {
     String phone = results.getString(ARG_PHONE);
 
     User hUser;
-    IrcEvent iEvent = request.getIrcEvent();
     if (target.equals("me")) {
       hUser = request.getUser();
     } else {
