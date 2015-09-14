@@ -82,6 +82,11 @@ public class ServicesServiceMessageHandlerImpl implements JmsServiceMessageHandl
         List<MetarData> data = metarDataService.getMetarData(request.getParameters());
         response.setResponseData("METAR_DATA", data);
         break;
+      case TV_FIND_REQUEST:
+        String programs = (String) request.getParameters()[0];
+        List<TelkkuProgram> programList = telkkuService.findPrograms(programs);
+        response.setResponseData("TV_FIND_DATA", programList);
+        break;
       case TV_DAY_REQUEST:
         Channel channel = (Channel) request.getParameters()[0];
         Date date = (Date) request.getParameters()[1];

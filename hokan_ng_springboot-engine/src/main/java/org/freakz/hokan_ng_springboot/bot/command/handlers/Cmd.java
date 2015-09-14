@@ -38,7 +38,7 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
   @Autowired
   protected ApplicationContext context;
 
-  static protected Map<HelpGroup, List<Cmd>> helpGroups = new HashMap<>();
+  protected Map<HelpGroup, List<Cmd>> helpGroups = new HashMap<>();
 
   protected JSAP jsap;
   protected boolean channelOpOnly;

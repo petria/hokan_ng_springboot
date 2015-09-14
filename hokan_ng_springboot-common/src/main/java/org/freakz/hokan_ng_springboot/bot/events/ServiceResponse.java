@@ -49,6 +49,14 @@ public class ServiceResponse implements Serializable {
     return data;
   }
 
+  public List<TelkkuProgram> getTvFindData() {
+    List<TelkkuProgram> data = (List<TelkkuProgram>) responseData.get("TV_FIND_DATA");
+    if (data == null) {
+      return new ArrayList<>();
+    }
+    return data;
+  }
+
   public TvNowData getTvNowData() {
     TvNowData data = (TvNowData) responseData.get("TV_NOW_DATA");
     if (data == null) {
