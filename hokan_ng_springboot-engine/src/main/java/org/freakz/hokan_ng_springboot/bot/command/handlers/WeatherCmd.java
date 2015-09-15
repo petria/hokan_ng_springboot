@@ -31,9 +31,6 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_PLACE;
 @Scope("prototype")
 public class WeatherCmd extends Cmd {
 
-  private final static String FORMAT = "%1 %2 %3°C (%7/%8)";
-  private final static String FORMAT_MINMAX = "%1 %9 %3°C (%7/%8)";
-
   public WeatherCmd() {
     super();
     setHelp("Queries weather from http://alk.tiehallinto.fi/alk/tiesaa/");
@@ -41,7 +38,6 @@ public class WeatherCmd extends Cmd {
     FlaggedOption flg = new FlaggedOption(ARG_COUNT)
         .setStringParser(JSAP.INTEGER_PARSER)
         .setDefault("5")
-        .setRequired(true)
         .setShortFlag('c');
     registerParameter(flg);
 

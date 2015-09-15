@@ -5,6 +5,7 @@ import com.martiansoftware.jsap.*;
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.cmdpool.CommandPool;
 import org.freakz.hokan_ng_springboot.bot.cmdpool.CommandRunnable;
+import org.freakz.hokan_ng_springboot.bot.command.CommandGroupService;
 import org.freakz.hokan_ng_springboot.bot.enums.HokanModule;
 import org.freakz.hokan_ng_springboot.bot.events.*;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanEngineException;
@@ -20,7 +21,10 @@ import org.springframework.context.ApplicationContext;
 
 import javax.jms.JMSException;
 import javax.jms.ObjectMessage;
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * User: petria
@@ -38,7 +42,6 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
   @Autowired
   protected ApplicationContext context;
 
-  protected Map<HelpGroup, List<Cmd>> helpGroups = new HashMap<>();
 
   protected JSAP jsap;
   protected boolean channelOpOnly;
@@ -66,6 +69,9 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
 
   @Autowired
   protected CommandPool commandPool;
+
+  @Autowired
+  private CommandGroupService commandGroupService;
 
   @Autowired
   protected IrcLogService ircLogService;
@@ -113,35 +119,6 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
     return String.format("!%s.*", getName().toLowerCase());
   }
 
-  public void addToHelpGroup(HelpGroup helpGroup, Cmd cmd) {
-    List<Cmd> cmds = helpGroups.get(helpGroup);
-    if (cmds == null) {
-      cmds = new ArrayList<>();
-      helpGroups.put(helpGroup, cmds);
-    }
-    cmds.add(cmd);
-  }
-
-  public List<HelpGroup> getCmdHelpGroups(Cmd cmd) {
-    List<HelpGroup> inGroups = new ArrayList<>();
-    for (HelpGroup group : helpGroups.keySet()) {
-      List<Cmd> cmds = helpGroups.get(group);
-      if (cmds.contains(cmd)) {
-        inGroups.add(group);
-      }
-    }
-    return inGroups;
-  }
-
-  public List<Cmd> getOtherCmdsInGroup(HelpGroup group, Cmd cmd) {
-    List<Cmd> otherCmds = new ArrayList<>();
-    for (Cmd cmdInGroup : helpGroups.get(group)) {
-      if (cmdInGroup != cmd) {
-        otherCmds.add(cmdInGroup);
-      }
-    }
-    return otherCmds;
-  }
 
   public String getName() {
     String name = this.getClass().getSimpleName();
@@ -151,12 +128,17 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
     return name;
   }
 
+  protected void addToHelpGroup(HelpGroup helpGroup, Cmd cmd) {
+    this.commandGroupService.addCommandToHelpGroup(cmd, helpGroup);
+  }
+
+
   protected String buildSeeAlso(Cmd cmd) {
     Comparator<Cmd> comparator = (cmd1, cmd2) -> cmd1.getName().compareTo(cmd2.getName());
 
     String seeAlsoGroups = "";
-    for (HelpGroup group : getCmdHelpGroups(cmd)) {
-      List<Cmd> groupCmds = getOtherCmdsInGroup(group, cmd);
+    for (HelpGroup group : commandGroupService.getCmdHelpGroups(cmd)) {
+      List<Cmd> groupCmds = commandGroupService.getOtherCmdsInGroup(group, cmd);
       Collections.sort(groupCmds, comparator);
       if (groupCmds.size() > 0) {
         for (Cmd groupCmd : groupCmds) {

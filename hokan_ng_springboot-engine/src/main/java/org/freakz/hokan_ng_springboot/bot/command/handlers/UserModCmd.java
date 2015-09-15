@@ -80,6 +80,7 @@ public class UserModCmd extends Cmd {
 
   }
 
+
   @Override
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
     String mask = results.getString(ARG_MASK);

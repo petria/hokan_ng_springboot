@@ -1,5 +1,7 @@
 package org.freakz.hokan_ng_springboot.bot.command.handlers;
 
+import com.martiansoftware.jsap.FlaggedOption;
+import com.martiansoftware.jsap.JSAP;
 import com.martiansoftware.jsap.JSAPResult;
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.enums.HokanModule;
@@ -17,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_COUNT;
 
 /**
  * Created by Petri Airio on 19.5.2015.
@@ -38,6 +42,13 @@ public class LastcommCmd extends Cmd {
     super();
     setHelp("Shows executed processes in Bot.");
     addToHelpGroup(HelpGroup.PROCESS, this);
+
+    FlaggedOption flg = new FlaggedOption(ARG_COUNT)
+        .setStringParser(JSAP.INTEGER_PARSER)
+        .setDefault("5")
+        .setShortFlag('c');
+    registerParameter(flg);
+
     /*
     TODO add limeters to narrow query...
      */

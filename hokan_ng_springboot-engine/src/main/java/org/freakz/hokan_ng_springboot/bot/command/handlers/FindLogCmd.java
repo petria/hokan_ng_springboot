@@ -30,10 +30,10 @@ public class FindLogCmd extends Cmd {
     setHelp("Finds rows matching logs.");
     addToHelpGroup(HelpGroup.LOGS, this);
 
-    UnflaggedOption flg = new UnflaggedOption(ARG_LOG_PATTERN)
+    UnflaggedOption unflaggedOption = new UnflaggedOption(ARG_LOG_PATTERN)
         .setRequired(true)
         .setGreedy(false);
-    registerParameter(flg);
+    registerParameter(unflaggedOption);
 
   }
 
@@ -41,7 +41,6 @@ public class FindLogCmd extends Cmd {
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
     String logPattern = results.getString(ARG_LOG_PATTERN);
     List<IrcLog> ircLogs = ircLogService.findMatchingLogRows(logPattern);
-//    List<IrcLog> test = ircLogService.findByTimeStampBetweenAndTarget(TimeUtil.getStartAndEndTimeForDay(DateTime.now()), "FFFuf");
 
     if (ircLogs.size() > 0) {
       int max = SHOW_MAX;
