@@ -5,7 +5,7 @@ import com.martiansoftware.jsap.*;
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.cmdpool.CommandPool;
 import org.freakz.hokan_ng_springboot.bot.cmdpool.CommandRunnable;
-import org.freakz.hokan_ng_springboot.bot.command.CommandGroupService;
+import org.freakz.hokan_ng_springboot.bot.command.HelpGroupAnnotation;
 import org.freakz.hokan_ng_springboot.bot.enums.HokanModule;
 import org.freakz.hokan_ng_springboot.bot.events.*;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanEngineException;
@@ -21,10 +21,8 @@ import org.springframework.context.ApplicationContext;
 
 import javax.jms.JMSException;
 import javax.jms.ObjectMessage;
-import java.util.Collections;
-import java.util.Comparator;
+import java.lang.annotation.Annotation;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * User: petria
@@ -70,8 +68,6 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
   @Autowired
   protected CommandPool commandPool;
 
-  @Autowired
-  private CommandGroupService commandGroupService;
 
   @Autowired
   protected IrcLogService ircLogService;
@@ -129,12 +125,23 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
   }
 
   protected void addToHelpGroup(HelpGroup helpGroup, Cmd cmd) {
-    this.commandGroupService.addCommandToHelpGroup(cmd, helpGroup);
+//    this.commandGroupService.addCommandToHelpGroup(cmd, helpGroup);
   }
 
 
   protected String buildSeeAlso(Cmd cmd) {
-    Comparator<Cmd> comparator = (cmd1, cmd2) -> cmd1.getName().compareTo(cmd2.getName());
+
+    for (Cmd theCmd : context.getBeansOfType(Cmd.class).values()) {
+      Class obj = theCmd.getClass();
+      if (obj.isAnnotationPresent(HelpGroupAnnotation.class)) {
+        Annotation annotation = obj.getAnnotation(HelpGroupAnnotation.class);
+        HelpGroupAnnotation helpGroupAnnotation = (HelpGroupAnnotation) annotation;
+        HelpGroup[] groups = helpGroupAnnotation.helpGroups();
+        int foo = 0;
+      }
+    }
+
+/*    Comparator<Cmd> comparator = (cmd1, cmd2) -> cmd1.getName().compareTo(cmd2.getName());
 
     String seeAlsoGroups = "";
     for (HelpGroup group : commandGroupService.getCmdHelpGroups(cmd)) {
@@ -148,11 +155,11 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
           seeAlsoGroups += " " + groupCmd.getName();
         }
       }
-    }
+    }*/
     String seeAlsoHelp = "";
-    if (seeAlsoGroups.length() > 0) {
+/*    if (seeAlsoGroups.length() > 0) {
       seeAlsoHelp = "\nSee also:" + seeAlsoGroups;
-    }
+    }*/
     return seeAlsoHelp;
   }
 
