@@ -3,6 +3,7 @@ package org.freakz.hokan_ng_springboot.bot.command.handlers;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.UnflaggedOption;
 import lombok.extern.slf4j.Slf4j;
+import org.freakz.hokan_ng_springboot.bot.command.HelpGroupAnnotation;
 import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
@@ -25,6 +26,9 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_NICK;
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
 @Component
+@HelpGroupAnnotation(
+    helpGroups = {HelpGroup.USERS}
+)
 @Slf4j
 @Scope("prototype")
 public class UsersCmd extends Cmd {
