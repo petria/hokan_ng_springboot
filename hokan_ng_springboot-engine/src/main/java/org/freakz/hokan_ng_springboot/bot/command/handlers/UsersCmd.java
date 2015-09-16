@@ -3,7 +3,7 @@ package org.freakz.hokan_ng_springboot.bot.command.handlers;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.UnflaggedOption;
 import lombok.extern.slf4j.Slf4j;
-import org.freakz.hokan_ng_springboot.bot.command.HelpGroupAnnotation;
+import org.freakz.hokan_ng_springboot.bot.command.annotation.HelpGroups;
 import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
@@ -26,11 +26,11 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_NICK;
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
 @Component
-@HelpGroupAnnotation(
-    helpGroups = {HelpGroup.USERS}
-)
 @Slf4j
 @Scope("prototype")
+@HelpGroups(
+    helpGroups = {org.freakz.hokan_ng_springboot.bot.command.handlers.HelpGroup.USERS}
+)
 public class UsersCmd extends Cmd {
 
   @Autowired
@@ -39,7 +39,7 @@ public class UsersCmd extends Cmd {
   public UsersCmd() {
     super();
     setHelp("Lists users the Bot has meet on channels.");
-    addToHelpGroup(HelpGroup.USERS, this);
+    addToHelpGroup(org.freakz.hokan_ng_springboot.bot.command.handlers.HelpGroup.USERS, this);
 
     UnflaggedOption flg = new UnflaggedOption(ARG_NICK)
         .setRequired(false)

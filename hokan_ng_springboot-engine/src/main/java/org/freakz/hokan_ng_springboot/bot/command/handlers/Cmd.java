@@ -5,7 +5,7 @@ import com.martiansoftware.jsap.*;
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.cmdpool.CommandPool;
 import org.freakz.hokan_ng_springboot.bot.cmdpool.CommandRunnable;
-import org.freakz.hokan_ng_springboot.bot.command.HelpGroupAnnotation;
+import org.freakz.hokan_ng_springboot.bot.command.annotation.HelpGroups;
 import org.freakz.hokan_ng_springboot.bot.enums.HokanModule;
 import org.freakz.hokan_ng_springboot.bot.events.*;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanEngineException;
@@ -124,7 +124,7 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
     return name;
   }
 
-  protected void addToHelpGroup(HelpGroup helpGroup, Cmd cmd) {
+  protected void addToHelpGroup(org.freakz.hokan_ng_springboot.bot.command.handlers.HelpGroup helpGroup, Cmd cmd) {
 //    this.commandGroupService.addCommandToHelpGroup(cmd, helpGroup);
   }
 
@@ -133,10 +133,10 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
 
     for (Cmd theCmd : context.getBeansOfType(Cmd.class).values()) {
       Class obj = theCmd.getClass();
-      if (obj.isAnnotationPresent(HelpGroupAnnotation.class)) {
-        Annotation annotation = obj.getAnnotation(HelpGroupAnnotation.class);
-        HelpGroupAnnotation helpGroupAnnotation = (HelpGroupAnnotation) annotation;
-        HelpGroup[] groups = helpGroupAnnotation.helpGroups();
+      if (obj.isAnnotationPresent(HelpGroups.class)) {
+        Annotation annotation = obj.getAnnotation(HelpGroups.class);
+        HelpGroups helpGroups = (HelpGroups) annotation;
+        org.freakz.hokan_ng_springboot.bot.command.handlers.HelpGroup[] groups = helpGroups.helpGroups();
         int foo = 0;
       }
     }
@@ -144,7 +144,7 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
 /*    Comparator<Cmd> comparator = (cmd1, cmd2) -> cmd1.getName().compareTo(cmd2.getName());
 
     String seeAlsoGroups = "";
-    for (HelpGroup group : commandGroupService.getCmdHelpGroups(cmd)) {
+    for (HelpGroups group : commandGroupService.getCmdHelpGroups(cmd)) {
       List<Cmd> groupCmds = commandGroupService.getOtherCmdsInGroup(group, cmd);
       Collections.sort(groupCmds, comparator);
       if (groupCmds.size() > 0) {

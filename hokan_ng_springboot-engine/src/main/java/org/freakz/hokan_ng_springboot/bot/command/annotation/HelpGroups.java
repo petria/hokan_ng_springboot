@@ -1,6 +1,4 @@
-package org.freakz.hokan_ng_springboot.bot.command;
-
-import org.freakz.hokan_ng_springboot.bot.command.handlers.HelpGroup;
+package org.freakz.hokan_ng_springboot.bot.command.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -13,8 +11,8 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface HelpGroupAnnotation {
+public @interface HelpGroups {
 
-  HelpGroup[] helpGroups();
+  org.freakz.hokan_ng_springboot.bot.command.handlers.HelpGroup[] helpGroups();
 
 }
