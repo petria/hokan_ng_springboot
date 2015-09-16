@@ -7,13 +7,11 @@ import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.events.IrcMessageEvent;
 import org.freakz.hokan_ng_springboot.bot.jms.JmsEnvelope;
-import org.freakz.hokan_ng_springboot.bot.jms.api.JmsSender;
 import org.freakz.hokan_ng_springboot.bot.jms.api.JmsServiceMessageHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 
-import javax.annotation.PostConstruct;
 import java.util.Date;
 
 /**
@@ -25,19 +23,10 @@ import java.util.Date;
 public class EngineServiceMessageHandlerImpl implements JmsServiceMessageHandler {
 
   @Autowired
-  private JmsSender jmsSender;
-
-  @Autowired
   private ApplicationContext context;
 
   @Autowired
   private CommandHandlerService commandHandlerService;
-
-
-  @PostConstruct
-  public void postConstruct() {
-//    hokanModuleService.setHokanModule(HokanModule.HokanEngine);
-  }
 
   @Override
   public void handleJmsEnvelope(JmsEnvelope envelope) throws Exception {
