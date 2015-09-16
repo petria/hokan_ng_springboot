@@ -2,12 +2,11 @@ package org.freakz.hokan_ng_springboot.bot.command.handlers;
 
 import com.martiansoftware.jsap.JSAPResult;
 import lombok.extern.slf4j.Slf4j;
+import org.freakz.hokan_ng_springboot.bot.command.annotation.HelpGroups;
 import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.Network;
-import org.freakz.hokan_ng_springboot.bot.jpa.service.NetworkService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -23,15 +22,14 @@ import java.util.List;
 @Component
 @Scope("prototype")
 @Slf4j
+@HelpGroups(
+    helpGroups = {HelpGroup.NETWORK}
+)
 public class NetworksCmd extends Cmd {
-
-  @Autowired
-  private NetworkService networkService;
 
   public NetworksCmd() {
     super();
     setHelp("Shows configured IRC Networks");
-    addToHelpGroup(HelpGroup.NETWORK, this);
   }
 
   @Override

@@ -3,6 +3,7 @@ package org.freakz.hokan_ng_springboot.bot.command.handlers;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.UnflaggedOption;
 import lombok.extern.slf4j.Slf4j;
+import org.freakz.hokan_ng_springboot.bot.command.annotation.HelpGroups;
 import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
@@ -24,13 +25,14 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_TARGET;
 @Component
 @Scope("prototype")
 @Slf4j
+@HelpGroups(
+    helpGroups = {HelpGroup.CHANNELS, HelpGroup.USERS}
+)
 public class OpCmd extends Cmd {
 
   public OpCmd() {
     super();
     setHelp("Gives operator rights to target user on channel.");
-    addToHelpGroup(HelpGroup.CHANNELS, this);
-    addToHelpGroup(HelpGroup.USERS, this);
 
     UnflaggedOption flg = new UnflaggedOption(ARG_TARGET)
         .setRequired(false)

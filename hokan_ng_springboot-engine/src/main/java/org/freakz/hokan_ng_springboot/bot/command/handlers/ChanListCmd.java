@@ -2,6 +2,7 @@ package org.freakz.hokan_ng_springboot.bot.command.handlers;
 
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.Switch;
+import org.freakz.hokan_ng_springboot.bot.command.annotation.HelpGroups;
 import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
@@ -25,6 +26,9 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_VERBOSE;
  */
 @Component
 @Scope("prototype")
+@HelpGroups(
+    helpGroups = {HelpGroup.CHANNELS}
+)
 public class ChanListCmd extends Cmd {
 
   @Autowired
@@ -33,7 +37,6 @@ public class ChanListCmd extends Cmd {
   public ChanListCmd() {
     super();
     setHelp("Shows what channels the Bot knows of.");
-    addToHelpGroup(HelpGroup.CHANNELS, this);
 
     Switch sw = new Switch(ARG_VERBOSE)
         .setShortFlag('v');

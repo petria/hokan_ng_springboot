@@ -1,6 +1,7 @@
 package org.freakz.hokan_ng_springboot.bot.command.handlers;
 
 import com.martiansoftware.jsap.JSAPResult;
+import org.freakz.hokan_ng_springboot.bot.command.annotation.HelpGroups;
 import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.events.ServiceRequestType;
@@ -18,12 +19,14 @@ import java.util.List;
  */
 @Component
 @Scope("prototype")
+@HelpGroups(
+    helpGroups = {HelpGroup.UPDATERS}
+)
 public class UpdaterListCmd extends Cmd {
 
   public UpdaterListCmd() {
     super();
     setHelp("Shows DataUpdaters and their status / update count / next update");
-    addToHelpGroup(HelpGroup.UPDATERS, this);
   }
 
   @Override

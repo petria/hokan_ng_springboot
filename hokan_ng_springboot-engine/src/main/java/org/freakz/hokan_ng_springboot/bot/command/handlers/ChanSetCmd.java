@@ -3,15 +3,14 @@ package org.freakz.hokan_ng_springboot.bot.command.handlers;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.UnflaggedOption;
 import lombok.extern.slf4j.Slf4j;
+import org.freakz.hokan_ng_springboot.bot.command.annotation.HelpGroups;
 import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.Channel;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.ChannelPropertyEntity;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.PropertyName;
-import org.freakz.hokan_ng_springboot.bot.jpa.service.ChannelPropertyService;
 import org.freakz.hokan_ng_springboot.bot.util.StringStuff;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -28,10 +27,10 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_PROPERTY
 @Component
 @Scope("prototype")
 @Slf4j
+@HelpGroups(
+    helpGroups = {HelpGroup.CHANNELS, HelpGroup.PROPERTIES}
+)
 public class ChanSetCmd extends Cmd {
-
-  @Autowired
-  private ChannelPropertyService properties;
 
   public PropertyName getPropertyName(String property) {
     for (PropertyName prop : PropertyName.values()) {
@@ -43,9 +42,9 @@ public class ChanSetCmd extends Cmd {
   }
 
   public ChanSetCmd() {
+
     super();
     setHelp("Sets channel property. When executed via private messages valid channel id must be given.");
-    addToHelpGroup(HelpGroup.PROPERTIES, this);
     setChannelOpOnly(true);
 
     UnflaggedOption flg = new UnflaggedOption(ARG_PROPERTY)
@@ -95,7 +94,7 @@ public class ChanSetCmd extends Cmd {
       response.addResponse("Invalid property: %s", split[0]);
       return;
     }
-    ChannelPropertyEntity chanProp = properties.setChannelProperty(theChannel, propertyName, split[1]);
+    ChannelPropertyEntity chanProp = channelPropertyService.setChannelProperty(theChannel, propertyName, split[1]);
     response.addResponse("Channel property set to: %s", chanProp.toString());
   }
 

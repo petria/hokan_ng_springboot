@@ -1,6 +1,7 @@
 package org.freakz.hokan_ng_springboot.bot.command.handlers;
 
 import com.martiansoftware.jsap.JSAPResult;
+import org.freakz.hokan_ng_springboot.bot.command.annotation.HelpGroups;
 import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
@@ -26,6 +27,9 @@ import java.util.List;
  */
 @Component
 @Scope("prototype")
+@HelpGroups(
+    helpGroups = {HelpGroup.CHANNELS}
+)
 public class JoinedCmd extends Cmd {
 
   @Autowired
@@ -39,8 +43,7 @@ public class JoinedCmd extends Cmd {
 
   public JoinedCmd() {
     super();
-    addToHelpGroup(HelpGroup.CHANNELS, this);
-
+    setHelp("Shows channel where the Bot currently is joined.");
   }
 
 

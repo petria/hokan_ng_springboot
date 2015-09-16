@@ -2,6 +2,7 @@ package org.freakz.hokan_ng_springboot.bot.command.handlers;
 
 import com.martiansoftware.jsap.JSAPResult;
 import lombok.extern.slf4j.Slf4j;
+import org.freakz.hokan_ng_springboot.bot.command.annotation.HelpGroups;
 import org.freakz.hokan_ng_springboot.bot.enums.HokanModule;
 import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
@@ -26,6 +27,9 @@ import java.util.List;
 @Component
 @Scope("prototype")
 @Slf4j
+@HelpGroups(
+    helpGroups = {HelpGroup.PROCESS}
+)
 public class PsCmd extends Cmd {
 
   @Autowired
@@ -37,7 +41,7 @@ public class PsCmd extends Cmd {
   public PsCmd() {
     super();
     setHelp("Shows active processes running in Bot.");
-    addToHelpGroup(HelpGroup.PROCESS, this);
+
   }
 
   @Override

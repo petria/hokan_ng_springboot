@@ -3,6 +3,7 @@ package org.freakz.hokan_ng_springboot.bot.command.handlers;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.UnflaggedOption;
 import lombok.extern.slf4j.Slf4j;
+import org.freakz.hokan_ng_springboot.bot.command.annotation.HelpGroups;
 import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.events.ServiceRequestType;
@@ -23,6 +24,9 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_UPDATER;
 @Component
 @Scope("prototype")
 @Slf4j
+@HelpGroups(
+    helpGroups = {HelpGroup.UPDATERS}
+)
 public class UpdaterStartCmd extends Cmd {
 
   public UpdaterStartCmd() {
@@ -34,9 +38,7 @@ public class UpdaterStartCmd extends Cmd {
         .setGreedy(false);
     registerParameter(opt);
 
-    addToHelpGroup(HelpGroup.UPDATERS, this);
     setAdminUserOnly(true);
-
   }
 
   @Override

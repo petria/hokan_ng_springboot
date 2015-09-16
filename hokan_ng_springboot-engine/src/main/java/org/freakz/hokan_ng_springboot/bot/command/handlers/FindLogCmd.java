@@ -3,6 +3,7 @@ package org.freakz.hokan_ng_springboot.bot.command.handlers;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.UnflaggedOption;
 import lombok.extern.slf4j.Slf4j;
+import org.freakz.hokan_ng_springboot.bot.command.annotation.HelpGroups;
 import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
@@ -21,6 +22,10 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_LOG_PATT
 @Component
 @Scope("prototype")
 @Slf4j
+@HelpGroups(
+    helpGroups = {HelpGroup.LOGS}
+)
+
 public class FindLogCmd extends Cmd {
 
   private static final int SHOW_MAX = 3;
@@ -28,7 +33,6 @@ public class FindLogCmd extends Cmd {
   public FindLogCmd() {
     super();
     setHelp("Finds rows matching logs.");
-    addToHelpGroup(HelpGroup.LOGS, this);
 
     UnflaggedOption unflaggedOption = new UnflaggedOption(ARG_LOG_PATTERN)
         .setRequired(true)

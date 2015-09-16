@@ -1,6 +1,7 @@
 package org.freakz.hokan_ng_springboot.bot.command.handlers;
 
 import com.martiansoftware.jsap.JSAPResult;
+import org.freakz.hokan_ng_springboot.bot.command.annotation.HelpGroups;
 import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.events.ServiceRequestType;
@@ -21,16 +22,14 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("prototype")
+@HelpGroups(
+    helpGroups = {HelpGroup.TV}
+)
 public class TvNowCmd extends Cmd {
-
-//  @Autowired
-//  private TelkkuService tv;
 
   public TvNowCmd() {
     super();
-    setHelp("Shows what's going on in TV.");
-    addToHelpGroup(HelpGroup.TV, this);
-
+    setHelp("Shows what's going on in TV. Needs package xmltv to be installed on the host where the Bot is running.");
   }
 
   @Override

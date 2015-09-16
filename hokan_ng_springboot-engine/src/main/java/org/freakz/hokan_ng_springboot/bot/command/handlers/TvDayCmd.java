@@ -2,16 +2,14 @@ package org.freakz.hokan_ng_springboot.bot.command.handlers;
 
 import com.martiansoftware.jsap.JSAPResult;
 import lombok.extern.slf4j.Slf4j;
+import org.freakz.hokan_ng_springboot.bot.command.annotation.HelpGroups;
 import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.events.ServiceRequestType;
 import org.freakz.hokan_ng_springboot.bot.events.ServiceResponse;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
-import org.freakz.hokan_ng_springboot.bot.jpa.entity.PropertyName;
-import org.freakz.hokan_ng_springboot.bot.jpa.service.ChannelPropertyService;
 import org.freakz.hokan_ng_springboot.bot.models.TelkkuProgram;
 import org.freakz.hokan_ng_springboot.bot.util.StringStuff;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -28,24 +26,19 @@ import java.util.List;
 @Component
 @Scope("prototype")
 @Slf4j
+@HelpGroups(
+    helpGroups = {HelpGroup.TV}
+)
 public class TvDayCmd extends Cmd {
-
-  @Autowired
-  private ChannelPropertyService properties;
 
   public TvDayCmd() {
     super();
     setHelp("Is there something interesting (=notified) programs coming from TV?");
-    addToHelpGroup(HelpGroup.TV, this);
   }
 
   @Override
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    boolean notifyInUse = properties.getChannelPropertyAsBoolean(request.getChannel(), PropertyName.PROP_CHANNEL_DO_TVNOTIFY, false);
-/*    if (!notifyInUse) {
-      response.addResponse("TvNotify not in use in this channel! See: !chanenv / !chanset");
-      return;
-    }*/
+
     ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.TV_DAY_REQUEST, request.getIrcEvent(), request.getChannel(), new Date());
     List<TelkkuProgram> daily = serviceResponse.getTvDayData();
     if (daily.size() == 0) {

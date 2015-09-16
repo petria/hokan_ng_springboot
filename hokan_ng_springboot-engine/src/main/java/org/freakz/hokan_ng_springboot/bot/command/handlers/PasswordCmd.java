@@ -4,6 +4,7 @@ import com.martiansoftware.jsap.FlaggedOption;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.UnflaggedOption;
 import lombok.extern.slf4j.Slf4j;
+import org.freakz.hokan_ng_springboot.bot.command.annotation.HelpGroups;
 import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
@@ -24,12 +25,14 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.*;
 @Component
 @Scope("prototype")
 @Slf4j
+@HelpGroups(
+    helpGroups = {HelpGroup.USERS}
+)
 public class PasswordCmd extends Cmd {
 
   public PasswordCmd() {
     super();
     setHelp("Sets user password.");
-    addToHelpGroup(HelpGroup.USERS, this);
     setPrivateOnly(true);
 
     FlaggedOption flaggedOption = new FlaggedOption(ARG_NICK)

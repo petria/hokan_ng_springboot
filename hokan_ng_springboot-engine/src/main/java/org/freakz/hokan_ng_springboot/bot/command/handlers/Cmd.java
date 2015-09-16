@@ -66,6 +66,9 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
   protected ChannelService channelService;
 
   @Autowired
+  protected ChannelPropertyService channelPropertyService;
+
+  @Autowired
   protected CommandPool commandPool;
 
 
@@ -123,11 +126,6 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
     }
     return name;
   }
-
-  protected void addToHelpGroup(org.freakz.hokan_ng_springboot.bot.command.handlers.HelpGroup helpGroup, Cmd cmd) {
-//    this.commandGroupService.addCommandToHelpGroup(cmd, helpGroup);
-  }
-
 
   protected String buildSeeAlso(Cmd cmd) {
 

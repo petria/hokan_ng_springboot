@@ -1,6 +1,7 @@
 package org.freakz.hokan_ng_springboot.bot.command.handlers;
 
 import com.martiansoftware.jsap.JSAPResult;
+import org.freakz.hokan_ng_springboot.bot.command.annotation.HelpGroups;
 import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
@@ -21,6 +22,9 @@ import java.util.List;
  */
 @Component
 @Scope("prototype")
+@HelpGroups(
+    helpGroups = {HelpGroup.TV}
+)
 public class TvNotifyListCmd extends Cmd {
 
   @Autowired
@@ -29,7 +33,6 @@ public class TvNotifyListCmd extends Cmd {
   public TvNotifyListCmd() {
     super();
     setHelp("Show channel TV notify list.");
-    addToHelpGroup(HelpGroup.TV, this);
   }
 
   @Override

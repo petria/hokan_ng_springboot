@@ -4,6 +4,7 @@ import com.martiansoftware.jsap.FlaggedOption;
 import com.martiansoftware.jsap.JSAP;
 import com.martiansoftware.jsap.JSAPResult;
 import lombok.extern.slf4j.Slf4j;
+import org.freakz.hokan_ng_springboot.bot.command.annotation.HelpGroups;
 import org.freakz.hokan_ng_springboot.bot.enums.HokanModule;
 import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
@@ -29,6 +30,9 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_COUNT;
 @Component
 @Scope("prototype")
 @Slf4j
+@HelpGroups(
+    helpGroups = {HelpGroup.PROCESS}
+)
 public class LastcommCmd extends Cmd {
 
   @Autowired
@@ -41,7 +45,6 @@ public class LastcommCmd extends Cmd {
   public LastcommCmd() {
     super();
     setHelp("Shows executed processes in Bot.");
-    addToHelpGroup(HelpGroup.PROCESS, this);
 
     FlaggedOption flg = new FlaggedOption(ARG_COUNT)
         .setStringParser(JSAP.INTEGER_PARSER)

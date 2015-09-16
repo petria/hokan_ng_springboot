@@ -3,6 +3,7 @@ package org.freakz.hokan_ng_springboot.bot.command.handlers;
 import com.martiansoftware.jsap.JSAP;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.UnflaggedOption;
+import org.freakz.hokan_ng_springboot.bot.command.annotation.HelpGroups;
 import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.events.ServiceRequestType;
@@ -26,12 +27,14 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_ID;
  */
 @Component
 @Scope("prototype")
+@HelpGroups(
+    helpGroups = {HelpGroup.TV}
+)
 public class TvInfoCmd extends Cmd {
 
   public TvInfoCmd() {
     super();
     setHelp("Shows info description of given tv program ID.");
-    addToHelpGroup(HelpGroup.TV, this);
 
     UnflaggedOption opt = new UnflaggedOption(ARG_ID)
         .setStringParser(JSAP.INTEGER_PARSER)

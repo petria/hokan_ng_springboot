@@ -29,7 +29,7 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_NICK;
 @Slf4j
 @Scope("prototype")
 @HelpGroups(
-    helpGroups = {org.freakz.hokan_ng_springboot.bot.command.handlers.HelpGroup.USERS}
+    helpGroups = {HelpGroup.USERS}
 )
 public class UsersCmd extends Cmd {
 
@@ -39,7 +39,6 @@ public class UsersCmd extends Cmd {
   public UsersCmd() {
     super();
     setHelp("Lists users the Bot has meet on channels.");
-    addToHelpGroup(org.freakz.hokan_ng_springboot.bot.command.handlers.HelpGroup.USERS, this);
 
     UnflaggedOption flg = new UnflaggedOption(ARG_NICK)
         .setRequired(false)
