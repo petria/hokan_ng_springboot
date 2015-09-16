@@ -22,7 +22,7 @@ import org.springframework.context.ApplicationContext;
 import javax.jms.JMSException;
 import javax.jms.ObjectMessage;
 import java.lang.annotation.Annotation;
-import java.util.Iterator;
+import java.util.*;
 
 /**
  * User: petria
@@ -70,7 +70,6 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
 
   @Autowired
   protected CommandPool commandPool;
-
 
   @Autowired
   protected IrcLogService ircLogService;
@@ -129,21 +128,11 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
 
   protected String buildSeeAlso(Cmd cmd) {
 
-    for (Cmd theCmd : context.getBeansOfType(Cmd.class).values()) {
-      Class obj = theCmd.getClass();
-      if (obj.isAnnotationPresent(HelpGroups.class)) {
-        Annotation annotation = obj.getAnnotation(HelpGroups.class);
-        HelpGroups helpGroups = (HelpGroups) annotation;
-        org.freakz.hokan_ng_springboot.bot.command.handlers.HelpGroup[] groups = helpGroups.helpGroups();
-        int foo = 0;
-      }
-    }
-
-/*    Comparator<Cmd> comparator = (cmd1, cmd2) -> cmd1.getName().compareTo(cmd2.getName());
+    Comparator<Cmd> comparator = (cmd1, cmd2) -> cmd1.getName().compareTo(cmd2.getName());
 
     String seeAlsoGroups = "";
-    for (HelpGroups group : commandGroupService.getCmdHelpGroups(cmd)) {
-      List<Cmd> groupCmds = commandGroupService.getOtherCmdsInGroup(group, cmd);
+    for (HelpGroup group : getCmdHelpGroups(cmd)) {
+      List<Cmd> groupCmds = getOtherCmdsInGroup(group);
       Collections.sort(groupCmds, comparator);
       if (groupCmds.size() > 0) {
         for (Cmd groupCmd : groupCmds) {
@@ -153,12 +142,41 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
           seeAlsoGroups += " " + groupCmd.getName();
         }
       }
-    }*/
+    }
     String seeAlsoHelp = "";
-/*    if (seeAlsoGroups.length() > 0) {
+    if (seeAlsoGroups.length() > 0) {
       seeAlsoHelp = "\nSee also:" + seeAlsoGroups;
-    }*/
+    }
     return seeAlsoHelp;
+  }
+
+  private List<Cmd> getOtherCmdsInGroup(HelpGroup group) {
+    List<Cmd> other = new ArrayList<>();
+    for (Cmd theCmd : context.getBeansOfType(Cmd.class).values()) {
+      Class obj = theCmd.getClass();
+      if (obj.isAnnotationPresent(HelpGroups.class)) {
+        Annotation annotation = obj.getAnnotation(HelpGroups.class);
+        HelpGroups helpGroups = (HelpGroups) annotation;
+        HelpGroup[] groups = helpGroups.helpGroups();
+        for (HelpGroup cmdGroup : groups) {
+          if (cmdGroup == group) {
+            other.add(theCmd);
+          }
+        }
+      }
+    }
+    return other;
+  }
+
+  private HelpGroup[] getCmdHelpGroups(Cmd cmd) {
+      Class obj = cmd.getClass();
+      if (obj.isAnnotationPresent(HelpGroups.class)) {
+        Annotation annotation = obj.getAnnotation(HelpGroups.class);
+        HelpGroups helpGroups = (HelpGroups) annotation;
+        HelpGroup[] groups = helpGroups.helpGroups();
+        return groups;
+      }
+    return new HelpGroup[0];
   }
 
   public void handleLine(InternalRequest request, EngineResponse response)  {
