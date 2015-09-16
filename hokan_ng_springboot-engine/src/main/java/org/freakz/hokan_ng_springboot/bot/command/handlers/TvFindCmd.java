@@ -43,7 +43,6 @@ public class TvFindCmd extends Cmd {
 
   }
 
-
   @Override
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
     String program = results.getString(ARG_PROGRAM);

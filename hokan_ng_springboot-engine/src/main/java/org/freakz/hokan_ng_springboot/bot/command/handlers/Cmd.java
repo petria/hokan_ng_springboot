@@ -136,7 +136,7 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
       Collections.sort(groupCmds, comparator);
       if (groupCmds.size() > 0) {
         for (Cmd groupCmd : groupCmds) {
-          if (groupCmd == this) {
+          if (groupCmd.getName().equals(cmd.getName())) {
             continue;
           }
           seeAlsoGroups += " " + groupCmd.getName();

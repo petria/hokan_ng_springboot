@@ -26,7 +26,7 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.*;
 @Scope("prototype")
 @Slf4j
 @HelpGroups(
-    helpGroups = {HelpGroup.USERS}
+    helpGroups = {HelpGroup.ACCESS_CONTROL}
 )
 public class PasswordCmd extends Cmd {
 

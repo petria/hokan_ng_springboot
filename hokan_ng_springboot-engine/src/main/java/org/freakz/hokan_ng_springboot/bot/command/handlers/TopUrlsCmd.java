@@ -26,7 +26,6 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_CHANNEL;
 @HelpGroups(
     helpGroups = {HelpGroup.URLS}
 )
-
 public class TopUrlsCmd extends Cmd {
 
   public TopUrlsCmd() {

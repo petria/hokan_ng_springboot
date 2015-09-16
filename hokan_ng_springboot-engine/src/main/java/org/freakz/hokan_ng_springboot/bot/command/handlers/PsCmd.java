@@ -28,7 +28,7 @@ import java.util.List;
 @Scope("prototype")
 @Slf4j
 @HelpGroups(
-    helpGroups = {HelpGroup.PROCESS}
+    helpGroups = {HelpGroup.PROCESS, HelpGroup.SYSTEM}
 )
 public class PsCmd extends Cmd {
 

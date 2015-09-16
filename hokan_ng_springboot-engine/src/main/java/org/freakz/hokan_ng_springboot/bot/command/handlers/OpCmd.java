@@ -26,7 +26,7 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_TARGET;
 @Scope("prototype")
 @Slf4j
 @HelpGroups(
-    helpGroups = {HelpGroup.CHANNELS, HelpGroup.USERS}
+    helpGroups = {HelpGroup.ACCESS_CONTROL}
 )
 public class OpCmd extends Cmd {
 

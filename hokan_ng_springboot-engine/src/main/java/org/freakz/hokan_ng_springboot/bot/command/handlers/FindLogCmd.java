@@ -25,7 +25,6 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_LOG_PATT
 @HelpGroups(
     helpGroups = {HelpGroup.LOGS}
 )
-
 public class FindLogCmd extends Cmd {
 
   private static final int SHOW_MAX = 3;

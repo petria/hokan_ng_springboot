@@ -23,7 +23,7 @@ import java.util.List;
 @Scope("prototype")
 @Slf4j
 @HelpGroups(
-    helpGroups = {HelpGroup.NETWORK}
+    helpGroups = {HelpGroup.NETWORK, HelpGroup.SYSTEM}
 )
 public class NetworksCmd extends Cmd {
 

@@ -22,7 +22,7 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_PROPERTY
 @Component
 @Scope("prototype")
 @HelpGroups(
-    helpGroups = {HelpGroup.PROPERTIES}
+    helpGroups = {HelpGroup.PROPERTIES, HelpGroup.SYSTEM}
 )
 public class SysSetCmd extends Cmd {
 

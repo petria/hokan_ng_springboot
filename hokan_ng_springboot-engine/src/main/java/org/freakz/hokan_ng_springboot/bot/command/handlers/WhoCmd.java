@@ -2,6 +2,7 @@ package org.freakz.hokan_ng_springboot.bot.command.handlers;
 
 import com.martiansoftware.jsap.JSAPResult;
 import lombok.extern.slf4j.Slf4j;
+import org.freakz.hokan_ng_springboot.bot.command.annotation.HelpGroups;
 import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
@@ -18,6 +19,9 @@ import java.util.List;
 @Component
 @Slf4j
 @Scope("prototype")
+@HelpGroups(
+    helpGroups = {HelpGroup.ACCESS_CONTROL, HelpGroup.USERS}
+)
 public class WhoCmd extends Cmd {
 
   public WhoCmd() {

@@ -13,11 +13,12 @@ import java.util.List;
 
 /**
  * Created by Petri Airio (petri.j.airio@gmail.com) on 26.8.2015.
+ *
  */
 @Component
 @Scope("prototype")
 @HelpGroups(
-    helpGroups = {HelpGroup.PROPERTIES}
+    helpGroups = {HelpGroup.PROPERTIES, HelpGroup.SYSTEM}
 )
 public class SysEnvCmd extends Cmd {
 

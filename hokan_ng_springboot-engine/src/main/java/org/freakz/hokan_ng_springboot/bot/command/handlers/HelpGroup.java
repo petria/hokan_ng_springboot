@@ -10,6 +10,7 @@ package org.freakz.hokan_ng_springboot.bot.command.handlers;
 public enum HelpGroup {
 
   ALIAS("Alias help group"),
+  ACCESS_CONTROL("Access control group"),
   CHANNELS("Channels help group"),
   LOGS("IRC logs group"),
   NETWORK("Network help group"),

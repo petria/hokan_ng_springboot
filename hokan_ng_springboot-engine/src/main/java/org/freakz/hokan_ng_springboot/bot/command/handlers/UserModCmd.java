@@ -27,7 +27,7 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.*;
 @Slf4j
 @Scope("prototype")
 @HelpGroups(
-    helpGroups = {HelpGroup.USERS}
+    helpGroups = {HelpGroup.ACCESS_CONTROL, HelpGroup.USERS}
 )
 public class UserModCmd extends Cmd {
 
