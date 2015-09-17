@@ -72,7 +72,7 @@ public class KelikameratUpdater extends Updater {
 
   private Float parseFloat(String str) {
     String f = str.split(" ")[0];
-    if (!f.equals("-")) {
+    if (f != null && f.length() > 0 && !f.equals("-")) {
       return Float.parseFloat(f);
     } else {
       return null;
