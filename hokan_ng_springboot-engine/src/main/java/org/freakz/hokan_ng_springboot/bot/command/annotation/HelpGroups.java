@@ -1,6 +1,6 @@
 package org.freakz.hokan_ng_springboot.bot.command.annotation;
 
-import org.freakz.hokan_ng_springboot.bot.command.handlers.HelpGroup;
+import org.freakz.hokan_ng_springboot.bot.command.HelpGroup;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

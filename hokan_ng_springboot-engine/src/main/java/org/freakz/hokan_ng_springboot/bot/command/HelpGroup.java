@@ -1,4 +1,4 @@
-package org.freakz.hokan_ng_springboot.bot.command.handlers;
+package org.freakz.hokan_ng_springboot.bot.command;
 
 /**
  * User: petria
