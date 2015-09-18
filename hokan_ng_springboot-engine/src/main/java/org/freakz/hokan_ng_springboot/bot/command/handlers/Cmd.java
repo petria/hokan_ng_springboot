@@ -151,7 +151,7 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
     return seeAlsoHelp;
   }
 
-  private List<Cmd> getOtherCmdsInGroup(HelpGroup group) {
+  protected List<Cmd> getOtherCmdsInGroup(HelpGroup group) {
     List<Cmd> other = new ArrayList<>();
     for (Cmd theCmd : context.getBeansOfType(Cmd.class).values()) {
       Class obj = theCmd.getClass();
@@ -169,7 +169,7 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
     return other;
   }
 
-  private HelpGroup[] getCmdHelpGroups(Cmd cmd) {
+  protected HelpGroup[] getCmdHelpGroups(Cmd cmd) {
       Class obj = cmd.getClass();
       if (obj.isAnnotationPresent(HelpGroups.class)) {
         Annotation annotation = obj.getAnnotation(HelpGroups.class);

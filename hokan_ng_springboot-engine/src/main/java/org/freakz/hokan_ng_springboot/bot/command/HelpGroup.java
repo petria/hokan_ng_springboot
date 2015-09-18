@@ -9,28 +9,42 @@ package org.freakz.hokan_ng_springboot.bot.command;
  */
 public enum HelpGroup {
 
-  ALIAS("Alias help group"),
-  ACCESS_CONTROL("Access control group"),
-  CHANNELS("Channels help group"),
-  LOGS("IRC logs group"),
-  NETWORK("Network help group"),
-  PROCESS("Process help group"),
-  PROPERTIES("Properties help group"),
-  SYSTEM("System help group"),
-  TV("TV help group"),
-  UPDATERS("Updaters help group"),
-  USERS("Users help group"),
-  URLS("Urls help group")
+  ALIAS("Aliases", ""),
+  ACCESS_CONTROL("Access control", ""),
+  CHANNELS("Channels", ""),
+  HELP("Help", ""),
+  LOGS("Logs", ""),
+  NETWORK("Network", ""),
+  PROCESS("Process", ""),
+  PROPERTIES("Properties", ""),
+  SYSTEM("System", ""),
+  TV("TV", ""),
+  UPDATERS("Updaters", ""),
+  USERS("Users", ""),
+  URLS("Urls", "")
   ;
 
-  private String helpText;
+  private String groupName;
+  private String groupExplanation;
 
-  private HelpGroup(String helpText) {
-    this.helpText = helpText;
+  HelpGroup(String groupName, String groupExplanation) {
+    this.groupName = groupName;
+    this.groupExplanation = groupExplanation;
   }
 
-  public String getHelpText() {
-    return this.helpText;
+  public String getGroupName() {
+    return groupName;
   }
 
+  public void setGroupName(String groupName) {
+    this.groupName = groupName;
+  }
+
+  public String getGroupExplanation() {
+    return groupExplanation;
+  }
+
+  public void setGroupExplanation(String groupExplanation) {
+    this.groupExplanation = groupExplanation;
+  }
 }

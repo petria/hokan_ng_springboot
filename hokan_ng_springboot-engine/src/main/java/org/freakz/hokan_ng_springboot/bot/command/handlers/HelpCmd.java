@@ -3,6 +3,8 @@ package org.freakz.hokan_ng_springboot.bot.command.handlers;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.UnflaggedOption;
 import org.freakz.hokan_ng_springboot.bot.command.CommandHandlerService;
+import org.freakz.hokan_ng_springboot.bot.command.HelpGroup;
+import org.freakz.hokan_ng_springboot.bot.command.annotation.HelpGroups;
 import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
@@ -25,6 +27,9 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_COMMAND;
  */
 @Component
 @Scope("prototype")
+@HelpGroups(
+    helpGroups = {HelpGroup.HELP}
+)
 public class HelpCmd extends Cmd {
 
   @Autowired
@@ -51,19 +56,14 @@ public class HelpCmd extends Cmd {
 
     StringBuilder sb = new StringBuilder();
 
-    Comparator<Cmd> comparator = new Comparator<Cmd>() {
-      @Override
-      public int compare(Cmd cmd1, Cmd cmd2) {
-        return cmd1.getName().compareTo(cmd2.getName());
-      }
-    };
+    Comparator<Cmd> comparator = (cmd1, cmd2) -> cmd1.getName().compareTo(cmd2.getName());
 
     if (command == null) {
 
       List<Cmd> commands = commandHandler.getCommandHandlers();
       Collections.sort(commands, comparator);
 
-      sb.append("== HELP: Command List");
+      sb.append("== ALL COMMANDS ==");
       sb.append("\n");
 
       for (Cmd cmd : commands) {
