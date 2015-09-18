@@ -172,6 +172,14 @@ public class HokanCore extends PircBot implements HokanCoreService {
     return channelStats;
   }
 
+  public UserChannel getUserChannel(User user, Channel channel) {
+    UserChannel userChannel = userChannelService.getUserChannel(user, channel);
+    if (userChannel == null) {
+      userChannel = userChannelService.createUserChannel(user, channel);
+    }
+    return userChannel;
+  }
+
   public User getUser(IrcEvent ircEvent) {
     User user;
     User maskUser = this.userService.getUserByMask(ircEvent.getMask());
@@ -217,17 +225,46 @@ public class HokanCore extends PircBot implements HokanCoreService {
       user.setRealMask(StringStuff.quoteRegExp(mask));
       user = this.userService.save(user);
 
-      UserChannel userChannel = userChannelService.getUserChannel(user, channel);
+      getUserChannel(user, channel);
+/*      UserChannel userChannel = userChannelService.getUserChannel(user, channel);
       if (userChannel == null) {
         userChannelService.createUserChannel(user, channel);
-      }
+      }*/
       this.joinedUsersService.createJoinedUser(channel, user, userModes);
     }
   }
 
   @Override
-  protected void onJoin(String channel, String sender, String login, String hostname) {
-    sendWhoQuery(channel);
+  protected void onTopic(String channelName, String topic, String setBy, long date, boolean changed) {
+    ChannelStats channelStats = getChannelStats(getChannel(channelName));
+    channelStats.setTopicSet(topic);
+    channelStats.setTopicSetBy(setBy);
+    channelStats.setTopicSetDate(new Date());
+    channelStatsService.save(channelStats);
+    log.info("Topic '{}' set by {}", channelStats.getTopicSet(), channelStats.getTopicSetBy());
+
+  }
+
+  @Override
+  protected void onJoin(String channelName, String sender, String login, String hostname) {
+    log.info("{} joined channel: {}", sender, channelName);
+    sendWhoQuery(channelName);
+
+    IrcEvent ircEvent = IrcEventFactory.createIrcEvent(getName(), getNetwork().getName(), channelName, sender, login, hostname);
+    Channel channel = getChannel(ircEvent);
+    ChannelStats channelStats = getChannelStats(channel);
+//    UserChannel userChannel = get
+
+    if (sender.equalsIgnoreCase(getNick())) {
+      // Bot joining
+
+    } else {
+
+    }
+
+    channelService.save(channel);
+    channelStatsService.save(channelStats);
+
   }
 
   @Override
@@ -320,7 +357,7 @@ public class HokanCore extends PircBot implements HokanCoreService {
     this.networkService.save(nw);
 
     User user = getUser(ircEvent);
-    Channel ch = getChannel(ircEvent);
+//    Channel ch = getChannel(ircEvent);
 
 //    urlLoggerService.catchUrls(ircEvent, ch, this);
     serviceCommunicator.sendServiceRequest(ircEvent, ServiceRequestType.CATCH_URLS_REQUEST);
