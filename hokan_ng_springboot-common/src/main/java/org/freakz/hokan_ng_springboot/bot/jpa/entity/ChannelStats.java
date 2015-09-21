@@ -245,8 +245,12 @@ public class ChannelStats {
     this.linesReceived += i;
   }
 
-
   public void addToLinesSent(int i) {
     this.linesSent += i;
   }
+
+  public void addToCommandsHandled(int i) {
+    this.commandsHandled += i;
+  }
+
 }

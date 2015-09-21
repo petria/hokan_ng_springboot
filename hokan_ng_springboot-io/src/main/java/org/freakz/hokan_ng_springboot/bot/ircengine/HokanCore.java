@@ -108,7 +108,7 @@ public class HokanCore extends PircBot implements HokanCoreService {
   public void dispose() {
     outputQueue.stop();
     List<Runnable> runnableList = executor.shutdownNow();
-    log.info("Runnables size: {}", runnableList.size());
+    log.info("Runnable list  size: {}", runnableList.size());
     super.dispose();
   }
 
@@ -253,14 +253,42 @@ public class HokanCore extends PircBot implements HokanCoreService {
     IrcEvent ircEvent = IrcEventFactory.createIrcEvent(getName(), getNetwork().getName(), channelName, sender, login, hostname);
     Channel channel = getChannel(ircEvent);
     ChannelStats channelStats = getChannelStats(channel);
-//    UserChannel userChannel = get
+    User user = getUser(ircEvent);
+    UserChannel userChannel = getUserChannel(user, channel);
 
     if (sender.equalsIgnoreCase(getNick())) {
       // Bot joining
+      Network nw = getNetwork();
+      nw.addToChannelsJoined(1);
+      this.networkService.save(nw);
+      channel.setChannelState(ChannelState.JOINED);
+      if (channelStats.getFirstJoined() == null) {
+        Date d = new Date();
+        channelStats.setLastWriter(getName());
+        channelStats.setMaxUserCount(1);
+        channelStats.setFirstJoined(d);
+        channelStats.setLastActive(d);
+        channelStats.setMaxUserCountDate(d);
+        channelStats.setWriterSpreeOwner(getName());
+      }
 
     } else {
-
+      boolean doJoin = channelPropertyService.getChannelPropertyAsBoolean(channel, PropertyName.PROP_CHANNEL_DO_JOIN_MESSAGE, false);
+      if (doJoin) {
+        String message = userChannel.getJoinComment();
+        if (message != null && message.length() > 0) {
+          handleSendMessage(channel.getChannelName(), String.format("%s -> %s", sender, message));
+        }
+      }
     }
+    int oldC = channelStats.getMaxUserCount();
+    int newC = getUsers(channel.getChannelName()).length;
+    if (newC > oldC) {
+      log.info("Got new channel users record: " + newC + " > " + oldC);
+      channelStats.setMaxUserCount(newC);
+      channelStats.setMaxUserCountDate(new Date());
+    }
+
 
     channelService.save(channel);
     channelStatsService.save(channelStats);
@@ -381,7 +409,7 @@ public class HokanCore extends PircBot implements HokanCoreService {
   @Override
   protected void onMessage(String channel, String sender, String login, String hostname, String message) {
     this.ircLogService.addIrcLog(new Date(), sender, channel, message);
-    String toMe = getName() + ": ";
+    String toMe = String.format("%s: ", getName());
     boolean isToMe = false;
     if (message.startsWith(toMe)) {
       message = message.replaceFirst(toMe, "");

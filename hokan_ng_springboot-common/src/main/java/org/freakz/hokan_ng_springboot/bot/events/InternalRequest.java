@@ -2,14 +2,8 @@ package org.freakz.hokan_ng_springboot.bot.events;
 
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
-import org.freakz.hokan_ng_springboot.bot.jpa.entity.Channel;
-import org.freakz.hokan_ng_springboot.bot.jpa.entity.Network;
-import org.freakz.hokan_ng_springboot.bot.jpa.entity.User;
-import org.freakz.hokan_ng_springboot.bot.jpa.entity.UserChannel;
-import org.freakz.hokan_ng_springboot.bot.jpa.service.ChannelService;
-import org.freakz.hokan_ng_springboot.bot.jpa.service.NetworkService;
-import org.freakz.hokan_ng_springboot.bot.jpa.service.UserChannelService;
-import org.freakz.hokan_ng_springboot.bot.jpa.service.UserService;
+import org.freakz.hokan_ng_springboot.bot.jpa.entity.*;
+import org.freakz.hokan_ng_springboot.bot.jpa.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -35,6 +29,9 @@ public class InternalRequest implements Serializable {
   private ChannelService channelService;
 
   @Autowired
+  private ChannelStatsService channelStatsService;
+
+  @Autowired
   private UserChannelService userChannelService;
 
   @Autowired
@@ -45,6 +42,7 @@ public class InternalRequest implements Serializable {
   private Channel channel;
   private User user;
   private UserChannel userChannel;
+  private ChannelStats channelStats;
 
   private IrcMessageEvent ircMessageEvent;
 
@@ -58,6 +56,7 @@ public class InternalRequest implements Serializable {
     if (!ircMessageEvent.isPrivate()) {
       this.channel = channelService.findByNetworkAndChannelName(network, ircMessageEvent.getChannel());
       this.userChannel = userChannelService.getUserChannel(this.user, this.channel);
+      this.channelStats = channelStatsService.findFirstByChannel(channel);
     }
   }
 
@@ -82,8 +81,12 @@ public class InternalRequest implements Serializable {
     return userChannel;
   }
 
-  public void updateUserChannel() {
-    userChannelService.save(userChannel);
+  public void saveUserChannel() {
+    this.userChannel = userChannelService.save(this.userChannel);
+  }
+
+  public void saveChannelStats() {
+    this.channelStats = channelStatsService.save(this.channelStats);
   }
 
   private User getUser(IrcEvent ircEvent) {
@@ -100,6 +103,10 @@ public class InternalRequest implements Serializable {
 
     }
     return user;
+  }
+
+  public ChannelStats getChannelStats() {
+    return channelStats;
   }
 
 }

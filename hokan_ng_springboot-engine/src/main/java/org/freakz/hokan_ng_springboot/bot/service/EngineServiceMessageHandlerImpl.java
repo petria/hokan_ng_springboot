@@ -48,9 +48,12 @@ public class EngineServiceMessageHandlerImpl implements JmsServiceMessageHandler
         if (!event.isPrivate()) {
           internalRequest.getUserChannel().setLastCommand(handler.getName());
           internalRequest.getUserChannel().setLastCommandTime(new Date());
-          internalRequest.updateUserChannel();
+          internalRequest.saveUserChannel();
         }
         handler.handleLine(internalRequest, response);
+        internalRequest.getChannelStats().addToCommandsHandled(1);
+        internalRequest.saveChannelStats();
+
       } catch (Exception e) {
         log.error("Command handler returned exception {}", e);
       }
