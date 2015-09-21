@@ -248,7 +248,7 @@ public class HokanCore extends PircBot implements HokanCoreService {
   @Override
   protected void onJoin(String channelName, String sender, String login, String hostname) {
     log.info("{} joined channel: {}", sender, channelName);
-    sendWhoQuery(channelName);
+//    sendWhoQuery(channelName);
 
     IrcEvent ircEvent = IrcEventFactory.createIrcEvent(getName(), getNetwork().getName(), channelName, sender, login, hostname);
     Channel channel = getChannel(ircEvent);
