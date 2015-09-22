@@ -1,6 +1,7 @@
 package org.freakz.hokan_ng_springboot.bot.jpa.service;
 
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.Url;
+import org.freakz.hokan_ng_springboot.bot.models.StartAndEndTime;
 
 import java.util.List;
 
@@ -22,4 +23,5 @@ public interface UrlLoggerService {
 
   List findTopSenderByChannel(String channel);
 
+  List<Url>  findByCreatedBetweenAndChannel(StartAndEndTime saet, String channel);
 }

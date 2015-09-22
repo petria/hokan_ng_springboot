@@ -5,6 +5,7 @@ import org.freakz.hokan_ng_springboot.bot.core.HokanCoreService;
 import org.freakz.hokan_ng_springboot.bot.events.IrcMessageEvent;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.Url;
 import org.freakz.hokan_ng_springboot.bot.jpa.repository.UrlRepository;
+import org.freakz.hokan_ng_springboot.bot.models.StartAndEndTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -63,4 +64,10 @@ public class UrlRepositoryLoggerService implements UrlLoggerService {
   public List findTopSenderByChannel(String channel) {
     return repository.findTopSenderByChannel(channel);
   }
+
+  @Override
+  public List<Url> findByCreatedBetweenAndChannel(StartAndEndTime saet, String channel) {
+    return repository.findByCreatedBetweenAndChannel(saet.getStartTime().toDate(), saet.getEndTime().toDate(), channel);
+  }
+
 }

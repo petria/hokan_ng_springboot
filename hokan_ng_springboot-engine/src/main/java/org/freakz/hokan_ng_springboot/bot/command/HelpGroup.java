@@ -12,6 +12,7 @@ public enum HelpGroup {
   ALIAS("Aliases", ""),
   ACCESS_CONTROL("Access control", ""),
   CHANNELS("Channels", ""),
+  DATA_COLLECTION("Data collection", ""),
   HELP("Help", ""),
   LOGS("Logs", ""),
   NETWORK("Network", ""),
