@@ -1,8 +1,6 @@
 package org.freakz.hokan_ng_springboot.bot.jpa.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.freakz.hokan_ng_springboot.bot.core.HokanCoreService;
-import org.freakz.hokan_ng_springboot.bot.events.IrcMessageEvent;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.Url;
 import org.freakz.hokan_ng_springboot.bot.jpa.repository.UrlRepository;
 import org.freakz.hokan_ng_springboot.bot.models.StartAndEndTime;
@@ -20,17 +18,8 @@ import java.util.List;
 @Slf4j
 public class UrlRepositoryLoggerService implements UrlLoggerService {
 
-
-  @Autowired
-  private ChannelPropertyService channelPropertyService;
-
   @Autowired
   private UrlRepository repository;
-
-
-  private void processReply(IrcMessageEvent iEvent, String reply, HokanCoreService core) {
-    core.handleSendMessage(iEvent.getChannel(), reply, true, null, null);
-  }
 
   @Override
   public List<Url> findByUrl(String url) {

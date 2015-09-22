@@ -17,6 +17,7 @@ public enum PropertyName {
   PROP_SYS_ACCESS_CONTROL("sys.AccessControl"),
   PROP_SYS_BOT_NICK("sys.BotNick"),
   PROP_SYS_CONFIRM_LONG_MESSAGES("sys.ConfirmLongMessages"),
+  PROP_SYS_DAY_CHANGED_TIME("sys.DayChangedTime"),
   PROP_SYS_GOOGLE_API_KEY("sys.GoogleApiKey"),
   PROP_SYS_EXEC("sys.Exec"),
   PROP_SYS_HTTP_PROXY_HOST("sys.HttpProxyHost"),
