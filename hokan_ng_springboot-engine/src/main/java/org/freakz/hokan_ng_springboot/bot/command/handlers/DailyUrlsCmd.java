@@ -56,16 +56,16 @@ public class DailyUrlsCmd extends Cmd {
 
         shown++;
 
-        if (shown == 5) {
+/*        if (shown == 5) {
           break;
-        }
+        }*/
 
         ret += shown + ") " + row.getSender() + ": ";
         ret += row.getUrl();
-        if (row.getUrlTitle() != null) {
+/*        if (row.getUrlTitle() != null) {
           ret += " \"t: " + row.getUrlTitle() + "\"";
         }
-        ret += " [" + StringStuff.formatNiceDate(row.getCreated(), false) + "]";
+        ret += " [" + StringStuff.formatNiceDate(row.getCreated(), false) + "]";*/
         response.addResponse(ret);
       }
 

@@ -46,7 +46,7 @@ public class StatsNotifyServiceImpl implements StatsNotifyService, CommandRunnab
 
   @PostConstruct
   private void startRunner() {
-    commandPool.startRunnable(this, "<system>");
+//    commandPool.startRunnable(this, "<system>");
   }
 
   private Map<String, String> sentNotifies = new HashMap<>();
@@ -64,6 +64,25 @@ public class StatsNotifyServiceImpl implements StatsNotifyService, CommandRunnab
     }
   }
 
+  public String getDailyStats(Channel channel) {
+    DateTime yesterday = DateTime.now().minusDays(1);
+    StatsMapper statsMapper = statsService.getDailyStatsForChannel(yesterday, channel.getChannelName());
+
+    if (!statsMapper.hasError()) {
+      List<StatsData> statsDatas = statsMapper.getStatsData();
+      String res = StringStuff.formatTime(yesterday.toDate(), StringStuff.STRING_STUFF_DF_DDMMYYYY )+ " word stats:";
+      int i = 1;
+      for (StatsData statsData : statsDatas) {
+        res += " " + i + ") " + statsData.getNick() + "=" + statsData.getWords();
+        i++;
+      }
+      return res;
+    } else {
+      log.warn("Could not create stats notify request!");
+    }
+    return null;
+  }
+
   private void checkNotify() {
     List<Channel> channelList = channelPropertyService.getChannelsWithProperty(PropertyName.PROP_CHANNEL_DO_STATS, ".*");
     for (Channel channel : channelList) {
@@ -74,24 +93,13 @@ public class StatsNotifyServiceImpl implements StatsNotifyService, CommandRunnab
         if (this.sentNotifies.get(sentDay+time) != null)  {
           continue;
         }
-        DateTime yesterday = DateTime.now().minusDays(1);
-        StatsMapper statsMapper = statsService.getDailyStatsForChannel(yesterday, channel.getChannelName());
-
-        if (!statsMapper.hasError()) {
-          List<StatsData> statsDatas = statsMapper.getStatsData();
-          String res = StringStuff.formatTime(yesterday.toDate(), StringStuff.STRING_STUFF_DF_DDMMYYYY )+ " top words:";
-          int i = 1;
-          for (StatsData statsData : statsDatas) {
-            res += " " + i + ") " + statsData.getNick() + "=" + statsData.getWords();
-            i++;
-          }
+        String dailyStats = getDailyStats(channel);
+        if (dailyStats != null) {
           NotifyRequest notifyRequest = new NotifyRequest();
-          notifyRequest.setNotifyMessage(res);
+          notifyRequest.setNotifyMessage(dailyStats);
           notifyRequest.setTargetChannelId(channel.getId());
           jmsSender.send(HokanModule.HokanIo.getQueueName(), "STATS_NOTIFY_REQUEST", notifyRequest, false);
           this.sentNotifies.put(sentDay+time, time);
-        } else {
-          log.warn("Could not create stats notify request!");
         }
       }
     }

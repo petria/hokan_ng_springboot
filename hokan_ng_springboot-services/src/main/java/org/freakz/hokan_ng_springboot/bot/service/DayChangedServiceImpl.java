@@ -3,31 +3,57 @@ package org.freakz.hokan_ng_springboot.bot.service;
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.cmdpool.CommandPool;
 import org.freakz.hokan_ng_springboot.bot.cmdpool.CommandRunnable;
+import org.freakz.hokan_ng_springboot.bot.enums.HokanModule;
+import org.freakz.hokan_ng_springboot.bot.events.NotifyRequest;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
+import org.freakz.hokan_ng_springboot.bot.jms.api.JmsSender;
+import org.freakz.hokan_ng_springboot.bot.jpa.entity.Channel;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.PropertyName;
+import org.freakz.hokan_ng_springboot.bot.jpa.entity.Url;
+import org.freakz.hokan_ng_springboot.bot.jpa.service.ChannelPropertyService;
 import org.freakz.hokan_ng_springboot.bot.jpa.service.PropertyService;
+import org.freakz.hokan_ng_springboot.bot.jpa.service.UrlLoggerService;
+import org.freakz.hokan_ng_springboot.bot.service.stats.StatsNotifyService;
+import org.freakz.hokan_ng_springboot.bot.util.FileUtil;
 import org.freakz.hokan_ng_springboot.bot.util.StringStuff;
+import org.freakz.hokan_ng_springboot.bot.util.TimeUtil;
+import org.joda.time.DateTime;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * Created by Petri Airio on 22.9.2015.
- *
  */
 @Service
 @Slf4j
 public class DayChangedServiceImpl implements DayChangedService, CommandRunnable {
 
+  private static final String NIMIPAIVAT_TXT = "/Nimipaivat.txt";
+
+  @Autowired
+  private ChannelPropertyService channelPropertyService;
+
   @Autowired
   private CommandPool commandPool;
 
   @Autowired
+  private JmsSender jmsSender;
+
+  @Autowired
   private PropertyService propertyService;
+
+  @Autowired
+  private StatsNotifyService statsNotifyService;
+
+  @Autowired
+  private UrlLoggerService urlLoggerService;
 
   private Map<String, String> daysDone = new HashMap<>();
 
@@ -66,9 +92,94 @@ public class DayChangedServiceImpl implements DayChangedService, CommandRunnable
 
   private boolean handleDayChangedTo(String dayChangedTo) {
     log.debug("Day changed to: {}", dayChangedTo);
+    List<Channel> channelList = channelPropertyService.getChannelsWithProperty(PropertyName.PROP_CHANNEL_DO_DAY_CHANGED, ".*");
+    for (Channel channel : channelList) {
+      String dailyStats = statsNotifyService.getDailyStats(channel);
+      String dailyUrls = getDailyUrls(channel.getChannelName(), dayChangedTo);
+      String dailyNimip = getNimipäivät();
+      String sunRises = getSunriseTexts();
+      NotifyRequest notifyRequest = new NotifyRequest();
+      notifyRequest.setNotifyMessage(String.format("---=== Day changed to: %s (%s) ===---\n%s\n%s\n%s", dayChangedTo, dailyNimip, sunRises, dailyStats, dailyUrls));
+      notifyRequest.setTargetChannelId(channel.getId());
+      jmsSender.send(HokanModule.HokanIo.getQueueName(), "STATS_NOTIFY_REQUEST", notifyRequest, false);
+    }
+    return true;
+  }
 
+  private String getSunriseTexts() {
+    String[] urls = {"http://en.ilmatieteenlaitos.fi/weather/helsinki", "http://en.ilmatieteenlaitos.fi/weather/jyvaskyla", "http://en.ilmatieteenlaitos.fi/weather/utsjoki"};
+    String ret = null;
+    for (String url : urls) {
+      Document doc;
+      try {
+        doc = Jsoup.connect(url).get();
+      } catch (IOException e) {
+        //
+        continue;
+      }
+      if (ret == null) {
+        ret = "";
+      } else {
+        ret += "\n";
+      }
+      Elements value = doc.getElementsByAttributeValue("class", "local-weather-main-title");
+      String place = value.get(0).text();
+      Elements value2 = doc.getElementsByAttributeValue("class", "celestial-text");
+      String sunrise = value2.get(1).text();
+      ret += String.format("%s: %s", place.split(" ")[0], sunrise);
 
-    return false;
+    }
+    return ret;
+  }
+
+  private String getNimipäivät() {
+    List<String> nimiPvmList;
+    FileUtil fileUtil = new FileUtil();
+    StringBuilder contents = new StringBuilder();
+    try {
+      fileUtil.copyResourceToTmpFile(NIMIPAIVAT_TXT, contents);
+      nimiPvmList = Arrays.asList(contents.toString().split("\n"));
+    } catch (IOException e) {
+      return "n/a";
+    }
+    String ret = "";
+    String dateStr = StringStuff.formatTime(new Date(), StringStuff.STRING_STUFF_DF_DM);
+    for (String nimiPvm : nimiPvmList) {
+      if (nimiPvm.contains(dateStr)) {
+        int idx = nimiPvm.indexOf(" ") + 1;
+        ret += nimiPvm.substring(idx);
+      }
+    }
+    return ret;
+  }
+
+  private String getDailyUrls(String channelName, String dayChangedTo) {
+    DateTime time = DateTime.now().minusDays(1);
+    List counts = urlLoggerService.findTopSenderByChannelAndCreatedBetween(channelName, TimeUtil.getStartAndEndTimeForDay(time));
+    String ret = StringStuff.formatTime(time.toDate(), StringStuff.STRING_STUFF_DF_DDMMYYYY) + " url stats: ";
+    int max_count = 9;
+    for (int i = 0; i < counts.size(); i++) {
+      Object[] counter = (Object[]) counts.get(i);
+      Url url = (Url) counter[0];
+      Long count = (Long) counter[1];
+      if (i > 0) {
+        ret += ", ";
+      }
+      ret += (i + 1) + ") " + url.getSender() + "=" + count;
+      if (i == max_count) {
+        break;
+      }
+    }
+    long countTotal = 0;
+    for (Object count1 : counts) {
+      Object[] counter = (Object[]) count1;
+//      Url url = (Url) counter[0];
+      Long count = (Long) counter[1];
+      countTotal += count;
+    }
+    ret += " - Urls count = " + countTotal;
+
+    return ret;
   }
 
 }

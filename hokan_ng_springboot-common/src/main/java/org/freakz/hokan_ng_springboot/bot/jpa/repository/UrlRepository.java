@@ -27,4 +27,7 @@ public interface UrlRepository extends JpaRepository<Url, Long> {
   @Query("SELECT url, count(url) FROM Url url WHERE url.channel = ?1 GROUP BY url.sender ORDER BY 2 DESC")
   List findTopSenderByChannel(String channel);
 
+  @Query("SELECT url, count(url) FROM Url url WHERE url.channel = ?1 AND url.created BETWEEN ?2 AND ?3 GROUP BY url.sender ORDER BY 2 DESC")
+  List findTopSenderByChannelAndCreatedBetween(String channel, Date start, Date end);
+
 }

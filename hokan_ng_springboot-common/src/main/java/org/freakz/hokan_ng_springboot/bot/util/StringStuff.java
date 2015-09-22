@@ -38,6 +38,7 @@ public class StringStuff {
   public final static SimpleDateFormat STRING_STUFF_DF_DDMMYYYYHHMM = new SimpleDateFormat("dd.MM.yyyy HH:mm");
   public final static SimpleDateFormat STRING_STUFF_DF_DDMMYYYY = new SimpleDateFormat("dd.MM.yyyy");
   public final static SimpleDateFormat STRING_STUFF_DF_DMM = new SimpleDateFormat("d.MM.");
+  public final static SimpleDateFormat STRING_STUFF_DF_DM = new SimpleDateFormat("d.M.");
 
 
   private StringStuff() {

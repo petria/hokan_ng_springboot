@@ -55,8 +55,14 @@ public class UrlRepositoryLoggerService implements UrlLoggerService {
   }
 
   @Override
+  public List findTopSenderByChannelAndCreatedBetween(String channel, StartAndEndTime saet) {
+    return repository.findTopSenderByChannelAndCreatedBetween(channel, saet.getStartTime().toDate(), saet.getEndTime().toDate());
+  }
+
+  @Override
   public List<Url> findByCreatedBetweenAndChannel(StartAndEndTime saet, String channel) {
     return repository.findByCreatedBetweenAndChannel(saet.getStartTime().toDate(), saet.getEndTime().toDate(), channel);
   }
+
 
 }

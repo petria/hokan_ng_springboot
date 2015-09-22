@@ -23,5 +23,9 @@ public interface UrlLoggerService {
 
   List findTopSenderByChannel(String channel);
 
+  List findTopSenderByChannelAndCreatedBetween(String channel, StartAndEndTime saet);
+
   List<Url>  findByCreatedBetweenAndChannel(StartAndEndTime saet, String channel);
+
+
 }

@@ -89,4 +89,18 @@ public class JSoupTest {
     }
     int foo = 0;
   }
+
+  @Test
+  public void testSunSetFetch() throws IOException {
+    String url = "http://en.ilmatieteenlaitos.fi/weather/jyvaskyla";
+    Document doc = Jsoup.connect(url).get();
+    Elements value2 = doc.getElementsByAttributeValue("class", "celestial-text");
+    String sunrise = value2.get(1).text();
+
+    Elements value = doc.getElementsByAttributeValue("class", "local-weather-main-title");
+    String place = value.get(0).text();
+    int foo = 0;
+
+  }
+
 }
