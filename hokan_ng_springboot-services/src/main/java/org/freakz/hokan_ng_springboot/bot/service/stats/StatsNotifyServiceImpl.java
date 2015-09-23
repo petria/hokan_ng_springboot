@@ -72,10 +72,13 @@ public class StatsNotifyServiceImpl implements StatsNotifyService, CommandRunnab
       List<StatsData> statsDatas = statsMapper.getStatsData();
       String res = StringStuff.formatTime(yesterday.toDate(), StringStuff.STRING_STUFF_DF_DDMMYYYY )+ " word stats:";
       int i = 1;
+      int countTotal = 0;
       for (StatsData statsData : statsDatas) {
         res += " " + i + ") " + statsData.getNick() + "=" + statsData.getWords();
+        countTotal += statsData.getWords();
         i++;
       }
+      res += " - Words count = " + countTotal;
       return res;
     } else {
       log.warn("Could not create stats notify request!");

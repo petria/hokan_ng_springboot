@@ -67,10 +67,11 @@ public class DayChangedServiceImpl implements DayChangedService, CommandRunnable
     while (true) {
       try {
         checkDayChanged();
-        Thread.sleep(5 * 1000);
+        Thread.sleep(10 * 1000);
       } catch (Exception e) {
+        e.printStackTrace();
         log.debug("interrupted");
-        break;
+//        break;
       }
     }
 
@@ -94,28 +95,65 @@ public class DayChangedServiceImpl implements DayChangedService, CommandRunnable
     log.debug("Day changed to: {}", dayChangedTo);
     List<Channel> channelList = channelPropertyService.getChannelsWithProperty(PropertyName.PROP_CHANNEL_DO_DAY_CHANGED, ".*");
     for (Channel channel : channelList) {
-      String dailyStats = statsNotifyService.getDailyStats(channel);
-      String dailyUrls = getDailyUrls(channel.getChannelName(), dayChangedTo);
       String dailyNimip = getNimipäivät();
-      String sunRises = getSunriseTexts();
+
+      String property = channelPropertyService.getChannelPropertyAsString(channel, PropertyName.PROP_CHANNEL_DO_DAY_CHANGED, "");
+      String sunRises = ""; //getSunriseTexts();
+      List<String> sunRisesCities = parseProperty(property, "sunRises");
+      if (sunRisesCities != null) {
+        sunRises = getSunriseTexts(sunRisesCities);
+      }
+      String dailyStats = "";
+      if (parseProperty(property, "dailyStats") != null) {
+        dailyStats = statsNotifyService.getDailyStats(channel);
+      }
+      String dailyUrls = "";
+      if (parseProperty(property, "dailyUrls") != null) {
+        dailyUrls = getDailyUrls(channel.getChannelName(), dayChangedTo);
+      }
+
       NotifyRequest notifyRequest = new NotifyRequest();
       notifyRequest.setNotifyMessage(String.format("---=== Day changed to: %s (%s) ===---\n%s\n%s\n%s", dayChangedTo, dailyNimip, sunRises, dailyStats, dailyUrls));
       notifyRequest.setTargetChannelId(channel.getId());
       jmsSender.send(HokanModule.HokanIo.getQueueName(), "STATS_NOTIFY_REQUEST", notifyRequest, false);
     }
-    return true;
+    return false;
   }
 
-  private String getSunriseTexts() {
-    String[] urls = {"http://en.ilmatieteenlaitos.fi/weather/helsinki", "http://en.ilmatieteenlaitos.fi/weather/jyvaskyla", "http://en.ilmatieteenlaitos.fi/weather/utsjoki"};
+  private List<String> parseProperty(String property, String keyword) {
+    String[] split = property.split(" ");
+    for (String str : split) {
+      if (str.startsWith(keyword)) {
+        if (str.contains(":")) {
+          String[] split2 = str.split(":");
+          List<String> list = new LinkedList<>(Arrays.asList(split2));
+          if (list.size() > 1) {
+            list.remove(0);
+          }
+          return list;
+        } else {
+          return new ArrayList<>();
+        }
+      }
+    }
+    return null;
+  }
+
+
+  private String getSunriseTexts(List<String> sunRisesCities) {
+//    String[] urls = {"http://en.ilmatieteenlaitos.fi/weather/helsinki", "http://en.ilmatieteenlaitos.fi/weather/jyvaskyla", "http://en.ilmatieteenlaitos.fi/weather/utsjoki"};
     String ret = null;
-    for (String url : urls) {
+    String baseUrl = "http://en.ilmatieteenlaitos.fi/weather/";
+
+    for (String city : sunRisesCities) {
+      String url = baseUrl + city;
       Document doc;
       try {
         doc = Jsoup.connect(url).get();
       } catch (IOException e) {
         //
         continue;
+//        return "n/a";
       }
       if (ret == null) {
         ret = "";
@@ -125,9 +163,11 @@ public class DayChangedServiceImpl implements DayChangedService, CommandRunnable
       Elements value = doc.getElementsByAttributeValue("class", "local-weather-main-title");
       String place = value.get(0).text();
       Elements value2 = doc.getElementsByAttributeValue("class", "celestial-text");
+      if (value2.size() == 0) {
+        continue;
+      }
       String sunrise = value2.get(1).text();
       ret += String.format("%s: %s", place.split(" ")[0], sunrise);
-
     }
     return ret;
   }
@@ -156,7 +196,11 @@ public class DayChangedServiceImpl implements DayChangedService, CommandRunnable
   private String getDailyUrls(String channelName, String dayChangedTo) {
     DateTime time = DateTime.now().minusDays(1);
     List counts = urlLoggerService.findTopSenderByChannelAndCreatedBetween(channelName, TimeUtil.getStartAndEndTimeForDay(time));
-    String ret = StringStuff.formatTime(time.toDate(), StringStuff.STRING_STUFF_DF_DDMMYYYY) + " url stats: ";
+    String ret = StringStuff.formatTime(time.toDate(), StringStuff.STRING_STUFF_DF_DDMMYYYY) + " url  stats: ";
+    if (counts.size() == 0) {
+      ret += "no urls!!";
+      return ret;
+    }
     int max_count = 9;
     for (int i = 0; i < counts.size(); i++) {
       Object[] counter = (Object[]) counts.get(i);

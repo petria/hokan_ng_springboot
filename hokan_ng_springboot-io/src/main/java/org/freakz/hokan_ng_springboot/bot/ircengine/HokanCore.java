@@ -367,6 +367,11 @@ public class HokanCore extends PircBot implements HokanCoreService {
   }
 
   @Override
+  protected void onDisconnect() {
+    engineConnector.engineConnectorDisconnected(this);
+  }
+
+  @Override
   protected void onPrivateMessage(String sender, String login, String hostname, String message) {
     this.ircLogService.addIrcLog(new Date(), sender, getName(), message);
     int confirmLong = propertyService.getPropertyAsInt(PropertyName.PROP_SYS_CONFIRM_LONG_MESSAGES, -1);
@@ -595,13 +600,7 @@ public class HokanCore extends PircBot implements HokanCoreService {
     }
 
     handleSendMessage(response);
-/*    if (response.getCommandClass() != null) {
-      Channel ch = getChannel(response.getRequest().getIrcEvent().getChannel());
-      ch.addCommandsHandled(1);
-      this.channelService.updateChannel(ch);
-    }
-TODO
-*/
+
     for (EngineMethodCall methodCall : response.getEngineMethodCalls()) {
       String methodName = methodCall.getMethodName();
       String[] methodArgs = methodCall.getMethodArgs();
