@@ -30,6 +30,7 @@ import java.util.*;
 
 /**
  * Created by Petri Airio on 22.9.2015.
+ *
  */
 @Service
 @Slf4j
@@ -69,9 +70,8 @@ public class DayChangedServiceImpl implements DayChangedService, CommandRunnable
         checkDayChanged();
         Thread.sleep(10 * 1000);
       } catch (Exception e) {
-        e.printStackTrace();
-        log.debug("interrupted");
-//        break;
+        log.error("Error", e);
+        break;
       }
     }
 
@@ -103,7 +103,7 @@ public class DayChangedServiceImpl implements DayChangedService, CommandRunnable
         topic = String.format("---=== Day changed to: %s (%s) ===---", dayChangedTo, dailyNimip);
       }
 
-      String sunRises = ""; //getSunriseTexts();
+      String sunRises = "";
       List<String> sunRisesCities = parseProperty(property, "sunRises");
       if (sunRisesCities != null) {
         sunRises = getSunriseTexts(sunRisesCities);
@@ -114,7 +114,7 @@ public class DayChangedServiceImpl implements DayChangedService, CommandRunnable
       }
       String dailyUrls = "";
       if (parseProperty(property, "dailyUrls") != null) {
-        dailyUrls = getDailyUrls(channel.getChannelName(), dayChangedTo);
+        dailyUrls = getDailyUrls(channel.getChannelName());
       }
 
       NotifyRequest notifyRequest = new NotifyRequest();
@@ -198,7 +198,7 @@ public class DayChangedServiceImpl implements DayChangedService, CommandRunnable
     return ret;
   }
 
-  private String getDailyUrls(String channelName, String dayChangedTo) {
+  private String getDailyUrls(String channelName) {
     DateTime time = DateTime.now().minusDays(1);
     List counts = urlLoggerService.findTopSenderByChannelAndCreatedBetween(channelName, TimeUtil.getStartAndEndTimeForDay(time));
     String ret = StringStuff.formatTime(time.toDate(), StringStuff.STRING_STUFF_DF_DDMMYYYY) + " url  stats: ";
