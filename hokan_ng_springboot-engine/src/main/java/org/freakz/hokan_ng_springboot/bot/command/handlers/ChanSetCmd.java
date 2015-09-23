@@ -63,23 +63,23 @@ public class ChanSetCmd extends Cmd {
   @Override
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
 
-    String channelId = results.getString(ARG_CHANNEL_ID);
+    String channelId = results.getString(ARG_CHANNEL_ID, null);
+    if (request.getIrcEvent().isPrivate() && channelId == null) {
+      response.addResponse("ChannelID parameter is needed when using private message, try: !chanlist to get ID.");
+      return;
+    }
     Channel theChannel = request.getChannel();
-    if (request.getIrcEvent().isPrivate()) {
-      if (channelId == null) {
-        response.addResponse("ChannelID parameter is needed when using private message. See ChanList command.");
-        return;
-      }
-      long id = -1;
+    if (channelId != null) {
+      long id;
       try {
         id = Long.parseLong(channelId);
       } catch (NumberFormatException ex) {
-        response.addResponse("Valid ChannelID parameter is needed!");
+        response.addResponse("Valid ChannelID parameter is needed, try: !chanlist");
         return;
       }
       theChannel = channelService.findOne(id);
       if (theChannel == null) {
-        response.addResponse("No valid Channel found with id: %d", id);
+        response.addResponse("No valid Channel found with id: %d, try: !chanlist to get ID.", id);
         return;
       }
     }
