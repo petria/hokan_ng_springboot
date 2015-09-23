@@ -95,9 +95,14 @@ public class DayChangedServiceImpl implements DayChangedService, CommandRunnable
     log.debug("Day changed to: {}", dayChangedTo);
     List<Channel> channelList = channelPropertyService.getChannelsWithProperty(PropertyName.PROP_CHANNEL_DO_DAY_CHANGED, ".*");
     for (Channel channel : channelList) {
-      String dailyNimip = getNimipäivät();
-
       String property = channelPropertyService.getChannelPropertyAsString(channel, PropertyName.PROP_CHANNEL_DO_DAY_CHANGED, "");
+
+      String topic = "";
+      if (parseProperty(property, "topic") != null) {
+        String dailyNimip = getNimipäivät();
+        topic = String.format("---=== Day changed to: %s (%s) ===---", dayChangedTo, dailyNimip);
+      }
+
       String sunRises = ""; //getSunriseTexts();
       List<String> sunRisesCities = parseProperty(property, "sunRises");
       if (sunRisesCities != null) {
@@ -113,7 +118,7 @@ public class DayChangedServiceImpl implements DayChangedService, CommandRunnable
       }
 
       NotifyRequest notifyRequest = new NotifyRequest();
-      notifyRequest.setNotifyMessage(String.format("---=== Day changed to: %s (%s) ===---\n%s\n%s\n%s", dayChangedTo, dailyNimip, sunRises, dailyStats, dailyUrls));
+      notifyRequest.setNotifyMessage(String.format("%s\n%s\n%s\n%s", topic, sunRises, dailyStats, dailyUrls));
       notifyRequest.setTargetChannelId(channel.getId());
       jmsSender.send(HokanModule.HokanIo.getQueueName(), "STATS_NOTIFY_REQUEST", notifyRequest, false);
     }
