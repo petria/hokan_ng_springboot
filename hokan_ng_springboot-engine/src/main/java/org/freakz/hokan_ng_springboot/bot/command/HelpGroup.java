@@ -13,6 +13,7 @@ public enum HelpGroup {
   ACCESS_CONTROL("Access control", ""),
   CHANNELS("Channels", ""),
   DATA_COLLECTION("Data collection", ""),
+  DATA_FETCHERS("Data fetchers", ""),
   HELP("Help", ""),
   LOGS("Logs", ""),
   NETWORK("Network", ""),

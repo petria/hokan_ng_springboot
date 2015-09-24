@@ -13,6 +13,7 @@ public class StaticStrings {
   public static final String ARG_AMOUNT = "Amount";
   public static final String ARG_CHANNEL = "Channel";
   public static final String ARG_CHANNEL_ID = "ChannelId";
+  public static final String ARG_CITY = "City";
   public static final String ARG_CITY_1 = "City1";
   public static final String ARG_CITY_2 = "City2";
   public static final String ARG_COUNT = "Count";
