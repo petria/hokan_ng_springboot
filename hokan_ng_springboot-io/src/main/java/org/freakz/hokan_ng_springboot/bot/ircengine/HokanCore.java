@@ -395,6 +395,10 @@ public class HokanCore extends PircBot implements HokanCoreService {
 //    urlLoggerService.catchUrls(ircEvent, ch, this);
     serviceCommunicator.sendServiceRequest(ircEvent, ServiceRequestType.CATCH_URLS_REQUEST);
 
+    if (accessControlService.isAdminUser(user)) {
+      handleBuiltInCommands(ircEvent);
+    }
+
     boolean ignore = false;
     String flags = user.getFlags();
     if (flags != null) {
