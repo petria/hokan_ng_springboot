@@ -11,9 +11,6 @@ import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.CommandHistory;
-import org.freakz.hokan_ng_springboot.bot.jpa.service.CommandHistoryService;
-import org.freakz.hokan_ng_springboot.bot.jpa.service.PropertyService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -36,13 +33,6 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_COUNT;
 )
 public class LastcommCmd extends Cmd {
 
-  @Autowired
-  private PropertyService propertyService;
-
-  @Autowired
-  private CommandHistoryService commandHistoryService;
-
-
   public LastcommCmd() {
     super();
     setHelp("Shows executed processes in Bot.");
@@ -52,10 +42,6 @@ public class LastcommCmd extends Cmd {
         .setDefault("5")
         .setShortFlag('c');
     registerParameter(flg);
-
-    /*
-    TODO add limeters to narrow query...
-     */
   }
 
   @Override
@@ -69,17 +55,17 @@ public class LastcommCmd extends Cmd {
       }
     }
     if (all.size() > 0) {
-      Comparator<CommandHistory> comparator = new Comparator<CommandHistory>() {
-        @Override
-        public int compare(CommandHistory o1, CommandHistory o2) {
-          return o1.getStartTime().compareTo(o2.getStartTime());
-        }
-      };
+      Comparator<CommandHistory> comparator = (o1, o2) -> o2.getStartTime().compareTo(o1.getStartTime());
       Collections.sort(all, comparator);
-
+      int max = results.getInt(ARG_COUNT);
+      int count = 0;
       response.addResponse("%2s - %10s - %-13s - %s\n", "PID", "STARTED_BY", "START_TIME", "CLASS");
       for (CommandHistory cmd : all) {
         response.addResponse("%2d - %10s - %-13s - %s\n", cmd.getPid(), cmd.getStartedBy(), cmd.getStartTime(), cmd.getRunnable().replaceAll("class org.freakz.hokan_ng_springboot.bot.", ""));
+        count++;
+        if (count == max) {
+          break;
+        }
       }
     }
 

@@ -70,6 +70,9 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
   protected ChannelPropertyService channelPropertyService;
 
   @Autowired
+  protected CommandHistoryService commandHistoryService;
+
+  @Autowired
   protected CommandPool commandPool;
 
   @Autowired
