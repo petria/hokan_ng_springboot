@@ -59,7 +59,7 @@ public class NimipaivaCmd extends Cmd {
 
         String nimiOrPvm = results.getString(ARG_NIMI_OR_PVM);
         int mode;
-        if (nimiOrPvm.matches("\\d+\\.\\d+\\.")) {
+        if (nimiOrPvm.matches("\\d+\\.\\d+\\.+")) {
           mode = PVM_MODE;
         } else {
           mode = NAME_MODE;
