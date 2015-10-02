@@ -64,7 +64,7 @@ public class NimipaivaCmd extends Cmd {
         } else {
           mode = NAME_MODE;
         }
-
+        log.debug("Mode: {}", mode);
         for (String nimiPvm : nimiPvmList) {
           if (mode == NAME_MODE) {
             if (nimiPvm.toLowerCase().contains(nimiOrPvm.toLowerCase())) {
