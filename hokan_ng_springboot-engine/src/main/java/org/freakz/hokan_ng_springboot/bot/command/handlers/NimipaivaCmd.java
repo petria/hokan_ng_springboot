@@ -30,6 +30,8 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_NIMI_OR_
 public class NimipaivaCmd extends Cmd {
 
   private static final String NIMIPAIVAT_TXT = "/Nimipaivat.txt";
+  private static final int PVM_MODE = 0;
+  private static final int NAME_MODE = 1;
 
   private List<String> nimiPvmList = new ArrayList<>();
 
@@ -46,7 +48,6 @@ public class NimipaivaCmd extends Cmd {
 
   @Override
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    String nimiOrPvm = results.getString(ARG_NIMI_OR_PVM);
 
     if (nimiPvmList == null || nimiPvmList.size() == 0) {
       FileUtil fileUtil = new FileUtil();
@@ -54,13 +55,29 @@ public class NimipaivaCmd extends Cmd {
       try {
         fileUtil.copyResourceToTmpFile(NIMIPAIVAT_TXT, contents);
         this.nimiPvmList = Arrays.asList(contents.toString().split("\n"));
+
+
+        String nimiOrPvm = results.getString(ARG_NIMI_OR_PVM);
+        int mode;
+        if (nimiOrPvm.matches("\\d+\\.\\d+\\.")) {
+          mode = PVM_MODE;
+        } else {
+          mode = NAME_MODE;
+        }
+
+        for (String nimiPvm : nimiPvmList) {
+          if (mode == NAME_MODE) {
+            if (nimiPvm.toLowerCase().contains(nimiOrPvm.toLowerCase())) {
+              response.addResponse("%s\n", nimiPvm);
+            }
+          } else {
+            if (nimiPvm.startsWith(nimiOrPvm)) {
+              response.addResponse("%s\n", nimiPvm);
+            }
+          }
+        }
       } catch (IOException e) {
         throw new HokanException("Nimipaivat.txt", e);
-      }
-    }
-    for (String nimiPvm : nimiPvmList) {
-      if (nimiPvm.toLowerCase().contains(nimiOrPvm.toLowerCase())) {
-        response.addResponse("%s\n", nimiPvm);
       }
     }
   }
