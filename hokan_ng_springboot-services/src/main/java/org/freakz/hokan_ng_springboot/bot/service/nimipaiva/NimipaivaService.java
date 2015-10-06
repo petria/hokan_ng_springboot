@@ -10,10 +10,10 @@ import java.util.List;
  */
 public interface NimipaivaService {
 
-
   List<String> getNamesForDay(DateTime day);
 
   DateTime findDayForName(String name);
 
+  void loadNames();
 
 }

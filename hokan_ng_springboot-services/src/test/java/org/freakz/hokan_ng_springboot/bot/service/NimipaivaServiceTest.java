@@ -21,6 +21,7 @@ public class NimipaivaServiceTest {
   @Before
   public void setup() {
     this.nimipaivaService = new NimipaivaServiceImpl();
+    this.nimipaivaService.loadNames();
   }
 
 
@@ -36,5 +37,13 @@ public class NimipaivaServiceTest {
     Assert.assertEquals("name 1", "Elmer", names.get(2));
   }
 
+  @Test
+  public void testFindDayForName() {
+    // 29.6. Pekka, Petri, Petra, Petteri, Pietari, Pekko
+    DateTime dateTime = nimipaivaService.findDayForName("Petri");
+    Assert.assertNotNull("Must have DateTime", dateTime);
+    Assert.assertEquals("Month must be 6 / June", 6, dateTime.getMonthOfYear());
+    Assert.assertEquals("Day must be 29 / June", 29, dateTime.getMonthOfYear());
+  }
 
 }

@@ -27,7 +27,10 @@ public class NimipaivaServiceImpl implements NimipaivaService {
     try {
       fileUtil.copyResourceToTmpFile(NIMIPAIVAT_TXT, contents);
       String[] rows = contents.toString().split("\n");
+      for (String row : rows) {
+        int idx = row.indexOf(" ");
 
+      }
     } catch (IOException e) {
       log.error("Can't load {}", NIMIPAIVAT_TXT);
     }
