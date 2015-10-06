@@ -28,7 +28,14 @@ public class NimipaivaServiceImpl implements NimipaivaService {
       fileUtil.copyResourceToTmpFile(NIMIPAIVAT_TXT, contents);
       String[] rows = contents.toString().split("\n");
       for (String row : rows) {
-        int idx = row.indexOf(" ");
+        String[] split1 = row.split("\\. ");
+        if (split1.length == 2) {
+          String[] date = split1[0].split("\\.");
+          DateTime dateTime = DateTime.now().withDayOfMonth(Integer.parseInt(date[0])).withMonthOfYear(Integer.parseInt(date[1]));
+          String[] names = split1[1].split(",");
+          int id = 0;
+        }
+
 
       }
     } catch (IOException e) {
