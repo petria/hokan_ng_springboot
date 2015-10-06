@@ -28,7 +28,7 @@ public class NimipaivaServiceTest {
   @Test
   public void testGetNamesForDay() {
     // 3.1. Elmo, Elmeri, Elmer
-    DateTime now = DateTime.now().withDayOfMonth(1).withMonthOfYear(3);
+    DateTime now = DateTime.now().withDayOfMonth(3).withMonthOfYear(1);
     List<String> names = nimipaivaService.getNamesForDay(now);
     Assert.assertNotNull("Must have list of names", names);;
     Assert.assertEquals("list size", 3, names.size());
@@ -43,7 +43,7 @@ public class NimipaivaServiceTest {
     DateTime dateTime = nimipaivaService.findDayForName("Petri");
     Assert.assertNotNull("Must have DateTime", dateTime);
     Assert.assertEquals("Month must be 6 / June", 6, dateTime.getMonthOfYear());
-    Assert.assertEquals("Day must be 29 / June", 29, dateTime.getMonthOfYear());
+    Assert.assertEquals("Day must be 29 / June", 29, dateTime.getDayOfMonth());
   }
 
 }

@@ -18,4 +18,13 @@ public class TimeUtilTest {
     Assert.assertTrue(true);
   }
 
+  @Test
+  public void testParseDateTime() {
+    String dateString = "1.5";
+    DateTime parsed = TimeUtil.parseDateTime(dateString);
+    Assert.assertEquals("day of month", 1, parsed.getDayOfMonth());
+    Assert.assertEquals("month of year", 5, parsed.getMonthOfYear());
+  }
+
+
 }

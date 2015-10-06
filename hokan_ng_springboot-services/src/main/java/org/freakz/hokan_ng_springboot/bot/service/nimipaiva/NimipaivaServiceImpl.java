@@ -6,19 +6,23 @@ package org.freakz.hokan_ng_springboot.bot.service.nimipaiva;
  */
 
 import lombok.extern.slf4j.Slf4j;
+import org.freakz.hokan_ng_springboot.bot.models.NimipaivaData;
 import org.freakz.hokan_ng_springboot.bot.util.FileUtil;
+import org.freakz.hokan_ng_springboot.bot.util.StringStuff;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Slf4j
 public class NimipaivaServiceImpl implements NimipaivaService {
 
   private static final String NIMIPAIVAT_TXT = "/Nimipaivat.txt";
+
+  private Map<DateTime, NimipaivaData> dateTimeNamesMap = new HashMap<>();
 
   @PostConstruct
   public void loadNames() {
@@ -32,7 +36,9 @@ public class NimipaivaServiceImpl implements NimipaivaService {
         if (split1.length == 2) {
           String[] date = split1[0].split("\\.");
           DateTime dateTime = DateTime.now().withDayOfMonth(Integer.parseInt(date[0])).withMonthOfYear(Integer.parseInt(date[1]));
-          String[] names = split1[1].split(",");
+          String[] names = split1[1].split(", ");
+          NimipaivaData nimipaivaData = new NimipaivaData(dateTime, Arrays.asList(names));
+          dateTimeNamesMap.put(dateTime, nimipaivaData);
           int id = 0;
         }
 
@@ -43,13 +49,41 @@ public class NimipaivaServiceImpl implements NimipaivaService {
     }
   }
 
-  @Override
-  public List<String> getNamesForDay(DateTime day) {
+  private NimipaivaData findByDay(DateTime day) {
+    for (NimipaivaData nimipaivaData : dateTimeNamesMap.values()) {
+      if (nimipaivaData.getDay().toLocalDate().isEqual(day.toLocalDate())) {
+        return nimipaivaData;
+      }
+    }
+    return null;
+  }
+
+  private NimipaivaData findByName(String nameToFind) {
+    for (NimipaivaData nimipaivaData : dateTimeNamesMap.values()) {
+      for (String name : nimipaivaData.getNames()) {
+        if (StringStuff.match(name, nameToFind, true)) {
+          return nimipaivaData;
+        }
+      }
+    }
     return null;
   }
 
   @Override
+  public List<String> getNamesForDay(DateTime day) {
+    NimipaivaData nimipaivaData = findByDay(day);
+    if (nimipaivaData != null) {
+      return nimipaivaData.getNames();
+    }
+    return new ArrayList<>();
+  }
+
+  @Override
   public DateTime findDayForName(String name) {
+    NimipaivaData nimipaivaData = findByName(name);
+    if (nimipaivaData != null) {
+      return nimipaivaData.getDay();
+    }
     return null;
   }
 }

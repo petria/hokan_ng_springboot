@@ -7,6 +7,8 @@ import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
 import org.freakz.hokan_ng_springboot.bot.util.FileUtil;
+import org.freakz.hokan_ng_springboot.bot.util.TimeUtil;
+import org.joda.time.DateTime;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -58,6 +60,11 @@ public class NimipaivaCmd extends Cmd {
 
 
         String nimiOrPvm = results.getString(ARG_NIMI_OR_PVM);
+        DateTime dateTime = TimeUtil.parseDateTime(nimiOrPvm);
+        if (dateTime == null) {
+
+        }
+
         int mode;
         if (nimiOrPvm.matches("\\d+\\.\\d+\\.+")) {
           mode = PVM_MODE;
