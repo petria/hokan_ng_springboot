@@ -3,6 +3,7 @@ package org.freakz.hokan_ng_springboot.bot.service;
 import org.freakz.hokan_ng_springboot.bot.service.nimipaiva.NimipaivaService;
 import org.freakz.hokan_ng_springboot.bot.service.nimipaiva.NimipaivaServiceImpl;
 import org.joda.time.DateTime;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -25,11 +26,14 @@ public class NimipaivaServiceTest {
 
   @Test
   public void testGetNamesForDay() {
-    DateTime now = DateTime.now();
+    // 3.1. Elmo, Elmeri, Elmer
+    DateTime now = DateTime.now().withDayOfMonth(1).withMonthOfYear(3);
     List<String> names = nimipaivaService.getNamesForDay(now);
-    org.junit.Assert.assertNotNull("Must have list of names", names);;
-
-//    Assert.notEmpty("must have names list", names);
+    Assert.assertNotNull("Must have list of names", names);;
+    Assert.assertEquals("list size", 3, names.size());
+    Assert.assertEquals("name 1", "Elmo", names.get(0));
+    Assert.assertEquals("name 2", "Elmeri", names.get(1));
+    Assert.assertEquals("name 1", "Elmer", names.get(2));
   }
 
 
