@@ -1,4 +1,4 @@
-1.1. Uudenvuodenp‰iv‰
+1.1. Uudenvuodenp√§iv√§
 2.1. Aapeli
 3.1. Elmo, Elmeri, Elmer
 4.1. Ruut
@@ -46,10 +46,10 @@
 14.2. Voitto, Valentin, Tino
 15.2. Sipi, Sippo
 16.2. Kai
-17.2. V‰inˆ, V‰in‰mˆ
+17.2. V√§in√∂, V√§in√§m√∂
 18.2. Kaino
 19.2. Eija
-20.2. Heli, Helin‰, Helj‰, Hely
+20.2. Heli, Helin√§, Helj√§, Hely
 21.2. Keijo
 22.2. Tuulikki, Tuuli, Tuulia
 23.2. Aslak
@@ -58,7 +58,7 @@
 26.2. Nestori
 27.2. Torsti
 28.2. Onni
-29.2. Karkausp‰iv‰ (2008)
+29.2. Karkausp√§iv√§ (2008)
 
 1.3. Alpo, Alvi, Alpi
 2.3. Virve, Virva
@@ -110,11 +110,11 @@
 16.4. Jalo, Patrik
 17.4. Otto
 18.4. Valto, Valdemar
-19.4. Pilvi, P‰lvi
+19.4. Pilvi, P√§lvi
 20.4. Lauha
 21.4. Anssi, Anselmi
 22.4. Alina
-23.4. Yrjˆ, Jyrki, Jyri, Jori, Yrj‰n‰
+23.4. Yrj√∂, Jyrki, Jyri, Jori, Yrj√§n√§
 24.4. Pertti, Albert, Altti
 25.4. Markku, Marko, Markus
 26.4. Terttu, Teresa
@@ -160,7 +160,7 @@
 3.6. Orvokki, Viola
 4.6. Toivo
 5.6. Sulevi
-6.6. Kustaa, Kyˆsti, Kustavi
+6.6. Kustaa, Ky√∂sti, Kustavi
 7.6. Suvi, Roope, Robert
 8.6. Salomon, Salomo
 9.6. Ensio
@@ -170,7 +170,7 @@
 13.6. Raili, Raila
 14.6. Kielo, Pihla
 15.6. Vieno, Moona, Viena
-16.6. P‰ivi, P‰ivikki, P‰iv‰
+16.6. P√§ivi, P√§ivikki, P√§iv√§
 17.6. Urho
 18.6. Tapio
 19.6. Siiri
@@ -184,7 +184,7 @@
 27.6. Elviira, Elvi
 28.6. Leo
 29.6. Pekka, Petri, Petra, Petteri, Pietari, Pekko
-30.6. P‰iviˆ, P‰ivˆ
+30.6. P√§ivi√∂, P√§iv√∂
 	 
 1.7. Aaro, Aaron
 2.7. Maria, Maija, Mari, Meeri, Marika, Maiju, Maaria, Maikki, Kukka-Maaria
@@ -298,7 +298,7 @@
 15.10. Helvi, Heta
 16.10. Sirkka, Sirkku
 17.10. Saana, Saini
-18.10. Satu, S‰de
+18.10. Satu, S√§de
 19.10. Uljas
 20.10. Kasperi, Kauno
 21.10. Ursula
@@ -307,7 +307,7 @@
 24.10. Rasmus, Asmo
 25.10. Sointu
 26.10. Niina, Nina, Amanda, Manta
-27.10. Helli, Hellin, Hell‰, Helle
+27.10. Helli, Hellin, Hell√§, Helle
 28.10. Simo
 29.10. Alfred, Urmas
 30.10. Eila
@@ -368,7 +368,7 @@
 22.12. Raafael
 23.12. Senni
 24.12. Aatami, Eeva, Eevi, Eveliina
-25.12. Joulup‰iv‰
+25.12. Joulup√§iv√§
 26.12. Tapani, Teppo, Tahvo
 27.12. Hannu, Hannes
 28.12. Piia
