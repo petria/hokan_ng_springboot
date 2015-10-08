@@ -43,7 +43,7 @@ public class NimipaivaCmd extends Cmd {
     setHelp("Nimipäivät");
 
     UnflaggedOption flg = new UnflaggedOption(ARG_NIMI_OR_PVM)
-        .setRequired(true)
+        .setRequired(false)
         .setGreedy(false);
     registerParameter(flg);
 
@@ -53,7 +53,12 @@ public class NimipaivaCmd extends Cmd {
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
 
     String nimiOrPvm = results.getString(ARG_NIMI_OR_PVM);
-    DateTime dateTime = TimeUtil.parseDateTime(nimiOrPvm);
+    DateTime dateTime;
+    if (nimiOrPvm == null) {
+      dateTime = DateTime.now();
+    } else {
+      dateTime = TimeUtil.parseDateTime(nimiOrPvm);
+    }
     if (dateTime != null) {
       ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.NIMIPAIVA_DAY, request.getIrcEvent(), dateTime);
       NimipaivaData names = serviceResponse.getNimipaivaDayResponse();
