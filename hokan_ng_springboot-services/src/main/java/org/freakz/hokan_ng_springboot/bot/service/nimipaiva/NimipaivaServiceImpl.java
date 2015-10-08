@@ -14,7 +14,9 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -50,8 +52,12 @@ public class NimipaivaServiceImpl implements NimipaivaService {
   }
 
   private NimipaivaData findByDay(DateTime day) {
+    int dayOfMont = day.getDayOfMonth();
+    int monthOfYear = day.getMonthOfYear();
     for (NimipaivaData nimipaivaData : dateTimeNamesMap.values()) {
-      if (nimipaivaData.getDay().toLocalDate().isEqual(day.toLocalDate())) {
+      int dayOfMont2 = nimipaivaData.getDay().getDayOfMonth();
+      int monthOfYear2 = nimipaivaData.getDay().getMonthOfYear();
+      if (dayOfMont == dayOfMont2 && monthOfYear == monthOfYear2) {
         return nimipaivaData;
       }
     }
@@ -70,19 +76,19 @@ public class NimipaivaServiceImpl implements NimipaivaService {
   }
 
   @Override
-  public List<String> getNamesForDay(DateTime day) {
+  public NimipaivaData getNamesForDay(DateTime day) {
     NimipaivaData nimipaivaData = findByDay(day);
     if (nimipaivaData != null) {
-      return nimipaivaData.getNames();
+      return nimipaivaData;
     }
-    return new ArrayList<>();
+    return null;
   }
 
   @Override
-  public DateTime findDayForName(String name) {
+  public NimipaivaData findDayForName(String name) {
     NimipaivaData nimipaivaData = findByName(name);
     if (nimipaivaData != null) {
-      return nimipaivaData.getDay();
+      return nimipaivaData;
     }
     return null;
   }

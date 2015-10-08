@@ -5,16 +5,17 @@ import com.martiansoftware.jsap.UnflaggedOption;
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
+import org.freakz.hokan_ng_springboot.bot.events.ServiceRequestType;
+import org.freakz.hokan_ng_springboot.bot.events.ServiceResponse;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
-import org.freakz.hokan_ng_springboot.bot.util.FileUtil;
+import org.freakz.hokan_ng_springboot.bot.models.NimipaivaData;
+import org.freakz.hokan_ng_springboot.bot.util.StringStuff;
 import org.freakz.hokan_ng_springboot.bot.util.TimeUtil;
 import org.joda.time.DateTime;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_NIMI_OR_PVM;
@@ -51,42 +52,32 @@ public class NimipaivaCmd extends Cmd {
   @Override
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
 
-    if (nimiPvmList == null || nimiPvmList.size() == 0) {
-      FileUtil fileUtil = new FileUtil();
-      StringBuilder contents = new StringBuilder();
-      try {
-        fileUtil.copyResourceToTmpFile(NIMIPAIVAT_TXT, contents);
-        this.nimiPvmList = Arrays.asList(contents.toString().split("\n"));
-
-
-        String nimiOrPvm = results.getString(ARG_NIMI_OR_PVM);
-        DateTime dateTime = TimeUtil.parseDateTime(nimiOrPvm);
-        if (dateTime == null) {
-
+    String nimiOrPvm = results.getString(ARG_NIMI_OR_PVM);
+    DateTime dateTime = TimeUtil.parseDateTime(nimiOrPvm);
+    if (dateTime != null) {
+      ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.NIMIPAIVA_DAY, request.getIrcEvent(), dateTime);
+      NimipaivaData names = serviceResponse.getNimipaivaDayResponse();
+      if (names.getNames().size() > 0) {
+        StringBuilder sb = new StringBuilder(StringStuff.formatTime(names.getDay().toDate(), StringStuff.STRING_STUFF_DF_DDMMYYYY)+ " :: ");
+        for (String name : names.getNames()) {
+          sb.append(" ").append(name);
         }
-
-        int mode;
-        if (nimiOrPvm.matches("\\d+\\.\\d+\\.+")) {
-          mode = PVM_MODE;
-        } else {
-          mode = NAME_MODE;
+        response.addResponse("%s", sb.toString());
+      }
+    } else {
+      ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.NIMIPAIVA_NAME, request.getIrcEvent(), nimiOrPvm);
+      NimipaivaData names = serviceResponse.getNimipaivaNameResponse();
+      if (names != null) {
+        StringBuilder sb = new StringBuilder(StringStuff.formatTime(names.getDay().toDate(), StringStuff.STRING_STUFF_DF_DDMMYYYY)+ " :: ");
+        for (String name : names.getNames()) {
+          sb.append(" ").append(name);
         }
-        log.debug("Mode: {}", mode);
-        for (String nimiPvm : nimiPvmList) {
-          if (mode == NAME_MODE) {
-            if (nimiPvm.toLowerCase().contains(nimiOrPvm.toLowerCase())) {
-              response.addResponse("%s\n", nimiPvm);
-            }
-          } else {
-            if (nimiPvm.startsWith(nimiOrPvm)) {
-              response.addResponse("%s\n", nimiPvm);
-            }
-          }
-        }
-      } catch (IOException e) {
-        throw new HokanException("Nimipaivat.txt", e);
+        response.addResponse("%s", sb.toString());
+      } else {
+        response.addResponse("n/a");
       }
     }
+
   }
 
 }

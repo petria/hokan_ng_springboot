@@ -251,6 +251,22 @@ public class StringStuff {
     return todayStr.equals(compareStr);
   }
 
+  public static String formatNiceDate(Date date, boolean minutes, boolean seconds) {
+    if (date == null) {
+      return "<?>";
+    }
+
+    if (isDateToday(date)) {
+      if (seconds) {
+        return formatTime(date, STRING_STUFF_DF_HHMMSS);
+      } else {
+        return formatTime(date, STRING_STUFF_DF_HHMM);
+      }
+    } else {
+      return formatTime(date, STRING_STUFF_DF_DDMMHHMM);
+    }
+  }
+
   public static String formatNiceDate(Date date, boolean seconds) {
     if (date == null) {
       return "<?>";

@@ -101,4 +101,13 @@ public class ServiceResponse implements Serializable {
     return (List<GoogleCurrency>) responseData.get("CURRENCY_LIST_RESPONSE");
   }
 
+  public NimipaivaData getNimipaivaDayResponse() {
+    return (NimipaivaData) responseData.get("NIMIPAIVA_DAY_RESPONSE");
+
+  }
+
+  public NimipaivaData getNimipaivaNameResponse() {
+    return (NimipaivaData) responseData.get("NIMIPAIVA_NAME_RESPONSE");
+  }
+
 }

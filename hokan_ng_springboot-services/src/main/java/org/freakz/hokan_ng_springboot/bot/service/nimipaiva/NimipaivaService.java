@@ -1,8 +1,7 @@
 package org.freakz.hokan_ng_springboot.bot.service.nimipaiva;
 
+import org.freakz.hokan_ng_springboot.bot.models.NimipaivaData;
 import org.joda.time.DateTime;
-
-import java.util.List;
 
 /**
  * Created by Petri Airio on 5.10.2015.
@@ -10,9 +9,9 @@ import java.util.List;
  */
 public interface NimipaivaService {
 
-  List<String> getNamesForDay(DateTime day);
+  NimipaivaData getNamesForDay(DateTime day);
 
-  DateTime findDayForName(String name);
+  NimipaivaData findDayForName(String name);
 
   void loadNames();
 

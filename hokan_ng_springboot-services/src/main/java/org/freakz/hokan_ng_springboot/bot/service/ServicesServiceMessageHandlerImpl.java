@@ -89,10 +89,13 @@ public class ServicesServiceMessageHandlerImpl implements JmsServiceMessageHandl
         break;
       case NIMIPAIVA_DAY:
         DateTime day = (DateTime) request.getParameters()[0];
-        List<String> names = nimipaivaService.getNamesForDay(day);
-        response.setResponseData("NIMIPAIVA_DAY_DATA", names);
+        NimipaivaData nimipaivaData = nimipaivaService.getNamesForDay(day);
+        response.setResponseData("NIMIPAIVA_DAY_RESPONSE", nimipaivaData);
         break;
       case NIMIPAIVA_NAME:
+        String nameStr = (String) request.getParameters()[0];
+        NimipaivaData theDay = nimipaivaService.findDayForName(nameStr);
+        response.setResponseData("NIMIPAIVA_NAME_RESPONSE", theDay);
         // TODO
         break;
       case TV_FIND_REQUEST:
