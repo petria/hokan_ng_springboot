@@ -13,8 +13,8 @@ import org.freakz.hokan_ng_springboot.bot.jpa.entity.Url;
 import org.freakz.hokan_ng_springboot.bot.jpa.service.ChannelPropertyService;
 import org.freakz.hokan_ng_springboot.bot.jpa.service.PropertyService;
 import org.freakz.hokan_ng_springboot.bot.jpa.service.UrlLoggerService;
+import org.freakz.hokan_ng_springboot.bot.service.nimipaiva.NimipaivaService;
 import org.freakz.hokan_ng_springboot.bot.service.stats.StatsNotifyService;
-import org.freakz.hokan_ng_springboot.bot.util.FileUtil;
 import org.freakz.hokan_ng_springboot.bot.util.StringStuff;
 import org.freakz.hokan_ng_springboot.bot.util.TimeUtil;
 import org.joda.time.DateTime;
@@ -46,6 +46,9 @@ public class DayChangedServiceImpl implements DayChangedService, CommandRunnable
 
   @Autowired
   private JmsSender jmsSender;
+
+  @Autowired
+  private NimipaivaService nimipaivaService;
 
   @Autowired
   private PropertyService propertyService;
@@ -178,15 +181,7 @@ public class DayChangedServiceImpl implements DayChangedService, CommandRunnable
   }
 
   private String getNimipäivät() {
-    List<String> nimiPvmList;
-    FileUtil fileUtil = new FileUtil();
-    StringBuilder contents = new StringBuilder();
-    try {
-      fileUtil.copyResourceToTmpFile(NIMIPAIVAT_TXT, contents);
-      nimiPvmList = Arrays.asList(contents.toString().split("\n"));
-    } catch (IOException e) {
-      return "n/a";
-    }
+    List<String> nimiPvmList = nimipaivaService.getNamesForDay(DateTime.now()).getNames();
     String ret = "";
     String dateStr = StringStuff.formatTime(new Date(), StringStuff.STRING_STUFF_DF_DM);
     for (String nimiPvm : nimiPvmList) {
