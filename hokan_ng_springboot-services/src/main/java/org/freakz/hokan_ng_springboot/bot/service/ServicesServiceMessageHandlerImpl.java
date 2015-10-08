@@ -10,12 +10,14 @@ import org.freakz.hokan_ng_springboot.bot.jpa.entity.Channel;
 import org.freakz.hokan_ng_springboot.bot.models.*;
 import org.freakz.hokan_ng_springboot.bot.service.currency.CurrencyService;
 import org.freakz.hokan_ng_springboot.bot.service.metar.MetarDataService;
+import org.freakz.hokan_ng_springboot.bot.service.nimipaiva.NimipaivaService;
 import org.freakz.hokan_ng_springboot.bot.service.urls.UrlCatchService;
 import org.freakz.hokan_ng_springboot.bot.updaters.DataUpdater;
 import org.freakz.hokan_ng_springboot.bot.updaters.UpdaterData;
 import org.freakz.hokan_ng_springboot.bot.updaters.UpdaterManagerService;
 import org.freakz.hokan_ng_springboot.bot.updaters.horo.HoroUpdater;
 import org.freakz.hokan_ng_springboot.bot.updaters.telkku.TelkkuService;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -38,6 +40,9 @@ public class ServicesServiceMessageHandlerImpl implements JmsServiceMessageHandl
 
   @Autowired
   private MetarDataService metarDataService;
+
+  @Autowired
+  private NimipaivaService nimipaivaService;
 
   @Autowired
   private TelkkuService telkkuService;
@@ -81,6 +86,14 @@ public class ServicesServiceMessageHandlerImpl implements JmsServiceMessageHandl
       case METAR_REQUEST:
         List<MetarData> data = metarDataService.getMetarData(request.getParameters());
         response.setResponseData("METAR_DATA", data);
+        break;
+      case NIMIPAIVA_DAY:
+        DateTime day = (DateTime) request.getParameters()[0];
+        List<String> names = nimipaivaService.getNamesForDay(day);
+        response.setResponseData("NIMIPAIVA_DAY_DATA", names);
+        break;
+      case NIMIPAIVA_NAME:
+        // TODO
         break;
       case TV_FIND_REQUEST:
         String programs = (String) request.getParameters()[0];
