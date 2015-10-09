@@ -32,9 +32,14 @@ public class Channel implements Serializable {
   @Enumerated(EnumType.STRING)
   private ChannelState channelState;
 
+  @Column(name = "CHANNEL_STARTUP_STATE", nullable = false)
+  @Enumerated(EnumType.STRING)
+  private ChannelStartupState channelStartupState;
+
   public Channel(Network network, String name) {
     this.network = network;
     this.channelName = name;
+    this.channelStartupState = ChannelStartupState.NO_ACTION;
     this.channelState = ChannelState.NOT_JOINED;
   }
 
@@ -72,6 +77,14 @@ public class Channel implements Serializable {
 
   public void setChannelState(ChannelState channelState) {
     this.channelState = channelState;
+  }
+
+  public ChannelStartupState getChannelStartupState() {
+    return channelStartupState;
+  }
+
+  public void setChannelStartupState(ChannelStartupState channelStartupState) {
+    this.channelStartupState = channelStartupState;
   }
 
   public String toString() {
