@@ -11,7 +11,11 @@ import java.io.Serializable;
  */
 public enum ChannelState implements Serializable {
 
-  NOT_JOINED,
+  BANNED,
+  INVITED,
   JOINED,
+  KICKED_OUT,
+  NOT_JOINED,
+  PARTED,
 
 }

@@ -246,9 +246,42 @@ public class HokanCore extends PircBot implements HokanCoreService {
   }
 
   @Override
+  protected void onNickChange(String oldNick, String login, String hostname, String newNick) {
+    log.debug("Nick changed, refreshing channels with who query!");
+    for (String channel : getChannels()) {
+      sendWhoQuery(channel);
+    }
+  }
+
+  @Override
+  protected void onKick(String channelName, String kickerNick, String kickerLogin, String kickerHostname, String recipientNick, String reason) {
+    log.info("{} kicked from {}", recipientNick, channelName);
+    sendWhoQuery(channelName);
+    IrcEvent ircEvent = IrcEventFactory.createIrcEvent(getName(), getNetwork().getName(), channelName, kickerNick, kickerLogin, kickerHostname);
+    if (recipientNick.equalsIgnoreCase(getNick())) {
+      Channel channel = getChannel(ircEvent);
+      channel.setChannelState(ChannelState.KICKED_OUT);
+      channelService.save(channel);
+    }
+  }
+
+  @Override
+  protected void onPart(String channelName, String sender, String login, String hostname, String message) {
+    log.info("{} parted channel: {}", sender, channelName);
+    sendWhoQuery(channelName);
+
+    IrcEvent ircEvent = IrcEventFactory.createIrcEvent(getName(), getNetwork().getName(), channelName, sender, login, hostname);
+
+    if (sender.equalsIgnoreCase(getNick())) {
+      Channel channel = getChannel(ircEvent);
+      channel.setChannelState(ChannelState.PARTED);
+      channelService.save(channel);
+    }
+  }
+
+  @Override
   protected void onJoin(String channelName, String sender, String login, String hostname) {
     log.info("{} joined channel: {}", sender, channelName);
-//    sendWhoQuery(channelName);
 
     IrcEvent ircEvent = IrcEventFactory.createIrcEvent(getName(), getNetwork().getName(), channelName, sender, login, hostname);
     Channel channel = getChannel(ircEvent);
@@ -289,10 +322,8 @@ public class HokanCore extends PircBot implements HokanCoreService {
       channelStats.setMaxUserCountDate(new Date());
     }
 
-
     channelService.save(channel);
     channelStatsService.save(channelStats);
-
   }
 
   @Override

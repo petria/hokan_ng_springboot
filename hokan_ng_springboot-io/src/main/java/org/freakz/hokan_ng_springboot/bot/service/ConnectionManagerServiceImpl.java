@@ -209,7 +209,7 @@ public class ConnectionManagerServiceImpl implements ConnectionManagerService, E
     if (channels != null) {
       for (Channel channelToJoin : channels) {
         if (channelToJoin.getNetwork().getName().equals(network.getName())) {
-          if (channelToJoin.getChannelState() == ChannelState.JOINED) {
+          if (channelToJoin.getChannelStartupState() == ChannelStartupState.JOIN) {
             log.info("--> joining to {}", channelToJoin.getChannelName());
             engine.joinChannel(channelToJoin.getChannelName());
           }

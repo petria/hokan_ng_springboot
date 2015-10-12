@@ -39,11 +39,12 @@ public class Channel implements Serializable {
   public Channel(Network network, String name) {
     this.network = network;
     this.channelName = name;
-    this.channelStartupState = ChannelStartupState.NO_ACTION;
+    this.channelStartupState = ChannelStartupState.NO_JOIN;
     this.channelState = ChannelState.NOT_JOINED;
   }
 
   public Channel() {
+    this.channelStartupState = ChannelStartupState.NO_JOIN;
     this.channelState = ChannelState.NOT_JOINED;
   }
 

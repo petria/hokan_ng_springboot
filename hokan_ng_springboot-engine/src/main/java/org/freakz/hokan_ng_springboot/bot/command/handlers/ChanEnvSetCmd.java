@@ -31,7 +31,7 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_PROPERTY
 @HelpGroups(
     helpGroups = {HelpGroup.CHANNELS, HelpGroup.PROPERTIES}
 )
-public class ChanSetCmd extends Cmd {
+public class ChanEnvSetCmd extends Cmd {
 
   public PropertyName getPropertyName(String property) {
     for (PropertyName prop : PropertyName.values()) {
@@ -42,21 +42,21 @@ public class ChanSetCmd extends Cmd {
     return null;
   }
 
-  public ChanSetCmd() {
+  public ChanEnvSetCmd() {
 
     super();
     setHelp("Sets channel property. When executed via private messages valid channel id must be given.");
     setChannelOpOnly(true);
 
-    UnflaggedOption flg = new UnflaggedOption(ARG_PROPERTY)
+    UnflaggedOption unflaggedOption = new UnflaggedOption(ARG_PROPERTY)
         .setRequired(true)
         .setGreedy(false);
-    registerParameter(flg);
+    registerParameter(unflaggedOption);
 
-    flg = new UnflaggedOption(ARG_CHANNEL_ID)
+    unflaggedOption = new UnflaggedOption(ARG_CHANNEL_ID)
         .setRequired(false)
         .setGreedy(false);
-    registerParameter(flg);
+    registerParameter(unflaggedOption);
 
   }
 

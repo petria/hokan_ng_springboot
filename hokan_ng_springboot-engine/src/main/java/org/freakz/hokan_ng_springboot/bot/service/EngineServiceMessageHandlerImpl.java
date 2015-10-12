@@ -51,9 +51,9 @@ public class EngineServiceMessageHandlerImpl implements JmsServiceMessageHandler
           internalRequest.saveUserChannel();
         }
         handler.handleLine(internalRequest, response);
-        internalRequest.getChannelStats().addToCommandsHandled(1);
+/*        internalRequest.getChannelStats().addToCommandsHandled(1);
         internalRequest.saveChannelStats();
-
+*/
       } catch (Exception e) {
         log.error("Command handler returned exception {}", e);
       }
