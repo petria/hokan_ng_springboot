@@ -9,6 +9,7 @@ import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.Channel;
+import org.freakz.hokan_ng_springboot.bot.jpa.entity.ChannelStats;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -59,6 +60,26 @@ public class ChanViewCmd extends Cmd {
         return;
       }
     }
+    String ret = "";
+    ret += String.format("[%2d] %10s (%s)\n", theChannel.getId(), theChannel.getChannelName(), theChannel.getNetwork().getName());
+    ret += String.format("  State   : %10s\n", theChannel.getChannelState());
+    ret += String.format("  Startup : %10s\n", theChannel.getChannelStartupState());
+    ChannelStats cs = channelStatsService.findFirstByChannel(theChannel);
+    if (cs != null) {
+      ret += String.format("  First joined   : %10s\n", cs.getFirstJoined());
+      String lastMsg = cs.getLastMessage();
+      if (lastMsg.length() > 8) {
+        lastMsg = lastMsg.substring(7);
+      }
+      lastMsg += "...";
+      ret += String.format("  Last active    : %s (%s) \n", cs.getLastActive().toString(), lastMsg);
+      ret += String.format("  Max user count : %d (on %s)\n", cs.getMaxUserCount(), cs.getMaxUserCountDate());
 
+    } else {
+      log.warn("ChannelStats null??? -> {}", theChannel.getChannelName());
+    }
+
+
+    response.addResponse(ret);
   }
 }

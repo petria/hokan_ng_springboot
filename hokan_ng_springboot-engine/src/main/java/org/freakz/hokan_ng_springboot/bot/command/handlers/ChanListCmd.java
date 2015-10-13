@@ -37,7 +37,7 @@ public class ChanListCmd extends Cmd {
 
   public ChanListCmd() {
     super();
-    setHelp("Shows what channels the Bot knows of.");
+    setHelp("Shows what channels the Bot knows of in form: [ID] <NAME> (<NETWORK>)");
 
     Switch sw = new Switch(ARG_VERBOSE)
         .setShortFlag('v');
@@ -61,11 +61,10 @@ public class ChanListCmd extends Cmd {
         sb.append(", ");
       }
       Network network = channel.getNetwork();
-      String ch = String.format("[%d] %s(%s): %s",
+      String ch = String.format("[%d] %s(%s)",
           channel.getId(),
           channel.getChannelName(),
-          network.getName(),
-          channel.getChannelState());
+          network.getName());
       sb.append(ch);
     }
     response.addResponse("Known channels: ");
