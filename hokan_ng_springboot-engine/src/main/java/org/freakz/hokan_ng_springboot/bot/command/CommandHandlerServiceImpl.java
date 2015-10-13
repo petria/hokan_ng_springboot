@@ -5,10 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * User: petria
@@ -23,20 +21,13 @@ public class CommandHandlerServiceImpl implements CommandHandlerService {
   @Autowired
   private ApplicationContext context;
 
-  private Map<String, Cmd> handlers;
-
   public CommandHandlerServiceImpl() {
-  }
-
-  @PostConstruct
-  public void refreshHandlers() {
-    handlers = context.getBeansOfType(Cmd.class);
   }
 
   @Override
   public Cmd getCommandHandler(String line) {
     List<Cmd> matches = new ArrayList<>();
-    for (Cmd base : this.handlers.values()) {
+    for (Cmd base : context.getBeansOfType(Cmd.class).values()) {
       if (line.matches(base.getMatchPattern())) {
         matches.add(base);
       }
@@ -53,14 +44,15 @@ public class CommandHandlerServiceImpl implements CommandHandlerService {
       }
     }
     if (theCmd != null) {
-      return context.getBean(theCmd.getClass());
+      Object bean = context.getBean(theCmd.getClass());
+      return (Cmd) bean;
     }
     return null;
   }
 
   @Override
   public List<Cmd> getCommandHandlers() {
-    return new ArrayList<>(this.handlers.values());
+    return new ArrayList<>(context.getBeansOfType(Cmd.class).values());
   }
 
   @Override
