@@ -25,11 +25,11 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_PROPERTY
 @HelpGroups(
     helpGroups = {HelpGroup.PROPERTIES, HelpGroup.SYSTEM}
 )
-public class SysSetCmd extends Cmd {
+public class SysEnvSetCmd extends Cmd {
 
-  public SysSetCmd() {
+  public SysEnvSetCmd() {
     super();
-    setHelp("Sets system properties.");
+    setHelp("Sets system environment properties.");
 
     UnflaggedOption flg = new UnflaggedOption(ARG_PROPERTY)
         .setRequired(true)

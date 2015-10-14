@@ -30,13 +30,10 @@ import java.util.*;
 
 /**
  * Created by Petri Airio on 22.9.2015.
- *
  */
 @Service
 @Slf4j
 public class DayChangedServiceImpl implements DayChangedService, CommandRunnable {
-
-  private static final String NIMIPAIVAT_TXT = "/Nimipaivat.txt";
 
   @Autowired
   private ChannelPropertyService channelPropertyService;
@@ -103,7 +100,8 @@ public class DayChangedServiceImpl implements DayChangedService, CommandRunnable
       String topic = "";
       if (parseProperty(property, "topic") != null) {
         String dailyNimip = getNimipäivät();
-        topic = String.format("---=== Day changed to: %s (%s) ===---", dayChangedTo, dailyNimip);
+        int week = DateTime.now().getWeekOfWeekyear();
+        topic = String.format("---=== Day changed to: W%d %s (%s) ===---", week, dayChangedTo, dailyNimip);
       }
 
       String sunRises = "";
@@ -125,7 +123,7 @@ public class DayChangedServiceImpl implements DayChangedService, CommandRunnable
       notifyRequest.setTargetChannelId(channel.getId());
       jmsSender.send(HokanModule.HokanIo.getQueueName(), "STATS_NOTIFY_REQUEST", notifyRequest, false);
     }
-    return true;
+    return false;
   }
 
   private List<String> parseProperty(String property, String keyword) {
@@ -149,7 +147,6 @@ public class DayChangedServiceImpl implements DayChangedService, CommandRunnable
 
 
   private String getSunriseTexts(List<String> sunRisesCities) {
-//    String[] urls = {"http://en.ilmatieteenlaitos.fi/weather/helsinki", "http://en.ilmatieteenlaitos.fi/weather/jyvaskyla", "http://en.ilmatieteenlaitos.fi/weather/utsjoki"};
     String ret = null;
     String baseUrl = "http://en.ilmatieteenlaitos.fi/weather/";
 
@@ -159,9 +156,7 @@ public class DayChangedServiceImpl implements DayChangedService, CommandRunnable
       try {
         doc = Jsoup.connect(url).get();
       } catch (IOException e) {
-        //
         continue;
-//        return "n/a";
       }
       if (ret == null) {
         ret = "";
@@ -183,12 +178,11 @@ public class DayChangedServiceImpl implements DayChangedService, CommandRunnable
   private String getNimipäivät() {
     List<String> nimiPvmList = nimipaivaService.getNamesForDay(DateTime.now()).getNames();
     String ret = "";
-    String dateStr = StringStuff.formatTime(new Date(), StringStuff.STRING_STUFF_DF_DM);
-    for (String nimiPvm : nimiPvmList) {
-      if (nimiPvm.contains(dateStr)) {
-        int idx = nimiPvm.indexOf(" ") + 1;
-        ret += nimiPvm.substring(idx);
+    for (String nimi : nimiPvmList) {
+      if (ret.length() > 0) {
+        ret += ", ";
       }
+      ret += nimi;
     }
     return ret;
   }
@@ -217,7 +211,6 @@ public class DayChangedServiceImpl implements DayChangedService, CommandRunnable
     long countTotal = 0;
     for (Object count1 : counts) {
       Object[] counter = (Object[]) count1;
-//      Url url = (Url) counter[0];
       Long count = (Long) counter[1];
       countTotal += count;
     }
