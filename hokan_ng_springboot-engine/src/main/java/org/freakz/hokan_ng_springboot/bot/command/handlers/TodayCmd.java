@@ -32,9 +32,13 @@ public class TodayCmd extends Cmd {
     DateTime dateTime = DateTime.now();
     ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.NIMIPAIVA_DAY, request.getIrcEvent(), dateTime);
     NimipaivaData names = serviceResponse.getNimipaivaDayResponse();
-    StringBuilder sb = new StringBuilder("Today is " + StringStuff.formatTime(names.getDay().toDate(), StringStuff.STRING_STUFF_DF_DDMMYYYY)+ " ::");
-    for (String name : names.getNames()) {
-      sb.append(" ").append(name);
+    int week = DateTime.now().getWeekOfWeekyear();
+    StringBuilder sb = new StringBuilder("Today is " + StringStuff.formatTime(names.getDay().toDate(), StringStuff.STRING_STUFF_DF_DDMMYYYY) + " (W: " +week + ") ::");
+    for (int i = 0; i < names.getNames().size(); i++) {
+      if (i > 0) {
+        sb.append(", ");
+      }
+      sb.append(names.getNames().get(i));
     }
     response.addResponse(sb.toString());
   }

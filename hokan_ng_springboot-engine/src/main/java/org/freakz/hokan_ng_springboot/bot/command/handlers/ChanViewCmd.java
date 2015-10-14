@@ -10,6 +10,7 @@ import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.Channel;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.ChannelStats;
+import org.freakz.hokan_ng_springboot.bot.util.StringStuff;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -62,18 +63,18 @@ public class ChanViewCmd extends Cmd {
     }
     String ret = "";
     ret += String.format("[%2d] %10s (%s)\n", theChannel.getId(), theChannel.getChannelName(), theChannel.getNetwork().getName());
-    ret += String.format("  State   : %10s\n", theChannel.getChannelState());
-    ret += String.format("  Startup : %10s\n", theChannel.getChannelStartupState());
+    ret += String.format("  Current state  : %10s\n", theChannel.getChannelState());
+    ret += String.format("  On startup do  : %10s\n", theChannel.getChannelStartupState());
     ChannelStats cs = channelStatsService.findFirstByChannel(theChannel);
     if (cs != null) {
-      ret += String.format("  First joined   : %10s\n", cs.getFirstJoined());
+      ret += String.format("  First joined   : %10s\n", StringStuff.formatNiceDate(cs.getFirstJoined(), false));
       String lastMsg = cs.getLastMessage();
-      if (lastMsg.length() > 8) {
-        lastMsg = lastMsg.substring(7);
+      if (lastMsg.length() > 6) {
+        lastMsg = lastMsg.substring(0, 5);
       }
       lastMsg += "...";
-      ret += String.format("  Last active    : %s (%s) \n", cs.getLastActive().toString(), lastMsg);
-      ret += String.format("  Max user count : %d (on %s)\n", cs.getMaxUserCount(), cs.getMaxUserCountDate());
+      ret += String.format("  Last active    : %s (%s) \n", StringStuff.formatNiceDate(cs.getLastActive(), false), lastMsg);
+      ret += String.format("  Max user count : %d (on %s)\n", cs.getMaxUserCount(), StringStuff.formatNiceDate(cs.getMaxUserCountDate(), false));
 
     } else {
       log.warn("ChannelStats null??? -> {}", theChannel.getChannelName());
