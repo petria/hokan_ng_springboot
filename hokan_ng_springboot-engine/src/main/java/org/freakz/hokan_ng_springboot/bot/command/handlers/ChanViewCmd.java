@@ -75,6 +75,8 @@ public class ChanViewCmd extends Cmd {
       lastMsg += "...";
       ret += String.format("  Last active    : %s (%s) \n", StringStuff.formatNiceDate(cs.getLastActive(), false), lastMsg);
       ret += String.format("  Max user count : %d (on %s)\n", cs.getMaxUserCount(), StringStuff.formatNiceDate(cs.getMaxUserCountDate(), false));
+      ret += String.format("  Write spree    : %s with %d lines\n", cs.getWriterSpreeOwner(), cs.getWriterSpreeRecord());
+      ret += String.format("  Lines sent %3d  Lines Received %3d  Commands handled %3d", cs.getLinesSent(), cs.getLinesReceived(), cs.getCommandsHandled());
 
     } else {
       log.warn("ChannelStats null??? -> {}", theChannel.getChannelName());

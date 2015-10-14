@@ -683,6 +683,10 @@ public class HokanCore extends PircBot implements HokanCoreService {
       }
     }
     doHandleEngineResponse(response);
+    Channel channel = getChannel(response.getIrcMessageEvent());
+    ChannelStats channelStats = getChannelStats(channel);
+    channelStats.addToCommandsHandled(1);
+    channelStatsService.save(channelStats);
   }
 
   protected void handleSendMessage(EngineResponse response) {
