@@ -123,7 +123,7 @@ public class DayChangedServiceImpl implements DayChangedService, CommandRunnable
       notifyRequest.setTargetChannelId(channel.getId());
       jmsSender.send(HokanModule.HokanIo.getQueueName(), "STATS_NOTIFY_REQUEST", notifyRequest, false);
     }
-    return false;
+    return true;
   }
 
   private List<String> parseProperty(String property, String keyword) {
