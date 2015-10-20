@@ -9,10 +9,12 @@ import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.Channel;
+import org.freakz.hokan_ng_springboot.bot.jpa.entity.ChannelStartupState;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_CHANNEL_ID;
+import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_STARTUP_STATE;
 
 /**
  * Created by Petri Airio on 16.10.2015.
@@ -30,17 +32,23 @@ public class ChanSetCmd extends Cmd {
     super();
     setHelp("Sets Channel modes");
 
-    UnflaggedOption unflaggedOption = new UnflaggedOption(ARG_CHANNEL_ID)
-        .setRequired(false)
+    UnflaggedOption unflaggedOption = new UnflaggedOption(ARG_STARTUP_STATE)
+        .setRequired(true)
         .setGreedy(false);
     registerParameter(unflaggedOption);
 
+    unflaggedOption = new UnflaggedOption(ARG_CHANNEL_ID)
+        .setRequired(false)
+        .setGreedy(false);
+    registerParameter(unflaggedOption);
+    
+    setAdminUserOnly(true);
 
   }
 
   @Override
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    String channelId = getChannelIdOrFail(ARG_CHANNEL_ID, request, response);
+    String channelId = getChannelIdOrFail(results.getString(ARG_CHANNEL_ID, null), request, response);
     if (channelId == null) {
       return;
     }
@@ -48,8 +56,15 @@ public class ChanSetCmd extends Cmd {
     if (theChannel == null) {
       return;
     }
-
+    String startupState = results.getString(ARG_STARTUP_STATE);
+    ChannelStartupState state = ChannelStartupState.valueOf(startupState);
+    if (state != null) {
+      theChannel.setChannelStartupState(state);
+      theChannel = channelService.save(theChannel);
+      response.addResponse("%s startup state set to: %s", theChannel.getChannelName(), theChannel.getChannelStartupState());
+    } else {
+      response.addResponse("Invalid startup state: %s", startupState);
+    }
   }
-
 
 }

@@ -138,24 +138,27 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
       response.addResponse("ChannelID parameter is needed when using private message, try: !chanlist to get ID.");
       return null;
     }
+    channelId = "<current>";
     return channelId;
   }
 
   protected Channel getChannelOrFail(String channelId, InternalRequest request, EngineResponse response) {
+    if (channelId.equals("<current>")) {
+      return request.getChannel();
+    }
     Channel theChannel = request.getChannel();
-    if (channelId != null) {
-      long id;
-      try {
-        id = Long.parseLong(channelId);
-      } catch (NumberFormatException ex) {
-        response.addResponse("Valid ChannelID parameter is needed, try: !chanlist");
-        return null;
-      }
-      theChannel = channelService.findOne(id);
-      if (theChannel == null) {
-        response.addResponse("No valid Channel found with id: %d, try: !chanlist to get ID.", id);
-        return null;
-      }
+
+    long id;
+    try {
+      id = Long.parseLong(channelId);
+    } catch (NumberFormatException ex) {
+      response.addResponse("Valid ChannelID parameter is needed, try: !chanlist");
+      return null;
+    }
+    theChannel = channelService.findOne(id);
+    if (theChannel == null) {
+      response.addResponse("No valid Channel found with id: %d, try: !chanlist to get ID.", id);
+      return null;
     }
 
     return theChannel;
@@ -205,17 +208,17 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
   }
 
   protected HelpGroup[] getCmdHelpGroups(Cmd cmd) {
-      Class obj = cmd.getClass();
-      if (obj.isAnnotationPresent(HelpGroups.class)) {
-        Annotation annotation = obj.getAnnotation(HelpGroups.class);
-        HelpGroups helpGroups = (HelpGroups) annotation;
-        HelpGroup[] groups = helpGroups.helpGroups();
-        return groups;
-      }
+    Class obj = cmd.getClass();
+    if (obj.isAnnotationPresent(HelpGroups.class)) {
+      Annotation annotation = obj.getAnnotation(HelpGroups.class);
+      HelpGroups helpGroups = (HelpGroups) annotation;
+      HelpGroup[] groups = helpGroups.helpGroups();
+      return groups;
+    }
     return new HelpGroup[0];
   }
 
-  public void handleLine(InternalRequest request, EngineResponse response)  {
+  public void handleLine(InternalRequest request, EngineResponse response) {
     IrcMessageEvent ircEvent = request.getIrcEvent();
     CommandArgs args = new CommandArgs(ircEvent.getMessage());
 

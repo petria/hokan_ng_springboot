@@ -46,6 +46,7 @@ public class StaticStrings {
   public static final String ARG_RAWSTRING = "RawString";
   public static final String ARG_SEARCH = "Search";
   public static final String ARG_STATION = "Station";
+  public static final String ARG_STARTUP_STATE = "StartupState";
   public static final String ARG_TARGET = "Target";
   public static final String ARG_TEXT = "Text";
   public static final String ARG_TO = "To";
