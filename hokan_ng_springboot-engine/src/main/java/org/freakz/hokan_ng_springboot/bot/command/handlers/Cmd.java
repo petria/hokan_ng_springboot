@@ -13,6 +13,7 @@ import org.freakz.hokan_ng_springboot.bot.exception.HokanEngineException;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
 import org.freakz.hokan_ng_springboot.bot.jms.JmsMessage;
 import org.freakz.hokan_ng_springboot.bot.jms.api.JmsSender;
+import org.freakz.hokan_ng_springboot.bot.jpa.entity.Channel;
 import org.freakz.hokan_ng_springboot.bot.jpa.service.*;
 import org.freakz.hokan_ng_springboot.bot.service.AccessControlService;
 import org.freakz.hokan_ng_springboot.bot.service.StatsService;
@@ -119,7 +120,6 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
     }
   }
 
-
   public String getMatchPattern() {
     return String.format("!%s.*", getName().toLowerCase());
   }
@@ -132,6 +132,35 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
     }
     return name;
   }
+
+  protected String getChannelIdOrFail(String channelId, InternalRequest request, EngineResponse response) {
+    if (request.getIrcEvent().isPrivate() && channelId == null) {
+      response.addResponse("ChannelID parameter is needed when using private message, try: !chanlist to get ID.");
+      return null;
+    }
+    return channelId;
+  }
+
+  protected Channel getChannelOrFail(String channelId, InternalRequest request, EngineResponse response) {
+    Channel theChannel = request.getChannel();
+    if (channelId != null) {
+      long id;
+      try {
+        id = Long.parseLong(channelId);
+      } catch (NumberFormatException ex) {
+        response.addResponse("Valid ChannelID parameter is needed, try: !chanlist");
+        return null;
+      }
+      theChannel = channelService.findOne(id);
+      if (theChannel == null) {
+        response.addResponse("No valid Channel found with id: %d, try: !chanlist to get ID.", id);
+        return null;
+      }
+    }
+
+    return theChannel;
+  }
+
 
   protected String buildSeeAlso(Cmd cmd) {
 
