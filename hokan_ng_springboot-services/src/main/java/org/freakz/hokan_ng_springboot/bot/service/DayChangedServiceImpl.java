@@ -101,7 +101,7 @@ public class DayChangedServiceImpl implements DayChangedService, CommandRunnable
       if (parseProperty(property, "topic") != null) {
         String dailyNimip = getNimipäivät();
         int week = DateTime.now().getWeekOfWeekyear();
-        topic = String.format("---=== Day changed to: W%d %s (%s) ===---", week, dayChangedTo, dailyNimip);
+        topic = String.format("---=== Day changed to: %s (W%d) :: %s ===---", week, dayChangedTo, dailyNimip);
       }
 
       String sunRises = "";
