@@ -19,6 +19,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <start-class>org.freakz.hokan_ng_springboot.bot.HokanNgSpringBootServices</start-class>
         <java.version>1.8</java.version>
+        <amq.version>5.7.0</amq.version>
     </properties>
 
     <dependencies>
@@ -67,14 +68,10 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-hornetq</artifactId>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-core</artifactId>
+            <version>${amq.version}</version>
         </dependency>
-<!--        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency> -->
         <!-- Test -->
         <dependency>
             <groupId>junit</groupId>
