@@ -9,7 +9,7 @@ import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
 import org.freakz.hokan_ng_springboot.bot.models.HokanStatusModel;
 import org.freakz.hokan_ng_springboot.bot.service.HokanStatusService;
-import org.freakz.hokan_ng_springboot.bot.util.JarScriptExecutor;
+import org.freakz.hokan_ng_springboot.bot.util.JarWindowsBatExecutor;
 import org.freakz.hokan_ng_springboot.bot.util.Uptime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -49,12 +49,14 @@ public class UptimeCmd extends Cmd {
 
   @Override
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    JarScriptExecutor cmdExecutor = new JarScriptExecutor("/uptime.sh", "UTF-8");
-    String[] sysUptime = cmdExecutor.executeJarScript();
-    String sysUt = "<n/a>";
+//    JarScriptExecutor cmdExecutor = new JarScriptExecutor("/uptime.bat", "UTF-8");
+    JarWindowsBatExecutor batExecutor = new JarWindowsBatExecutor("/uptime.bat", "windows-1252");
+    String[] sysUptime = batExecutor.executeJarWindowsBat();
+    String sysUt = "<n/a> ";
     if (sysUptime != null && sysUptime.length > 0) {
       sysUt = sysUptime[0];
     }
+    String OS = System.getProperty("os.name").toLowerCase();
     String uptime1 = String.format("%-13s     :%s\n", "System", sysUt);
     response.addResponse(uptime1);
     for (HokanModule module : HokanModule.values()) {
