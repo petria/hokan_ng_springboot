@@ -6,8 +6,8 @@ package org.freakz.hokan_ng_springboot.bot.service;
  */
 public enum SystemScript {
 
-  HOST_INFO_SCRIPT("hostinfo.sh", "hostinfo.bat"),
-  UPTIME_SCRIPT("uptime.sh", "uptime.bat");
+  HOST_INFO_SCRIPT("/hostinfo.sh", "/hostinfo.bat"),
+  UPTIME_SCRIPT("/uptime.sh", "/uptime.bat");
 
   private final String nixScript;
   private final String windowsScript;

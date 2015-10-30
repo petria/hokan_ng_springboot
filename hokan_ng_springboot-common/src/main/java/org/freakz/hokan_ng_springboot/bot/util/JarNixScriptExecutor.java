@@ -15,13 +15,13 @@ import java.util.List;
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
 @Slf4j
-public class JarScriptExecutor {
+public class JarNixScriptExecutor {
 
   private static final String SHELL = "/bin/sh";
   private final String scriptName;
   private final String charset;
 
-  public JarScriptExecutor(String scriptName, String charset) {
+  public JarNixScriptExecutor(String scriptName, String charset) {
     this.scriptName = scriptName;
     this.charset = charset;
   }

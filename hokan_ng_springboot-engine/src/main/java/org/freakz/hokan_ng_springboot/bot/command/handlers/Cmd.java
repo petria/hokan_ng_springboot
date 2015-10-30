@@ -16,7 +16,9 @@ import org.freakz.hokan_ng_springboot.bot.jms.api.JmsSender;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.Channel;
 import org.freakz.hokan_ng_springboot.bot.jpa.service.*;
 import org.freakz.hokan_ng_springboot.bot.service.AccessControlService;
+import org.freakz.hokan_ng_springboot.bot.service.HokanStatusService;
 import org.freakz.hokan_ng_springboot.bot.service.StatsService;
+import org.freakz.hokan_ng_springboot.bot.service.SystemScriptRunnerService;
 import org.freakz.hokan_ng_springboot.bot.util.CommandArgs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -92,7 +94,13 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
   protected PropertyService propertyService;
 
   @Autowired
+  protected SystemScriptRunnerService scriptRunnerService;
+
+  @Autowired
   protected SearchReplaceService searchReplaceService;
+
+  @Autowired
+  protected  HokanStatusService statusService;
 
   @Autowired
   protected StatsService statsService;
@@ -105,7 +113,6 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
 
   @Autowired
   protected UserChannelService userChannelService;
-
 
   public Cmd() {
     jsap = new JSAP();

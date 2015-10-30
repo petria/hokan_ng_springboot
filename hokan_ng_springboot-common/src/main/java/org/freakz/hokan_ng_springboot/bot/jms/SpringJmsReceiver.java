@@ -53,7 +53,7 @@ public abstract class SpringJmsReceiver implements JmsMessageHandler {
           PingResponse pingResponse = new PingResponse();
           pingResponse.setUptime(uptimeService.getUptime());
 
-//          JarScriptExecutor cmdExecutor = new JarScriptExecutor("/hostinfo.sh", "UTF-8");
+//          JarNixScriptExecutor cmdExecutor = new JarNixScriptExecutor("/hostinfo.sh", "UTF-8");
 //          String[] hostinfo = cmdExecutor.executeJarScript();
 //          if (hostinfo != null && hostinfo.length > 0) {
 //            pingResponse.setHostinfo(hostinfo[0]);
