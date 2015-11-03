@@ -1,6 +1,7 @@
 package org.freakz.hokan_ng_springboot.bot.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.freakz.hokan_ng_springboot.bot.models.SystemScriptResult;
 import org.freakz.hokan_ng_springboot.bot.util.JarNixScriptExecutor;
 import org.freakz.hokan_ng_springboot.bot.util.JarWindowsBatExecutor;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,10 @@ public class SystemScriptRunnerServiceImpl implements SystemScriptRunnerService 
   @Override
   public String[] runScript(SystemScript systemScript, String... args) {
     HostOSEnum hostOs = detectHostOs();
+    return runScript(systemScript, hostOs, args);
+  }
+
+  public String[] runScript(SystemScript systemScript, HostOSEnum hostOs, String... args) {
     switch (hostOs) {
       case BSD:
       case LINUX:
@@ -35,6 +40,28 @@ public class SystemScriptRunnerServiceImpl implements SystemScriptRunnerService 
         return runWindowsSystemScript(systemScript, args);
     }
     return new String[]{"N/A"};
+  }
+
+
+  @Override
+  public SystemScriptResult runAndGetResult(SystemScript systemScript, String... args) {
+    HostOSEnum hostOs = detectHostOs();
+    String[] output = runScript(systemScript, hostOs, args);
+    SystemScriptResult systemScriptResult = new SystemScriptResult();
+    systemScriptResult.setOriginalOutput(output);
+    if (output.length > 0) {
+      systemScriptResult.setFormattedOutput(output[0]);
+      switch (systemScript) {
+        case HOST_INFO_SCRIPT:
+          if (hostOs == HostOSEnum.WINDOWS) {
+            String name = output[2].substring(27).trim();
+            String version = output[3].substring(27).trim();
+            systemScriptResult.setFormattedOutput(name + " - " + version);
+          }
+          break;
+      }
+    }
+    return systemScriptResult;
   }
 
   private String[] runWindowsSystemScript(SystemScript systemScript, String[] args) {

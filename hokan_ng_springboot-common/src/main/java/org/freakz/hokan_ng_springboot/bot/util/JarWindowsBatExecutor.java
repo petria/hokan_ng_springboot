@@ -57,9 +57,6 @@ public class JarWindowsBatExecutor {
       String[] stringArray = cmdList.toArray(new String[cmdList.size()]);
       Process p = Runtime.getRuntime().exec(stringArray);
 
-      int ret = p.waitFor();
-      log.info("Process {} ended: {}", p, ret);
-
       br = new BufferedReader(new InputStreamReader(p.getInputStream(), this.charset));
 
       List<String> output = new ArrayList<>();
@@ -72,8 +69,9 @@ public class JarWindowsBatExecutor {
 
       } while (l != null);
       p.destroy();
-
-      return output.toArray(new String[output.size()]);
+      log.info("Process {} ended", p);
+      String[] out = output.toArray(new String[output.size()]);
+      return  out;
 
     } catch (Exception e) {
       e.printStackTrace();

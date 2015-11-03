@@ -7,6 +7,7 @@ import org.freakz.hokan_ng_springboot.bot.command.annotation.HelpGroups;
 import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
+import org.freakz.hokan_ng_springboot.bot.models.SystemScriptResult;
 import org.freakz.hokan_ng_springboot.bot.service.SystemScript;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -33,8 +34,8 @@ public class HostInfoCmd extends Cmd {
 
   @Override
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    String[] hostInfo =  scriptRunnerService.runScript(SystemScript.HOST_INFO_SCRIPT);
-    response.addResponse("I am running on: %s", hostInfo[0]);
+    SystemScriptResult hostInfo =  scriptRunnerService.runAndGetResult(SystemScript.HOST_INFO_SCRIPT);
+    response.addResponse("I am running on: %s", hostInfo.getFormattedOutput());
   }
 
 }
