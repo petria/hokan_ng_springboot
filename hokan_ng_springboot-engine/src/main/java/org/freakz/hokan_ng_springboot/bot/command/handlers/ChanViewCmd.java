@@ -81,8 +81,6 @@ public class ChanViewCmd extends Cmd {
     } else {
       log.warn("ChannelStats null??? -> {}", theChannel.getChannelName());
     }
-
-
     response.addResponse(ret);
   }
 }
