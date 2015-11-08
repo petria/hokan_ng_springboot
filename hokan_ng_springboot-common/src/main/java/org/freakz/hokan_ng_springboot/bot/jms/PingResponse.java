@@ -12,6 +12,7 @@ public class PingResponse implements Serializable {
 
   private String reply = "<pong>";
   private Uptime uptime;
+  private String hostinfo;
 
   public PingResponse() {
   }
@@ -26,5 +27,13 @@ public class PingResponse implements Serializable {
 
   public void setUptime(Uptime uptime) {
     this.uptime = uptime;
+  }
+
+  public String getHostinfo() {
+    return hostinfo;
+  }
+
+  public void setHostinfo(String hostinfo) {
+    this.hostinfo = hostinfo;
   }
 }

@@ -8,33 +8,31 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * User: petria
- * Date: 11/25/13
- * Time: 4:27 PM
+ * Created by Petri Airio on 29.10.2015.
  *
- * @author Petri Airio <petri.j.airio@gmail.com>
  */
 @Slf4j
-public class JarScriptExecutor {
+public class JarWindowsBatExecutor {
 
-  private static final String SHELL = "/bin/sh";
+  private static final String SHELL = "cmd.exe";
   private final String scriptName;
   private final String charset;
 
-  public JarScriptExecutor(String scriptName, String charset) {
+  public JarWindowsBatExecutor(String scriptName, String charset) {
     this.scriptName = scriptName;
     this.charset = charset;
   }
 
-  public String[] executeJarScript(String... args) {
+  public String[] executeJarWindowsBat(String... args) {
     log.info("Executing {} with args: {}", scriptName, StringStuff.arrayToString(args, ","));
     InputStream inputStream = this.getClass().getResourceAsStream(scriptName);
     if (inputStream == null) {
       log.error("Couldn't get InputStream for {}", this.scriptName);
       return null;
     }
+    File tmpFile = null;
     try {
-      File tmpFile = File.createTempFile(scriptName, "");
+      tmpFile = File.createTempFile(scriptName, ".bat");
 
       BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
       BufferedWriter bw = new BufferedWriter(new FileWriter(tmpFile));
@@ -51,28 +49,13 @@ public class JarScriptExecutor {
       bw.close();
 
       String tmpScriptName = tmpFile.getAbsolutePath();
-/*      String[] cmdArray = new String[2 + args.length];
-      cmdArray[0] = SHELL;
-      cmdArray[1] = tmpScriptName;*/
       List<String> cmdList = new ArrayList<>();
-//      cmdList.add("cmd.exe");
-//      cmdList.add("/c");
       cmdList.add(SHELL);
+      cmdList.add("/c");
       cmdList.add(tmpScriptName);
       cmdList.addAll(Arrays.asList(args));
       String[] stringArray = cmdList.toArray(new String[cmdList.size()]);
       Process p = Runtime.getRuntime().exec(stringArray);
-
-/*      String[] cmdArray = new String[3 + args.length];
-      cmdArray[0] = "cmd.exe";
-      cmdArray[1] = "/c";
-      cmdArray[1] = tmpScriptName;
-      System.arraycopy(args, 0, cmdArray, 2, args.length);
-      Process p = Runtime.getRuntime().exec(cmdArray);
-*/
-
-      int ret = p.waitFor();
-      log.info("Process {} ended: {}", p, ret);
 
       br = new BufferedReader(new InputStreamReader(p.getInputStream(), this.charset));
 
@@ -86,12 +69,16 @@ public class JarScriptExecutor {
 
       } while (l != null);
       p.destroy();
-      log.info("Deleting file: {} -> {}", tmpFile, tmpFile.delete());
-
-      return output.toArray(new String[output.size()]);
+      log.info("Process {} ended", p);
+      String[] out = output.toArray(new String[output.size()]);
+      return  out;
 
     } catch (Exception e) {
       e.printStackTrace();
+    } finally {
+      if (tmpFile != null) {
+        log.info("Deleting file: {} -> {}", tmpFile, tmpFile.delete());
+      }
     }
     return new String[0];
   }
