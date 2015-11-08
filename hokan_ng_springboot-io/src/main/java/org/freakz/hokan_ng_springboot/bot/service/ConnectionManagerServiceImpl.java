@@ -64,15 +64,13 @@ public class ConnectionManagerServiceImpl implements ConnectionManagerService, E
 
   @PostConstruct
   public void postInit() throws HokanException {
-//    hokanModuleService.setHokanModule(HokanModule.HokanIo);
+
     updateServerMap();
     invalidateLoggedInUsers();
-    //		propertyService.setProperty(PropertyName.PROP_SYS_CORE_IO_UPTIME, "" + new Date().getTime());
-    //		userService.resetLoggedInUsers();
-    //		userService.resetOlpos();
 
     for (IrcServerConfig server : this.configuredServers.values()) {
-			if (server.getIrcServerConfigState() == IrcServerConfigState.CONNECTED) {
+      log.debug(">> connecting server: " + server.getServer());
+      if (server.getIrcServerConfigState() == IrcServerConfigState.CONNECTED) {
 				try {
 					connect(server.getNetwork());
 				} catch (HokanException e) {
