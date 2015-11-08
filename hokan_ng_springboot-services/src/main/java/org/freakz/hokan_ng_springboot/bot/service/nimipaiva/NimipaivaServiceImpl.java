@@ -2,7 +2,7 @@ package org.freakz.hokan_ng_springboot.bot.service.nimipaiva;
 
 /**
  * Created by Petri Airio on 5.10.2015.
- *
+ * -
  */
 
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +10,7 @@ import org.freakz.hokan_ng_springboot.bot.models.NimipaivaData;
 import org.freakz.hokan_ng_springboot.bot.util.FileUtil;
 import org.freakz.hokan_ng_springboot.bot.util.StringStuff;
 import org.joda.time.DateTime;
+import org.joda.time.IllegalFieldValueException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -37,14 +38,15 @@ public class NimipaivaServiceImpl implements NimipaivaService {
         String[] split1 = row.split("\\. ");
         if (split1.length == 2) {
           String[] date = split1[0].split("\\.");
-          DateTime dateTime = DateTime.now().withDayOfMonth(Integer.parseInt(date[0])).withMonthOfYear(Integer.parseInt(date[1]));
-          String[] names = split1[1].split(", ");
-          NimipaivaData nimipaivaData = new NimipaivaData(dateTime, Arrays.asList(names));
-          dateTimeNamesMap.put(dateTime, nimipaivaData);
-          int id = 0;
+          try {
+            DateTime dateTime = DateTime.now().withDayOfMonth(Integer.parseInt(date[0])).withMonthOfYear(Integer.parseInt(date[1]));
+            String[] names = split1[1].split(", ");
+            NimipaivaData nimipaivaData = new NimipaivaData(dateTime, Arrays.asList(names));
+            dateTimeNamesMap.put(dateTime, nimipaivaData);
+          } catch (IllegalFieldValueException e) {
+            log.error("??");
+          }
         }
-
-
       }
     } catch (IOException e) {
       log.error("Can't load {}", NIMIPAIVAT_TXT);
