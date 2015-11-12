@@ -11,6 +11,7 @@ import org.freakz.hokan_ng_springboot.bot.models.*;
 import org.freakz.hokan_ng_springboot.bot.service.currency.CurrencyService;
 import org.freakz.hokan_ng_springboot.bot.service.metar.MetarDataService;
 import org.freakz.hokan_ng_springboot.bot.service.nimipaiva.NimipaivaService;
+import org.freakz.hokan_ng_springboot.bot.service.translate.GoogleTranslatorService;
 import org.freakz.hokan_ng_springboot.bot.service.urls.UrlCatchService;
 import org.freakz.hokan_ng_springboot.bot.updaters.DataUpdater;
 import org.freakz.hokan_ng_springboot.bot.updaters.UpdaterData;
