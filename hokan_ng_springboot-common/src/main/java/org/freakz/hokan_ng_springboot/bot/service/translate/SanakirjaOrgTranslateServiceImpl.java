@@ -27,7 +27,10 @@ public class SanakirjaOrgTranslateServiceImpl implements SanakirjaOrgTranslateSe
       String number = t.child(0).text();
       if (number.endsWith(".")) {
         String translation = t.child(1).text();
-        String context = t.child(2).text();
+        String context = "";
+/*        if (t.child(2) != null) {
+          context = t.child(2).text();
+        }*/
         if (translation != null && translation.length() > 0) {
           results.add(new TranslateData(translation, context));
         }
