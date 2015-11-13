@@ -1,5 +1,6 @@
 package org.freakz.hokan_ng_springboot.bot.service;
 
+import org.freakz.hokan_ng_springboot.bot.service.translate.TranslateService;
 import org.junit.Assert;
 
 /**

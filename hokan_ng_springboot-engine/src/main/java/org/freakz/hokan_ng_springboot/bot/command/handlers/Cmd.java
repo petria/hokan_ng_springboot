@@ -140,6 +140,24 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
     return name;
   }
 
+  protected Channel getRequiredChannel(String channelId) {
+    long id;
+    try {
+      id = Long.parseLong(channelId);
+    } catch (NumberFormatException ex) {
+      return null;
+    }
+/*    theChannel = channelService.findOne(id);
+    if (theChannel == null) {
+      response.addResponse("No valid Channel found with id: %d, try: !chanlist to get ID.", id);
+      return null;
+    }
+    TODO: fix
+    */
+
+    return null;
+  }
+
   protected String getChannelIdOrFail(String channelId, InternalRequest request, EngineResponse response) {
     if (request.getIrcEvent().isPrivate() && channelId == null) {
       response.addResponse("ChannelID parameter is needed when using private message, try: !chanlist to get ID.");

@@ -1,4 +1,4 @@
-package org.freakz.hokan_ng_springboot.bot.service;
+package org.freakz.hokan_ng_springboot.bot.service.translate;
 
 import java.util.List;
 
