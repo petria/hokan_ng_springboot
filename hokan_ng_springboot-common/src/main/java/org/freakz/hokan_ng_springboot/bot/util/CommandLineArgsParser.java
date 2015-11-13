@@ -19,12 +19,14 @@ public class CommandLineArgsParser {
 
   public Map<CommandLineArgs, String> parseArgs() {
     Map<CommandLineArgs, String> parsedArgs = new HashMap<>();
-    for (String arg : this.args) {
-      if (arg.startsWith("--") && arg.contains("=")) {
-        String[] split = arg.split("=");
-        for (CommandLineArgs commandLineArgs : CommandLineArgs.values()) {
-          if (split[0].equalsIgnoreCase(commandLineArgs.getCommandLineArg())) {
-             parsedArgs.put(commandLineArgs, split[1]);
+    if (args != null) {
+      for (String arg : this.args) {
+        if (arg.startsWith("--") && arg.contains("=")) {
+          String[] split = arg.split("=");
+          for (CommandLineArgs commandLineArgs : CommandLineArgs.values()) {
+            if (split[0].equalsIgnoreCase(commandLineArgs.getCommandLineArg())) {
+              parsedArgs.put(commandLineArgs, split[1]);
+            }
           }
         }
       }

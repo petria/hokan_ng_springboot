@@ -13,6 +13,15 @@ import java.util.Map;
  */
 public class CommandLineArgsParserTest {
 
+  @Test
+  public void testParseCanHandleNull() {
+    String[] args = null;
+    CommandLineArgsParser parser = new CommandLineArgsParser(args);
+    Map<CommandLineArgs, String> parsed = parser.parseArgs();
+
+    Assert.assertEquals(0, parsed.size());
+  }
+
 
   @Test
   public void testParseArgsNonValid() {
