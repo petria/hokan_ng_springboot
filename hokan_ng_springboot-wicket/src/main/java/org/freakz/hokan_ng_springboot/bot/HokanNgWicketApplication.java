@@ -7,6 +7,8 @@ import de.agilecoders.wicket.core.settings.ThemeProvider;
 import de.agilecoders.wicket.less.BootstrapLess;
 import de.agilecoders.wicket.themes.markup.html.bootswatch.BootswatchTheme;
 import de.agilecoders.wicket.themes.markup.html.bootswatch.BootswatchThemeProvider;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.markup.html.WebPage;
@@ -15,19 +17,25 @@ import org.apache.wicket.request.resource.UrlResourceReference;
 import org.apache.wicket.resource.JQueryResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.crypt.CharEncoding;
+import org.freakz.hokan_ng_springboot.bot.enums.CommandLineArgs;
 import org.freakz.hokan_ng_springboot.bot.jpa.service.*;
 import org.freakz.hokan_ng_springboot.bot.pages.HokanSignInPage;
 import org.freakz.hokan_ng_springboot.bot.pages.HomePage;
 import org.freakz.hokan_ng_springboot.bot.service.HokanStatusService;
+import org.freakz.hokan_ng_springboot.bot.util.CommandLineArgsParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import javax.jms.ConnectionFactory;
+import java.util.Map;
 
 /*
 
@@ -38,6 +46,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableAutoConfiguration
 @EnableTransactionManagement
 @EnableScheduling
+@Slf4j
 public class HokanNgWicketApplication extends AuthenticatedWebApplication {
 
   @Autowired
@@ -67,6 +76,13 @@ public class HokanNgWicketApplication extends AuthenticatedWebApplication {
   @Autowired
   private UserService userService;
 
+  private static String JMS_BROKER_URL = "tcp://localhost:61616";
+
+  @Bean
+  public ConnectionFactory connectionFactory() {
+    return new ActiveMQConnectionFactory(JMS_BROKER_URL);
+  }
+
 
   @Override
   public Class<? extends WebPage> getHomePage() {
@@ -74,6 +90,14 @@ public class HokanNgWicketApplication extends AuthenticatedWebApplication {
   }
 
   public static void main(String[] args) {
+    CommandLineArgsParser parser = new CommandLineArgsParser(args);
+    Map<CommandLineArgs, String> parsed = parser.parseArgs();
+    String url = parsed.get(CommandLineArgs.JMS_BROKER_URL);
+    if (url != null) {
+      JMS_BROKER_URL = url;
+    }
+    log.debug("JMS_BROKER_URL: {}", JMS_BROKER_URL);
+
     SpringApplication.run(HokanNgWicketApplication.class, args);
   }
 
