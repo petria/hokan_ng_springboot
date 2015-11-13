@@ -1,6 +1,5 @@
 package org.freakz.hokan_ng_springboot.bot.service;
 
-import com.google.api.translate.Language;
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.events.ServiceRequest;
 import org.freakz.hokan_ng_springboot.bot.events.ServiceResponse;
@@ -11,7 +10,7 @@ import org.freakz.hokan_ng_springboot.bot.models.*;
 import org.freakz.hokan_ng_springboot.bot.service.currency.CurrencyService;
 import org.freakz.hokan_ng_springboot.bot.service.metar.MetarDataService;
 import org.freakz.hokan_ng_springboot.bot.service.nimipaiva.NimipaivaService;
-import org.freakz.hokan_ng_springboot.bot.service.translate.GoogleTranslatorService;
+import org.freakz.hokan_ng_springboot.bot.service.translate.SanakirjaOrgTranslateService;
 import org.freakz.hokan_ng_springboot.bot.service.urls.UrlCatchService;
 import org.freakz.hokan_ng_springboot.bot.updaters.DataUpdater;
 import org.freakz.hokan_ng_springboot.bot.updaters.UpdaterData;
@@ -48,8 +47,11 @@ public class ServicesServiceMessageHandlerImpl implements JmsServiceMessageHandl
   @Autowired
   private TelkkuService telkkuService;
 
+/*  @Autowired
+  private GoogleTranslatorService translatorService;*/
+
   @Autowired
-  private GoogleTranslatorService translatorService;
+  private SanakirjaOrgTranslateService translateService;
 
   @Autowired
   private UpdaterManagerService updaterManagerService;
@@ -120,8 +122,9 @@ public class ServicesServiceMessageHandlerImpl implements JmsServiceMessageHandl
         response.setResponseData("TV_NOW_DATA", tvNowData);
         break;
       case TRANSLATE_REQUEST:
-        String translated = translatorService.getTranslation(request.getParameters(), Language.AUTO_DETECT, Language.FINNISH);
-        response.setResponseData("TRANSLATE_RESPONSE", translated);
+        String originalText = (String) request.getParameters()[0];
+        TranslateResponse translateResponse = translateService.translateText(originalText);
+        response.setResponseData("TRANSLATE_RESPONSE", translateResponse);
         break;
       case UPDATERS_LIST:
         List<DataUpdaterModel> modelList = updaterManagerService.getDataUpdaterModelList();

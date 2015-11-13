@@ -8,8 +8,13 @@ import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.events.ServiceRequestType;
 import org.freakz.hokan_ng_springboot.bot.events.ServiceResponse;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
+import org.freakz.hokan_ng_springboot.bot.models.TranslateData;
+import org.freakz.hokan_ng_springboot.bot.models.TranslateResponse;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.Map;
 
 import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_TEXT;
 
@@ -42,6 +47,23 @@ public class TranslateCmd extends Cmd {
 
     String text = results.getString(ARG_TEXT);
     ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.TRANSLATE_REQUEST, request.getIrcEvent(), text);
-    response.addResponse("%s", serviceResponse.getResponseData("TRANSLATE_RESPONSE"));
+    TranslateResponse translateResponse = serviceResponse.getTranslateResponse();
+    String responseText = "";
+    for (Map.Entry<String, List<TranslateData>> entry : translateResponse.getWordMap().entrySet()) {
+      if (responseText.length() > 0) {
+        responseText += " || ";
+      }
+
+      String translations = "";
+      for (TranslateData translateData : entry.getValue()) {
+        if (translations.length() > 0) {
+          translations += ", ";
+        }
+        translations += translateData.getTranslation();
+      }
+      responseText += String.format("%s :: %s", entry.getKey(), translations);
+    }
+    response.addResponse("%s", responseText);
+
   }
 }

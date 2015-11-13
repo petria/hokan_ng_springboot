@@ -110,4 +110,8 @@ public class ServiceResponse implements Serializable {
     return (NimipaivaData) responseData.get("NIMIPAIVA_NAME_RESPONSE");
   }
 
+  public TranslateResponse getTranslateResponse() {
+    return (TranslateResponse) responseData.get("TRANSLATE_RESPONSE");
+  }
+
 }

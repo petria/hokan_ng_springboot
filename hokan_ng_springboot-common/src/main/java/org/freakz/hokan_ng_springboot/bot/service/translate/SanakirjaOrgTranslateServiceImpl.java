@@ -1,6 +1,8 @@
 package org.freakz.hokan_ng_springboot.bot.service.translate;
 
+import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.models.TranslateData;
+import org.freakz.hokan_ng_springboot.bot.models.TranslateResponse;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -15,15 +17,8 @@ import java.util.List;
  * -
  */
 @Service
+@Slf4j
 public class SanakirjaOrgTranslateServiceImpl implements SanakirjaOrgTranslateService {
-
-
-  private static final String BASE_URL = "http://www.sanakirja.org/search.php";
-  private static final int L_FINNISH = 17;
-  private static final int L_ENGLISH = 3;
-
-  // http://www.sanakirja.org/search.php?q=hei+hei+vaan+mit%C3%A4+kuuluu&l=17&l2=3
-// http://www.sanakirja.org/search.php?q=gay&l=3&l2=17
 
   private List<TranslateData> getTranslations(Elements elements) {
     List<TranslateData> results = new ArrayList<>();
@@ -50,25 +45,47 @@ public class SanakirjaOrgTranslateServiceImpl implements SanakirjaOrgTranslateSe
       results.addAll(getTranslations(row2));
       return results;
     } catch (Exception e) {
-      //
+      log.error("Translation fetch failed: {}", url, e);
     }
     return null;
 
   }
 
-
   @Override
   public List<TranslateData> translateFiEng(String keyword) {
-    // String url = "http://www.sanakirja.org/search.php?l=17&l2=3&q=" + keyword;
-    String url = "http://www.sanakirja.org/search.php?l=17&l2=3&q=" + keyword;
+    String url = "http://www.sanakirja.org/search.php?l=17&l2=3&dont_switch_languages&q=" + keyword;
     return getTranslationsFromUrl(url);
   }
 
   @Override
   public List<TranslateData> translateEngFi(String keyword) {
-    //     String url = "http://www.sanakirja.org/search.php?l=3&l2=17&q=" + keyword;
-    String url = "http://www.sanakirja.org/search.php?l=3&l2=17&q=" + keyword;
+    String url = "http://www.sanakirja.org/search.php?l=3&l2=17&dont_switch_languages&q=" + keyword;
     return getTranslationsFromUrl(url);
   }
 
+  @Override
+  public TranslateResponse translateText(String text) {
+
+    TranslateResponse translateResponse = new TranslateResponse(text);
+
+    String[] words = text.split(" ");
+    for (String word : words) {
+      word = word.toLowerCase().replaceAll(",|\\.|!|\\?|\"", "");
+      List<TranslateData> list1 = translateEngFi(word);
+      List<TranslateData> list2 = translateFiEng(word);
+      List<TranslateData> toUse;
+      if (list1.size() > 0 && list2.size() > 0) {
+        toUse = list1;
+        toUse.addAll(list2);
+      } else {
+        if (list1.size() > 0) {
+          toUse = list1;
+        } else {
+          toUse = list2;
+        }
+      }
+      translateResponse.getWordMap().put(word, toUse);
+    }
+    return translateResponse;
+  }
 }

@@ -24,12 +24,16 @@ public class SanakirjaOrgTranslateServiceTest {
 
   @Test
   public void testTranslate() {
-    List<TranslateData> translateEngFi = translateService.translateEngFi("human");
-    List<TranslateData> translateFiEng = translateService.translateFiEng("human");
-
+    List<TranslateData> translateEngFi = translateService.translateEngFi("nenä");
     Assert.assertNotNull(translateEngFi);
-    Assert.assertTrue(translateEngFi.size() > 0);
+    Assert.assertTrue(translateEngFi.size() == 0);
+
+    List<TranslateData> translateFiEng = translateService.translateFiEng("nenä");
+    Assert.assertNotNull(translateFiEng);
+    Assert.assertTrue(translateFiEng.size() > 0);
   }
+
+
 
 
 }

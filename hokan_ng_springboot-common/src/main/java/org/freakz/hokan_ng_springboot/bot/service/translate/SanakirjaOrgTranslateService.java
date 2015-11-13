@@ -1,6 +1,7 @@
 package org.freakz.hokan_ng_springboot.bot.service.translate;
 
 import org.freakz.hokan_ng_springboot.bot.models.TranslateData;
+import org.freakz.hokan_ng_springboot.bot.models.TranslateResponse;
 
 import java.util.List;
 
@@ -13,5 +14,8 @@ public interface SanakirjaOrgTranslateService {
   List<TranslateData> translateFiEng(String keyword);
 
   List<TranslateData> translateEngFi(String keyword);
+
+  TranslateResponse translateText(String text);
+
 
 }
