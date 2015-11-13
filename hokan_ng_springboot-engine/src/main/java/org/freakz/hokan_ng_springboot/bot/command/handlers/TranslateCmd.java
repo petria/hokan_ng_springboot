@@ -61,9 +61,15 @@ public class TranslateCmd extends Cmd {
         }
         translations += translateData.getTranslation();
       }
-      responseText += String.format("%s :: %s", entry.getKey(), translations);
+      if (translations.length() > 0) {
+        responseText += String.format("%s :: %s", entry.getKey(), translations);
+      }
     }
-    response.addResponse("%s", responseText);
+    if (responseText.length() == 0) {
+      response.addResponse("%s :: n/a", text);
+    } else {
+      response.addResponse("%s", responseText);
+    }
 
   }
 }

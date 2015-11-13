@@ -1,6 +1,7 @@
 package org.freakz.hokan_ng_springboot.bot.service;
 
 import org.freakz.hokan_ng_springboot.bot.models.TranslateData;
+import org.freakz.hokan_ng_springboot.bot.models.TranslateResponse;
 import org.freakz.hokan_ng_springboot.bot.service.translate.SanakirjaOrgTranslateService;
 import org.freakz.hokan_ng_springboot.bot.service.translate.SanakirjaOrgTranslateServiceImpl;
 import org.junit.Assert;
@@ -33,7 +34,12 @@ public class SanakirjaOrgTranslateServiceTest {
     Assert.assertTrue(translateFiEng.size() > 0);
   }
 
-
+  @Test
+  public void testTranslateWords() {
+    String text = "trans";
+    TranslateResponse response = translateService.translateText(text);
+    int foo = 1;
+  }
 
 
 }

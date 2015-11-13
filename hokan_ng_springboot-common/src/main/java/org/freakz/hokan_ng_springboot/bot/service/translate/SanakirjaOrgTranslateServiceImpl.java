@@ -51,7 +51,7 @@ public class SanakirjaOrgTranslateServiceImpl implements SanakirjaOrgTranslateSe
     } catch (Exception e) {
       log.error("Translation fetch failed: {}", url, e);
     }
-    return null;
+    return new ArrayList<>();
 
   }
 
