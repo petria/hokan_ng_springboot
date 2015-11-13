@@ -21,6 +21,7 @@
         <tomcat.version>8.0.20</tomcat.version>
         <wicket.version>6.20.0</wicket.version>
         <wicket.bootsrap.version>0.9.11</wicket.bootsrap.version>
+        <amq.version>5.7.0</amq.version>
 
     </properties>
 
@@ -81,8 +82,9 @@
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-hornetq</artifactId>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-core</artifactId>
+            <version>${amq.version}</version>
         </dependency>
 
 
