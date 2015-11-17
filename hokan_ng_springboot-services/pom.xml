@@ -31,6 +31,13 @@
         </dependency>
 
         <dependency>
+            <groupId>com.omertron</groupId>
+            <artifactId>API-OMDB</artifactId>
+            <version>1.0</version>
+        </dependency>
+
+
+        <dependency>
             <!-- jsoup HTML parser library @ http://jsoup.org/ -->
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>

@@ -2,11 +2,13 @@ package org.freakz.hokan_ng_springboot.bot.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.events.ServiceRequest;
+import org.freakz.hokan_ng_springboot.bot.events.ServiceRequestType;
 import org.freakz.hokan_ng_springboot.bot.events.ServiceResponse;
 import org.freakz.hokan_ng_springboot.bot.jms.JmsEnvelope;
 import org.freakz.hokan_ng_springboot.bot.jms.api.JmsServiceMessageHandler;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.Channel;
 import org.freakz.hokan_ng_springboot.bot.models.*;
+import org.freakz.hokan_ng_springboot.bot.service.annotation.ServiceMessageHandler;
 import org.freakz.hokan_ng_springboot.bot.service.currency.CurrencyService;
 import org.freakz.hokan_ng_springboot.bot.service.metar.MetarDataService;
 import org.freakz.hokan_ng_springboot.bot.service.nimipaiva.NimipaivaService;
@@ -19,8 +21,12 @@ import org.freakz.hokan_ng_springboot.bot.updaters.horo.HoroUpdater;
 import org.freakz.hokan_ng_springboot.bot.updaters.telkku.TelkkuService;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -36,6 +42,9 @@ import java.util.List;
 public class ServicesServiceMessageHandlerImpl implements JmsServiceMessageHandler {
 
   @Autowired
+  private ApplicationContext applicationContext;
+
+  @Autowired
   private CurrencyService currencyService;
 
   @Autowired
@@ -47,9 +56,6 @@ public class ServicesServiceMessageHandlerImpl implements JmsServiceMessageHandl
   @Autowired
   private TelkkuService telkkuService;
 
-/*  @Autowired
-  private GoogleTranslatorService translatorService;*/
-
   @Autowired
   private SanakirjaOrgTranslateService translateService;
 
@@ -59,10 +65,54 @@ public class ServicesServiceMessageHandlerImpl implements JmsServiceMessageHandl
   @Autowired
   private UrlCatchService urlCatchService;
 
+  private void findHandlersMethod(ServiceRequest request, ServiceResponse response) {
+    String[] names = applicationContext.getBeanDefinitionNames();
+    for (String beanName : names) {
+      Object obj = applicationContext.getBean(beanName);
+//      log.debug("obj: {}", obj);
+      Class<?> objClz = obj.getClass();
+      if (org.springframework.aop.support.AopUtils.isAopProxy(obj)) {
+        objClz = org.springframework.aop.support.AopUtils.getTargetClass(obj);
+      }
+      for (Method m : objClz.getDeclaredMethods()) {
+        if (m.isAnnotationPresent(ServiceMessageHandler.class)) {
+          Annotation annotation = m.getAnnotation(ServiceMessageHandler.class);
+          ServiceMessageHandler serviceMessageHandler = (ServiceMessageHandler) annotation;
+          ServiceRequestType requestType = serviceMessageHandler.ServiceRequestType();
+          log.debug("Method: {} -> {}", m, requestType);
+          if (requestType == request.getType()) {
+            try {
+              m.invoke(obj, request, response);
+            } catch (IllegalAccessException e) {
+              e.printStackTrace();
+            } catch (InvocationTargetException e) {
+              e.printStackTrace();
+            }
+          }
+        }
+      }
+    }
+
+  }
+
+
+  @ServiceMessageHandler(ServiceRequestType = ServiceRequestType.WEATHER_REQUEST)
+  public void handleWeatherRequest(ServiceRequest request, ServiceResponse response) {
+    DataUpdater weatherUpdater = updaterManagerService.getUpdater("kelikameratUpdater");
+    UpdaterData updaterData = new UpdaterData();
+    weatherUpdater.getData(updaterData);
+    List<KelikameratWeatherData> datas = (List<KelikameratWeatherData>) updaterData.getData();
+    response.setResponseData("WEATHER_DATA", datas);
+  }
+
+
   @Override
   public void handleJmsEnvelope(JmsEnvelope envelope) throws Exception {
     ServiceRequest request = envelope.getMessageIn().getServiceRequest();
     ServiceResponse response = new ServiceResponse();
+    response.setResponseData("Test", "test");
+    findHandlersMethod(request, response);
+
     UpdaterData updaterData;
     switch (request.getType()) {
       case CATCH_URLS_REQUEST:
@@ -141,15 +191,17 @@ public class ServicesServiceMessageHandlerImpl implements JmsServiceMessageHandl
         }
         response.setResponseData("START_UPDATER_LIST_RESPONSE", startedUpdaters);
         break;
-      case WEATHER_REQUEST:
+/*      case WEATHER_REQUEST:
         DataUpdater weatherUpdater = updaterManagerService.getUpdater("kelikameratUpdater");
         updaterData = new UpdaterData();
         weatherUpdater.getData(updaterData);
         List<KelikameratWeatherData> datas = (List<KelikameratWeatherData>) updaterData.getData();
         response.setResponseData("WEATHER_DATA", datas);
-        break;
+        break;*/
     }
     envelope.getMessageOut().addPayLoadObject("SERVICE_RESPONSE", response);
   }
+
+
 
 }
