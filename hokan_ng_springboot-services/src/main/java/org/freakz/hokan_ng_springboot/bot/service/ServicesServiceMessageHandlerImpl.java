@@ -10,6 +10,7 @@ import org.freakz.hokan_ng_springboot.bot.jpa.entity.Channel;
 import org.freakz.hokan_ng_springboot.bot.models.*;
 import org.freakz.hokan_ng_springboot.bot.service.annotation.ServiceMessageHandler;
 import org.freakz.hokan_ng_springboot.bot.service.currency.CurrencyService;
+import org.freakz.hokan_ng_springboot.bot.service.imdb.IMDBService;
 import org.freakz.hokan_ng_springboot.bot.service.metar.MetarDataService;
 import org.freakz.hokan_ng_springboot.bot.service.nimipaiva.NimipaivaService;
 import org.freakz.hokan_ng_springboot.bot.service.translate.SanakirjaOrgTranslateService;
@@ -48,6 +49,9 @@ public class ServicesServiceMessageHandlerImpl implements JmsServiceMessageHandl
   private CurrencyService currencyService;
 
   @Autowired
+  private IMDBService imdbService;
+
+  @Autowired
   private MetarDataService metarDataService;
 
   @Autowired
@@ -69,7 +73,6 @@ public class ServicesServiceMessageHandlerImpl implements JmsServiceMessageHandl
     String[] names = applicationContext.getBeanDefinitionNames();
     for (String beanName : names) {
       Object obj = applicationContext.getBean(beanName);
-//      log.debug("obj: {}", obj);
       Class<?> objClz = obj.getClass();
       if (org.springframework.aop.support.AopUtils.isAopProxy(obj)) {
         objClz = org.springframework.aop.support.AopUtils.getTargetClass(obj);
@@ -86,7 +89,7 @@ public class ServicesServiceMessageHandlerImpl implements JmsServiceMessageHandl
             } catch (IllegalAccessException e) {
               e.printStackTrace();
             } catch (InvocationTargetException e) {
-              e.printStackTrace();
+              e.printStackTrace(); // TODO clean up
             }
           }
         }
@@ -94,7 +97,6 @@ public class ServicesServiceMessageHandlerImpl implements JmsServiceMessageHandl
     }
 
   }
-
 
   @ServiceMessageHandler(ServiceRequestType = ServiceRequestType.WEATHER_REQUEST)
   public void handleWeatherRequest(ServiceRequest request, ServiceResponse response) {
@@ -105,6 +107,13 @@ public class ServicesServiceMessageHandlerImpl implements JmsServiceMessageHandl
     response.setResponseData("WEATHER_DATA", datas);
   }
 
+
+  @ServiceMessageHandler(ServiceRequestType = ServiceRequestType.IMDB_TITLE_REQUEST)
+  public void handleIMDBTitleRequest(ServiceRequest request, ServiceResponse response) {
+    String title = (String) request.getParameters()[0];
+    IMDBData imdbData = imdbService.findByTitle(title);
+    response.setResponseData("IMDB_TITLE_DATA", imdbData);
+  }
 
   @Override
   public void handleJmsEnvelope(JmsEnvelope envelope) throws Exception {
