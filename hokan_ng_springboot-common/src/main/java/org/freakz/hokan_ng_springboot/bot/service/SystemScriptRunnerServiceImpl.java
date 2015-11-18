@@ -76,8 +76,7 @@ public class SystemScriptRunnerServiceImpl implements SystemScriptRunnerService 
 
   private HostOSEnum detectHostOs() {
     String OS = System.getProperty("os.name").toLowerCase();
-    HostOSEnum hostOSEnum = null;
-    log.debug("os.name: {}", OS);
+    HostOSEnum hostOSEnum;
     if (OS.contains("win")) {
       hostOSEnum = HostOSEnum.WINDOWS;
     } else if (OS.contains("freebsd")) {
