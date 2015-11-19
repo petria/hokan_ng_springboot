@@ -1,4 +1,4 @@
-package org.freakz.hokan_ng_springboot.bot.service.imdb;
+package org.freakz.hokan_ng_springboot.bot.service.imdb2;
 
 import com.omertron.omdbapi.OMDBException;
 import com.omertron.omdbapi.OmdbApi;
