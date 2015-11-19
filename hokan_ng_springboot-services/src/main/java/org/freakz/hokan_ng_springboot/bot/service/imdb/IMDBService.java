@@ -1,4 +1,4 @@
-package org.freakz.hokan_ng_springboot.bot.service.imdb2;
+package org.freakz.hokan_ng_springboot.bot.service.imdb;
 
 import org.freakz.hokan_ng_springboot.bot.models.IMDBData;
 

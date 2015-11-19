@@ -10,7 +10,7 @@ import org.freakz.hokan_ng_springboot.bot.jpa.entity.Channel;
 import org.freakz.hokan_ng_springboot.bot.models.*;
 import org.freakz.hokan_ng_springboot.bot.service.annotation.ServiceMessageHandler;
 import org.freakz.hokan_ng_springboot.bot.service.currency.CurrencyService;
-import org.freakz.hokan_ng_springboot.bot.service.imdb2.IMDBService;
+import org.freakz.hokan_ng_springboot.bot.service.imdb.IMDBService;
 import org.freakz.hokan_ng_springboot.bot.service.metar.MetarDataService;
 import org.freakz.hokan_ng_springboot.bot.service.nimipaiva.NimipaivaService;
 import org.freakz.hokan_ng_springboot.bot.service.translate.SanakirjaOrgTranslateService;
