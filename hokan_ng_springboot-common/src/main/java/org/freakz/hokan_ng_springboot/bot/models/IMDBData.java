@@ -1,8 +1,9 @@
 package org.freakz.hokan_ng_springboot.bot.models;
 
-import com.omertron.omdbapi.model.OmdbVideoFull;
+import com.omertron.omdbapi.model.OmdbVideoBasic;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by Petri Airio on 18.11.2015.
@@ -10,21 +11,21 @@ import java.io.Serializable;
  */
 public class IMDBData implements Serializable {
 
-  private OmdbVideoFull omdbVideoFull;
+
+  private List<OmdbVideoBasic> searchResults;
 
   public IMDBData() {
   }
 
-  public IMDBData(OmdbVideoFull omdbVideoFull) {
-    this.omdbVideoFull = omdbVideoFull;
+  public IMDBData(List<OmdbVideoBasic> searchResults) {
+    this.searchResults = searchResults;
   }
 
-  public OmdbVideoFull getOmdbVideoFull() {
-    return omdbVideoFull;
+  public List<OmdbVideoBasic> getSearchResults() {
+    return searchResults;
   }
 
-  public void setOmdbVideoFull(OmdbVideoFull omdbVideoFull) {
-    this.omdbVideoFull = omdbVideoFull;
+  public void setSearchResults(List<OmdbVideoBasic> searchResults) {
+    this.searchResults = searchResults;
   }
-
 }

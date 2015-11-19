@@ -26,7 +26,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Date;
@@ -69,7 +68,7 @@ public class ServicesServiceMessageHandlerImpl implements JmsServiceMessageHandl
   @Autowired
   private UrlCatchService urlCatchService;
 
-  private void findHandlersMethod(ServiceRequest request, ServiceResponse response) {
+  private boolean findHandlersMethod(ServiceRequest request, ServiceResponse response) {
     String[] names = applicationContext.getBeanDefinitionNames();
     for (String beanName : names) {
       Object obj = applicationContext.getBean(beanName);
@@ -82,20 +81,20 @@ public class ServicesServiceMessageHandlerImpl implements JmsServiceMessageHandl
           Annotation annotation = m.getAnnotation(ServiceMessageHandler.class);
           ServiceMessageHandler serviceMessageHandler = (ServiceMessageHandler) annotation;
           ServiceRequestType requestType = serviceMessageHandler.ServiceRequestType();
-          log.debug("Method: {} -> {}", m, requestType);
           if (requestType == request.getType()) {
             try {
+              log.debug("Method: {} -> {}", m, requestType);
               m.invoke(obj, request, response);
-            } catch (IllegalAccessException e) {
-              e.printStackTrace();
-            } catch (InvocationTargetException e) {
-              e.printStackTrace(); // TODO clean up
+              return true;
+            } catch (Exception e) {
+              log.error("Could not call service handler for: {}", request);
+              return false;
             }
           }
         }
       }
     }
-
+    return false;
   }
 
   @ServiceMessageHandler(ServiceRequestType = ServiceRequestType.WEATHER_REQUEST)
@@ -119,94 +118,92 @@ public class ServicesServiceMessageHandlerImpl implements JmsServiceMessageHandl
   public void handleJmsEnvelope(JmsEnvelope envelope) throws Exception {
     ServiceRequest request = envelope.getMessageIn().getServiceRequest();
     ServiceResponse response = new ServiceResponse();
-    response.setResponseData("Test", "test");
-    findHandlersMethod(request, response);
 
-    UpdaterData updaterData;
-    switch (request.getType()) {
-      case CATCH_URLS_REQUEST:
-        urlCatchService.catchUrls(request.getIrcMessageEvent());
-        break;
-      case CURRENCY_CONVERT_REQUEST:
-        String amount = (String) request.getParameters()[0];
-        String from = (String) request.getParameters()[1];
-        String to = (String) request.getParameters()[2];
-        String currencyConvert = currencyService.googleConvert(amount, from, to);
-        response.setResponseData("CURRENCY_CONVERT_RESPONSE", currencyConvert);
-        break;
-      case CURRENCY_LIST_REQUEST:
-        List<GoogleCurrency> currencyList = currencyService.getGoogleCurrencies();
-        response.setResponseData("CURRENCY_LIST_RESPONSE", currencyList); // TODO
-        break;
-      case HORO_REQUEST:
-        HoroUpdater horoUpdater = (HoroUpdater) updaterManagerService.getUpdater("horoUpdater");
-        updaterData = new UpdaterData();
-        horoUpdater.getData(updaterData, request.getParameters());
-        HoroHolder hh = (HoroHolder) updaterData.getData();
-        response.setResponseData("HORO_DATA", hh);
-        break;
-      case METAR_REQUEST:
-        List<MetarData> data = metarDataService.getMetarData(request.getParameters());
-        response.setResponseData("METAR_DATA", data);
-        break;
-      case NIMIPAIVA_DAY:
-        DateTime day = (DateTime) request.getParameters()[0];
-        NimipaivaData nimipaivaData = nimipaivaService.getNamesForDay(day);
-        response.setResponseData("NIMIPAIVA_DAY_RESPONSE", nimipaivaData);
-        break;
-      case NIMIPAIVA_NAME:
-        String nameStr = (String) request.getParameters()[0];
-        NimipaivaData theDay = nimipaivaService.findDayForName(nameStr);
-        response.setResponseData("NIMIPAIVA_NAME_RESPONSE", theDay);
-        // TODO
-        break;
-      case TV_FIND_REQUEST:
-        String programs = (String) request.getParameters()[0];
-        List<TelkkuProgram> programList = telkkuService.findPrograms(programs);
-        response.setResponseData("TV_FIND_DATA", programList);
-        break;
-      case TV_DAY_REQUEST:
-        Channel channel = (Channel) request.getParameters()[0];
-        Date date = (Date) request.getParameters()[1];
-        List<TelkkuProgram> tvDayData = telkkuService.getChannelDailyNotifiedPrograms(channel, date);
-        response.setResponseData("TV_DAY_DATA", tvDayData);
-        break;
-      case TV_INFO_REQUEST:
-        int id = (int) request.getParameters()[0];
-        TelkkuProgram program = telkkuService.findProgramById(id);
-        response.setResponseData("TV_INFO_DATA", program);
-        break;
-      case TV_NOW_REQUEST:
-        TvNowData tvNowData = telkkuService.getTvNowData();
-        response.setResponseData("TV_NOW_DATA", tvNowData);
-        break;
-      case TRANSLATE_REQUEST:
-        String originalText = (String) request.getParameters()[0];
-        TranslateResponse translateResponse = translateService.translateText(originalText);
-        response.setResponseData("TRANSLATE_RESPONSE", translateResponse);
-        break;
-      case UPDATERS_LIST:
-        List<DataUpdaterModel> modelList = updaterManagerService.getDataUpdaterModelList();
-        response.setResponseData("UPDATER_LIST_RESPONSE", modelList);
-        break;
-      case UPDATERS_START:
-        List<DataUpdaterModel> startedUpdaters = new ArrayList<>();
-        for (Object toStart : request.getParameters()) {
-          String updater = (String) toStart;
-          DataUpdaterModel model = updaterManagerService.startUpdaterByName(updater);
-          if (model != null) {
-            startedUpdaters.add(model);
+    boolean handleDone = findHandlersMethod(request, response);
+
+    if (!handleDone) {
+      log.debug("Doing service request old way: {}", request);
+      UpdaterData updaterData;
+      switch (request.getType()) {
+        case CATCH_URLS_REQUEST:
+          urlCatchService.catchUrls(request.getIrcMessageEvent());
+          break;
+        case CURRENCY_CONVERT_REQUEST:
+          String amount = (String) request.getParameters()[0];
+          String from = (String) request.getParameters()[1];
+          String to = (String) request.getParameters()[2];
+          String currencyConvert = currencyService.googleConvert(amount, from, to);
+          response.setResponseData("CURRENCY_CONVERT_RESPONSE", currencyConvert);
+          break;
+        case CURRENCY_LIST_REQUEST:
+          List<GoogleCurrency> currencyList = currencyService.getGoogleCurrencies();
+          response.setResponseData("CURRENCY_LIST_RESPONSE", currencyList); // TODO
+          break;
+        case HORO_REQUEST:
+          HoroUpdater horoUpdater = (HoroUpdater) updaterManagerService.getUpdater("horoUpdater");
+          updaterData = new UpdaterData();
+          horoUpdater.getData(updaterData, request.getParameters());
+          HoroHolder hh = (HoroHolder) updaterData.getData();
+          response.setResponseData("HORO_DATA", hh);
+          break;
+        case METAR_REQUEST:
+          List<MetarData> data = metarDataService.getMetarData(request.getParameters());
+          response.setResponseData("METAR_DATA", data);
+          break;
+        case NIMIPAIVA_DAY:
+          DateTime day = (DateTime) request.getParameters()[0];
+          NimipaivaData nimipaivaData = nimipaivaService.getNamesForDay(day);
+          response.setResponseData("NIMIPAIVA_DAY_RESPONSE", nimipaivaData);
+          break;
+        case NIMIPAIVA_NAME:
+          String nameStr = (String) request.getParameters()[0];
+          NimipaivaData theDay = nimipaivaService.findDayForName(nameStr);
+          response.setResponseData("NIMIPAIVA_NAME_RESPONSE", theDay);
+          // TODO
+          break;
+        case TV_FIND_REQUEST:
+          String programs = (String) request.getParameters()[0];
+          List<TelkkuProgram> programList = telkkuService.findPrograms(programs);
+          response.setResponseData("TV_FIND_DATA", programList);
+          break;
+        case TV_DAY_REQUEST:
+          Channel channel = (Channel) request.getParameters()[0];
+          Date date = (Date) request.getParameters()[1];
+          List<TelkkuProgram> tvDayData = telkkuService.getChannelDailyNotifiedPrograms(channel, date);
+          response.setResponseData("TV_DAY_DATA", tvDayData);
+          break;
+        case TV_INFO_REQUEST:
+          int id = (int) request.getParameters()[0];
+          TelkkuProgram program = telkkuService.findProgramById(id);
+          response.setResponseData("TV_INFO_DATA", program);
+          break;
+        case TV_NOW_REQUEST:
+          TvNowData tvNowData = telkkuService.getTvNowData();
+          response.setResponseData("TV_NOW_DATA", tvNowData);
+          break;
+        case TRANSLATE_REQUEST:
+          String originalText = (String) request.getParameters()[0];
+          TranslateResponse translateResponse = translateService.translateText(originalText);
+          response.setResponseData("TRANSLATE_RESPONSE", translateResponse);
+          break;
+        case UPDATERS_LIST:
+          List<DataUpdaterModel> modelList = updaterManagerService.getDataUpdaterModelList();
+          response.setResponseData("UPDATER_LIST_RESPONSE", modelList);
+          break;
+        case UPDATERS_START:
+          List<DataUpdaterModel> startedUpdaters = new ArrayList<>();
+          for (Object toStart : request.getParameters()) {
+            String updater = (String) toStart;
+            DataUpdaterModel model = updaterManagerService.startUpdaterByName(updater);
+            if (model != null) {
+              startedUpdaters.add(model);
+            }
           }
-        }
-        response.setResponseData("START_UPDATER_LIST_RESPONSE", startedUpdaters);
-        break;
-/*      case WEATHER_REQUEST:
-        DataUpdater weatherUpdater = updaterManagerService.getUpdater("kelikameratUpdater");
-        updaterData = new UpdaterData();
-        weatherUpdater.getData(updaterData);
-        List<KelikameratWeatherData> datas = (List<KelikameratWeatherData>) updaterData.getData();
-        response.setResponseData("WEATHER_DATA", datas);
-        break;*/
+          response.setResponseData("START_UPDATER_LIST_RESPONSE", startedUpdaters);
+          break;
+        default:
+          log.error("Service request NOT handled!!!!");
+      }
     }
     envelope.getMessageOut().addPayLoadObject("SERVICE_RESPONSE", response);
   }

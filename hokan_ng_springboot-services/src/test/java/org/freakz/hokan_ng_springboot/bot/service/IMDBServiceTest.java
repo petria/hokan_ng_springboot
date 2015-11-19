@@ -66,7 +66,7 @@ public class IMDBServiceTest {
     String[] sceneNames = SCENE_NAMES.split("\n");
     String parsed = service.parseSceneMovieName(sceneNames[5]);
     IMDBData imdbData = service.findByTitle(parsed);
-    Assert.assertEquals("tt2679042", imdbData.getOmdbVideoFull().getImdbID());
+    Assert.assertEquals("tt2679042", imdbData.getSearchResults().get(0).getImdbID());
 
   }
 

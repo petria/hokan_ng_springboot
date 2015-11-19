@@ -2,7 +2,7 @@ package org.freakz.hokan_ng_springboot.bot.command.handlers;
 
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.UnflaggedOption;
-import com.omertron.omdbapi.model.OmdbVideoFull;
+import com.omertron.omdbapi.model.OmdbVideoBasic;
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.command.HelpGroup;
 import org.freakz.hokan_ng_springboot.bot.command.annotation.HelpGroups;
@@ -38,17 +38,18 @@ public class IMDBFindCmd extends Cmd {
         .setGreedy(false);
     registerParameter(flg);
 
-
   }
 
   @Override
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
     String text = results.getString(ARG_TEXT);
-    ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.TRANSLATE_REQUEST, request.getIrcEvent(), text);
+    ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.IMDB_TITLE_REQUEST, request.getIrcEvent(), text);
     IMDBData imdbData = serviceResponse.getIMDBTitleData();
-    if (imdbData.getOmdbVideoFull() != null) {
-      OmdbVideoFull ovf = imdbData.getOmdbVideoFull();
-      response.addResponse("IMDB: %s (%s) - %s", ovf.getTitle(), ovf.getYear(), ovf.getImdbRating());
+    if (imdbData.getSearchResults() != null) {
+      for (OmdbVideoBasic omdb : imdbData.getSearchResults()) {
+        String imdbURL = String.format("http://www.imdb.com/title/%s/", omdb.getImdbID());
+        response.addResponse("[%7s] %25s :: \"%s\" (%s)\n", omdb.getType(), imdbURL, omdb.getTitle(), omdb.getYear());
+      }
     } else {
       response.addResponse("Nothing found with: %s", text);
     }
