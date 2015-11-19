@@ -114,4 +114,8 @@ public class ServiceResponse implements Serializable {
     return (TranslateResponse) responseData.get("TRANSLATE_RESPONSE");
   }
 
+  public IMDBData getIMDBTitleData() {
+   return (IMDBData) responseData.get("IMDB_TITLE_DATA");
+  }
+
 }
