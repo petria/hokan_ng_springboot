@@ -49,7 +49,7 @@ public class IMDBServiceTest {
   public void testParseBogusName() {
     String bogusName = "Ffufufldsjkcfxfcxcas";
     String parsed = service.parseSceneMovieName(bogusName);
-    Assert.assertEquals("n/a", parsed);
+    Assert.assertEquals(null, parsed);
   }
 
   @Test

@@ -26,18 +26,23 @@ public class IMDBServiceImpl implements IMDBService {
     String name = "";
     for (String part : parts) {
       if (part.toLowerCase().matches("\\d\\d\\d\\d|s\\d\\d?e\\d\\d?|\\d\\d?x\\d\\d?|\\d\\d\\d\\d?p")) {
-        break;
+        return name;
       }
       if (name.length() > 0) {
         name += " ";
       }
       name += part;
     }
-    return name;
+    return null;
   }
 
   public IMDBData findByTitle(String title) {
     try {
+      String parsed = parseSceneMovieName(title);
+      if (parsed != null) {
+        log.debug("Using parsed name: {}", parsed);
+        title = parsed;
+      }
       SearchResults results = omdb.search(title);
       return new IMDBData(results.getResults());
     } catch (OMDBException e) {
