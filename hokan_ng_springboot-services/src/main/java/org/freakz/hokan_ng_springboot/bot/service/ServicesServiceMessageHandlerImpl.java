@@ -110,8 +110,8 @@ public class ServicesServiceMessageHandlerImpl implements JmsServiceMessageHandl
   @ServiceMessageHandler(ServiceRequestType = ServiceRequestType.IMDB_TITLE_REQUEST)
   public void handleIMDBTitleRequest(ServiceRequest request, ServiceResponse response) {
     String title = (String) request.getParameters()[0];
-    IMDBData imdbData = IMDBService.findByTitle(title);
-    response.setResponseData("IMDB_TITLE_DATA", imdbData);
+    IMDBSearchResults imdbSearchResults = IMDBService.findByTitle(title);
+    response.setResponseData("IMDB_TITLE_DATA", imdbSearchResults);
   }
 
   @Override

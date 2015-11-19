@@ -1,6 +1,7 @@
 package org.freakz.hokan_ng_springboot.bot.service;
 
-import org.freakz.hokan_ng_springboot.bot.models.IMDBData;
+import org.freakz.hokan_ng_springboot.bot.models.IMDBDetails;
+import org.freakz.hokan_ng_springboot.bot.models.IMDBSearchResults;
 import org.freakz.hokan_ng_springboot.bot.service.imdb.IMDBServiceImpl;
 import org.junit.Assert;
 import org.junit.Before;
@@ -57,7 +58,7 @@ public class IMDBServiceTest {
     String[] sceneNames = SCENE_NAMES.split("\n");
     for (String name : sceneNames) {
       String parsed = service.parseSceneMovieName(name);
-      Assert.assertNotEquals("n/a", parsed);
+      Assert.assertNotNull(parsed);
     }
   }
 
@@ -65,9 +66,50 @@ public class IMDBServiceTest {
   public void testGetIMDBData() {
     String[] sceneNames = SCENE_NAMES.split("\n");
     String parsed = service.parseSceneMovieName(sceneNames[5]);
-    IMDBData imdbData = service.findByTitle(parsed);
-    Assert.assertEquals("tt2679042", imdbData.getSearchResults().get(0).getImdbID());
+    IMDBSearchResults imdbSearchResults = service.findByTitle(parsed);
+    Assert.assertEquals("tt2679042", imdbSearchResults.getSearchResults().get(0).getImdbID());
 
   }
+
+  @Test
+  public void testGetDetailedInfoFromUrl() {
+    String url = "http://www.imdb.com/title/tt2009537/";
+    IMDBDetails details = service.getDetailedInfo(url);
+    Assert.assertNotNull(details.getDetails());
+    Assert.assertEquals("No Country for Gay Old Men", details.getDetails().getTitle());
+  }
+
+  @Test
+  public void testGetDetailedInfoFromID() {
+    String id = "tt2009537";
+    IMDBDetails details = service.getDetailedInfo(id);
+    Assert.assertNotNull(details.getDetails());
+    Assert.assertEquals("No Country for Gay Old Men", details.getDetails().getTitle());
+  }
+
+  @Test
+  public void testDetailedInfoFromTitle() {
+    String title = "No Country for Gay Old Men";
+    IMDBDetails details = service.getDetailedInfo(title);
+    Assert.assertNotNull(details.getDetails());
+    Assert.assertEquals("No Country for Gay Old Men", details.getDetails().getTitle());
+  }
+
+  @Test
+  public void testDetailedInfoSceneName() {
+    String title = "Hitman.Agent.47.2015.1080p.BluRay.x264-DRONES";
+    IMDBDetails details = service.getDetailedInfo(title);
+    Assert.assertNotNull(details.getDetails());
+    Assert.assertEquals("Hitman: Agent 47", details.getDetails().getTitle());
+  }
+
+  @Test
+  public void testDetailedInfoBogusName() {
+    String name = "FUFuffuf FUFUUFUF";
+    IMDBDetails details = service.getDetailedInfo(name);
+    Assert.assertNull(details.getDetails());
+
+  }
+
 
 }

@@ -1,6 +1,7 @@
 package org.freakz.hokan_ng_springboot.bot.service.imdb;
 
-import org.freakz.hokan_ng_springboot.bot.models.IMDBData;
+import org.freakz.hokan_ng_springboot.bot.models.IMDBDetails;
+import org.freakz.hokan_ng_springboot.bot.models.IMDBSearchResults;
 
 /**
  * Created by Petri Airio on 17.11.2015.
@@ -8,6 +9,8 @@ import org.freakz.hokan_ng_springboot.bot.models.IMDBData;
  */
 public interface IMDBService {
 
-  IMDBData findByTitle(String title);
+  IMDBSearchResults findByTitle(String title);
+
+  IMDBDetails getDetailedInfo(String name);
 
 }
