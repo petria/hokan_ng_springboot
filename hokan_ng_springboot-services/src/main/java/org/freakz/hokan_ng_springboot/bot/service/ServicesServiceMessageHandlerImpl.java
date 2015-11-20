@@ -23,7 +23,7 @@ import org.freakz.hokan_ng_springboot.bot.updaters.telkku.TelkkuService;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -36,7 +36,7 @@ import java.util.List;
  *
  *
  */
-@Controller
+@Service
 @Slf4j
 @SuppressWarnings("unchecked")
 public class ServicesServiceMessageHandlerImpl implements JmsServiceMessageHandler {
@@ -103,7 +103,7 @@ public class ServicesServiceMessageHandlerImpl implements JmsServiceMessageHandl
     UpdaterData updaterData = new UpdaterData();
     weatherUpdater.getData(updaterData);
     List<KelikameratWeatherData> datas = (List<KelikameratWeatherData>) updaterData.getData();
-    response.setResponseData("WEATHER_DATA", datas);
+    response.setResponseData(request.getType().getResponseDataKey(), datas);
   }
 
 
@@ -111,13 +111,13 @@ public class ServicesServiceMessageHandlerImpl implements JmsServiceMessageHandl
   public void handleIMDBTitleRequest(ServiceRequest request, ServiceResponse response) {
     String title = (String) request.getParameters()[0];
     IMDBSearchResults imdbSearchResults = IMDBService.findByTitle(title);
-    response.setResponseData("IMDB_TITLE_DATA", imdbSearchResults);
+    response.setResponseData(request.getType().getResponseDataKey(), imdbSearchResults);
   }
 
   @Override
   public void handleJmsEnvelope(JmsEnvelope envelope) throws Exception {
     ServiceRequest request = envelope.getMessageIn().getServiceRequest();
-    ServiceResponse response = new ServiceResponse();
+    ServiceResponse response = new ServiceResponse(request.getType());
 
     boolean handleDone = findHandlersMethod(request, response);
 
@@ -133,62 +133,61 @@ public class ServicesServiceMessageHandlerImpl implements JmsServiceMessageHandl
           String from = (String) request.getParameters()[1];
           String to = (String) request.getParameters()[2];
           String currencyConvert = currencyService.googleConvert(amount, from, to);
-          response.setResponseData("CURRENCY_CONVERT_RESPONSE", currencyConvert);
+          response.setResponseData(request.getType().getResponseDataKey(), currencyConvert);
           break;
         case CURRENCY_LIST_REQUEST:
           List<GoogleCurrency> currencyList = currencyService.getGoogleCurrencies();
-          response.setResponseData("CURRENCY_LIST_RESPONSE", currencyList); // TODO
+          response.setResponseData(request.getType().getResponseDataKey(), currencyList); // TODO
           break;
         case HORO_REQUEST:
           HoroUpdater horoUpdater = (HoroUpdater) updaterManagerService.getUpdater("horoUpdater");
           updaterData = new UpdaterData();
           horoUpdater.getData(updaterData, request.getParameters());
           HoroHolder hh = (HoroHolder) updaterData.getData();
-          response.setResponseData("HORO_DATA", hh);
+          response.setResponseData(request.getType().getResponseDataKey(), hh);
           break;
         case METAR_REQUEST:
           List<MetarData> data = metarDataService.getMetarData(request.getParameters());
-          response.setResponseData("METAR_DATA", data);
+          response.setResponseData(request.getType().getResponseDataKey(), data);
           break;
         case NIMIPAIVA_DAY:
           DateTime day = (DateTime) request.getParameters()[0];
           NimipaivaData nimipaivaData = nimipaivaService.getNamesForDay(day);
-          response.setResponseData("NIMIPAIVA_DAY_RESPONSE", nimipaivaData);
+          response.setResponseData(request.getType().getResponseDataKey(), nimipaivaData);
           break;
         case NIMIPAIVA_NAME:
           String nameStr = (String) request.getParameters()[0];
           NimipaivaData theDay = nimipaivaService.findDayForName(nameStr);
-          response.setResponseData("NIMIPAIVA_NAME_RESPONSE", theDay);
-          // TODO
+          response.setResponseData(request.getType().getResponseDataKey(), theDay);
           break;
         case TV_FIND_REQUEST:
           String programs = (String) request.getParameters()[0];
           List<TelkkuProgram> programList = telkkuService.findPrograms(programs);
-          response.setResponseData("TV_FIND_DATA", programList);
+          response.setResponseData(request.getType().getResponseDataKey(), programList);
           break;
         case TV_DAY_REQUEST:
           Channel channel = (Channel) request.getParameters()[0];
           Date date = (Date) request.getParameters()[1];
           List<TelkkuProgram> tvDayData = telkkuService.getChannelDailyNotifiedPrograms(channel, date);
-          response.setResponseData("TV_DAY_DATA", tvDayData);
+          response.setResponseData(request.getType().getResponseDataKey(), tvDayData);
           break;
         case TV_INFO_REQUEST:
           int id = (int) request.getParameters()[0];
           TelkkuProgram program = telkkuService.findProgramById(id);
-          response.setResponseData("TV_INFO_DATA", program);
+          response.setResponseData(request.getType().getResponseDataKey(), program);
           break;
         case TV_NOW_REQUEST:
           TvNowData tvNowData = telkkuService.getTvNowData();
-          response.setResponseData("TV_NOW_DATA", tvNowData);
+          response.setResponseData(request.getType().getResponseDataKey(), tvNowData);
           break;
         case TRANSLATE_REQUEST:
           String originalText = (String) request.getParameters()[0];
           TranslateResponse translateResponse = translateService.translateText(originalText);
-          response.setResponseData("TRANSLATE_RESPONSE", translateResponse);
+          response.setResponseData(request.getType().getResponseDataKey(), translateResponse);
           break;
         case UPDATERS_LIST:
           List<DataUpdaterModel> modelList = updaterManagerService.getDataUpdaterModelList();
-          response.setResponseData("UPDATER_LIST_RESPONSE", modelList);
+          response.setResponseData(request.getType().getResponseDataKey(), modelList);
           break;
         case UPDATERS_START:
           List<DataUpdaterModel> startedUpdaters = new ArrayList<>();
@@ -199,7 +198,7 @@ public class ServicesServiceMessageHandlerImpl implements JmsServiceMessageHandl
               startedUpdaters.add(model);
             }
           }
-          response.setResponseData("START_UPDATER_LIST_RESPONSE", startedUpdaters);
+          response.setResponseData(request.getType().getResponseDataKey(), startedUpdaters);
           break;
         default:
           log.error("Service request NOT handled!!!!");
