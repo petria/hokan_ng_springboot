@@ -45,7 +45,7 @@ public class UpdaterStartCmd extends Cmd {
   @Override
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
     String updater = results.getString(ARG_UPDATER);
-    ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.UPDATERS_START, request.getIrcEvent(), updater);
+    ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.UPDATERS_START_REQUEST, request.getIrcEvent(), updater);
     List<DataUpdaterModel> modelList = serviceResponse.getStartUpdaterListData();
     if (modelList.size() > 0) {
       response.addResponse("Started following updaters:");
