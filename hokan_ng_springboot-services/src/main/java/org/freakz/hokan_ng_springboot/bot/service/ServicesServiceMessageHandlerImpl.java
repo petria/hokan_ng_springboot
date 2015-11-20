@@ -104,13 +104,6 @@ public class ServicesServiceMessageHandlerImpl implements JmsServiceMessageHandl
     response.setResponseData(request.getType().getResponseDataKey(), datas);
   }
 
-  @ServiceMessageHandler(ServiceRequestType = ServiceRequestType.IMDB_TITLE_REQUEST)
-  public void handleIMDBTitleRequest(ServiceRequest request, ServiceResponse response) {
-    String title = (String) request.getParameters()[0];
-    IMDBSearchResults imdbSearchResults = IMDBService.findByTitle(title);
-    response.setResponseData(request.getType().getResponseDataKey(), imdbSearchResults);
-  }
-
   @ServiceMessageHandler(ServiceRequestType = ServiceRequestType.CATCH_URLS_REQUEST)
   public void handleCatchUrlsRequest(ServiceRequest request, ServiceResponse response) {
     urlCatchService.catchUrls(request.getIrcMessageEvent());
@@ -138,6 +131,20 @@ public class ServicesServiceMessageHandlerImpl implements JmsServiceMessageHandl
     horoUpdater.getData(updaterData, request.getParameters());
     HoroHolder hh = (HoroHolder) updaterData.getData();
     response.setResponseData(request.getType().getResponseDataKey(), hh);
+  }
+
+  @ServiceMessageHandler(ServiceRequestType = ServiceRequestType.IMDB_DETAILED_INFO_REQUEST)
+  public void handleIMDBDetailedInfoRequest(ServiceRequest request, ServiceResponse response) {
+    String title = (String) request.getParameters()[0];
+    IMDBDetails imdbDetails = IMDBService.getDetailedInfo(title);
+    response.setResponseData(request.getType().getResponseDataKey(), imdbDetails);
+  }
+
+  @ServiceMessageHandler(ServiceRequestType = ServiceRequestType.IMDB_TITLE_REQUEST)
+  public void handleIMDBTitleRequest(ServiceRequest request, ServiceResponse response) {
+    String title = (String) request.getParameters()[0];
+    IMDBSearchResults imdbSearchResults = IMDBService.findByTitle(title);
+    response.setResponseData(request.getType().getResponseDataKey(), imdbSearchResults);
   }
 
   @ServiceMessageHandler(ServiceRequestType = ServiceRequestType.METAR_REQUEST)

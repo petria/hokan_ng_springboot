@@ -119,4 +119,8 @@ public class ServiceResponse implements Serializable {
    return (IMDBSearchResults) responseData.get(type.getResponseDataKey());
   }
 
+  public IMDBDetails getIMDBDetails() {
+    return (IMDBDetails) responseData.get(type.getResponseDataKey());
+  }
+
 }
