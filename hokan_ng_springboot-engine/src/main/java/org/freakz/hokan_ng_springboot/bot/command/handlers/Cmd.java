@@ -430,7 +430,7 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
     } catch (JMSException e) {
       log.error("jms", e);
     }
-    return new ServiceResponse();
+    return new ServiceResponse(requestType);
 
   }
 

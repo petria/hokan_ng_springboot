@@ -60,7 +60,7 @@ public class NimipaivaCmd extends Cmd {
       dateTime = TimeUtil.parseDateTime(nimiOrPvm);
     }
     if (dateTime != null) {
-      ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.NIMIPAIVA_DAY, request.getIrcEvent(), dateTime);
+      ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.NIMIPAIVA_DAY_REQUEST, request.getIrcEvent(), dateTime);
       NimipaivaData names = serviceResponse.getNimipaivaDayResponse();
       if (names.getNames().size() > 0) {
         StringBuilder sb = new StringBuilder(StringStuff.formatTime(names.getDay().toDate(), StringStuff.STRING_STUFF_DF_DDMMYYYY)+ " ::");
@@ -70,7 +70,7 @@ public class NimipaivaCmd extends Cmd {
         response.addResponse("%s", sb.toString());
       }
     } else {
-      ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.NIMIPAIVA_NAME, request.getIrcEvent(), nimiOrPvm);
+      ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.NIMIPAIVA_NAME_REQUEST, request.getIrcEvent(), nimiOrPvm);
       NimipaivaData names = serviceResponse.getNimipaivaNameResponse();
       if (names != null) {
         StringBuilder sb = new StringBuilder(StringStuff.formatTime(names.getDay().toDate(), StringStuff.STRING_STUFF_DF_DDMMYYYY)+ " ::");

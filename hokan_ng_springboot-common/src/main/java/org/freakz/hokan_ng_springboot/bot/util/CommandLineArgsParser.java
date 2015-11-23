@@ -25,7 +25,9 @@ public class CommandLineArgsParser {
           String[] split = arg.split("=");
           for (CommandLineArgs commandLineArgs : CommandLineArgs.values()) {
             if (split[0].equalsIgnoreCase(commandLineArgs.getCommandLineArg())) {
-              parsedArgs.put(commandLineArgs, split[1]);
+              if (split.length == 2) {
+                parsedArgs.put(commandLineArgs, split[1]);
+              }
             }
           }
         }

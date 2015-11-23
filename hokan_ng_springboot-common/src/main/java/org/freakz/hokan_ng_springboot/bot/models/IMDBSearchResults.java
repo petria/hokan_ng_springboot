@@ -9,15 +9,15 @@ import java.util.List;
  * Created by Petri Airio on 18.11.2015.
  * -
  */
-public class IMDBData implements Serializable {
+public class IMDBSearchResults implements Serializable {
 
 
   private List<OmdbVideoBasic> searchResults;
 
-  public IMDBData() {
+  public IMDBSearchResults() {
   }
 
-  public IMDBData(List<OmdbVideoBasic> searchResults) {
+  public IMDBSearchResults(List<OmdbVideoBasic> searchResults) {
     this.searchResults = searchResults;
   }
 

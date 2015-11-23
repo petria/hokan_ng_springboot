@@ -2,6 +2,7 @@ package org.freakz.hokan_ng_springboot.bot.command.handlers;
 
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.UnflaggedOption;
+import com.omertron.omdbapi.model.OmdbVideoFull;
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.command.HelpGroup;
 import org.freakz.hokan_ng_springboot.bot.command.annotation.HelpGroups;
@@ -10,52 +11,46 @@ import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.events.ServiceRequestType;
 import org.freakz.hokan_ng_springboot.bot.events.ServiceResponse;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
-import org.freakz.hokan_ng_springboot.bot.models.DataUpdaterModel;
+import org.freakz.hokan_ng_springboot.bot.models.IMDBDetails;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
-import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_UPDATER;
+import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_TEXT;
 
 /**
- * Created by Petri Airio on 17.6.2015.
- *
+ * Created by Petri Airio on 20.11.2015.
+ * -
  */
 @Component
 @Scope("prototype")
 @Slf4j
 @HelpGroups(
-    helpGroups = {HelpGroup.UPDATERS}
+    helpGroups = {HelpGroup.DATA_FETCHERS}
 )
-public class UpdaterStartCmd extends Cmd {
+public class IMDBInfoCmd extends Cmd {
 
-  public UpdaterStartCmd() {
+  public IMDBInfoCmd() {
+
     super();
-    setHelp("Starts specific updater.");
+    setHelp("Queries IMDB database and shows detailed info about IMDB item.");
 
-    UnflaggedOption opt = new UnflaggedOption(ARG_UPDATER)
+    UnflaggedOption flg = new UnflaggedOption(ARG_TEXT)
         .setRequired(true)
         .setGreedy(false);
-    registerParameter(opt);
+    registerParameter(flg);
 
-    setAdminUserOnly(true);
   }
 
   @Override
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    String updater = results.getString(ARG_UPDATER);
-    ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.UPDATERS_START_REQUEST, request.getIrcEvent(), updater);
-    List<DataUpdaterModel> modelList = serviceResponse.getStartUpdaterListData();
-    if (modelList.size() > 0) {
-      response.addResponse("Started following updaters:");
-      for (DataUpdaterModel model : modelList) {
-        String txt = String.format("%15s\n", model.getName());
-        response.addResponse(txt);
-      }
+    String text = results.getString(ARG_TEXT);
+    ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.IMDB_DETAILED_INFO_REQUEST, request.getIrcEvent(), text);
+    IMDBDetails details = serviceResponse.getIMDBDetails();
+    if (details.getDetails() != null) {
+      OmdbVideoFull omdb = details.getDetails();
+      response.addResponse("[%7s] \"%s\" (%s) :: %s\n", omdb.getType(), omdb.getTitle(), omdb.getYear(), omdb.getPlot());
     } else {
-      response.addResponse("No updaters started!");
+      response.addResponse("Nothing found with: %s", text);
     }
-
   }
 }

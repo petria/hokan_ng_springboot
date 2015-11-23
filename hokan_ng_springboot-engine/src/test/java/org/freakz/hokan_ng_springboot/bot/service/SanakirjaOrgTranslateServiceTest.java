@@ -23,7 +23,7 @@ public class SanakirjaOrgTranslateServiceTest {
     translateService = new SanakirjaOrgTranslateServiceImpl();
   }
 
-  @Test
+//  @Test
   public void testTranslate() {
     List<TranslateData> translateEngFi = translateService.translateEngFi("nenä");
     Assert.assertNotNull(translateEngFi);

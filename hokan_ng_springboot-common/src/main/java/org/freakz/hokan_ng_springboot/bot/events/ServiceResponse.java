@@ -15,9 +15,11 @@ import java.util.Map;
 @SuppressWarnings("unchecked")
 public class ServiceResponse implements Serializable {
 
+  private final ServiceRequestType type;
   private final Map<String, Object> responseData = new HashMap<>();
 
-  public ServiceResponse() {
+  public ServiceResponse(ServiceRequestType type) {
+    this.type = type;
   }
 
   public void setResponseData(String key, Object data) {
@@ -29,7 +31,7 @@ public class ServiceResponse implements Serializable {
   }
 
   public List<MetarData> getMetarResponse() {
-    List<MetarData> dataList = (List<MetarData>) responseData.get("METAR_DATA");
+    List<MetarData> dataList = (List<MetarData>) responseData.get(type.getResponseDataKey());
     if (dataList == null) {
       return new ArrayList<>();
     }
@@ -37,12 +39,11 @@ public class ServiceResponse implements Serializable {
   }
 
   public HoroHolder getHoroResponse() {
-    HoroHolder hh = (HoroHolder) responseData.get("HORO_DATA");
-    return hh;
+    return (HoroHolder) responseData.get(type.getResponseDataKey());
   }
 
   public List<KelikameratWeatherData> getWeatherResponse() {
-    List<KelikameratWeatherData> data = (List<KelikameratWeatherData>) responseData.get("WEATHER_DATA");
+    List<KelikameratWeatherData> data = (List<KelikameratWeatherData>) responseData.get(type.getResponseDataKey());
     if (data == null) {
       return new ArrayList<>();
     }
@@ -50,7 +51,7 @@ public class ServiceResponse implements Serializable {
   }
 
   public List<TelkkuProgram> getTvFindData() {
-    List<TelkkuProgram> data = (List<TelkkuProgram>) responseData.get("TV_FIND_DATA");
+    List<TelkkuProgram> data = (List<TelkkuProgram>) responseData.get(type.getResponseDataKey());
     if (data == null) {
       return new ArrayList<>();
     }
@@ -58,7 +59,7 @@ public class ServiceResponse implements Serializable {
   }
 
   public TvNowData getTvNowData() {
-    TvNowData data = (TvNowData) responseData.get("TV_NOW_DATA");
+    TvNowData data = (TvNowData) responseData.get(type.getResponseDataKey());
     if (data == null) {
       return new TvNowData();
     }
@@ -66,11 +67,11 @@ public class ServiceResponse implements Serializable {
   }
 
   public TelkkuProgram getTvInfoData() {
-    return (TelkkuProgram) responseData.get("TV_INFO_DATA");
+    return (TelkkuProgram) responseData.get(type.getResponseDataKey());
   }
 
   public List<TelkkuProgram> getTvDayData() {
-    List<TelkkuProgram> data = (List<TelkkuProgram>) responseData.get("TV_DAY_DATA");
+    List<TelkkuProgram> data = (List<TelkkuProgram>) responseData.get(type.getResponseDataKey());
     if (data == null) {
       return new ArrayList<>();
     }
@@ -78,7 +79,7 @@ public class ServiceResponse implements Serializable {
   }
 
   public List<DataUpdaterModel> getUpdaterListData() {
-    List<DataUpdaterModel> data = (List<DataUpdaterModel>) responseData.get("UPDATER_LIST_RESPONSE");
+    List<DataUpdaterModel> data = (List<DataUpdaterModel>) responseData.get(type.getResponseDataKey());
     if (data == null) {
       return new ArrayList<>();
     }
@@ -86,7 +87,7 @@ public class ServiceResponse implements Serializable {
   }
 
   public List<DataUpdaterModel> getStartUpdaterListData() {
-    List<DataUpdaterModel> data = (List<DataUpdaterModel>) responseData.get("START_UPDATER_LIST_RESPONSE");
+    List<DataUpdaterModel> data = (List<DataUpdaterModel>) responseData.get(type.getResponseDataKey());
     if (data == null) {
       return new ArrayList<>();
     }
@@ -94,28 +95,32 @@ public class ServiceResponse implements Serializable {
   }
 
   public String getCurrencyConvertResponse() {
-    return (String) responseData.get("CURRENCY_CONVERT_RESPONSE");
+    return (String) responseData.get(type.getResponseDataKey());
   }
 
   public List<GoogleCurrency> getCurrencyListResponse() {
-    return (List<GoogleCurrency>) responseData.get("CURRENCY_LIST_RESPONSE");
+    return (List<GoogleCurrency>) responseData.get(type.getResponseDataKey());
   }
 
   public NimipaivaData getNimipaivaDayResponse() {
-    return (NimipaivaData) responseData.get("NIMIPAIVA_DAY_RESPONSE");
+    return (NimipaivaData) responseData.get(type.getResponseDataKey());
 
   }
 
   public NimipaivaData getNimipaivaNameResponse() {
-    return (NimipaivaData) responseData.get("NIMIPAIVA_NAME_RESPONSE");
+    return (NimipaivaData) responseData.get(type.getResponseDataKey());
   }
 
   public TranslateResponse getTranslateResponse() {
-    return (TranslateResponse) responseData.get("TRANSLATE_RESPONSE");
+    return (TranslateResponse) responseData.get(type.getResponseDataKey());
   }
 
-  public IMDBData getIMDBTitleData() {
-   return (IMDBData) responseData.get("IMDB_TITLE_DATA");
+  public IMDBSearchResults getIMDBTitleData() {
+   return (IMDBSearchResults) responseData.get(type.getResponseDataKey());
+  }
+
+  public IMDBDetails getIMDBDetails() {
+    return (IMDBDetails) responseData.get(type.getResponseDataKey());
   }
 
 }

@@ -30,7 +30,7 @@ public class TodayCmd extends Cmd {
   @Override
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
     DateTime dateTime = DateTime.now();
-    ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.NIMIPAIVA_DAY, request.getIrcEvent(), dateTime);
+    ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.NIMIPAIVA_DAY_REQUEST, request.getIrcEvent(), dateTime);
     NimipaivaData names = serviceResponse.getNimipaivaDayResponse();
     int week = DateTime.now().getWeekOfWeekyear();
     StringBuilder sb = new StringBuilder("Today is " + StringStuff.formatTime(names.getDay().toDate(), StringStuff.STRING_STUFF_DF_DDMMYYYY) + " (W: " +week + ") ::");

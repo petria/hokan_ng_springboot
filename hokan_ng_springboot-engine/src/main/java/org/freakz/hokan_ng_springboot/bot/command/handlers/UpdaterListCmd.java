@@ -32,7 +32,7 @@ public class UpdaterListCmd extends Cmd {
 
   @Override
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.UPDATERS_LIST, request.getIrcEvent(), ".*");
+    ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.UPDATERS_LIST_REQUEST, request.getIrcEvent(), ".*");
     List<DataUpdaterModel> modelList = serviceResponse.getUpdaterListData();
     for (DataUpdaterModel model : modelList) {
       String txt = String.format("%20s - %9s - %6d - %s\n", model.getName(), model.getStatus(),model.getCount(), model.getNextUpdate());

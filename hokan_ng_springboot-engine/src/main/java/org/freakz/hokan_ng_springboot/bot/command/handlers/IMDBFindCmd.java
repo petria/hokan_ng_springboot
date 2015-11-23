@@ -11,7 +11,7 @@ import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.events.ServiceRequestType;
 import org.freakz.hokan_ng_springboot.bot.events.ServiceResponse;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
-import org.freakz.hokan_ng_springboot.bot.models.IMDBData;
+import org.freakz.hokan_ng_springboot.bot.models.IMDBSearchResults;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -44,9 +44,9 @@ public class IMDBFindCmd extends Cmd {
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
     String text = results.getString(ARG_TEXT);
     ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.IMDB_TITLE_REQUEST, request.getIrcEvent(), text);
-    IMDBData imdbData = serviceResponse.getIMDBTitleData();
-    if (imdbData.getSearchResults() != null) {
-      for (OmdbVideoBasic omdb : imdbData.getSearchResults()) {
+    IMDBSearchResults imdbSearchResults = serviceResponse.getIMDBTitleData();
+    if (imdbSearchResults.getSearchResults() != null) {
+      for (OmdbVideoBasic omdb : imdbSearchResults.getSearchResults()) {
         String imdbURL = String.format("http://www.imdb.com/title/%s/", omdb.getImdbID());
         response.addResponse("[%7s] %25s :: \"%s\" (%s)\n", omdb.getType(), imdbURL, omdb.getTitle(), omdb.getYear());
       }
