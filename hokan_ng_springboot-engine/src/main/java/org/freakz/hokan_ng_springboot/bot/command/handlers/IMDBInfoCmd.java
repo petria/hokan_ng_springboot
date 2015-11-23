@@ -1,6 +1,7 @@
 package org.freakz.hokan_ng_springboot.bot.command.handlers;
 
 import com.martiansoftware.jsap.JSAPResult;
+import com.martiansoftware.jsap.UnflaggedOption;
 import com.omertron.omdbapi.model.OmdbVideoFull;
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.command.HelpGroup;
@@ -27,6 +28,18 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_TEXT;
     helpGroups = {HelpGroup.DATA_FETCHERS}
 )
 public class IMDBInfoCmd extends Cmd {
+
+  public IMDBInfoCmd() {
+
+    super();
+    setHelp("Queries IMDB database and shows detailed info about IMDB item.");
+
+    UnflaggedOption flg = new UnflaggedOption(ARG_TEXT)
+        .setRequired(true)
+        .setGreedy(false);
+    registerParameter(flg);
+
+  }
 
   @Override
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
