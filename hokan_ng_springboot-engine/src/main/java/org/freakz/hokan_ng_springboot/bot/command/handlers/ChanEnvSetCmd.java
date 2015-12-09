@@ -68,10 +68,20 @@ public class ChanEnvSetCmd extends Cmd {
       response.addResponse("ChannelID parameter is needed when using private message, try: !chanlist to get ID.");
       return;
     }
-
-    Channel theChannel = getChannelOrFail(channelId, request, response);
-    if (theChannel == null) {
-      return;
+    Channel theChannel = request.getChannel();
+    if (channelId != null) {
+      long id;
+      try {
+        id = Long.parseLong(channelId);
+      } catch (NumberFormatException ex) {
+        response.addResponse("Valid ChannelID parameter is needed, try: !chanlist");
+        return;
+      }
+      theChannel = channelService.findOne(id);
+      if (theChannel == null) {
+        response.addResponse("No valid Channel found with id: %d, try: !chanlist to get ID.", id);
+        return;
+      }
     }
 
     String[] split = results.getString(ARG_PROPERTY).split("=");
