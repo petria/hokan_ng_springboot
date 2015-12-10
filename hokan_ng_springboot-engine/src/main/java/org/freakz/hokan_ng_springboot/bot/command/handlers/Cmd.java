@@ -140,7 +140,7 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
     return name;
   }
 
-  protected Channel getRequiredChannel(String channelId) {
+  private Channel getRequiredChannel(String channelId) {
     long id;
     try {
       id = Long.parseLong(channelId);
@@ -158,7 +158,7 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
     return null;
   }
 
-  protected String getChannelIdOrFail(String channelId, InternalRequest request, EngineResponse response) {
+  private String getChannelIdOrFail(String channelId, InternalRequest request, EngineResponse response) {
     if (request.getIrcEvent().isPrivate() && channelId == null) {
       response.addResponse("ChannelID parameter is needed when using private message, try: !chanlist to get ID.");
       return null;
@@ -167,7 +167,7 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
     return channelId;
   }
 
-  protected Channel getChannelOrFail(String channelId, InternalRequest request, EngineResponse response) {
+  private Channel getChannelOrFail(String channelId, InternalRequest request, EngineResponse response) {
     if (channelId.equals("<current>")) {
       return request.getChannel();
     }
