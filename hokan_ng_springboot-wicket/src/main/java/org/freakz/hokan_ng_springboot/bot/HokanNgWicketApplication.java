@@ -67,8 +67,8 @@ public class HokanNgWicketApplication extends AuthenticatedWebApplication {
   @Autowired
   private PropertyService propertyService;
 
-  @Autowired
-  private HokanStatusService statusService;
+//  @Autowired
+//  private HokanStatusService statusService;
 
   @Autowired
   private UrlLoggerService urlLoggerService;
@@ -162,7 +162,8 @@ public class HokanNgWicketApplication extends AuthenticatedWebApplication {
   }
 
   public HokanStatusService getHokanStatusService() {
-    return statusService;
+    return null;
+//    return statusService;
   }
 
   public UrlLoggerService getUrlLoggerService() {

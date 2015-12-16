@@ -20,8 +20,6 @@ public class HokanStatus extends Panel {
   public HokanStatus(String id, HokanModule hokanModule) {
     super(id);
     setOutputMarkupId(true);
-
-
     add(new HokanStatusLabel("statusLabel", hokanModule));
   }
 
@@ -41,12 +39,15 @@ public class HokanStatus extends Panel {
 
       @Override
       public String getObject() {
-        HokanStatusModel status = Services.getHokanStatusService().getHokanStatus(hokanModule);
+/*        HokanStatusModel status = Services.getHokanStatusService().getHokanStatus(hokanModule);
         String uptime = "";
         if (status.getPingResponse() != null) {
           uptime = " :: " + status.getPingResponse().getUptime().toString();
         }
         return String.format("%s : %s%s", hokanModule, status.getStatus(), uptime);
+        TODO
+        */
+        return String.format("%s : %s%s", hokanModule, "TDO", "TODO");
       }
     }
   }
