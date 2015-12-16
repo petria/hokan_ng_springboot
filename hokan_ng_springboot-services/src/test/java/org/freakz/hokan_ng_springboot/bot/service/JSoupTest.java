@@ -29,7 +29,7 @@ public class JSoupTest {
     for (int horo = 1; horo < 25; horo += 2) {
       Element ee1 = pees.get(horo);
       Element ee2 = pees.get(horo + 1);
-      System.out.printf("%s -> %s\n", ee1.text(), ee2.text());
+//      System.out.printf("%s -> %s\n", ee1.text(), ee2.text());
       int foo = 2;
     }
 //    List<Element> testt = horot2.subList(13, 36);
@@ -85,7 +85,7 @@ public class JSoupTest {
     Elements options = doc.getElementsByTag("option");
     for (Element element : options) {
       String attr = element.attr("value");
-      System.out.println(attr + " -> " +element.text());
+//      System.out.println(attr + " -> " +element.text());
     }
     int foo = 0;
   }
