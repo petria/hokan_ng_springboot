@@ -13,6 +13,7 @@ import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSessio
 import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.request.Url;
+import org.apache.wicket.request.cycle.PageRequestHandlerTracker;
 import org.apache.wicket.request.resource.UrlResourceReference;
 import org.apache.wicket.resource.JQueryResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
@@ -104,6 +105,10 @@ public class HokanNgWicketApplication extends AuthenticatedWebApplication {
   @Override
   public void init() {
     super.init();
+
+    getRequestCycleListeners().add(new SessionExpiredListener());
+    getRequestCycleListeners().add(new PageRequestHandlerTracker());
+
     getRequestCycleSettings().setResponseRequestEncoding(CharEncoding.UTF_8);
     getMarkupSettings().setDefaultMarkupEncoding(CharEncoding.UTF_8);
     getComponentInstantiationListeners().add(new SpringComponentInjector(this, applicationContext));
