@@ -13,8 +13,9 @@ import org.freakz.hokan_ng_springboot.bot.jpa.entity.Url;
 import org.freakz.hokan_ng_springboot.bot.jpa.service.ChannelPropertyService;
 import org.freakz.hokan_ng_springboot.bot.jpa.service.PropertyService;
 import org.freakz.hokan_ng_springboot.bot.jpa.service.UrlLoggerService;
+import org.freakz.hokan_ng_springboot.bot.models.StatsData;
+import org.freakz.hokan_ng_springboot.bot.models.StatsMapper;
 import org.freakz.hokan_ng_springboot.bot.service.nimipaiva.NimipaivaService;
-import org.freakz.hokan_ng_springboot.bot.service.stats.StatsNotifyService;
 import org.freakz.hokan_ng_springboot.bot.util.StringStuff;
 import org.freakz.hokan_ng_springboot.bot.util.TimeUtil;
 import org.joda.time.DateTime;
@@ -30,6 +31,7 @@ import java.util.*;
 
 /**
  * Created by Petri Airio on 22.9.2015.
+ * -
  */
 @Service
 @Slf4j
@@ -51,7 +53,7 @@ public class DayChangedServiceImpl implements DayChangedService, CommandRunnable
   private PropertyService propertyService;
 
   @Autowired
-  private StatsNotifyService statsNotifyService;
+  private StatsService statsService;
 
   @Autowired
   private UrlLoggerService urlLoggerService;
@@ -74,7 +76,28 @@ public class DayChangedServiceImpl implements DayChangedService, CommandRunnable
         break;
       }
     }
+  }
 
+  public String getDailyStats(Channel channel) {
+    DateTime yesterday = DateTime.now().minusDays(1);
+    StatsMapper statsMapper = statsService.getDailyStatsForChannel(yesterday, channel.getChannelName());
+
+    if (!statsMapper.hasError()) {
+      List<StatsData> statsDatas = statsMapper.getStatsData();
+      String res = StringStuff.formatTime(yesterday.toDate(), StringStuff.STRING_STUFF_DF_DDMMYYYY )+ " word stats:";
+      int i = 1;
+      int countTotal = 0;
+      for (StatsData statsData : statsDatas) {
+        res += " " + i + ") " + statsData.getNick() + "=" + statsData.getWords();
+        countTotal += statsData.getWords();
+        i++;
+      }
+      res += " - Words count = " + countTotal;
+      return res;
+    } else {
+      log.warn("Could not create stats notify request!");
+    }
+    return null;
   }
 
   private void checkDayChanged() {
@@ -111,7 +134,7 @@ public class DayChangedServiceImpl implements DayChangedService, CommandRunnable
       }
       String dailyStats = "";
       if (parseProperty(property, "dailyStats") != null) {
-        dailyStats = statsNotifyService.getDailyStats(channel);
+        dailyStats = getDailyStats(channel);
       }
       String dailyUrls = "";
       if (parseProperty(property, "dailyUrls") != null) {

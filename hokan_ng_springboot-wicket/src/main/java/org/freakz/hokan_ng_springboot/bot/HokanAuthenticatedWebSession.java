@@ -76,6 +76,8 @@ public class HokanAuthenticatedWebSession extends AuthenticatedWebSession {
   }
 
   public User getUser() {
+    boolean test = isSignedIn();
+    boolean test2 = isSessionInvalidated();
     return this.loggedInUser;
   }
 

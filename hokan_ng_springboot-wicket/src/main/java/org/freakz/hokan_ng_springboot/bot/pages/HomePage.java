@@ -18,6 +18,7 @@ package org.freakz.hokan_ng_springboot.bot.pages;
 
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.freakz.hokan_ng_springboot.bot.panel.liveirc.LiveIrcChannelPanel;
 import org.freakz.hokan_ng_springboot.bot.panel.status.HokanStatusPanel;
 
 @AuthorizeInstantiation("USER")
@@ -27,7 +28,8 @@ public class HomePage extends BasePage {
 
 	public HomePage(final PageParameters parameters) {
 		super(parameters);
-    add(new HokanStatusPanel("statusPanel"));
+		add(new LiveIrcChannelPanel("liveIrcChannelPanel"));
+//    add(new HokanStatusPanel("statusPanel"));
 //		add(new Label("version", getApplication().getFrameworkSettings().getVersion()));
 
 		// TODO Add your page's components here
