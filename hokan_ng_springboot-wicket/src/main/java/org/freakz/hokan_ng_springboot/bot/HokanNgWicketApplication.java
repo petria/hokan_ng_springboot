@@ -106,8 +106,8 @@ public class HokanNgWicketApplication extends AuthenticatedWebApplication {
   public void init() {
     super.init();
 
-    getRequestCycleListeners().add(new SessionExpiredListener());
-    getRequestCycleListeners().add(new PageRequestHandlerTracker());
+/*    getRequestCycleListeners().add(new SessionExpiredListener());
+    getRequestCycleListeners().add(new PageRequestHandlerTracker());*/
 
     getRequestCycleSettings().setResponseRequestEncoding(CharEncoding.UTF_8);
     getMarkupSettings().setDefaultMarkupEncoding(CharEncoding.UTF_8);
