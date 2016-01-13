@@ -62,10 +62,13 @@ public class ConnectionManagerServiceImpl implements ConnectionManagerService, E
     userService.setAllLoggedIn(0);
   }
 
+
+
   @PostConstruct
   public void postInit() throws HokanException {
 
     updateServerMap();
+    resetChannelStates();
     invalidateLoggedInUsers();
 
     for (IrcServerConfig server : this.configuredServers.values()) {
@@ -78,6 +81,10 @@ public class ConnectionManagerServiceImpl implements ConnectionManagerService, E
 				}
 			}
     }
+  }
+
+  private void resetChannelStates() {
+    channelService.resetChannelStates();
   }
 
   private void updateServerMap() {

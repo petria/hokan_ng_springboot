@@ -35,4 +35,6 @@ public interface ChannelService {
 
   void deleteAllByNetwork(Network object);
 
+  void resetChannelStates();
+
 }

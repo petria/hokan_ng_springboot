@@ -1,5 +1,6 @@
 package org.freakz.hokan_ng_springboot.bot.jpa.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.Channel;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.ChannelState;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.Network;
@@ -15,6 +16,7 @@ import java.util.List;
  *
  */
 @Service
+@Slf4j
 public class ChannelRepositoryService implements ChannelService {
 
   @Autowired
@@ -36,6 +38,16 @@ public class ChannelRepositoryService implements ChannelService {
   @Transactional(readOnly = true)
   public List<Channel> findAll() {
     return repository.findAll();
+  }
+
+  @Override
+  @Transactional(readOnly = false)
+  public void resetChannelStates() {
+    for (Channel channel : repository.findAll()) {
+      channel.setChannelState(ChannelState.NONE);
+      repository.save(channel);
+    }
+    log.debug("Channel states reset to: {}", ChannelState.NONE);
   }
 
   @Override
