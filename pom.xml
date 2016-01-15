@@ -18,12 +18,24 @@
         <mysql.version>5.1.37</mysql.version>
     </properties>
 
+    <scm>
+        <url>https://github.com/petria/hokan_ng_springboot</url>
+        <connection>scm:git:git@github.com:petria/hokan_ng_springboot.git</connection>
+        <developerConnection>scm:git:git@github.com:petria/hokan_ng_springboot.git</developerConnection>
+    </scm>
+
+    <developers>
+        <developer>
+            <name>Petri Airio</name>
+            <email>petri.j.airio@gmail.com</email>
+        </developer>
+    </developers>
+
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>1.2.7.RELEASE</version>
         <relativePath/>
-        <!-- lookup parent from repository -->
     </parent>
 
     <repositories>

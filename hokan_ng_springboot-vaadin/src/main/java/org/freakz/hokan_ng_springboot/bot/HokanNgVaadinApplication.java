@@ -17,20 +17,19 @@ package org.freakz.hokan_ng_springboot.bot;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
@@ -47,10 +46,10 @@ import org.vaadin.spring.security.web.authentication.VaadinUrlAuthenticationSucc
  * @author Petter Holmström (petter@vaadin.com)
  */
 @SpringBootApplication(exclude = org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration.class)
-public class Application {
+public class HokanNgVaadinApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(HokanNgVaadinApplication.class, args);
     }
 
     /**
@@ -58,6 +57,8 @@ public class Application {
      */
     @Configuration
     @ComponentScan({"org.freakz.hokan_ng_springboot.bot"})
+    @EnableJpaRepositories({"org.freakz.hokan_ng_springboot.bot"})
+    @EnableAutoConfiguration
     @EnableWebSecurity
     @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true, proxyTargetClass = true)
     @EnableVaadinSharedSecurity
@@ -69,10 +70,6 @@ public class Application {
         @Override
         public void configure(AuthenticationManagerBuilder auth) throws Exception {
             auth.authenticationProvider(this.customAuthenticationProvider);
-/*            auth.inMemoryAuthentication()
-                    .withUser("user").password("user").roles("USER")
-                    .and()
-                    .withUser("admin").password("admin").roles("ADMIN");*/
         }
 
         @Override

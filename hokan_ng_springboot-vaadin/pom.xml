@@ -29,10 +29,38 @@
         <spring-security.version>3.2.8.RELEASE</spring-security.version>
         <slf4j.version>1.7.10</slf4j.version>
         <logback.version>1.1.2</logback.version>
-        <start-class>org.freakz.hokan_ng_springboot.bot.Application</start-class>
+        <lombok.version>1.16.0</lombok.version>
+        <start-class>org.freakz.hokan_ng_springboot.bot.HokanNgVaadinApplication</start-class>
+        <amq.version>5.7.0</amq.version>
     </properties>
 
     <dependencies>
+
+        <dependency>
+            <groupId>org.freakz</groupId>
+            <artifactId>hokan_ng_springboot-common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-core</artifactId>
+            <version>${amq.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-beans</artifactId>
@@ -132,11 +160,6 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>3.0.1</version>
         </dependency>
         <dependency>
             <groupId>javax.inject</groupId>

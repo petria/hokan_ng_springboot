@@ -11,7 +11,8 @@ public enum HokanModule {
   HokanIo("HokanNGIoQueue", PropertyName.PROP_SYS_SESSION_ID_IO),
   HokanEngine("HokanNGEngineQueue", PropertyName.PROP_SYS_SESSION_ID_ENGINE),
   HokanServices("HokanNGServicesQueue", PropertyName.PROP_SYS_SESSION_ID_SERVICES),
-  HokanWicket("HokanNGWicketQueue", PropertyName.PROP_SYS_SESSION_ID_WICKET);
+  HokanWicket("HokanNGWicketQueue", PropertyName.PROP_SYS_SESSION_ID_WICKET),
+  HokanVaadin("HokanNGWicketQueue", PropertyName.PROP_SYS_SESSION_ID_VAADIN);
 
   private final String queueName;
   private final PropertyName moduleProperty;

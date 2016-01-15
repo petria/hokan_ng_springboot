@@ -1,6 +1,9 @@
 package org.freakz.hokan_ng_springboot.bot;
 
-import java.util.Collection;
+import lombok.extern.slf4j.Slf4j;
+import org.freakz.hokan_ng_springboot.bot.jpa.entity.User;
+import org.freakz.hokan_ng_springboot.bot.jpa.service.UserService;
+import org.freakz.hokan_ng_springboot.bot.model.Role;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -8,10 +11,10 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
-import org.freakz.hokan_ng_springboot.bot.model.User;
-import org.freakz.hokan_ng_springboot.bot.service.UserService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -22,6 +25,7 @@ import org.freakz.hokan_ng_springboot.bot.service.UserService;
  *
  */
 @Component
+@Slf4j
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 
   @Autowired
@@ -32,19 +36,29 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     String username = authentication.getName();
     String password = (String) authentication.getCredentials();
 
-    User user = userService.loadUserByUsername(username);
-
-    if (user == null) {
-      throw new BadCredentialsException("Username not found.");
+    List<User> userList = userService.findAll();
+    for (User user : userList) {
+      if (user.getNick().equalsIgnoreCase(username)) {
+        log.info("User exists");
+        if (user.getPassword().equals(password)) {
+          log.info("User authorized: {}", username);
+          Role r = new Role();
+          r.setName("ROLE_USER");
+          List<Role> roles = new ArrayList<Role>();
+          roles.add(r);
+          if (user.getFlags().contains("A")) {
+            r = new Role();
+            r.setName("ROLE_ADMIN");
+            roles.add(r);
+          }
+          return new UsernamePasswordAuthenticationToken(user, password, roles);
+        } else {
+          log.info("User invalid password: {}", username);
+        }
+      }
     }
+    throw new BadCredentialsException("Access denied.");
 
-    if (!password.equals(user.getPassword())) {
-      throw new BadCredentialsException("Wrong password.");
-    }
-
-    Collection<? extends GrantedAuthority> authorities = user.getAuthorities();
-
-    return new UsernamePasswordAuthenticationToken(user, password, authorities);
   }
 
   @Override
