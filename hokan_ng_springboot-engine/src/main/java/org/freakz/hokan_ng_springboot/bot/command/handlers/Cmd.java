@@ -434,4 +434,9 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
 
   }
 
+  public void sendToUi(String text) {
+    ObjectMessage objectMessage = jmsSender.sendAndGetReply(HokanModule.HokanVaadin.getQueueName(), "TEXT", text, false);
+
+  }
+
 }

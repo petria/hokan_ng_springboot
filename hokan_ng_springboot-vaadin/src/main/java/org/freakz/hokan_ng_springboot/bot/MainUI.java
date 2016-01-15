@@ -26,6 +26,9 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.themes.ValoTheme;
+import lombok.extern.slf4j.Slf4j;
+import org.freakz.hokan_ng_springboot.bot.jms.JmsEnvelope;
+import org.freakz.hokan_ng_springboot.bot.jms.api.JmsServiceMessageHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.freakz.hokan_ng_springboot.bot.views.AccessDeniedView;
@@ -40,9 +43,10 @@ import org.vaadin.spring.sidebar.security.VaadinSecurityItemFilter;
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
+@Slf4j
 @SpringUI
 @Theme(ValoTheme.THEME_NAME)
-public class MainUI extends UI {
+public class MainUI extends UI implements JmsServiceMessageHandler {
 
     @Autowired
     ApplicationContext applicationContext;
@@ -53,8 +57,8 @@ public class MainUI extends UI {
     @Autowired
     SpringViewProvider springViewProvider;
 
-    @Autowired
-    ValoSideBar sideBar;
+//    @Autowired
+    ValoSideBar _sideBar;
 
     @Override
     protected void init(VaadinRequest request) {
@@ -74,8 +78,8 @@ public class MainUI extends UI {
         layout.setSizeFull();
 
         // By adding a security item filter, only views that are accessible to the user will show up in the side bar.
-        sideBar.setItemFilter(new VaadinSecurityItemFilter(vaadinSecurity));
-        layout.addComponent(sideBar);
+//        sideBar.setItemFilter(new VaadinSecurityItemFilter(vaadinSecurity));
+//        layout.addComponent(sideBar);
 
         CssLayout viewContainer = new CssLayout();
         viewContainer.setSizeFull();
@@ -91,4 +95,10 @@ public class MainUI extends UI {
 
         setContent(layout); // Call this here because the Navigator must have been configured before the Side Bar can be attached to a UI.
     }
+
+  @Override
+  public void handleJmsEnvelope(JmsEnvelope envelope) throws Exception {
+    log.debug("Got message: {}", envelope.getMessageIn());
+  }
+
 }

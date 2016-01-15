@@ -54,6 +54,7 @@ import java.util.Map;
 @SpringBootApplication(exclude = org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration.class)
 @Slf4j
 @EnableSideBar
+@ComponentScan
 public class HokanNgVaadinApplication {
 
     private static String JMS_BROKER_URL = "tcp://localhost:61616";
@@ -79,7 +80,8 @@ public class HokanNgVaadinApplication {
      * Configure Spring Security.
      */
     @Configuration
-    @ComponentScan({"org.freakz.hokan_ng_springboot.bot", "org.vaadin.spring.sidebar.components"})
+//    @ComponentScan({"org.freakz.hokan_ng_springboot.bot", "org.vaadin.spring.sidebar.components"})
+
     @EnableJpaRepositories({"org.freakz.hokan_ng_springboot.bot"})
     @EnableAutoConfiguration
     @EnableWebSecurity
