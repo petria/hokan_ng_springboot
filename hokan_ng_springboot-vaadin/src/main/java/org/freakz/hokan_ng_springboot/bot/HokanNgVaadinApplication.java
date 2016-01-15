@@ -15,6 +15,10 @@
  */
 package org.freakz.hokan_ng_springboot.bot;
 
+import lombok.extern.slf4j.Slf4j;
+import org.apache.activemq.ActiveMQConnectionFactory;
+import org.freakz.hokan_ng_springboot.bot.enums.CommandLineArgs;
+import org.freakz.hokan_ng_springboot.bot.util.CommandLineArgsParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -39,16 +43,35 @@ import org.vaadin.spring.security.config.VaadinSharedSecurityConfiguration;
 import org.vaadin.spring.security.web.VaadinRedirectStrategy;
 import org.vaadin.spring.security.web.authentication.VaadinAuthenticationSuccessHandler;
 import org.vaadin.spring.security.web.authentication.VaadinUrlAuthenticationSuccessHandler;
+import org.vaadin.spring.sidebar.annotation.EnableSideBar;
+
+import javax.jms.ConnectionFactory;
+import java.util.Map;
 
 /**
- * Main entry point into the demo application.
  *
- * @author Petter Holmström (petter@vaadin.com)
  */
 @SpringBootApplication(exclude = org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration.class)
+@Slf4j
+@EnableSideBar
 public class HokanNgVaadinApplication {
 
+    private static String JMS_BROKER_URL = "tcp://localhost:61616";
+
+    @Bean
+    public ConnectionFactory connectionFactory() {
+        return new ActiveMQConnectionFactory(JMS_BROKER_URL);
+    }
+
     public static void main(String[] args) {
+        CommandLineArgsParser parser = new CommandLineArgsParser(args);
+        Map<CommandLineArgs, String> parsed = parser.parseArgs();
+        String url = parsed.get(CommandLineArgs.JMS_BROKER_URL);
+        if (url != null) {
+            JMS_BROKER_URL = url;
+        }
+        log.debug("JMS_BROKER_URL: {}", JMS_BROKER_URL);
+
         SpringApplication.run(HokanNgVaadinApplication.class, args);
     }
 
@@ -56,7 +79,7 @@ public class HokanNgVaadinApplication {
      * Configure Spring Security.
      */
     @Configuration
-    @ComponentScan({"org.freakz.hokan_ng_springboot.bot"})
+    @ComponentScan({"org.freakz.hokan_ng_springboot.bot", "org.vaadin.spring.sidebar.components"})
     @EnableJpaRepositories({"org.freakz.hokan_ng_springboot.bot"})
     @EnableAutoConfiguration
     @EnableWebSecurity
@@ -65,11 +88,12 @@ public class HokanNgVaadinApplication {
     static class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         @Autowired
-        private CustomAuthenticationProvider customAuthenticationProvider;
+        private HokanAuthenticationProvider hokanAuthenticationProvider;
 
         @Override
         public void configure(AuthenticationManagerBuilder auth) throws Exception {
-            auth.authenticationProvider(this.customAuthenticationProvider);
+            auth.userDetailsService(this.hokanAuthenticationProvider);
+            auth.authenticationProvider(this.hokanAuthenticationProvider);
         }
 
         @Override
