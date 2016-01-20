@@ -421,7 +421,6 @@ public class HokanCore extends PircBot implements HokanCoreService {
     this.networkService.save(nw);
 
     User user = getUser(ircEvent);
-//    Channel ch = getChannel(ircEvent);
 
 //    urlLoggerService.catchUrls(ircEvent, ch, this);
     serviceCommunicator.sendServiceRequest(ircEvent, ServiceRequestType.CATCH_URLS_REQUEST);
@@ -440,7 +439,9 @@ public class HokanCore extends PircBot implements HokanCoreService {
     if (ignore) {
       log.debug("Ignoring: {}", user);
     } else {
-      String result = engineCommunicator.sendToEngine(ircEvent);
+      Channel channel = getChannel(ircEvent);
+      UserChannel userChannel = getUserChannel(user, channel);
+      String result = engineCommunicator.sendToEngine(ircEvent, userChannel);
       log.info(">>> sent to engine: {}", result);
     }
 
@@ -522,7 +523,7 @@ public class HokanCore extends PircBot implements HokanCoreService {
     if (ignore) {
       log.debug("Ignoring: {}", user);
     } else {
-      String result = engineCommunicator.sendToEngine(ircEvent);
+      String result = engineCommunicator.sendToEngine(ircEvent, userChannel);
       log.info(">>> sent to engine: {}", result);
     }
   }
