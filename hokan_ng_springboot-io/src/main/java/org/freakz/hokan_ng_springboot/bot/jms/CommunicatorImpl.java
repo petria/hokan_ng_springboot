@@ -50,15 +50,17 @@ public class CommunicatorImpl implements EngineCommunicator, ServiceCommunicator
       String lastCommand = userChannel.getLastCommand();
       if (lastCommand != null && lastCommand.length() > 0) {
         CommandArgs lastCommandArgs = new CommandArgs(lastCommand);
+        String aliasMessage;
         if (args.hasArgs()) {
           String message = event.getMessage();
-          String aliasMessage = message.replaceFirst("!", lastCommandArgs.getCmd());
+          aliasMessage = message.replaceFirst("!", lastCommandArgs.getCmd());
           event.setMessage(aliasMessage);
         } else {
           String message = event.getMessage();
-          String aliasMessage = message.replaceFirst("!", lastCommand);
+          aliasMessage = message.replaceFirst("!", lastCommand);
           event.setMessage(aliasMessage);
         }
+        event.setOutputPrefix(String.format("%s :: ", aliasMessage));
         return true;
       } else {
         log.debug("No valid lastCommand: {}", lastCommand);
