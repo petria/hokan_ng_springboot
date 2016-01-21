@@ -83,7 +83,7 @@ public class CommunicatorImpl implements EngineCommunicator, ServiceCommunicator
         for (String splitted : split) {
           IrcMessageEvent splitEvent = (IrcMessageEvent) event.clone();
           String trimmed = splitted.trim();
-          splitEvent.setOutputPrefix(trimmed + " :: ");
+          splitEvent.setOutputPrefix(String.format("%s :: ", trimmed));
           splitEvent.setMessage(trimmed);
           jmsSender.send(HokanModule.HokanEngine.getQueueName(), "EVENT", splitEvent, false);
         }
