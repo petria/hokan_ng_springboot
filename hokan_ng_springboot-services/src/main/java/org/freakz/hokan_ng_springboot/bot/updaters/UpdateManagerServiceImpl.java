@@ -31,17 +31,12 @@ public class UpdateManagerServiceImpl implements UpdaterManagerService, CommandR
   @Autowired
   private CommandPool commandPool;
 
-  @Autowired
-  private HokanModuleService hokanModuleService;
-
-
   private Map<String, DataUpdater> handlers;
   private boolean doRun;
   private boolean firstRun = true;
 
   public UpdateManagerServiceImpl() {
     log.info("START!");
-
   }
 
   @PostConstruct

@@ -10,7 +10,7 @@ import java.util.Map;
 
 /**
  * Created by Petri Airio (petri.j.airio@gmail.com) on 24.4.2015.
- *
+ *-
  */
 @SuppressWarnings("unchecked")
 public class ServiceResponse implements Serializable {
