@@ -23,7 +23,7 @@ public class LunchServiceImpl implements LunchService {
   @Autowired
   private ApplicationContext applicationContext;
 
-  private boolean findHandlersMethod(LunchPlace lunchPlaceRequest, LunchData response) {
+  private boolean findHandlersMethod(LunchPlace lunchPlaceRequest, LunchData response, DateTime day) {
     String[] names = applicationContext.getBeanDefinitionNames();
     for (String beanName : names) {
       Object obj = applicationContext.getBean(beanName);
@@ -39,7 +39,7 @@ public class LunchServiceImpl implements LunchService {
           if (lunchPlace == lunchPlaceRequest) {
             try {
               log.debug("Method: {} -> {}", m, lunchPlace);
-              m.invoke(obj, lunchPlaceRequest, response);
+              m.invoke(obj, lunchPlaceRequest, response, day);
               return true;
             } catch (Exception e) {
               log.error("Could not call service handler for: {}", lunchPlaceRequest);
@@ -55,11 +55,10 @@ public class LunchServiceImpl implements LunchService {
   @Override
   public LunchData getLunchForDay(LunchPlace place, DateTime day) {
     LunchData lunchData = new LunchData();
-    if (!findHandlersMethod(place, lunchData)) {
+    if (!findHandlersMethod(place, lunchData, day)) {
       log.warn("Could find handler for: {}", place);
       return null;
     }
-    lunchData.setDay(day);
     return lunchData;
   }
 
