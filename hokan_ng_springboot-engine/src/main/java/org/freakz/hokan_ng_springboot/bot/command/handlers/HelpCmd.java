@@ -113,13 +113,28 @@ public class HelpCmd extends Cmd {
       List<Cmd> commands = commandHandler.getCommandHandlersByName(command);
       Collections.sort(commands, comparator);
       for (Cmd cmd : commands) {
-        String help = String.format("HELP: %s (%s) -> %s%s",
-            cmd.getName(), cmd.getMatchPattern(), cmd.getHelp(), buildSeeAlso(cmd));
+        String usage = "!" + cmd.getName().toLowerCase() + " " + cmd.jsap.getUsage();
+        String help = cmd.jsap.getHelp();
+        sb.append("Usage    : ");
+        sb.append(usage);
+        sb.append("\n");
+        String example = cmd.getExample();
+        if (example != null) {
+          sb.append("Example  : ");
+          sb.append(example);
+          sb.append("\n");
+
+        }
+        sb.append("Help     : ");
         sb.append(help);
         sb.append("\n");
+        sb.append(buildSeeAlso(cmd));
+//        sb.append("\n");
+
       }
     }
     response.setResponseMessage(sb.toString());
 
   }
+
 }

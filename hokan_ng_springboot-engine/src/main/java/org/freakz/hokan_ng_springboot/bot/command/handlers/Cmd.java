@@ -36,7 +36,7 @@ import java.util.*;
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
 @Slf4j
-public abstract class Cmd implements HokkanCommand, CommandRunnable {
+public abstract class Cmd implements HokanCommand, CommandRunnable {
 
   @Autowired
   private JmsSender jmsSender;
@@ -46,6 +46,7 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
 
 
   protected JSAP jsap;
+
   protected boolean channelOpOnly;
   protected boolean loggedInOnly;
   protected boolean channelOnly;
@@ -140,6 +141,12 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
     return name;
   }
 
+
+  @Override
+  public String getExample() {
+    return null;
+  }
+
   private Channel getRequiredChannel(String channelId) {
     long id;
     try {
@@ -209,7 +216,7 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
     }
     String seeAlsoHelp = "";
     if (seeAlsoGroups.length() > 0) {
-      seeAlsoHelp = "\nSee also:" + seeAlsoGroups;
+      seeAlsoHelp = "\nSee also :" + seeAlsoGroups;
     }
     return seeAlsoHelp;
   }
@@ -250,7 +257,7 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
     response.setCommandClass(this.getClass().toString());
 
     if (args.hasArgs() && args.getArgs().equals("?")) {
-      response.setResponseMessage("Usage: " + getName() + " " + jsap.getUsage() + "\n" + "Help: " + jsap.getHelp() + buildSeeAlso(this));
+      response.setResponseMessage("Usage: !" + getName().toLowerCase() + " " + jsap.getUsage() + "\n" + "Help: " + jsap.getHelp() + buildSeeAlso(this));
       sendReply(response);
     } else {
 

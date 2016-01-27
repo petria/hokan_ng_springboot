@@ -50,6 +50,11 @@ public class FindUrlCmd extends Cmd {
   }
 
   @Override
+  public String getExample() {
+    return "!findurl psytrance dezahn";
+  }
+
+  @Override
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
     String urlPattern = results.getString(ARG_URL_PATTERN);
     String nick = results.getString(ARG_NICK);
