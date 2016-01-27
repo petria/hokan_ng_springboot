@@ -36,7 +36,7 @@ public class CommandHandlerServiceImpl implements CommandHandlerService {
     if (matches.size() == 1) {
       theCmd = matches.get(0);
     } else if (matches.size() > 1) {
-      String firstWord = line.split(" ")[0];
+      String firstWord = line.split(" ")[0].toLowerCase();
       for (Cmd base : matches) {
         if (base.getMatchPattern().startsWith(firstWord)) {
           theCmd = base;
