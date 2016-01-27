@@ -16,6 +16,7 @@ public enum HelpGroup {
   DATA_FETCHERS("Data fetchers", ""),
   HELP("Help", ""),
   LOGS("Logs", ""),
+  LUNCH("Lunch", "Lunch menu fetchers"),
   NETWORK("Network", ""),
   PROCESS("Process", ""),
   PROPERTIES("Properties", ""),
@@ -23,8 +24,7 @@ public enum HelpGroup {
   TV("TV", ""),
   UPDATERS("Updaters", ""),
   USERS("Users", ""),
-  URLS("Urls", "")
-  ;
+  URLS("Urls", "");
 
   private String groupName;
   private String groupExplanation;

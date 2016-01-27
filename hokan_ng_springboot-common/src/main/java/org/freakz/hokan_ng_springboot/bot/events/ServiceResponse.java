@@ -1,5 +1,6 @@
 package org.freakz.hokan_ng_springboot.bot.events;
 
+import org.freakz.hokan_ng_springboot.bot.enums.LunchPlace;
 import org.freakz.hokan_ng_springboot.bot.models.*;
 
 import java.io.Serializable;
@@ -121,6 +122,10 @@ public class ServiceResponse implements Serializable {
 
   public IMDBDetails getIMDBDetails() {
     return (IMDBDetails) responseData.get(type.getResponseDataKey());
+  }
+
+  public List<LunchPlace> getLunchPlacesResponse() {
+    return (List<LunchPlace>) responseData.get(type.getResponseDataKey());
   }
 
 }

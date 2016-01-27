@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Petri Airio on 21.1.2016.
@@ -62,4 +64,25 @@ public class LunchServiceImpl implements LunchService {
     return lunchData;
   }
 
+  @Override
+  public List<LunchPlace> getLunchPlaces() {
+    String[] names = applicationContext.getBeanDefinitionNames();
+    List<LunchPlace> lunchPlaces = new ArrayList<>();
+    for (String beanName : names) {
+      Object obj = applicationContext.getBean(beanName);
+      Class<?> objClz = obj.getClass();
+      if (org.springframework.aop.support.AopUtils.isAopProxy(obj)) {
+        objClz = org.springframework.aop.support.AopUtils.getTargetClass(obj);
+      }
+      for (Method m : objClz.getDeclaredMethods()) {
+        if (m.isAnnotationPresent(LunchPlaceHandler.class)) {
+          Annotation annotation = m.getAnnotation(LunchPlaceHandler.class);
+          LunchPlaceHandler lunchPlaceHandler = (LunchPlaceHandler) annotation;
+          LunchPlace lunchPlace = lunchPlaceHandler.LunchPlace();
+          lunchPlaces.add(lunchPlace);
+        }
+      }
+    }
+    return lunchPlaces;
+  }
 }
