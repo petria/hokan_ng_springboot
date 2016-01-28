@@ -41,4 +41,10 @@ public class LunchData implements Serializable {
   public void setLunchMenu(String lunchMenu) {
     this.lunchMenu = lunchMenu;
   }
+
+  @Override
+  public String toString() {
+    return lunchPlace.getName() + " :: " + lunchMenu;
+  }
+
 }

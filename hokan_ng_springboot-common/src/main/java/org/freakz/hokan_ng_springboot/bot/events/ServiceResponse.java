@@ -128,4 +128,8 @@ public class ServiceResponse implements Serializable {
     return (List<LunchPlace>) responseData.get(type.getResponseDataKey());
   }
 
+  public LunchData getLunchResponse() {
+    return (LunchData) responseData.get(type.getResponseDataKey());
+  }
+
 }
