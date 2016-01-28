@@ -28,6 +28,7 @@ public class StaticStrings {
   public static final String ARG_ID = "ID";
   public static final String ARG_ID_OR_SEARCH = "ID/SEARCH";
   public static final String ARG_JOIN_MSG = "JoinMsg";
+  public static final String ARG_LUNCH_PLACE = "LunchPlace";
   public static final String ARG_LOG_PATTERN = "LogPattern";
   public static final String ARG_MASK = "Mask";
   public static final String ARG_MESSAGE = "Message";

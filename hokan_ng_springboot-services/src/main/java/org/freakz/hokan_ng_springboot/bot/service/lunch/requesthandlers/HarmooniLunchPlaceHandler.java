@@ -9,6 +9,8 @@ import org.freakz.hokan_ng_springboot.bot.util.StaticStrings;
 import org.joda.time.DateTime;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -42,6 +44,11 @@ public class HarmooniLunchPlaceHandler implements LunchRequestHandler {
       log.error("Could not fetch lunch from {}", url, e);
 
       return;
+    }
+    Elements elements = doc.getElementsByClass("entry-content");
+    for (Element element :elements) {
+      String text = element.text();
+
     }
     int foo = 0;
 
