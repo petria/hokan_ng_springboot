@@ -36,7 +36,7 @@ public class LunchPlacesCmd extends Cmd {
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
     ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.LUNCH_PLACES_REQUEST, request.getIrcEvent(), "");
     List<LunchPlace> lunchPlaces = serviceResponse.getLunchPlacesResponse();
-    if (lunchPlaces.size() > 0) {
+    if (lunchPlaces.size() == 0) {
       response.addResponse("No lunch places!!");
     } else {
       String places = "I know following lunch places:";

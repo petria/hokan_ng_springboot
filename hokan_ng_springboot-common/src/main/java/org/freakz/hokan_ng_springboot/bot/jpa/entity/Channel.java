@@ -28,6 +28,9 @@ public class Channel implements Serializable {
   @Column(name = "CHANNEL_NAME")
   private String channelName;
 
+  @Column(name = "CHANNEL_FLAGS")
+  private String channelFlags;
+
   @Column(name = "CHANNEL_STATE", nullable = false)
   @Enumerated(EnumType.STRING)
   private ChannelState channelState;
@@ -70,6 +73,14 @@ public class Channel implements Serializable {
 
   public void setChannelName(String channelName) {
     this.channelName = channelName;
+  }
+
+  public String getChannelFlags() {
+    return channelFlags;
+  }
+
+  public void setChannelFlags(String channelFlags) {
+    this.channelFlags = channelFlags;
   }
 
   public ChannelState getChannelState() {
