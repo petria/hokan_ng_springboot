@@ -1,9 +1,11 @@
 package org.freakz.hokan_ng_springboot.bot.models;
 
+import org.freakz.hokan_ng_springboot.bot.enums.LunchDay;
 import org.freakz.hokan_ng_springboot.bot.enums.LunchPlace;
 import org.joda.time.DateTime;
 
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  * Created by Petri Airio on 21.1.2016.
@@ -11,19 +13,10 @@ import java.io.Serializable;
  */
 public class LunchData implements Serializable {
 
-  private DateTime day;
   private LunchPlace lunchPlace;
-  private String lunchMenu;
+  private Map<LunchDay, LunchMenu> menu;
 
   public LunchData() {
-  }
-
-  public DateTime getDay() {
-    return day;
-  }
-
-  public void setDay(DateTime day) {
-    this.day = day;
   }
 
   public LunchPlace getLunchPlace() {
@@ -34,17 +27,13 @@ public class LunchData implements Serializable {
     this.lunchPlace = lunchPlace;
   }
 
-  public String getLunchMenu() {
-    return lunchMenu;
-  }
-
-  public void setLunchMenu(String lunchMenu) {
-    this.lunchMenu = lunchMenu;
+  public Map<LunchDay, LunchMenu> getMenu() {
+    return menu;
   }
 
   @Override
   public String toString() {
-    return lunchPlace.getName() + " :: " + lunchMenu;
+    return lunchPlace.getName() + " :: " + menu;
   }
 
 }

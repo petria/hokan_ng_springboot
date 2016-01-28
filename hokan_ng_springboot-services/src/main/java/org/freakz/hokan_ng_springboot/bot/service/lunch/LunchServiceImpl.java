@@ -1,6 +1,7 @@
 package org.freakz.hokan_ng_springboot.bot.service.lunch;
 
 import lombok.extern.slf4j.Slf4j;
+import org.freakz.hokan_ng_springboot.bot.enums.LunchDay;
 import org.freakz.hokan_ng_springboot.bot.enums.LunchPlace;
 import org.freakz.hokan_ng_springboot.bot.models.LunchData;
 import org.freakz.hokan_ng_springboot.bot.service.annotation.LunchPlaceHandler;
@@ -57,6 +58,7 @@ public class LunchServiceImpl implements LunchService {
   @Override
   public LunchData getLunchForDay(LunchPlace place, DateTime day) {
     LunchData lunchData = new LunchData();
+    LunchDay lunchDay = LunchDay.getFromDateTime(day);
     if (!findHandlersMethod(place, lunchData, day)) {
       log.warn("Could find handler for: {}", place);
       return null;

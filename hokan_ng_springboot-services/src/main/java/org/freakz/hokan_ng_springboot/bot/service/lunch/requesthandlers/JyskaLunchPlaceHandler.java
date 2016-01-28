@@ -28,7 +28,6 @@ public class JyskaLunchPlaceHandler implements LunchRequestHandler {
   @LunchPlaceHandler(LunchPlace = LunchPlace.LOUNAS_INFO_JYSKÄ)
   public void handleLunchPlace(LunchPlace lunchPlaceRequest, LunchData response, DateTime day) {
     response.setLunchPlace(lunchPlaceRequest);
-    response.setDay(day);
     DateTimeFormatter fmt = DateTimeFormat.forPattern("DD.MM.yyyy");
     String url = String.format("%s&dmy=%s", lunchPlaceRequest.getUrl(), fmt.print(day));
     Document doc;
@@ -38,7 +37,7 @@ public class JyskaLunchPlaceHandler implements LunchRequestHandler {
       log.error("Could not fetch lunch from {}", url);
       return;
     }
-    response.setLunchMenu("Torstaisin kerneheittoa!");
+//    response.setLunchMenu("Torstaisin kerneheittoa!");
     int foo = 0;
   }
 

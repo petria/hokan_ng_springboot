@@ -29,7 +29,6 @@ public class HarmooniLunchPlaceHandler implements LunchRequestHandler {
   @LunchPlaceHandler(LunchPlace = LunchPlace.LOUNAS_INFO_HARMOONI)
   public void handleLunchPlace(LunchPlace lunchPlaceRequest, LunchData response, DateTime day) {
     response.setLunchPlace(lunchPlaceRequest);
-    response.setDay(day);
     String url = lunchPlaceRequest.getUrl();
     Document doc;
     try {
@@ -46,7 +45,6 @@ public class HarmooniLunchPlaceHandler implements LunchRequestHandler {
       return;
     }
     Elements elements = doc.getElementsByClass("entry-content");
-    Elements pees = elements.select("p");
     Elements h3 = elements.select("h3");
     for (Element element : h3) {
       String text = element.text();
@@ -54,6 +52,7 @@ public class HarmooniLunchPlaceHandler implements LunchRequestHandler {
       boolean gotAll = false;
       Element test = element.nextElementSibling();
       while (!gotAll) {
+        // TODO better method to avoid looping forever
         String food = test.text();
         if (food.matches("Maanantai.*|Tiistai.*|Keskiviikko.*|Torstai.*|Perjantai.*")) {
           break;
