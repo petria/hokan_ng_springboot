@@ -38,7 +38,7 @@ public class JyskaLunchPlaceHandler implements LunchRequestHandler {
       log.error("Could not fetch lunch from {}", url);
       return;
     }
-
+    response.setLunchMenu("Torstaisin kerneheittoa!");
     int foo = 0;
   }
 

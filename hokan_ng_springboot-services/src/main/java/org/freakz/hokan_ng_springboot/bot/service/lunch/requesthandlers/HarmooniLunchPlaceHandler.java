@@ -39,16 +39,30 @@ public class HarmooniLunchPlaceHandler implements LunchRequestHandler {
           return new PasswordAuthentication("foo", "bar".toCharArray());
         }
       });
-      doc = Jsoup.connect(url).userAgent(StaticStrings.HTTP_USER_AGENT).get();
+      doc = Jsoup.connect(url).timeout(0).userAgent(StaticStrings.HTTP_USER_AGENT).get();
     } catch (IOException e) {
       log.error("Could not fetch lunch from {}", url, e);
 
       return;
     }
     Elements elements = doc.getElementsByClass("entry-content");
-    for (Element element :elements) {
+    Elements pees = elements.select("p");
+    Elements h3 = elements.select("h3");
+    for (Element element : h3) {
       String text = element.text();
-
+      log.debug("{}", text);
+      boolean gotAll = false;
+      Element test = element.nextElementSibling();
+      while (!gotAll) {
+        String food = test.text();
+        if (food.matches("Maanantai.*|Tiistai.*|Keskiviikko.*|Torstai.*|Perjantai.*")) {
+          break;
+        } else {
+          log.debug(" ->{}", food);
+        }
+        test = test.nextElementSibling();
+      }
+      int bar = 1;
     }
     int foo = 0;
 
