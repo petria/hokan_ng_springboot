@@ -1,8 +1,10 @@
 package org.freakz.hokan_ng_springboot.bot.service.lunch.requesthandlers;
 
 import lombok.extern.slf4j.Slf4j;
+import org.freakz.hokan_ng_springboot.bot.enums.LunchDay;
 import org.freakz.hokan_ng_springboot.bot.enums.LunchPlace;
 import org.freakz.hokan_ng_springboot.bot.models.LunchData;
+import org.freakz.hokan_ng_springboot.bot.models.LunchMenu;
 import org.freakz.hokan_ng_springboot.bot.service.annotation.LunchPlaceHandler;
 import org.freakz.hokan_ng_springboot.bot.service.lunch.LunchRequestHandler;
 import org.freakz.hokan_ng_springboot.bot.util.StaticStrings;
@@ -46,22 +48,32 @@ public class HarmooniLunchPlaceHandler implements LunchRequestHandler {
     }
     Elements elements = doc.getElementsByClass("entry-content");
     Elements h3 = elements.select("h3");
+
     for (Element element : h3) {
       String text = element.text();
+      LunchDay lunchDay = LunchDay.getFromWeekdayString(text);
+
       log.debug("{}", text);
       boolean gotAll = false;
       Element test = element.nextElementSibling();
+      String lunchForDay = "";
       while (!gotAll) {
         // TODO better method to avoid looping forever
         String food = test.text();
         if (food.matches("Maanantai.*|Tiistai.*|Keskiviikko.*|Torstai.*|Perjantai.*")) {
           break;
         } else {
+          if (lunchForDay.length() > 0) {
+            lunchForDay += ", ";
+          }
+          lunchForDay += food;
           log.debug(" ->{}", food);
         }
         test = test.nextElementSibling();
       }
-      int bar = 1;
+      LunchMenu lunchMenu = new LunchMenu(lunchForDay);
+      response.getMenu().put(lunchDay, lunchMenu);
+
     }
     int foo = 0;
 

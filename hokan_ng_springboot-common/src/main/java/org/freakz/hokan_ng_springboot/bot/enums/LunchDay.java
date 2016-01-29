@@ -40,4 +40,13 @@ public enum LunchDay {
     return null;
   }
 
+  public static LunchDay getFromWeekdayString(String weekday) {
+    for (LunchDay lunchDay : values()) {
+      if (weekday.toLowerCase().contains(lunchDay.day.toLowerCase())) {
+        return lunchDay;
+      }
+    }
+    return null;
+  }
+
 }

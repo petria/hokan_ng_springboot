@@ -5,6 +5,7 @@ import org.freakz.hokan_ng_springboot.bot.enums.LunchPlace;
 import org.joda.time.DateTime;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -14,7 +15,7 @@ import java.util.Map;
 public class LunchData implements Serializable {
 
   private LunchPlace lunchPlace;
-  private Map<LunchDay, LunchMenu> menu;
+  private Map<LunchDay, LunchMenu> menu = new HashMap<>();
 
   public LunchData() {
   }

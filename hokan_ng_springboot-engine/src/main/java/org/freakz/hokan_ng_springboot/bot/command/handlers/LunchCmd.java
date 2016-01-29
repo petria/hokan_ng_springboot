@@ -5,6 +5,7 @@ import com.martiansoftware.jsap.UnflaggedOption;
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.command.HelpGroup;
 import org.freakz.hokan_ng_springboot.bot.command.annotation.HelpGroups;
+import org.freakz.hokan_ng_springboot.bot.enums.LunchDay;
 import org.freakz.hokan_ng_springboot.bot.enums.LunchPlace;
 import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
@@ -53,7 +54,8 @@ public class LunchCmd extends Cmd {
     DateTime day = DateTime.now();
     ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.LUNCH_REQUEST, request.getIrcEvent(), place, day);
     LunchData lunchData = serviceResponse.getLunchResponse();
-    response.addResponse("Lunch: %s", lunchData.toString());
+    LunchDay lunchDay = LunchDay.getFromDateTime(day);
+    response.addResponse("Lunch: %s -> %s", lunchData.getLunchPlace().getName(), lunchData.getMenu().get(lunchDay).getMenu());
   }
 
 }
