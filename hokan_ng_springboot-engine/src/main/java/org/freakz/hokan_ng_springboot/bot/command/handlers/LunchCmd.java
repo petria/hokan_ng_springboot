@@ -13,6 +13,7 @@ import org.freakz.hokan_ng_springboot.bot.events.ServiceRequestType;
 import org.freakz.hokan_ng_springboot.bot.events.ServiceResponse;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
 import org.freakz.hokan_ng_springboot.bot.models.LunchData;
+import org.freakz.hokan_ng_springboot.bot.util.StringStuff;
 import org.joda.time.DateTime;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -55,7 +56,8 @@ public class LunchCmd extends Cmd {
     ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.LUNCH_REQUEST, request.getIrcEvent(), place, day);
     LunchData lunchData = serviceResponse.getLunchResponse();
     LunchDay lunchDay = LunchDay.getFromDateTime(day);
-    response.addResponse("Lunch: %s -> %s", lunchData.getLunchPlace().getName(), lunchData.getMenu().get(lunchDay).getMenu());
+    String dayStr = StringStuff.formatTime(day.toDate(), StringStuff.STRING_STUFF_DF_DM);
+    response.addResponse("%s %s: %s", dayStr, lunchData.getLunchPlace().getName(), lunchData.getMenu().get(lunchDay).getMenu());
   }
 
 }

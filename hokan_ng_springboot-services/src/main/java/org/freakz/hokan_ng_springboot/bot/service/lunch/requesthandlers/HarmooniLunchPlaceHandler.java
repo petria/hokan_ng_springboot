@@ -59,7 +59,12 @@ public class HarmooniLunchPlaceHandler implements LunchRequestHandler {
       String lunchForDay = "";
       while (!gotAll) {
         // TODO better method to avoid looping forever
-        String food = test.text();
+        String food;
+        if (test == null) {
+          break;
+        } else {
+          food = test.text();
+        }
         if (food.matches("Maanantai.*|Tiistai.*|Keskiviikko.*|Torstai.*|Perjantai.*")) {
           break;
         } else {
