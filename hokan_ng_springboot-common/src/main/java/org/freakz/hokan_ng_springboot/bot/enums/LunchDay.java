@@ -12,7 +12,9 @@ public enum LunchDay {
   TUESDAY("Tiistai"),
   WEDNESDAY("Keskiviikko"),
   THURSDAY("Torstai"),
-  FRIDAY("Perjantai");
+  FRIDAY("Perjantai"),
+  SATURDAY("Lauantai"),
+  SUNDAY("Sunnuntai");
 
   private final String day;
 

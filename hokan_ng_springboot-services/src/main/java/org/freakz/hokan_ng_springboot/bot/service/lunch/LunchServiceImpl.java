@@ -45,6 +45,7 @@ public class LunchServiceImpl implements LunchService {
               m.invoke(obj, lunchPlaceRequest, response, day);
               return true;
             } catch (Exception e) {
+              e.printStackTrace();
               log.error("Could not call service handler for: {}", lunchPlaceRequest);
               return false;
             }
@@ -58,7 +59,6 @@ public class LunchServiceImpl implements LunchService {
   @Override
   public LunchData getLunchForDay(LunchPlace place, DateTime day) {
     LunchData lunchData = new LunchData();
-    LunchDay lunchDay = LunchDay.getFromDateTime(day);
     if (!findHandlersMethod(place, lunchData, day)) {
       log.warn("Could find handler for: {}", place);
       return null;
