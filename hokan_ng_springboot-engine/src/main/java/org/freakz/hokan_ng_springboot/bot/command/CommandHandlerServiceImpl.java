@@ -1,6 +1,7 @@
 package org.freakz.hokan_ng_springboot.bot.command;
 
 import org.freakz.hokan_ng_springboot.bot.command.handlers.Cmd;
+import org.freakz.hokan_ng_springboot.bot.service.CmdHandlerMatches;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
@@ -25,28 +26,62 @@ public class CommandHandlerServiceImpl implements CommandHandlerService {
   }
 
   @Override
-  public Cmd getCommandHandler(String line) {
+  public CmdHandlerMatches getMatchingCommands(String line) {
+    String firstWord = line.split(" ")[0].toLowerCase();
+
     List<Cmd> matches = new ArrayList<>();
-    for (Cmd base : context.getBeansOfType(Cmd.class).values()) {
-      if (line.matches(base.getMatchPattern())) {
+    for (Cmd base : getCommandHandlers()) {
+      String baseMatch = base.getMatchPattern();
+      if (baseMatch.startsWith(firstWord)) {
         matches.add(base);
       }
     }
-    Cmd theCmd = null;
+
+    CmdHandlerMatches cmdHandlerMatches = new CmdHandlerMatches();
     if (matches.size() == 1) {
-      theCmd = matches.get(0);
+      cmdHandlerMatches.getMatches().add(context.getBean(matches.get(0).getClass()));
+      return cmdHandlerMatches;
     } else if (matches.size() > 1) {
-      String firstWord = line.split(" ")[0].toLowerCase();
       for (Cmd base : matches) {
-        if (base.getMatchPattern().startsWith(firstWord)) {
-          theCmd = base;
+        String baseMatch = base.getMatchPattern();
+        if (firstWord.equals(baseMatch)) {
+          cmdHandlerMatches.getMatches().add(context.getBean(base.getClass()));
+          return cmdHandlerMatches;
+        }
+      }
+    }
+
+    return cmdHandlerMatches;
+  }
+
+  @Override
+  public Cmd getCommandHandler(String line) {
+/*    String firstWord = line.split(" ")[0].toLowerCase();
+
+    List<Cmd> matches = new ArrayList<>();
+    for (Cmd base : getCommandHandlers()) {
+      String baseMatch = base.getMatchPattern();
+      if (baseMatch.startsWith(firstWord)) {
+        matches.add(base);
+      }
+    }
+
+    CmdHandlerMatches cmdHandlerMatches = new CmdHandlerMatches();
+    if (matches.size() == 1) {
+      cmdHandlerMatches.getMatches().add(matches.get(0));
+    } else if (matches.size() > 1) {
+      for (Cmd base : matches) {
+        String baseMatch = base.getMatchPattern();
+        if (firstWord.equals(baseMatch)) {
+          cmdHandlerMatches.getMatches().add(context.getBean(base.getClass()));
+          return cmdHandlerMatches;
         }
       }
     }
     if (theCmd != null) {
       Object bean = context.getBean(theCmd.getClass());
       return (Cmd) bean;
-    }
+    }*/
     return null;
   }
 

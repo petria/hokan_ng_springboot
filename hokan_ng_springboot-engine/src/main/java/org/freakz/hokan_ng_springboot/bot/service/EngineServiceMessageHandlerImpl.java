@@ -37,7 +37,9 @@ public class EngineServiceMessageHandlerImpl implements JmsServiceMessageHandler
       return;
     }
 
-    Cmd handler = commandHandlerService.getCommandHandler(event.getMessage());
+    CmdHandlerMatches matches = commandHandlerService.getMatchingCommands(event.getMessage());
+
+/*    Cmd handler = commandHandlerService.getCommandHandler(event.getMessage());
 
     if (handler != null) {
       EngineResponse response = new EngineResponse(event);
@@ -54,7 +56,7 @@ public class EngineServiceMessageHandlerImpl implements JmsServiceMessageHandler
       } catch (Exception e) {
         log.error("Command handler returned exception {}", e);
       }
-    }
+    }*/
   }
 
 }

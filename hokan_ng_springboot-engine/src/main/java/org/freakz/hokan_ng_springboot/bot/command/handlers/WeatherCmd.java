@@ -49,10 +49,10 @@ public class WeatherCmd extends Cmd {
 
   }
 
-  @Override
+/*  @Override
   public String getMatchPattern() {
     return "!saa.*|!weather.*";
-  }
+  }*/
 
   @Override
 //  @SuppressWarnings("unchecked")

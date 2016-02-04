@@ -36,10 +36,10 @@ public class MetarCmd extends Cmd {
 
   }
 
-  @Override
+/*  @Override
   public String getMatchPattern() {
     return "!metar.*";
-  }
+  }*/
 
 
   @Override

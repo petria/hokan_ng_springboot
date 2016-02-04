@@ -48,9 +48,9 @@ public class JoinedCmd extends Cmd {
   }
 
 
-  public String getMatchPattern() {
+/*  public String getMatchPattern() {
     return "!joined";
-  }
+  }*/
 
   @Override
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {

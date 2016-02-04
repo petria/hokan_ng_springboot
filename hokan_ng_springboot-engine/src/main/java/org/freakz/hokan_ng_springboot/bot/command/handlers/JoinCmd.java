@@ -43,10 +43,10 @@ public class JoinCmd extends Cmd {
 
   }
 
-  @Override
+/*  @Override
   public String getMatchPattern() {
     return "!join.*";
-  }
+  }*/
 
   @Override
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) {

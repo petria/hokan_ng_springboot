@@ -32,10 +32,11 @@ public class UptimeCmd extends Cmd {
     setHelp("Shows system and each bot module uptime.");
   }
 
-  @Override
+/*  @Override
   public String getMatchPattern() {
     return "!uptime.*";
   }
+*/
 
   @Override
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {

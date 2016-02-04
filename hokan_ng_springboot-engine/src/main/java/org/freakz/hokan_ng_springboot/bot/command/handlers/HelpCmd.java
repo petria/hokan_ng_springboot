@@ -45,11 +45,6 @@ public class HelpCmd extends Cmd {
   }
 
   @Override
-  public String getMatchPattern() {
-    return "!help.*";
-  }
-
-  @Override
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
 
     String command = results.getString(ARG_COMMAND);

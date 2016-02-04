@@ -1,6 +1,7 @@
 package org.freakz.hokan_ng_springboot.bot.command;
 
 import org.freakz.hokan_ng_springboot.bot.command.handlers.Cmd;
+import org.freakz.hokan_ng_springboot.bot.service.CmdHandlerMatches;
 
 import java.util.List;
 
@@ -14,6 +15,8 @@ import java.util.List;
 public interface CommandHandlerService {
 
   Cmd getCommandHandler(String line);
+
+  CmdHandlerMatches getMatchingCommands(String line);
 
   List<Cmd> getCommandHandlers();
 

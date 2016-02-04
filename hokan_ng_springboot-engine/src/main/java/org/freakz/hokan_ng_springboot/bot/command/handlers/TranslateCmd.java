@@ -37,10 +37,11 @@ public class TranslateCmd extends Cmd {
     registerParameter(flg);
   }
 
-  @Override
+/*  @Override
   public String getMatchPattern() {
     return "!trans.*|!translate.*";
   }
+*/
 
   @Override
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {

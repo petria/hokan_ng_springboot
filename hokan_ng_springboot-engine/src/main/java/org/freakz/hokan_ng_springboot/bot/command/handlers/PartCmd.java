@@ -37,10 +37,10 @@ public class PartCmd extends Cmd {
     setAdminUserOnly(true);
   }
 
-  @Override
+/*  @Override
   public String getMatchPattern() {
     return "!part.*";
-  }
+  }*/
 
   @Override
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {

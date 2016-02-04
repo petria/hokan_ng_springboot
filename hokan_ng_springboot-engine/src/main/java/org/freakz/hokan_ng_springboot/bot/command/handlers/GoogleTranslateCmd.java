@@ -30,10 +30,10 @@ public class GoogleTranslateCmd extends Cmd {
     registerParameter(flg);
   }
 
-  @Override
+/*  @Override
   public String getMatchPattern() {
     return "!googletrans.*|!gtrans.*";
-  }
+  }*/
 
   @Override
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {

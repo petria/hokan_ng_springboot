@@ -30,10 +30,10 @@ public class HoroCmd extends Cmd {
 
   }
 
-  @Override
+/*  @Override
   public String getMatchPattern() {
     return "!horo.*";
-  }
+  }*/
 
 
   @Override

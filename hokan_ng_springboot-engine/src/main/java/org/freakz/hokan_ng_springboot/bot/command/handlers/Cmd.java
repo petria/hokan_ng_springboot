@@ -129,7 +129,7 @@ public abstract class Cmd implements HokanCommand, CommandRunnable {
   }
 
   public String getMatchPattern() {
-    return String.format("!%s.*", getName().toLowerCase());
+    return String.format("!%s", getName().toLowerCase());
   }
 
 
