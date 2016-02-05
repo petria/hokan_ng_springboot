@@ -37,10 +37,9 @@ public class CommandHandlerServiceImpl implements CommandHandlerService {
       }
     }
 
-    CmdHandlerMatches cmdHandlerMatches = new CmdHandlerMatches();
+    CmdHandlerMatches cmdHandlerMatches = new CmdHandlerMatches(firstWord);
     if (matches.size() == 1) {
       cmdHandlerMatches.getMatches().add(context.getBean(matches.get(0).getClass()));
-      return cmdHandlerMatches;
     } else if (matches.size() > 1) {
       for (Cmd base : matches) {
         String baseMatch = base.getMatchPattern();
@@ -49,8 +48,8 @@ public class CommandHandlerServiceImpl implements CommandHandlerService {
           return cmdHandlerMatches;
         }
       }
+      cmdHandlerMatches.getMatches().addAll(matches);
     }
-
     return cmdHandlerMatches;
   }
 

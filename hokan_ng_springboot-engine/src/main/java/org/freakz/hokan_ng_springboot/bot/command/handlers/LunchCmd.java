@@ -24,7 +24,7 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_LUNCH_PL
  * Created by Petri Airio on 27.1.2016.
  * -
  */
-@Component
+//@Component
 @Scope("prototype")
 @Slf4j
 @HelpGroups(

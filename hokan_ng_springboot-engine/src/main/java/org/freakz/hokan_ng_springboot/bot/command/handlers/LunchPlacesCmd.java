@@ -19,7 +19,7 @@ import java.util.List;
  * Created by Petri Airio on 27.1.2016.
  * -
  */
-@Component
+//@Component
 @Scope("prototype")
 @Slf4j
 @HelpGroups(
