@@ -24,7 +24,7 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_CITY_2;
  * Date: Apr 19, 2010
  * Time: 10:00:55 PM
  */
-@Component
+//@Component
 @Scope("prototype")
 @Slf4j
 public class MatkaCmd extends Cmd {
