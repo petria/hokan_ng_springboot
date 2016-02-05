@@ -25,11 +25,11 @@
         <vaadin-touchkit.version>4.0.0</vaadin-touchkit.version>
         <vaadin-spring.version>1.0.0</vaadin-spring.version>
         <spring.version>4.1.7.RELEASE</spring.version>
-        <spring-boot.version>1.2.7.RELEASE</spring-boot.version>
+        <spring-boot.version>1.2.8.RELEASE</spring-boot.version>
         <spring-security.version>3.2.8.RELEASE</spring-security.version>
         <slf4j.version>1.7.10</slf4j.version>
-        <logback.version>1.1.2</logback.version>
-        <lombok.version>1.16.0</lombok.version>
+<!--        <logback.version>1.1.2</logback.version>
+        <lombok.version>1.16.0</lombok.version> -->
         <start-class>org.freakz.hokan_ng_springboot.bot.HokanNgVaadinApplication</start-class>
         <amq.version>5.7.0</amq.version>
     </properties>
@@ -144,11 +144,6 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-core</artifactId>
-            <version>${logback.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
             <version>${logback.version}</version>
         </dependency>
         <dependency>
