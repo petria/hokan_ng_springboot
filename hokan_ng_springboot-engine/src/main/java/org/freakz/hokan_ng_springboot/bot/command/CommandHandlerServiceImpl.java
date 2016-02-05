@@ -55,32 +55,7 @@ public class CommandHandlerServiceImpl implements CommandHandlerService {
 
   @Override
   public Cmd getCommandHandler(String line) {
-/*    String firstWord = line.split(" ")[0].toLowerCase();
-
-    List<Cmd> matches = new ArrayList<>();
-    for (Cmd base : getCommandHandlers()) {
-      String baseMatch = base.getMatchPattern();
-      if (baseMatch.startsWith(firstWord)) {
-        matches.add(base);
-      }
-    }
-
-    CmdHandlerMatches cmdHandlerMatches = new CmdHandlerMatches();
-    if (matches.size() == 1) {
-      cmdHandlerMatches.getMatches().add(matches.get(0));
-    } else if (matches.size() > 1) {
-      for (Cmd base : matches) {
-        String baseMatch = base.getMatchPattern();
-        if (firstWord.equals(baseMatch)) {
-          cmdHandlerMatches.getMatches().add(context.getBean(base.getClass()));
-          return cmdHandlerMatches;
-        }
-      }
-    }
-    if (theCmd != null) {
-      Object bean = context.getBean(theCmd.getClass());
-      return (Cmd) bean;
-    }*/
+    /* Deprecated */
     return null;
   }
 
