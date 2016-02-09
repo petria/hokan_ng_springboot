@@ -38,11 +38,12 @@ public class HelsinkiTerminaali2RequestHandler  implements LunchRequestHandler {
 
 
   private static final String BASE_ULR = "http://www.sspfinland.fi/";
+  private static final String[] DAYS = {"MAANANTAI", "TIISTAI", "KESKIVIIKKO", "TORSTAI", "PERJANTAI", "LAUANTAI", "SUNNUNTAI", "HINNASTO"};
 
   private List<String> getWeeklyPDFMenuUrls(String url) {
     List<String> urlList = new ArrayList<>();
     try {
-      Document doc = Jsoup.connect(url).get();
+      Document doc = Jsoup.connect(url).timeout(1000 * 10).get();
       Elements links = doc.select("a[href]").select(":contains(Lounaslista viikolle)");
       for (Element href : links) {
         String hrefUrl = BASE_ULR + href.attributes().get("href");
@@ -87,15 +88,37 @@ public class HelsinkiTerminaali2RequestHandler  implements LunchRequestHandler {
   public void handleLunchPlace(LunchPlace lunchPlaceRequest, LunchData response, DateTime day) {
     response.setLunchPlace(lunchPlaceRequest);
     List<String> urlList = getWeeklyPDFMenuUrls(lunchPlaceRequest.getUrl());
-    String menu = readPDFMenu(urlList.get(0));
-    if (menu != null) {
-      parseMenu(menu, response);
+    for (String url : urlList) {
+      String menu = readPDFMenu(url);
+      if (menu != null) {
+        if (isMenuThisWeek(menu)) {
+          parseMenu(menu, response);
+        }
+      }
     }
-    DateTime now = DateTime.now();
+  }
+
+  private boolean isMenuThisWeek(String menuText) {
+    String[] lines = menuText.split("\n");
+    for (String line : lines) {
+      if (line.toLowerCase().contains(DAYS[0].toLowerCase())) {
+        // "MAANANTAI 1.2 "
+        String day = line.split(" ")[1].split("\\.")[0];
+        String month = line.split(" ")[1].split("\\.")[1];
+        int dayOfMonth = Integer.valueOf(day);
+        int monthOfYear = Integer.valueOf(month);
+        DateTime now = DateTime.now();
+        DateTime parsed = now.withDayOfMonth(dayOfMonth).withMonthOfYear(monthOfYear);
+        int week1 = now.getWeekOfWeekyear();
+        int week2 = parsed.getWeekOfWeekyear();
+        return week1 == week2;
+      }
+    }
+    return false;
   }
 
   private void parseMenu(String menuText, LunchData response) {
-    String[] days = {"MAANANTAI", "TIISTAI", "KESKIVIIKKO", "TORSTAI", "PERJANTAI", "LAUANTAI", "SUNNUNTAI", "NULL"};
+    String[] days = DAYS;
     String[] lines = menuText.split("\n");
     int dayIdx = 0;
     int lineIdx = 0;
@@ -105,17 +128,22 @@ public class HelsinkiTerminaali2RequestHandler  implements LunchRequestHandler {
       if (line.startsWith(days[dayIdx])) {
         LunchDay lunchDay = LunchDay.getFromWeekdayString(days[dayIdx]);
         dayIdx++;
+        if (dayIdx == 7) {
+          break;
+        }
         String lunchForDay = "";
         while (true) {
-          line = lines[lineIdx];
+          line = lines[lineIdx].trim();
           lineIdx++;
-          lunchForDay += line.trim() + "  ";
-          if (line.trim().length() == 0) {
-            if (lunchDay != null) {
-              LunchMenu lunchMenu = new LunchMenu(lunchForDay);
-              response.getMenu().put(lunchDay, lunchMenu);
-            }
+          if (line.contains(days[dayIdx])) {
+            LunchMenu lunchMenu = new LunchMenu(lunchForDay);
+            response.getMenu().put(lunchDay, lunchMenu);
+            lineIdx--;
             break;
+          } else {
+            if (line.length() > 0) {
+              lunchForDay += line + "  ";
+            }
           }
         }
       }

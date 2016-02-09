@@ -26,10 +26,10 @@ public class LunchServiceSpringTest {
 
 
   @Test
-  public void testJyskä() {
-    LunchData data = lunchService.getLunchForDay(LunchPlace.LOUNAS_INFO_JYSKÄ, DateTime.now());
+  public void testHarmooni() {
+    LunchData data = lunchService.getLunchForDay(LunchPlace.LOUNAS_INFO_HARMOONI, DateTime.now());
     Assert.assertNotNull(data);
-    Assert.assertEquals(LunchPlace.LOUNAS_INFO_JYSKÄ, data.getLunchPlace());
+    Assert.assertEquals(LunchPlace.LOUNAS_INFO_HARMOONI, data.getLunchPlace());
   }
 
 }

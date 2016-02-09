@@ -19,7 +19,7 @@ import java.util.List;
  * Created by Petri Airio on 27.1.2016.
  * -
  */
-//@Component
+@Component
 @Scope("prototype")
 @Slf4j
 @HelpGroups(
@@ -39,7 +39,7 @@ public class LunchPlacesCmd extends Cmd {
     if (lunchPlaces.size() == 0) {
       response.addResponse("No lunch places!!");
     } else {
-      String places = "I know following lunch places:";
+      String places = "I know following lunch places: ";
       for (LunchPlace lunchPlace : lunchPlaces) {
         places += "  " + lunchPlace.getName();
       }

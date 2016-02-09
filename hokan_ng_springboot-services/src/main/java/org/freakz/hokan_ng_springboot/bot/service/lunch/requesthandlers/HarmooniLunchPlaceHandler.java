@@ -53,7 +53,7 @@ public class HarmooniLunchPlaceHandler implements LunchRequestHandler {
       String text = element.text();
       LunchDay lunchDay = LunchDay.getFromWeekdayString(text);
 
-      log.debug("{}", text);
+//      log.debug("{}", text);
       boolean gotAll = false;
       Element test = element.nextElementSibling();
       String lunchForDay = "";
@@ -72,7 +72,7 @@ public class HarmooniLunchPlaceHandler implements LunchRequestHandler {
             lunchForDay += ", ";
           }
           lunchForDay += food;
-          log.debug(" ->{}", food);
+//          log.debug(" ->{}", food);
         }
         test = test.nextElementSibling();
       }
