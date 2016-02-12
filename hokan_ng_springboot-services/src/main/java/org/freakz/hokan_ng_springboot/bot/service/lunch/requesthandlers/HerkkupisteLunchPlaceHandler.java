@@ -11,7 +11,6 @@ import org.freakz.hokan_ng_springboot.bot.util.StaticStrings;
 import org.joda.time.DateTime;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
 
@@ -20,15 +19,15 @@ import java.net.Authenticator;
 import java.net.PasswordAuthentication;
 
 /**
- * Created by Petri Airio on 26.1.2016.
+ * Created by Petri Airio on 12.2.2016.
  * -
  */
 @Component
 @Slf4j
-public class HarmooniLunchPlaceHandler implements LunchRequestHandler {
+public class HerkkupisteLunchPlaceHandler implements LunchRequestHandler {
 
   @Override
-  @LunchPlaceHandler(LunchPlace = LunchPlace.LOUNAS_INFO_HARMOONI)
+  @LunchPlaceHandler(LunchPlace = LunchPlace.LOUNAS_INFO_HERKKUPISTE)
   public void handleLunchPlace(LunchPlace lunchPlaceRequest, LunchData response, DateTime day) {
     response.setLunchPlace(lunchPlaceRequest);
     String url = lunchPlaceRequest.getUrl();
@@ -45,43 +44,17 @@ public class HarmooniLunchPlaceHandler implements LunchRequestHandler {
       log.error("Could not fetch lunch from {}", url, e);
       return;
     }
-    Elements elements = doc.getElementsByClass("entry-content");
-    Elements h3 = elements.select("h3");
 
-    for (Element element : h3) {
-      String text = element.text();
-      LunchDay lunchDay = LunchDay.getFromWeekdayString(text);
-
-//      log.debug("{}", text);
-      boolean gotAll = false;
-      Element test = element.nextElementSibling();
-      String lunchForDay = "";
-      while (!gotAll) {
-        // TODO better method to avoid looping forever
-        String food;
-        if (test == null) {
-          break;
-        } else {
-          food = test.text();
-        }
-        if (food.matches("Maanantai.*|Tiistai.*|Keskiviikko.*|Torstai.*|Perjantai.*")) {
-          break;
-        } else {
-          if (lunchForDay.length() > 0) {
-            lunchForDay += ", ";
-          }
-          lunchForDay += food;
-//          log.debug(" ->{}", food);
-        }
-        test = test.nextElementSibling();
-      }
+    Elements elements = doc.getElementsByClass("lounas");
+    Elements tds = elements.select("td");
+    int dayIdx = 0;
+    for (int idx = 0; idx < 10; idx += 2) {
+      String lunchForDay = tds.get(idx + 1).text();
+      LunchDay lunchDay = LunchDay.getFromWeekdayString(tds.get(idx).text());
       LunchMenu lunchMenu = new LunchMenu(lunchForDay);
       response.getMenu().put(lunchDay, lunchMenu);
-
+      int bar = 1;
     }
     int foo = 0;
-
   }
-
-
 }
