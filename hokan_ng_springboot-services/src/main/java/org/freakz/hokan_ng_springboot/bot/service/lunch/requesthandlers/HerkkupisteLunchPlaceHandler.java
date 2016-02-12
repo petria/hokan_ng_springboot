@@ -44,17 +44,13 @@ public class HerkkupisteLunchPlaceHandler implements LunchRequestHandler {
       log.error("Could not fetch lunch from {}", url, e);
       return;
     }
-
     Elements elements = doc.getElementsByClass("lounas");
     Elements tds = elements.select("td");
-    int dayIdx = 0;
     for (int idx = 0; idx < 10; idx += 2) {
       String lunchForDay = tds.get(idx + 1).text();
       LunchDay lunchDay = LunchDay.getFromWeekdayString(tds.get(idx).text());
       LunchMenu lunchMenu = new LunchMenu(lunchForDay);
       response.getMenu().put(lunchDay, lunchMenu);
-      int bar = 1;
     }
-    int foo = 0;
   }
 }
