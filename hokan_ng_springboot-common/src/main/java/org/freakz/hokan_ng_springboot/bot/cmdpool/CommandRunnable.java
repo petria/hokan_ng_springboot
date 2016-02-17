@@ -11,5 +11,6 @@ import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
  */
 public interface CommandRunnable {
 
-	public void handleRun(long myPid, Object args) throws HokanException;
+  void handleRun(long myPid, Object args) throws HokanException;
+
 }

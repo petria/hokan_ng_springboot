@@ -23,8 +23,4 @@ public interface CommandPool {
 
 	List<CommandRunner> getActiveRunners();
 
-//	void addCommandHistory(CommandHistory history);
-
-//	List<CommandHistory> getCommandHistory();
-
 }
