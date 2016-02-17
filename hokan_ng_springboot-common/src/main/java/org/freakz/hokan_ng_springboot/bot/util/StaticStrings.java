@@ -1,7 +1,7 @@
 package org.freakz.hokan_ng_springboot.bot.util;
 
 /**
- * User: petria
+ * PircBotUser: petria
  * Date: 12/14/13
  * Time: 12:16 PM
  *
@@ -59,7 +59,7 @@ public class StaticStrings {
   public static final String ARG_WORD = "Word";
 
   public static final String HTTP_USER_AGENT
-      = "User-Agent\", \"Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:38.0) Gecko/20100101 Firefox/38.0";
+      = "PircBotUser-Agent\", \"Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:38.0) Gecko/20100101 Firefox/38.0";
 
   public static final String UNKNOWN
       = "<unknown>";

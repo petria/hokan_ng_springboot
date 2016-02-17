@@ -68,7 +68,7 @@ public class LastSeenCmd extends Cmd {
       }
     }
     if (hUser == null) {
-      response.addResponse("User not found: %s", nick);
+      response.addResponse("PircBotUser not found: %s", nick);
       return;
     }
 

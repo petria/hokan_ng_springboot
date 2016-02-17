@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import java.io.*;
 
 /**
- * User: petria
+ * PircBotUser: petria
  * Date: 11/26/13
  * Time: 8:55 AM
  *

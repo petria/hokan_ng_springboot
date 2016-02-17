@@ -1,11 +1,11 @@
 package org.freakz.hokan_ng_springboot.bot.ircengine.connector;
 
-import org.freakz.hokan_ng_springboot.bot.jpa.entity.IrcServerConfig;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
 import org.freakz.hokan_ng_springboot.bot.ircengine.HokanCore;
+import org.freakz.hokan_ng_springboot.bot.jpa.entity.IrcServerConfig;
 
 /**
- * User: petria
+ * PircBotUser: petria
  * Date: 11/4/13
  * Time: 7:17 PM
  *

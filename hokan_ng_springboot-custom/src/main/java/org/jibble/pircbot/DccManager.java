@@ -143,6 +143,6 @@ public class DccManager {
 
 
   private PircBot _bot;
-  private Vector _awaitingResume = new Vector();
+  private final Vector _awaitingResume = new Vector();
 
 }

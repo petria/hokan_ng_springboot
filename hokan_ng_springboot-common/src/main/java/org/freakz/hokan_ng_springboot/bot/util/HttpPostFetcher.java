@@ -15,7 +15,7 @@ import java.net.*;
 /**
  * <br>
  * <p>
- * User: petria<br>
+ * PircBotUser: petria<br>
  * Date: 29-Jun-2007<br>
  * Time: 12:53:37<br>
  * <p>
@@ -50,7 +50,7 @@ public class HttpPostFetcher {
     }
 
     HttpURLConnection connection = (HttpURLConnection) conn;
-    conn.setRequestProperty("User-Agent", StaticStrings.HTTP_USER_AGENT);
+    conn.setRequestProperty("PircBotUser-Agent", StaticStrings.HTTP_USER_AGENT);
     connection.setRequestMethod("POST");
     connection.setDoOutput(true);
 

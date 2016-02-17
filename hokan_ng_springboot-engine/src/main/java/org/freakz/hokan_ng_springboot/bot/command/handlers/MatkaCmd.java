@@ -10,7 +10,6 @@ import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
 import org.freakz.hokan_ng_springboot.bot.util.HttpPostFetcher;
 import org.freakz.hokan_ng_springboot.bot.util.StringStuff;
 import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.regex.Matcher;
@@ -20,7 +19,7 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_CITY_1;
 import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_CITY_2;
 
 /**
- * User: petria
+ * PircBotUser: petria
  * Date: Apr 19, 2010
  * Time: 10:00:55 PM
  */

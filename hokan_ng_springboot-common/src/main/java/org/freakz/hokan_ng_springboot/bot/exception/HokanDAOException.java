@@ -1,7 +1,7 @@
 package org.freakz.hokan_ng_springboot.bot.exception;
 
 /**
- * User: petria
+ * PircBotUser: petria
  * Date: 11/18/13
  * Time: 8:24 AM
  *

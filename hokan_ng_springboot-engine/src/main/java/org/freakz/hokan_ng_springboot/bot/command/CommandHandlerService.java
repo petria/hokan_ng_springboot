@@ -6,7 +6,7 @@ import org.freakz.hokan_ng_springboot.bot.service.CmdHandlerMatches;
 import java.util.List;
 
 /**
- * User: petria
+ * PircBotUser: petria
  * Date: 11/6/13
  * Time: 4:08 PM
  *

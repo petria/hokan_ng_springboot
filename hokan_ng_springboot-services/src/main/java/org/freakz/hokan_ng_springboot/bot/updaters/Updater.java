@@ -11,7 +11,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 /**
- * User: petria
+ * PircBotUser: petria
  * Date: 11/18/13
  * Time: 2:31 PM
  *

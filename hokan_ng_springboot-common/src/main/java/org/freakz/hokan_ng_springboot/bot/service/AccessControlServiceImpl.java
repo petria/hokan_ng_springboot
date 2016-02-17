@@ -23,12 +23,12 @@ public class AccessControlServiceImpl implements AccessControlService {
   public boolean isAdminUser(User isAdmin) {
     User user = userService.findById(isAdmin.getId());
     if (user == null) {
-      log.debug("User not found: {}", isAdmin);
+      log.debug("PircBotUser not found: {}", isAdmin);
       return false;
     }
     String flags = user.getFlags();
     if (flags == null) {
-      log.debug("User {} flags null!", user);
+      log.debug("PircBotUser {} flags null!", user);
       return false;
     }
     return flags.contains("A");
@@ -38,12 +38,12 @@ public class AccessControlServiceImpl implements AccessControlService {
   public boolean isChannelOp(User isChannelOp, Channel Channel) {
     User user = userService.findById(isChannelOp.getId());
     if (user == null) {
-      log.debug("User not found: {}", isChannelOp);
+      log.debug("PircBotUser not found: {}", isChannelOp);
       return false;
     }
     String flags = user.getFlags();
     if (flags == null) {
-      log.debug("User {} flags null!", user);
+      log.debug("PircBotUser {} flags null!", user);
       return false;
     }
     return flags.contains("C");
@@ -64,7 +64,7 @@ public class AccessControlServiceImpl implements AccessControlService {
   public boolean isLoggedIn(User isLoggedIn) {
     User user = userService.findById(isLoggedIn.getId());
     if (user == null) {
-      log.debug("User not found: {}", isLoggedIn);
+      log.debug("PircBotUser not found: {}", isLoggedIn);
       return false;
     }
     return user.isLoggedIn() > 0;
@@ -74,11 +74,11 @@ public class AccessControlServiceImpl implements AccessControlService {
   public User loginUser(User user2) {
     User user = userService.findById(user2.getId());
     if (user == null) {
-      log.debug("User not found: {}", user2);
+      log.debug("PircBotUser not found: {}", user2);
       return null;
     }
     user.setLoggedIn(1);
-    log.info("User logged in: {}", user);
+    log.info("PircBotUser logged in: {}", user);
     return userService.save(user);
   }
 
@@ -86,11 +86,11 @@ public class AccessControlServiceImpl implements AccessControlService {
   public User logoffUser(User user2) {
     User user = userService.findById(user2.getId());
     if (user == null) {
-      log.debug("User not found: {}", user2);
+      log.debug("PircBotUser not found: {}", user2);
       return null;
     }
     user.setLoggedIn(0);
-    log.info("User logged off: {}", user);
+    log.info("PircBotUser logged off: {}", user);
     return userService.save(user);
   }
 

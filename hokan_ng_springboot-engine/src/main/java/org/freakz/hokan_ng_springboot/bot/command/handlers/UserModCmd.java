@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.*;
 
 /**
- * User: petria
+ * PircBotUser: petria
  * Date: 12/18/13
  * Time: 11:15 AM
  *
@@ -107,7 +107,7 @@ public class UserModCmd extends Cmd {
     }
 
     if (hUser == null) {
-      response.addResponse("No User found with: " + target);
+      response.addResponse("No PircBotUser found with: " + target);
       return;
     }
     UserChannel userChannel = userChannelService.getUserChannel(hUser, request.getChannel());

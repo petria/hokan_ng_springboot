@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * User: petria
+ * PircBotUser: petria
  * Date: 11/6/13
  * Time: 10:42 AM
  *

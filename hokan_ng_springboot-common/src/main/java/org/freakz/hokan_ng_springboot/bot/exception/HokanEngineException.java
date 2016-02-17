@@ -3,7 +3,7 @@ package org.freakz.hokan_ng_springboot.bot.exception;
 import java.io.Serializable;
 
 /**
- * User: petria
+ * PircBotUser: petria
  * Date: 11/18/13
  * Time: 9:18 AM
  *

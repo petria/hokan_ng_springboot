@@ -19,7 +19,7 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_CHANNEL_
 import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_PROPERTY;
 
 /**
- * User: petria
+ * PircBotUser: petria
  * Date: 12/10/13
  * Time: 3:02 PM
  *

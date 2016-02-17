@@ -18,9 +18,9 @@ package org.freakz.hokan_ng_springboot.bot.operations;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.ui.Notification;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.freakz.hokan_ng_springboot.bot.Sections;
 import org.freakz.hokan_ng_springboot.bot.backend.MyBackend;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.spring.sidebar.annotation.FontAwesomeIcon;
 import org.vaadin.spring.sidebar.annotation.SideBarItem;
 
@@ -30,7 +30,7 @@ import org.vaadin.spring.sidebar.annotation.SideBarItem;
  * @author Petter Holmström (petter@vaadin.com)
  */
 @SpringComponent
-@SideBarItem(sectionId = Sections.OPERATIONS, caption = "User operation", order = 0)
+@SideBarItem(sectionId = Sections.OPERATIONS, caption = "PircBotUser operation", order = 0)
 @FontAwesomeIcon(FontAwesome.ANCHOR)
 public class UserOperation implements Runnable {
 

@@ -36,14 +36,11 @@ import java.util.Vector;
  */
 public class Queue {
 
-
   /**
    * Constructs a Queue object of unlimited size.
    */
   public Queue() {
-
   }
-
 
   /**
    * Adds an Object to the end of the Queue.
@@ -57,7 +54,6 @@ public class Queue {
       _queue.notify();
     }
   }
-
 
   /**
    * Adds an Object to the front of the Queue.
@@ -83,7 +79,7 @@ public class Queue {
    */
   public Object next() {
 
-    Object o = null;
+    Object o;
 
     // Block if the Queue is empty.
     synchronized (_queue) {
@@ -141,6 +137,6 @@ public class Queue {
   }
 
 
-  private Vector _queue = new Vector();
+  private final Vector _queue = new Vector();
 
 }

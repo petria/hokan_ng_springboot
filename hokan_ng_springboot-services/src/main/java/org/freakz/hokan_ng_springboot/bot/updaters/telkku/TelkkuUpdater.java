@@ -35,7 +35,7 @@ import java.util.concurrent.TimeUnit;
 import static java.nio.file.StandardWatchEventKinds.ENTRY_CREATE;
 
 /**
- * User: petria
+ * PircBotUser: petria
  * Date: 11/22/13
  * Time: 12:43 PM
  *

@@ -1,7 +1,7 @@
 package org.freakz.hokan_ng_springboot.bot.updaters.currency;
 
 /**
- * User: petria
+ * PircBotUser: petria
  * Date: 12/12/13
  * Time: 10:30 PM
  *

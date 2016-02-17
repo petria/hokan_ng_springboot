@@ -20,7 +20,7 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_ALIAS;
 import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_COMMAND;
 
 /**
- * User: petria
+ * PircBotUser: petria
  * Date: 1/14/14
  * Time: 3:41 PM
  *

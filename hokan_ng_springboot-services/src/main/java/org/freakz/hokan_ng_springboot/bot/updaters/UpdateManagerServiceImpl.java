@@ -5,7 +5,6 @@ import org.freakz.hokan_ng_springboot.bot.cmdpool.CommandPool;
 import org.freakz.hokan_ng_springboot.bot.cmdpool.CommandRunnable;
 import org.freakz.hokan_ng_springboot.bot.models.DataUpdaterModel;
 import org.freakz.hokan_ng_springboot.bot.models.UpdaterStatus;
-import org.freakz.hokan_ng_springboot.bot.service.HokanModuleService;
 import org.freakz.hokan_ng_springboot.bot.util.StringStuff;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -15,7 +14,7 @@ import javax.annotation.PostConstruct;
 import java.util.*;
 
 /**
- * User: petria
+ * PircBotUser: petria
  * Date: 11/18/13
  * Time: 8:19 PM
  *

@@ -145,7 +145,7 @@ $Id: xmltv.dtd,v 1.45 2012/06/10 10:35:24 knowledgejunkie Exp $
         preferably be in the form suggested by RFC2838 (the 'broadcast'
         element of the grammar in that RFC, in other words, a DNS-like name
         but without any URI scheme).  Then one or more display names which are
-        shown to the user.  You might want a different display name for
+        shown to the pircBotUser.  You might want a different display name for
         different languages, but also you can have more than one name for the
         same language.  Names listed earlier are considered 'more canonical'.
 
@@ -164,7 +164,7 @@ $Id: xmltv.dtd,v 1.45 2012/06/10 10:35:24 knowledgejunkie Exp $
         <!ELEMENT channel (display-name+, icon*, url*) >
         <!ATTLIST channel id CDATA #REQUIRED >
 
-        <!-- A user-friendly name for the channel - maybe even a channel
+        <!-- A pircBotUser-friendly name for the channel - maybe even a channel
         number.  List the most canonical / common ones first and the most
         obscure names last.  The lang attribute follows RFC 1766.
         -->
@@ -502,7 +502,7 @@ $Id: xmltv.dtd,v 1.45 2012/06/10 10:35:24 knowledgejunkie Exp $
         <!-- Subtitles.  These can be either 'teletext' (sent digitally, and
         displayed at the viewer's request), 'onscreen' (superimposed on the
         picture and impossible to get rid of), or 'deaf-signed' (in-vision
-        signing for users of sign language). You can have multiple subtitle
+        signing for pircBotUsers of sign language). You can have multiple subtitle
         streams to handle different languages.  Language for subtitles is
         specified in the same way as for programmes.
         -->

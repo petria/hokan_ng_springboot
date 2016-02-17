@@ -53,7 +53,7 @@ public class LogoffCmd extends Cmd {
     }
 
     if (user == null) {
-      response.addResponse("No User found with: " + target);
+      response.addResponse("No PircBotUser found with: " + target);
       return;
     }
 

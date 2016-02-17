@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.*;
 
 /**
- * User: petria
+ * PircBotUser: petria
  * Date: 12/19/13
  * Time: 10:07 AM
  *
@@ -75,7 +75,7 @@ public class PasswordCmd extends Cmd {
     }
 
     if (user == null) {
-      response.addResponse("No User found with: " + target);
+      response.addResponse("No PircBotUser found with: " + target);
       return;
     }
 

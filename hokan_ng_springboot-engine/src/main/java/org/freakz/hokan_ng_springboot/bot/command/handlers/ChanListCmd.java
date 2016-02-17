@@ -19,7 +19,7 @@ import java.util.List;
 import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_VERBOSE;
 
 /**
- * User: petria
+ * PircBotUser: petria
  * Date: 12/5/13
  * Time: 9:24 AM
  *

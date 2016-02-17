@@ -26,16 +26,16 @@ package org.jibble.pircbot;
  * @version 1.5.0 (Build time: Mon Dec 14 20:07:17 2009)
  * @since 1.0.0
  */
-public class User {
+public class PircBotUser {
 
 
   /**
-   * Constructs a User object with a known prefix and nick.
+   * Constructs a PircBotUser object with a known prefix and nick.
    *
    * @param prefix The status of the user, for example, "@".
    * @param nick   The nick of the user.
    */
-  User(String prefix, String nick) {
+  PircBotUser(String prefix, String nick) {
     _prefix = prefix;
     _nick = nick;
     _lowerNick = nick.toLowerCase();
@@ -43,7 +43,7 @@ public class User {
 
 
   /**
-   * Returns the prefix of the user. If the User object has been obtained
+   * Returns the prefix of the user. If the PircBotUser object has been obtained
    * from a list of users in a channel, then this will reflect the user's
    * status in that channel.
    *
@@ -57,7 +57,7 @@ public class User {
 
   /**
    * Returns whether or not the user represented by this object is an
-   * operator. If the User object has been obtained from a list of users
+   * operator. If the PircBotUser object has been obtained from a list of users
    * in a channel, then this will reflect the user's operator status in
    * that channel.
    *
@@ -70,7 +70,7 @@ public class User {
 
   /**
    * Returns whether or not the user represented by this object has
-   * voice. If the User object has been obtained from a list of users
+   * voice. If the PircBotUser object has been obtained from a list of users
    * in a channel, then this will reflect the user's voice status in
    * that channel.
    *
@@ -103,7 +103,7 @@ public class User {
 
 
   /**
-   * Returns true if the nick represented by this User object is the same
+   * Returns true if the nick represented by this PircBotUser object is the same
    * as the argument. A case insensitive comparison is made.
    *
    * @return true if the nicks are identical (case insensitive).
@@ -114,15 +114,15 @@ public class User {
 
 
   /**
-   * Returns true if the nick represented by this User object is the same
-   * as the nick of the User object given as an argument.
+   * Returns true if the nick represented by this PircBotUser object is the same
+   * as the nick of the PircBotUser object given as an argument.
    * A case insensitive comparison is made.
    *
-   * @return true if o is a User object with a matching lowercase nick.
+   * @return true if o is a PircBotUser object with a matching lowercase nick.
    */
   public boolean equals(Object o) {
-    if (o instanceof User) {
-      User other = (User) o;
+    if (o instanceof PircBotUser) {
+      PircBotUser other = (PircBotUser) o;
       return other._lowerNick.equals(_lowerNick);
     }
     return false;
@@ -130,9 +130,9 @@ public class User {
 
 
   /**
-   * Returns the hash code of this User object.
+   * Returns the hash code of this PircBotUser object.
    *
-   * @return the hash code of the User object.
+   * @return the hash code of the PircBotUser object.
    */
   public int hashCode() {
     return _lowerNick.hashCode();
@@ -141,13 +141,13 @@ public class User {
 
   /**
    * Returns the result of calling the compareTo method on lowercased
-   * nicks. This is useful for sorting lists of User objects.
+   * nicks. This is useful for sorting lists of PircBotUser objects.
    *
    * @return the result of calling compareTo on lowercased nicks.
    */
   public int compareTo(Object o) {
-    if (o instanceof User) {
-      User other = (User) o;
+    if (o instanceof PircBotUser) {
+      PircBotUser other = (PircBotUser) o;
       return other._lowerNick.compareTo(_lowerNick);
     }
     return -1;

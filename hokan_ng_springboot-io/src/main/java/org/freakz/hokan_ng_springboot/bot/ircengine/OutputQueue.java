@@ -11,7 +11,7 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
- * User: petria
+ * PircBotUser: petria
  * Date: 11/17/13
  * Time: 6:28 PM
  *

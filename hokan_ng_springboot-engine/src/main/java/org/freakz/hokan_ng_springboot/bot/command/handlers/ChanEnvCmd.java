@@ -18,7 +18,7 @@ import java.util.List;
 import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_CHANNEL_ID;
 
 /**
- * User: petria
+ * PircBotUser: petria
  * Date: 12/11/13
  * Time: 2:20 PM
  *

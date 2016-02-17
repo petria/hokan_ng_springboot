@@ -38,7 +38,7 @@ public class InputThread extends Thread {
    * @param breader The BufferedReader that reads lines from the server.
    * @param bwriter The BufferedWriter that sends lines to the server.
    */
-  InputThread(PircBot bot, Socket socket, BufferedReader breader, BufferedWriter bwriter) {
+  public InputThread(PircBot bot, Socket socket, BufferedReader breader, BufferedWriter bwriter) {
     _bot = bot;
     _socket = socket;
     _breader = breader;

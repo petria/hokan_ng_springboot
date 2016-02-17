@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * User: petria
+ * PircBotUser: petria
  * Date: 12/12/13
  * Time: 10:20 PM
  *

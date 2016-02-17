@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.io.Serializable;
 
 /**
- * User: petria
+ * PircBotUser: petria
  * Date: 12/10/13
  * Time: 3:45 PM
  *

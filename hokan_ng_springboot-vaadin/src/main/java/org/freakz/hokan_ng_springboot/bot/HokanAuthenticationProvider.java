@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.User;
 import org.freakz.hokan_ng_springboot.bot.jpa.service.UserService;
 import org.freakz.hokan_ng_springboot.bot.model.Role;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -41,9 +40,9 @@ public class HokanAuthenticationProvider implements AuthenticationProvider, User
     List<User> userList = userService.findAll();
     for (User user : userList) {
       if (user.getNick().equalsIgnoreCase(username)) {
-        log.info("User exists");
+        log.info("PircBotUser exists");
         if (user.getPassword().equals(password)) {
-          log.info("User authorized: {}", username);
+          log.info("PircBotUser authorized: {}", username);
           Role r = new Role();
           r.setName("ROLE_USER");
           List<Role> roles = new ArrayList<Role>();
@@ -55,7 +54,7 @@ public class HokanAuthenticationProvider implements AuthenticationProvider, User
           }
           return new UsernamePasswordAuthenticationToken(user, password, roles);
         } else {
-          log.info("User invalid password: {}", username);
+          log.info("PircBotUser invalid password: {}", username);
         }
       }
     }

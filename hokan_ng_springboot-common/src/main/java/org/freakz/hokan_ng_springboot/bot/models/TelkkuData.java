@@ -4,7 +4,7 @@ import java.util.Calendar;
 import java.util.List;
 
 /**
- * User: petria
+ * PircBotUser: petria
  * Date: 11/26/13
  * Time: 12:45 PM
  *

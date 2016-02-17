@@ -133,7 +133,7 @@ public class DccFileTransfer {
 
           byte[] inBuffer = new byte[BUFFER_SIZE];
           byte[] outBuffer = new byte[4];
-          int bytesRead = 0;
+          int bytesRead;
           while ((bytesRead = input.read(inBuffer, 0, inBuffer.length)) != -1) {
             foutput.write(inBuffer, 0, bytesRead);
             _progress += bytesRead;
@@ -246,7 +246,7 @@ public class DccFileTransfer {
 
           byte[] outBuffer = new byte[BUFFER_SIZE];
           byte[] inBuffer = new byte[4];
-          int bytesRead = 0;
+          int bytesRead;
           while ((bytesRead = finput.read(outBuffer, 0, outBuffer.length)) != -1) {
             output.write(outBuffer, 0, bytesRead);
             output.flush();
@@ -258,7 +258,9 @@ public class DccFileTransfer {
           exception = e;
         } finally {
           try {
-            finput.close();
+            if (finput != null) {
+              finput.close();
+            }
             _socket.close();
           } catch (Exception e) {
             // Do nothing.

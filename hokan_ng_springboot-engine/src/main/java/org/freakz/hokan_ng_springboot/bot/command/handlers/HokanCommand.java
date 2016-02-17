@@ -5,7 +5,7 @@ import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
 
 /**
- * User: petria
+ * PircBotUser: petria
  * Date: 11/7/13
  * Time: 2:49 PM
  *

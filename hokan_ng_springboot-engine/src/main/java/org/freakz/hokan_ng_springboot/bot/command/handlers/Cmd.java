@@ -29,7 +29,7 @@ import java.lang.annotation.Annotation;
 import java.util.*;
 
 /**
- * User: petria
+ * PircBotUser: petria
  * Date: 11/6/13
  * Time: 4:02 PM
  *

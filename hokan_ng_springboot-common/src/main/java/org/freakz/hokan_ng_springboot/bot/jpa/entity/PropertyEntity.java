@@ -5,7 +5,7 @@ import javax.persistence.Table;
 import java.io.Serializable;
 
 /**
- * User: petria
+ * PircBotUser: petria
  * Date: 2/19/12
  * Time: 4:35 PM
  */

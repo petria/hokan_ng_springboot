@@ -14,6 +14,7 @@ import org.freakz.hokan_ng_springboot.bot.util.CommandArgs;
 import org.freakz.hokan_ng_springboot.bot.util.IRCUtility;
 import org.freakz.hokan_ng_springboot.bot.util.StringStuff;
 import org.jibble.pircbot.PircBot;
+import org.jibble.pircbot.PircBotUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -141,7 +142,7 @@ public class HokanCore extends PircBot implements HokanCoreService {
   }
 
   @Override
-  protected void onUserList(String channel, org.jibble.pircbot.User[] users) {
+  protected void onUserList(String channel, PircBotUser[] pircBotUsers) {
     sendWhoQuery(channel);
   }
 

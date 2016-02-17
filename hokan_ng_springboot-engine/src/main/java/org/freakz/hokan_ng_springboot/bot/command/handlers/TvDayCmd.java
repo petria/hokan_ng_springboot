@@ -18,7 +18,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * User: petria
+ * PircBotUser: petria
  * Date: 12/13/13
  * Time: 8:43 PM
  *

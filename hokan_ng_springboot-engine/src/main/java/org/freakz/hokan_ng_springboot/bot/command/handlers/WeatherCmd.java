@@ -21,7 +21,7 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_COUNT;
 import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_PLACE;
 
 /**
- * User: petria
+ * PircBotUser: petria
  * Date: 11/18/13
  * Time: 9:07 PM
  *

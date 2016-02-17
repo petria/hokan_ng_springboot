@@ -19,7 +19,7 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_NICK;
 import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_URL_PATTERN;
 
 /**
- * User: petria
+ * PircBotUser: petria
  * Date: 12/14/13
  * Time: 12:14 PM
  *

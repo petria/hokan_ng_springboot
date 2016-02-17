@@ -18,7 +18,7 @@ import java.util.List;
 import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_NICK;
 
 /**
- * User: petria
+ * PircBotUser: petria
  * Date: 12/16/13
  * Time: 9:24 PM
  *
@@ -51,7 +51,7 @@ public class UserViewCmd extends Cmd {
     } else {
       hUser = userService.findFirstByNick(nick);
       if (hUser == null) {
-        response.addResponse("User not found: %s", nick);
+        response.addResponse("PircBotUser not found: %s", nick);
         return;
       }
     }

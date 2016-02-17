@@ -22,10 +22,10 @@ import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Notification;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.freakz.hokan_ng_springboot.bot.Sections;
 import org.freakz.hokan_ng_springboot.bot.backend.MyBackend;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.vaadin.spring.sidebar.annotation.FontAwesomeIcon;
 import org.vaadin.spring.sidebar.annotation.SideBarItem;
 
@@ -36,7 +36,7 @@ import org.vaadin.spring.sidebar.annotation.SideBarItem;
  */
 @Secured({"ROLE_USER", "ROLE_ADMIN"})
 @SpringView(name = "user")
-@SideBarItem(sectionId = Sections.VIEWS, caption = "User View")
+@SideBarItem(sectionId = Sections.VIEWS, caption = "PircBotUser View")
 @FontAwesomeIcon(FontAwesome.ARCHIVE)
 public class UserView extends CustomComponent implements View {
 
@@ -48,7 +48,7 @@ public class UserView extends CustomComponent implements View {
         Button button = new Button("Call user backend", new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                Notification.show(UserView.this.backend.echo("Hello User World!"));
+                Notification.show(UserView.this.backend.echo("Hello PircBotUser World!"));
             }
         });
         setCompositionRoot(button);

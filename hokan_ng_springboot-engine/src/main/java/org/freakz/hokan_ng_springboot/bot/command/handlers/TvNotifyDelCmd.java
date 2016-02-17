@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_PROGRAM;
 
 /**
- * User: petria
+ * PircBotUser: petria
  * Date: 12/12/13
  * Time: 6:06 PM
  *

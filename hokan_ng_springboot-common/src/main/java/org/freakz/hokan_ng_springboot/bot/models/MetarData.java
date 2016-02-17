@@ -3,7 +3,7 @@ package org.freakz.hokan_ng_springboot.bot.models;
 import java.io.Serializable;
 
 /**
- * User: petria
+ * PircBotUser: petria
  * Date: 11/26/13
  * Time: 1:09 PM
  *

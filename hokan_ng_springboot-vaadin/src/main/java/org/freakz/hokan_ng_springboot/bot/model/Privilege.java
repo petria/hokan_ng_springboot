@@ -1,8 +1,8 @@
 package org.freakz.hokan_ng_springboot.bot.model;
 
 /**
- * 
- * User Privileges
+ *
+ * PircBotUser Privileges
  * 
  * @author aakin
  * 

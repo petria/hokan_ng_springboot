@@ -5,7 +5,7 @@ import org.freakz.hokan_ng_springboot.bot.models.DataUpdaterModel;
 import java.util.List;
 
 /**
- * User: petria
+ * PircBotUser: petria
  * Date: 11/18/13
  * Time: 2:24 PM
  *

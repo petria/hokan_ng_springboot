@@ -5,8 +5,8 @@ import org.springframework.security.core.GrantedAuthority;
 import java.util.List;
 
 /**
- * 
- * User's Roles will be supplied from this class.
+ *
+ * PircBotUser's Roles will be supplied from this class.
  * Role class implements Spring-Security GrantedAuthority interface for custom authentication feature
  * 
  * @author aakin
