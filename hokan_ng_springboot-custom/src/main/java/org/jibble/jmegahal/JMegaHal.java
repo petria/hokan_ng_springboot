@@ -46,7 +46,7 @@ public class JMegaHal implements Serializable {
   public void addDocument(String uri) throws IOException {
     BufferedReader reader = new BufferedReader(new InputStreamReader(new URL(uri).openStream()));
     StringBuffer buffer = new StringBuffer();
-    int ch = 0;
+    int ch;
     while ((ch = reader.read()) != -1) {
       buffer.append((char) ch);
       if (END_CHARS.indexOf((char) ch) >= 0) {
@@ -136,10 +136,7 @@ public class JMegaHal implements Serializable {
           HashSet set = (HashSet) next.get(quad);
           set.add(nextToken);
         }
-
       }
-    } else {
-      // Didn't learn anything.
     }
 
   }
@@ -160,9 +157,10 @@ public class JMegaHal implements Serializable {
 
     Quad[] quads;
     if (words.containsKey(word)) {
-      quads = (Quad[]) ((HashSet) words.get(word)).toArray(new Quad[0]);
+      quads = (Quad[]) ((HashSet) words.get(word)).toArray(new Quad[((HashSet) words.get(word)).size()]);
     } else {
-      quads = (Quad[]) this.quads.keySet().toArray(new Quad[0]);
+      Set set = this.quads.keySet();
+      quads = (Quad[]) set.toArray(new Quad[set.size()]);
     }
 
     if (quads.length == 0) {
@@ -176,25 +174,24 @@ public class JMegaHal implements Serializable {
       parts.add(quad.getToken(i));
     }
 
-    while (quad.canEnd() == false) {
-      String[] nextTokens = (String[]) ((HashSet) next.get(quad)).toArray(new String[0]);
+    while (!quad.canEnd()) {
+      String[] nextTokens = (String[]) ((HashSet) next.get(quad)).toArray(new String[((HashSet) next.get(quad)).size()]);
       String nextToken = nextTokens[rand.nextInt(nextTokens.length)];
       quad = (Quad) this.quads.get(new Quad(quad.getToken(1), quad.getToken(2), quad.getToken(3), nextToken));
       parts.add(nextToken);
     }
 
     quad = middleQuad;
-    while (quad.canStart() == false) {
-      String[] previousTokens = (String[]) ((HashSet) previous.get(quad)).toArray(new String[0]);
+    while (!quad.canStart()) {
+      String[] previousTokens = (String[]) ((HashSet) previous.get(quad)).toArray(new String[((HashSet) previous.get(quad)).size()]);
       String previousToken = previousTokens[rand.nextInt(previousTokens.length)];
       quad = (Quad) this.quads.get(new Quad(previousToken, quad.getToken(0), quad.getToken(1), quad.getToken(2)));
       parts.addFirst(previousToken);
     }
 
-    StringBuffer sentence = new StringBuffer();
-    Iterator it = parts.iterator();
-    while (it.hasNext()) {
-      String token = (String) it.next();
+    StringBuilder sentence = new StringBuilder();
+    for (Object part : parts) {
+      String token = (String) part;
       sentence.append(token);
     }
 
