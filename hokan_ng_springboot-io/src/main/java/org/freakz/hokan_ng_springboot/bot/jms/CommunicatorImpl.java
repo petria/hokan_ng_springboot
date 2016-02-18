@@ -18,7 +18,6 @@ import java.util.List;
 
 /**
  * Created by Petri Airio on 9.4.2015.
- *
  */
 @Service
 @Slf4j
@@ -72,34 +71,42 @@ public class CommunicatorImpl implements EngineCommunicator, ServiceCommunicator
 
   @Override
   public String sendToEngine(IrcMessageEvent event, UserChannel userChannel) {
-    try {
-      boolean repeatAlias = isLastCommandRepeatAlias(event, userChannel);
-      boolean aliased = resolveAlias(event);
-      String message = event.getMessage();
-      boolean between = StringStuff.isInBetween(message, "&&", ' ');
-      log.info("Aliased: {} - RepeatAlias: {} - between = {}", aliased, repeatAlias, between);
-      if (!message.startsWith("!alias") && between) {
-        String[] split = message.split("\\&\\&");
-        for (String splitted : split) {
-          IrcMessageEvent splitEvent = (IrcMessageEvent) event.clone();
-          String trimmed = splitted.trim();
-          splitEvent.setOutputPrefix(String.format("%s :: ", trimmed));
-          splitEvent.setMessage(trimmed);
-          jmsSender.send(HokanModule.HokanEngine.getQueueName(), "EVENT", splitEvent, false);
-        }
-      } else {
-        jmsSender.send(HokanModule.HokanEngine.getQueueName(), "EVENT", event, false);
+    String line = event.getMessage();
+    if (line.length() > 0) {
+
+      if (line.charAt(0) != '!') {
+        return "not a command";
       }
-    } catch (Exception e) {
-      log.error("error", e);
+      try {
+        boolean repeatAlias = isLastCommandRepeatAlias(event, userChannel);
+        boolean aliased = resolveAlias(event);
+        String message = event.getMessage();
+        boolean between = StringStuff.isInBetween(message, "&&", ' ');
+        log.info("Aliased: {} - RepeatAlias: {} - between = {}", aliased, repeatAlias, between);
+        if (!message.startsWith("!alias") && between) {
+          String[] split = message.split("\\&\\&");
+          for (String splitted : split) {
+            IrcMessageEvent splitEvent = (IrcMessageEvent) event.clone();
+            String trimmed = splitted.trim();
+            splitEvent.setOutputPrefix(String.format("%s :: ", trimmed));
+            splitEvent.setMessage(trimmed);
+            jmsSender.send(HokanModule.HokanEngine.getQueueName(), "EVENT", splitEvent, false);
+          }
+        } else {
+          jmsSender.send(HokanModule.HokanEngine.getQueueName(), "EVENT", event, false);
+        }
+      } catch (Exception e) {
+        log.error("error", e);
+      }
+      return "Sent!";
     }
-    return "Sent!";
+    return "not a command";
   }
 
 
   @Override
   public void sendServiceRequest(IrcMessageEvent ircEvent, ServiceRequestType requestType) {
-    ServiceRequest request = new ServiceRequest(requestType, ircEvent, new CommandArgs(ircEvent.getMessage()), (Object[])null);
+    ServiceRequest request = new ServiceRequest(requestType, ircEvent, new CommandArgs(ircEvent.getMessage()), (Object[]) null);
     try {
       jmsSender.send(HokanModule.HokanServices.getQueueName(), "SERVICE_REQUEST", request, false);
     } catch (Exception e) {
