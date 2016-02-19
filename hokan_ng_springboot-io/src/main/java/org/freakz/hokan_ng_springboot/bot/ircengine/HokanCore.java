@@ -443,7 +443,7 @@ public class HokanCore extends PircBot implements HokanCoreService {
       Channel channel = getChannel(ircEvent);
       UserChannel userChannel = getUserChannel(user, channel);
       String result = engineCommunicator.sendToEngine(ircEvent, userChannel);
-      log.info(">>> sent to engine: {}", result);
+//      log.info(">>> sent to engine: {}", result);
     }
 
   }
@@ -525,7 +525,7 @@ public class HokanCore extends PircBot implements HokanCoreService {
       log.debug("Ignoring: {}", user);
     } else {
       String result = engineCommunicator.sendToEngine(ircEvent, userChannel);
-      log.info(">>> sent to engine: {}", result);
+//      log.info(">>> sent to engine: {}", result);
     }
   }
 

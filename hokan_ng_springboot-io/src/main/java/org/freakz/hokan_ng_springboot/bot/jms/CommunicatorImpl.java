@@ -71,12 +71,7 @@ public class CommunicatorImpl implements EngineCommunicator, ServiceCommunicator
 
   @Override
   public String sendToEngine(IrcMessageEvent event, UserChannel userChannel) {
-    String line = event.getMessage();
-    if (line.length() > 0) {
-
-      if (line.charAt(0) != '!') {
-        return "not a command";
-      }
+    if (event.getMessage().length() > 0) {
       try {
         boolean repeatAlias = isLastCommandRepeatAlias(event, userChannel);
         boolean aliased = resolveAlias(event);
@@ -90,10 +85,20 @@ public class CommunicatorImpl implements EngineCommunicator, ServiceCommunicator
             String trimmed = splitted.trim();
             splitEvent.setOutputPrefix(String.format("%s :: ", trimmed));
             splitEvent.setMessage(trimmed);
-            jmsSender.send(HokanModule.HokanEngine.getQueueName(), "EVENT", splitEvent, false);
+            if (trimmed.startsWith("!")) {
+              log.debug("Sending to engine: {}", trimmed);
+              jmsSender.send(HokanModule.HokanEngine.getQueueName(), "EVENT", splitEvent, false);
+            } else {
+              log.debug("Not a command: {}", trimmed);
+            }
           }
         } else {
-          jmsSender.send(HokanModule.HokanEngine.getQueueName(), "EVENT", event, false);
+          if (event.getMessage().startsWith("!")) {
+            log.debug("Sending to engine: {}", message);
+            jmsSender.send(HokanModule.HokanEngine.getQueueName(), "EVENT", event, false);
+          } else {
+            log.debug("Not a command: {}", message);
+          }
         }
       } catch (Exception e) {
         log.error("error", e);
