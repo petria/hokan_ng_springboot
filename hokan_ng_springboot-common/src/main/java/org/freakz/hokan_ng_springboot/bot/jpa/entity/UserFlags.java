@@ -8,9 +8,9 @@ import java.io.Serializable;
  */
 public enum UserFlags implements Serializable {
 
-    UF_ACTIVATED,
-    UF_ADMIN,
-    UF_CHANNEL_OP,
-    UF_IGNORE_ON_CHANNEL
+    ACTIVATED,
+    ADMIN,
+    CHANNEL_OP,
+    IGNORE_ON_CHANNEL
 
 }
