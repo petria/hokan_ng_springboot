@@ -3,6 +3,7 @@ package org.freakz.hokan_ng_springboot.bot.service;
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.Channel;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.User;
+import org.freakz.hokan_ng_springboot.bot.jpa.entity.UserFlags;
 import org.freakz.hokan_ng_springboot.bot.jpa.service.UserService;
 import org.freakz.hokan_ng_springboot.bot.util.StringStuff;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +24,12 @@ public class AccessControlServiceImpl implements AccessControlService {
   public boolean isAdminUser(User isAdmin) {
     User user = userService.findById(isAdmin.getId());
     if (user == null) {
-      log.debug("PircBotUser not found: {}", isAdmin);
+      log.debug("User not found: {}", isAdmin);
       return false;
     }
     String flags = user.getFlags();
     if (flags == null) {
-      log.debug("PircBotUser {} flags null!", user);
+      log.debug("User {} flags null!", user);
       return false;
     }
     return flags.contains("A");
@@ -38,12 +39,12 @@ public class AccessControlServiceImpl implements AccessControlService {
   public boolean isChannelOp(User isChannelOp, Channel Channel) {
     User user = userService.findById(isChannelOp.getId());
     if (user == null) {
-      log.debug("PircBotUser not found: {}", isChannelOp);
+      log.debug("User not found: {}", isChannelOp);
       return false;
     }
     String flags = user.getFlags();
     if (flags == null) {
-      log.debug("PircBotUser {} flags null!", user);
+      log.debug("User {} flags null!", user);
       return false;
     }
     return flags.contains("C");
@@ -64,7 +65,7 @@ public class AccessControlServiceImpl implements AccessControlService {
   public boolean isLoggedIn(User isLoggedIn) {
     User user = userService.findById(isLoggedIn.getId());
     if (user == null) {
-      log.debug("PircBotUser not found: {}", isLoggedIn);
+      log.debug("User not found: {}", isLoggedIn);
       return false;
     }
     return user.isLoggedIn() > 0;
@@ -74,11 +75,11 @@ public class AccessControlServiceImpl implements AccessControlService {
   public User loginUser(User user2) {
     User user = userService.findById(user2.getId());
     if (user == null) {
-      log.debug("PircBotUser not found: {}", user2);
+      log.debug("User not found: {}", user2);
       return null;
     }
     user.setLoggedIn(1);
-    log.info("PircBotUser logged in: {}", user);
+    log.info("User logged in: {}", user);
     return userService.save(user);
   }
 
@@ -86,12 +87,23 @@ public class AccessControlServiceImpl implements AccessControlService {
   public User logoffUser(User user2) {
     User user = userService.findById(user2.getId());
     if (user == null) {
-      log.debug("PircBotUser not found: {}", user2);
+      log.debug("User not found: {}", user2);
       return null;
     }
     user.setLoggedIn(0);
-    log.info("PircBotUser logged off: {}", user);
+    log.info("User logged off: {}", user);
     return userService.save(user);
   }
 
+  @Override
+  public boolean hasUserFlag(User user2, UserFlags flag) {
+    User user = userService.findById(user2.getId());
+    if (user == null) {
+      log.debug("User not found: {}", user2);
+      return false;
+    }
+    String flags = user.getFlags();
+
+    return false;
+  }
 }

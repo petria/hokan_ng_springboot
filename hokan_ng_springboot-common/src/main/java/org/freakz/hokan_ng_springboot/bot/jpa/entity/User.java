@@ -29,7 +29,7 @@ public class User implements Serializable {
   @Column(name = "REAL_MASK")
   private String realMask;
 
-  @Column(name = "FLAGS")
+  @Column(name = "FLAGS", length = 1024, nullable = false)
   private String flags;
 
   @Column(name = "FULL_NAME")

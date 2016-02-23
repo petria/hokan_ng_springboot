@@ -521,6 +521,8 @@ public class HokanCore extends PircBot implements HokanCoreService {
         ignore = true;
       }
     }
+    ignore = accessControlService.hasUserFlag(user, UserFlags.UF_IGNORE_ON_CHANNEL);
+
     if (ignore) {
       log.debug("Ignoring: {}", user);
     } else {
