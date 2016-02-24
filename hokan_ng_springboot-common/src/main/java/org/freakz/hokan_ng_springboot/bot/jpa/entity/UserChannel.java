@@ -54,9 +54,17 @@ public class UserChannel implements Serializable {
   @Column(name = "LAST_COMMAND_TIME")
   private Date lastCommandTime;
 
+
   public UserChannel() {
+    this.joinComment = "";
+    this.channelOp = 0;
     this.lastJoin = new Date();
     this.lastPart = new Date();
+    this.lastPartMessage = "";
+    this.lastMessage = "";
+    this.lastMessageTime = new Date();
+    this.lastCommand = "";
+    this.lastCommandTime = new Date();
   }
 
   public UserChannel(User user, Channel channel) {

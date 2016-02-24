@@ -1,5 +1,7 @@
 package org.freakz.hokan_ng_springboot.bot.jpa.entity;
 
+import lombok.Getter;
+
 import java.io.Serializable;
 
 /**
@@ -8,9 +10,19 @@ import java.io.Serializable;
  */
 public enum UserFlags implements Serializable {
 
-    ACTIVATED,
-    ADMIN,
-    CHANNEL_OP,
-    IGNORE_ON_CHANNEL
+    ACTIVATED("AC", "User is activated"),
+    ADMIN("AD", "User is admin"),
+    IGNORE_ON_CHANNEL("IG", "User is ignored on public channels"),
+    WEB_LOGIN("WL", "User can login via web ui");
+
+    @Getter
+    private final String shortName;
+    @Getter
+    private final String description;
+
+    UserFlags(String shortName, String description) {
+        this.shortName = shortName;
+        this.description = description;
+    }
 
 }
