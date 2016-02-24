@@ -46,11 +46,11 @@ public class UserModCmd extends Cmd {
         .setShortFlag('e');
     registerParameter(flg);
 
-    flg = new FlaggedOption(ARG_FLAGS)
+/*    flg = new FlaggedOption(ARG_FLAGS)
         .setRequired(false)
         .setLongFlag("flags")
         .setShortFlag('f');
-    registerParameter(flg);
+    registerParameter(flg);*/
 
     flg = new FlaggedOption(ARG_FULL_NAME)
         .setRequired(false)
