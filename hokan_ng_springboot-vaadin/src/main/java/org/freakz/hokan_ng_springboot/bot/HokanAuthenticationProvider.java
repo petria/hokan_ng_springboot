@@ -2,8 +2,10 @@ package org.freakz.hokan_ng_springboot.bot;
 
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.User;
+import org.freakz.hokan_ng_springboot.bot.jpa.entity.UserFlags;
 import org.freakz.hokan_ng_springboot.bot.jpa.service.UserService;
 import org.freakz.hokan_ng_springboot.bot.model.Role;
+import org.freakz.hokan_ng_springboot.bot.service.AccessControlService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -28,6 +31,9 @@ import java.util.List;
 @Component
 @Slf4j
 public class HokanAuthenticationProvider implements AuthenticationProvider, UserDetailsService {
+
+  @Autowired
+  private AccessControlService accessControlService;
 
   @Autowired
   private UserService userService;
@@ -40,21 +46,22 @@ public class HokanAuthenticationProvider implements AuthenticationProvider, User
     List<User> userList = userService.findAll();
     for (User user : userList) {
       if (user.getNick().equalsIgnoreCase(username)) {
-        log.info("PircBotUser exists");
+        log.info("User exists");
         if (user.getPassword().equals(password)) {
-          log.info("PircBotUser authorized: {}", username);
+          log.info("User authorized: {}", username);
           Role r = new Role();
           r.setName("ROLE_USER");
           List<Role> roles = new ArrayList<Role>();
           roles.add(r);
-          if (user.getFlags().contains("A")) {
+          Set<UserFlags> flagsSet = UserFlags.getFlagSetFromUser(user);
+          if (flagsSet.contains(UserFlags.ADMIN)) {
             r = new Role();
             r.setName("ROLE_ADMIN");
             roles.add(r);
           }
           return new UsernamePasswordAuthenticationToken(user, password, roles);
         } else {
-          log.info("PircBotUser invalid password: {}", username);
+          log.info("Invalid password: {}", username);
         }
       }
     }
@@ -91,7 +98,8 @@ public class HokanAuthenticationProvider implements AuthenticationProvider, User
       r.setName("ROLE_USER");
       List<Role> roles = new ArrayList<Role>();
       roles.add(r);
-      if (user.getFlags().contains("A")) {
+      Set<UserFlags> flagsSet = UserFlags.getFlagSetFromUser(user);
+      if (flagsSet.contains(UserFlags.ADMIN)) {
         r = new Role();
         r.setName("ROLE_ADMIN");
         roles.add(r);

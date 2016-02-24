@@ -430,20 +430,13 @@ public class HokanCore extends PircBot implements HokanCoreService {
       handleBuiltInCommands(ircEvent);
     }
 
-    boolean ignore = false;
-    String flags = user.getFlags();
-    if (flags != null) {
-      if (flags.contains("I")) {
-        ignore = true;
-      }
-    }
+    boolean ignore = accessControlService.hasUserFlag(user, UserFlags.IGNORE_ON_CHANNEL);
     if (ignore) {
       log.debug("Ignoring: {}", user);
     } else {
       Channel channel = getChannel(ircEvent);
       UserChannel userChannel = getUserChannel(user, channel);
       String result = engineCommunicator.sendToEngine(ircEvent, userChannel);
-//      log.info(">>> sent to engine: {}", result);
     }
 
   }
@@ -512,22 +505,13 @@ public class HokanCore extends PircBot implements HokanCoreService {
     if (accessControlService.isAdminUser(user)) {
       handleBuiltInCommands(ircEvent);
     }
-
     this.channelService.save(ch);
-    boolean ignore = false;
-    String flags = user.getFlags();
-    if (flags != null) {
-      if (flags.contains("I")) {
-        ignore = true;
-      }
-    }
-    ignore = accessControlService.hasUserFlag(user, UserFlags.UF_IGNORE_ON_CHANNEL);
 
+    boolean ignore = accessControlService.hasUserFlag(user, UserFlags.IGNORE_ON_CHANNEL);
     if (ignore) {
       log.debug("Ignoring: {}", user);
     } else {
       String result = engineCommunicator.sendToEngine(ircEvent, userChannel);
-//      log.info(">>> sent to engine: {}", result);
     }
   }
 

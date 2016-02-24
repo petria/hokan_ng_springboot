@@ -2,6 +2,7 @@ package org.freakz.hokan_ng_springboot.bot.jpa.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 /**
  * PircBotUser: petria
@@ -97,6 +98,19 @@ public class User implements Serializable {
   public String getFlags() {
     return flags;
   }
+
+  public Set<UserFlags> getUserFlagsSet() {
+    return UserFlags.getFlagSetFromUser(this);
+  }
+
+  public String getFlagsString() {
+    String flagsString = "";
+    for (UserFlags userFlags : getUserFlagsSet()) {
+      flagsString += userFlags.getShortName() + " ";
+    }
+    return flagsString;
+  }
+
 
   public void setFlags(String flags) {
     this.flags = flags;

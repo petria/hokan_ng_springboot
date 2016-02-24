@@ -27,12 +27,7 @@ public class AccessControlServiceImpl implements AccessControlService {
       log.debug("User not found: {}", isAdmin);
       return false;
     }
-    String flags = user.getFlags();
-    if (flags == null) {
-      log.debug("User {} flags null!", user);
-      return false;
-    }
-    return flags.contains("A");
+    return user.getUserFlagsSet().contains(UserFlags.ADMIN);
   }
 
   @Override
@@ -102,8 +97,7 @@ public class AccessControlServiceImpl implements AccessControlService {
       log.debug("User not found: {}", user2);
       return false;
     }
-    String flags = user.getFlags();
-
-    return false;
+    return user.getUserFlagsSet().contains(flag);
   }
+
 }

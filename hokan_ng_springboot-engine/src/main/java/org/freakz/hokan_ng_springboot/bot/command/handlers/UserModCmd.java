@@ -119,11 +119,11 @@ public class UserModCmd extends Cmd {
       hUser.setEmail(email);
       ret += "Email    : '" + old + "' -> '" + email + "'\n";
     }
-    if (flags != null) {
+/*   TODO  if (flags != null) {
       String old = hUser.getFlags();
       hUser.setFlags(flags);
       ret += "Flags    : '" + old + "' -> '" + flags + "'\n";
-    }
+    }*/
     if (fullName != null) {
       String old = hUser.getFullName();
       hUser.setFullName(fullName);
