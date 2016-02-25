@@ -430,7 +430,7 @@ public class HokanCore extends PircBot implements HokanCoreService {
       handleBuiltInCommands(ircEvent);
     }
 
-    boolean ignore = accessControlService.hasUserFlag(user, UserFlags.IGNORE_ON_CHANNEL);
+    boolean ignore = accessControlService.hasUserFlag(user, UserFlag.IGNORE_ON_CHANNEL);
     if (ignore) {
       log.debug("Ignoring: {}", user);
     } else {
@@ -507,7 +507,7 @@ public class HokanCore extends PircBot implements HokanCoreService {
     }
     this.channelService.save(ch);
 
-    boolean ignore = accessControlService.hasUserFlag(user, UserFlags.IGNORE_ON_CHANNEL);
+    boolean ignore = accessControlService.hasUserFlag(user, UserFlag.IGNORE_ON_CHANNEL);
     if (ignore) {
       log.debug("Ignoring: {}", user);
     } else {

@@ -2,7 +2,7 @@ package org.freakz.hokan_ng_springboot.bot;
 
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.User;
-import org.freakz.hokan_ng_springboot.bot.jpa.entity.UserFlags;
+import org.freakz.hokan_ng_springboot.bot.jpa.entity.UserFlag;
 import org.freakz.hokan_ng_springboot.bot.jpa.service.UserService;
 import org.freakz.hokan_ng_springboot.bot.model.Role;
 import org.freakz.hokan_ng_springboot.bot.service.AccessControlService;
@@ -53,8 +53,8 @@ public class HokanAuthenticationProvider implements AuthenticationProvider, User
           r.setName("ROLE_USER");
           List<Role> roles = new ArrayList<Role>();
           roles.add(r);
-          Set<UserFlags> flagsSet = UserFlags.getFlagSetFromUser(user);
-          if (flagsSet.contains(UserFlags.ADMIN)) {
+          Set<UserFlag> flagsSet = UserFlag.getFlagSetFromUser(user);
+          if (flagsSet.contains(UserFlag.ADMIN)) {
             r = new Role();
             r.setName("ROLE_ADMIN");
             roles.add(r);
@@ -98,8 +98,8 @@ public class HokanAuthenticationProvider implements AuthenticationProvider, User
       r.setName("ROLE_USER");
       List<Role> roles = new ArrayList<Role>();
       roles.add(r);
-      Set<UserFlags> flagsSet = UserFlags.getFlagSetFromUser(user);
-      if (flagsSet.contains(UserFlags.ADMIN)) {
+      Set<UserFlag> flagsSet = UserFlag.getFlagSetFromUser(user);
+      if (flagsSet.contains(UserFlag.ADMIN)) {
         r = new Role();
         r.setName("ROLE_ADMIN");
         roles.add(r);

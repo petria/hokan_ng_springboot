@@ -9,7 +9,7 @@ import org.freakz.hokan_ng_springboot.bot.service.lunch.requesthandlers.Herkkupi
 import org.joda.time.DateTime;
 import org.junit.Test;
 
-import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by Petri Airio on 25.1.2016.

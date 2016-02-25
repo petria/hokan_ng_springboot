@@ -99,14 +99,14 @@ public class User implements Serializable {
     return flags;
   }
 
-  public Set<UserFlags> getUserFlagsSet() {
-    return UserFlags.getFlagSetFromUser(this);
+  public Set<UserFlag> getUserFlagsSet() {
+    return UserFlag.getFlagSetFromUser(this);
   }
 
   public String getFlagsString() {
     String flagsString = "";
-    for (UserFlags userFlags : getUserFlagsSet()) {
-      flagsString += userFlags.getShortName() + " ";
+    for (UserFlag userFlag : getUserFlagsSet()) {
+      flagsString += userFlag.getShortName() + " ";
     }
     return flagsString;
   }

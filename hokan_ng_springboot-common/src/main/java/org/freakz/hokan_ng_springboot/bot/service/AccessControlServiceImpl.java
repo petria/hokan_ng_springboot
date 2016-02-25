@@ -3,7 +3,7 @@ package org.freakz.hokan_ng_springboot.bot.service;
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.Channel;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.User;
-import org.freakz.hokan_ng_springboot.bot.jpa.entity.UserFlags;
+import org.freakz.hokan_ng_springboot.bot.jpa.entity.UserFlag;
 import org.freakz.hokan_ng_springboot.bot.jpa.service.UserService;
 import org.freakz.hokan_ng_springboot.bot.util.StringStuff;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ public class AccessControlServiceImpl implements AccessControlService {
       log.debug("User not found: {}", isAdmin);
       return false;
     }
-    return user.getUserFlagsSet().contains(UserFlags.ADMIN);
+    return user.getUserFlagsSet().contains(UserFlag.ADMIN);
   }
 
   @Override
@@ -91,7 +91,7 @@ public class AccessControlServiceImpl implements AccessControlService {
   }
 
   @Override
-  public boolean hasUserFlag(User user2, UserFlags flag) {
+  public boolean hasUserFlag(User user2, UserFlag flag) {
     User user = userService.findById(user2.getId());
     if (user == null) {
       log.debug("User not found: {}", user2);
