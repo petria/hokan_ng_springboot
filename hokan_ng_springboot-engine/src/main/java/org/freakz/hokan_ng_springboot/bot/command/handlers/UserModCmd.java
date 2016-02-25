@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.*;
 
 /**
- * PircBotUser: petria
+ * User: petria
  * Date: 12/18/13
  * Time: 11:15 AM
  *
@@ -101,13 +101,13 @@ public class UserModCmd extends Cmd {
       if (accessControlService.isAdminUser(request.getUser())) {
         hUser = userService.findFirstByNick(target);
       } else {
-        response.addResponse("Only MasterUsers can modify others data!");
+        response.addResponse("Only Admins can modify others data!");
         return;
       }
     }
 
     if (hUser == null) {
-      response.addResponse("No PircBotUser found with: " + target);
+      response.addResponse("No User found with: " + target);
       return;
     }
     UserChannel userChannel = userChannelService.getUserChannel(hUser, request.getChannel());

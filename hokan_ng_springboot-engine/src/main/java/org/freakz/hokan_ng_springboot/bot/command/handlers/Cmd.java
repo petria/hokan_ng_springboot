@@ -38,6 +38,13 @@ import java.util.*;
 @Slf4j
 public abstract class Cmd implements HokanCommand, CommandRunnable {
 
+  static class JSAPWrap extends JSAP {
+    public JSAPWrap() {
+      setHelp("Help not set!");
+    }
+  }
+
+
   @Autowired
   private JmsSender jmsSender;
 
@@ -45,7 +52,7 @@ public abstract class Cmd implements HokanCommand, CommandRunnable {
   protected ApplicationContext context;
 
 
-  protected JSAP jsap;
+  protected JSAP jsap = new JSAPWrap();
 
   protected boolean channelOpOnly;
   protected boolean loggedInOnly;
@@ -116,8 +123,6 @@ public abstract class Cmd implements HokanCommand, CommandRunnable {
   protected UserChannelService userChannelService;
 
   public Cmd() {
-    jsap = new JSAP();
-    jsap.setHelp("Help not set!");
   }
 
   protected void registerParameter(Parameter parameter) {
