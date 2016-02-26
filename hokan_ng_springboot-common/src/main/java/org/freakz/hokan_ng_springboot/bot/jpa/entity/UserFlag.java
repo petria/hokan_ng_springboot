@@ -66,6 +66,9 @@ public enum UserFlag implements Serializable {
       if (s.equals(flag.name())) {
         return flag;
       }
+      if (flag.name().toLowerCase().startsWith(s.toLowerCase())) {
+        return flag;
+      }
     }
     return null;
   }

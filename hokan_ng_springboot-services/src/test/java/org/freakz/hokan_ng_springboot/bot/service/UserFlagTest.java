@@ -17,4 +17,19 @@ public class UserFlagTest {
     Assert.assertEquals(UserFlag.ADMIN, userFlag);
   }
 
+  @Test
+  public void testFromExactShortStringToUserFlag() {
+    String str = "WL";
+    UserFlag userFlag = UserFlag.getUserFlagFromString(str);
+    Assert.assertEquals(UserFlag.WEB_LOGIN, userFlag);
+  }
+
+  @Test
+  public void testFromShortAbbreviationStringToUserFlag() {
+    String str = "igNoR";
+    UserFlag userFlag = UserFlag.getUserFlagFromString(str);
+    Assert.assertEquals(UserFlag.IGNORE_ON_CHANNEL, userFlag);
+  }
+
+
 }

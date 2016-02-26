@@ -29,7 +29,7 @@ import java.lang.annotation.Annotation;
 import java.util.*;
 
 /**
- * PircBotUser: petria
+ * User: petria
  * Date: 11/6/13
  * Time: 4:02 PM
  *
@@ -39,8 +39,17 @@ import java.util.*;
 public abstract class Cmd implements HokanCommand, CommandRunnable {
 
   static class JSAPWrap extends JSAP {
+
+    private String helpUrl;
+
     public JSAPWrap() {
       setHelp("Help not set!");
+    }
+
+    @Override
+    public String getHelp() {
+      String superHelp = super.getHelp();
+      return superHelp;
     }
   }
 
