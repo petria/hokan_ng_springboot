@@ -29,7 +29,7 @@ public enum UserFlag implements Serializable {
 
   public static Set<UserFlag> getFlagSetFromString(String flagsString) {
     Set<UserFlag> flagsSet = new HashSet<>();
-    if (flagsString == null || flagsSet.size() == 0) {
+    if (flagsString == null || flagsString.length() == 0) {
       return flagsSet;
     }
     for (UserFlag flag : values()) {
@@ -48,11 +48,20 @@ public enum UserFlag implements Serializable {
     String setString = "";
     for (UserFlag flag : values()) {
       if (set.contains(flag)) {
-        setString += flag.getShortName() + " ";
+        setString += String.format("%s:%s ", flag.getShortName(), flag.name());
       }
     }
     return setString.trim();
   }
+
+  public static String getStringFromAllUserFlags() {
+    String setString = "";
+    for (UserFlag flag : values()) {
+      setString += String.format("%s:%s ", flag.getShortName(), flag.name());
+    }
+    return setString.trim();
+  }
+
 
   public static String getStringFromFlagSet(User user) {
     return getStringFromFlagSet(getFlagSetFromUser(user));
@@ -72,5 +81,6 @@ public enum UserFlag implements Serializable {
     }
     return null;
   }
+
 
 }

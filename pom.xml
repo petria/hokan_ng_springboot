@@ -65,8 +65,8 @@
         <module>hokan_ng_springboot-engine</module>
         <module>hokan_ng_springboot-io</module>
         <module>hokan_ng_springboot-services</module>
-        <module>hokan_ng_springboot-vaadin</module>
-<!--        <module>hokan_ng_springboot-wicket</module> -->
+        <!--        <module>hokan_ng_springboot-vaadin</module>
+                <module>hokan_ng_springboot-wicket</module> -->
     </modules>
 
     <dependencies>

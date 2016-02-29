@@ -9,6 +9,7 @@ import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.User;
+import org.freakz.hokan_ng_springboot.bot.jpa.entity.UserFlag;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -25,27 +26,32 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_NICK;
 @HelpGroups(
     helpGroups = {HelpGroup.ACCESS_CONTROL, HelpGroup.USERS}
 )
-public class UserFlagsSetCmd extends Cmd {
+public class UserFlagSetCmd extends Cmd {
 
-  public UserFlagsSetCmd() {
+  public UserFlagSetCmd() {
 
     setHelp("Modifies user flags.");
 
-    UnflaggedOption opt = new UnflaggedOption(ARG_NICK)
-        .setRequired(true)
-        .setGreedy(false);
-    registerParameter(opt);
-
-    opt = new UnflaggedOption(ARG_FLAGS)
+    UnflaggedOption unflaggedOption = new UnflaggedOption(ARG_NICK)
         .setRequired(false)
         .setGreedy(false);
-    registerParameter(opt);
+    registerParameter(unflaggedOption);
+
+    unflaggedOption = new UnflaggedOption(ARG_FLAGS)
+        .setRequired(false)
+        .setGreedy(false);
+    registerParameter(unflaggedOption);
 
   }
 
   @Override
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    String target = results.getString(ARG_NICK, "me");
+    String target = results.getString(ARG_NICK, null);
+    if (target == null) {
+      response.addResponse("UserFlags: %s", UserFlag.getStringFromAllUserFlags());
+      return;
+    }
+
     User user;
     if (target.equals("me")) {
       user = request.getUser();
@@ -64,7 +70,7 @@ public class UserFlagsSetCmd extends Cmd {
 
     String flagsStr = results.getString(ARG_FLAGS, null);
     if (flagsStr == null) {
-
+      response.addResponse("%s UserFlags: %s", user.getNick(), UserFlag.getStringFromFlagSet(user));
     }
   }
 

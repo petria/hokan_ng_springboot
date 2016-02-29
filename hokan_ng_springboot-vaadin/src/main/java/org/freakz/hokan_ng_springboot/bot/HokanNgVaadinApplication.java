@@ -57,7 +57,7 @@ import java.util.Map;
 @ComponentScan
 public class HokanNgVaadinApplication {
 
-    private static String JMS_BROKER_URL = "tcp://localhost:61616";
+/*    private static String JMS_BROKER_URL = "tcp://localhost:61616";
 
     @Bean
     public ConnectionFactory connectionFactory() {
@@ -141,4 +141,5 @@ public class HokanNgVaadinApplication {
             return new VaadinUrlAuthenticationSuccessHandler(httpService, vaadinRedirectStrategy, "/");
         }
     }
+*/
 }
