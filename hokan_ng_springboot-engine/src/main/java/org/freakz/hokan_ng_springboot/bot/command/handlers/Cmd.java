@@ -115,7 +115,7 @@ public abstract class Cmd implements HokanCommand, CommandRunnable {
   protected boolean isAdminUser;
   protected boolean isToBot;
 
-  private String helpUrl;
+  private String helpWikiUrl;
 
   public Cmd() {
   }
@@ -250,8 +250,8 @@ public abstract class Cmd implements HokanCommand, CommandRunnable {
     return new HelpGroup[0];
   }
 
-  public void setHelpUrl(String url) {
-    this.helpUrl = url;
+  public void setHelpWikiUrl(String url) {
+    this.helpWikiUrl = url;
   }
 
   public void handleLine(InternalRequest request, EngineResponse response) {
@@ -277,9 +277,9 @@ public abstract class Cmd implements HokanCommand, CommandRunnable {
       sb.append("Help     : ");
       sb.append(help);
       sb.append("\n");
-      if (getHelpUrl() != null && getHelpUrl().length() > 0) {
+      if (getHelpWikiUrl() != null && getHelpWikiUrl().length() > 0) {
         sb.append("Wiki URL : ");
-        sb.append(getHelpUrl());
+        sb.append(getHelpWikiUrl());
         sb.append("\n");
       }
       sb.append(buildSeeAlso(this));
@@ -317,8 +317,8 @@ public abstract class Cmd implements HokanCommand, CommandRunnable {
     }
   }
 
-  public String getHelpUrl() {
-    return this.helpUrl;
+  public String getHelpWikiUrl() {
+    return this.helpWikiUrl;
   }
 
   @Override
