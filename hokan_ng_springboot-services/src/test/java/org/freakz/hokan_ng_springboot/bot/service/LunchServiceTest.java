@@ -6,6 +6,7 @@ import org.freakz.hokan_ng_springboot.bot.service.lunch.LunchRequestHandler;
 import org.freakz.hokan_ng_springboot.bot.service.lunch.requesthandlers.HarmooniLunchPlaceHandler;
 import org.freakz.hokan_ng_springboot.bot.service.lunch.requesthandlers.HelsinkiTerminaali2RequestHandler;
 import org.freakz.hokan_ng_springboot.bot.service.lunch.requesthandlers.HerkkupisteLunchPlaceHandler;
+import org.freakz.hokan_ng_springboot.bot.service.lunch.requesthandlers.QulkuriLunchPlaceHandler;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
@@ -40,6 +41,14 @@ public class LunchServiceTest {
     LunchData response = new LunchData();
     lunchRequestHandler.handleLunchPlace(LunchPlace.LOUNAS_INFO_HERKKUPISTE, response, DateTime.now());
     assertEquals(LunchPlace.LOUNAS_INFO_HERKKUPISTE, response.getLunchPlace());
+  }
+
+  @Test
+  public void testQulkuri() {
+    LunchRequestHandler lunchRequestHandler = new QulkuriLunchPlaceHandler();
+    LunchData response = new LunchData();
+    lunchRequestHandler.handleLunchPlace(LunchPlace.LOUNAS_INFO_QULKURI, response, DateTime.now());
+    assertEquals(LunchPlace.LOUNAS_INFO_QULKURI, response.getLunchPlace());
   }
 
 }

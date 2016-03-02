@@ -123,6 +123,11 @@ public class HelpCmd extends Cmd {
         sb.append("Help     : ");
         sb.append(help);
         sb.append("\n");
+        if (cmd.getHelpUrl() != null && cmd.getHelpUrl().length() > 0) {
+          sb.append("Wiki URL : ");
+          sb.append(cmd.getHelpUrl());
+          sb.append("\n");
+        }
         sb.append(buildSeeAlso(cmd));
 //        sb.append("\n");
 

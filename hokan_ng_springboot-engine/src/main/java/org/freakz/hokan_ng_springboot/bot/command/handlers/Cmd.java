@@ -38,45 +38,6 @@ import java.util.*;
 @Slf4j
 public abstract class Cmd implements HokanCommand, CommandRunnable {
 
-  static class JSAPWrap extends JSAP {
-
-    private String helpUrl;
-
-    public JSAPWrap() {
-      setHelp("Help not set!");
-    }
-
-    @Override
-    public String getHelp() {
-      String superHelp = super.getHelp();
-      return superHelp;
-    }
-  }
-
-
-  @Autowired
-  private JmsSender jmsSender;
-
-  @Autowired
-  protected ApplicationContext context;
-
-
-  protected JSAP jsap = new JSAPWrap();
-
-  protected boolean channelOpOnly;
-  protected boolean loggedInOnly;
-  protected boolean channelOnly;
-  protected boolean privateOnly;
-  protected boolean adminUserOnly;
-  protected boolean toBotOnly;
-
-  protected boolean isChannelOp;
-  protected boolean isLoggedIn;
-  protected boolean isPublic;
-  protected boolean isPrivate;
-  protected boolean isAdminUser;
-  protected boolean isToBot;
-
   @Autowired
   protected AccessControlService accessControlService;
 
@@ -117,7 +78,7 @@ public abstract class Cmd implements HokanCommand, CommandRunnable {
   protected SearchReplaceService searchReplaceService;
 
   @Autowired
-  protected  HokanStatusService statusService;
+  protected HokanStatusService statusService;
 
   @Autowired
   protected StatsService statsService;
@@ -130,6 +91,31 @@ public abstract class Cmd implements HokanCommand, CommandRunnable {
 
   @Autowired
   protected UserChannelService userChannelService;
+
+  @Autowired
+  private JmsSender jmsSender;
+
+  @Autowired
+  protected ApplicationContext context;
+
+
+  protected JSAP jsap = new JSAP();
+
+  protected boolean channelOpOnly;
+  protected boolean loggedInOnly;
+  protected boolean channelOnly;
+  protected boolean privateOnly;
+  protected boolean adminUserOnly;
+  protected boolean toBotOnly;
+
+  protected boolean isChannelOp;
+  protected boolean isLoggedIn;
+  protected boolean isPublic;
+  protected boolean isPrivate;
+  protected boolean isAdminUser;
+  protected boolean isToBot;
+
+  private String helpUrl;
 
   public Cmd() {
   }
@@ -192,7 +178,7 @@ public abstract class Cmd implements HokanCommand, CommandRunnable {
     if (channelId.equals("<current>")) {
       return request.getChannel();
     }
-    Channel theChannel = request.getChannel();
+    Channel theChannel;
 
     long id;
     try {
@@ -264,6 +250,10 @@ public abstract class Cmd implements HokanCommand, CommandRunnable {
     return new HelpGroup[0];
   }
 
+  public void setHelpUrl(String url) {
+    this.helpUrl = url;
+  }
+
   public void handleLine(InternalRequest request, EngineResponse response) {
     IrcMessageEvent ircEvent = request.getIrcEvent();
     CommandArgs args = new CommandArgs(ircEvent.getMessage());
@@ -271,7 +261,30 @@ public abstract class Cmd implements HokanCommand, CommandRunnable {
     response.setCommandClass(this.getClass().toString());
 
     if (args.hasArgs() && args.getArgs().equals("?")) {
-      response.setResponseMessage("Usage: !" + getName().toLowerCase() + " " + jsap.getUsage() + "\n" + "Help: " + jsap.getHelp() + buildSeeAlso(this));
+      StringBuilder sb = new StringBuilder();
+      String usage = "!" + this.getName().toLowerCase() + " " + this.jsap.getUsage();
+      String help = this.jsap.getHelp();
+      sb.append("Usage    : ");
+      sb.append(usage);
+      sb.append("\n");
+      String example = this.getExample();
+      if (example != null) {
+        sb.append("Example  : ");
+        sb.append(example);
+        sb.append("\n");
+
+      }
+      sb.append("Help     : ");
+      sb.append(help);
+      sb.append("\n");
+      if (getHelpUrl() != null && getHelpUrl().length() > 0) {
+        sb.append("Wiki URL : ");
+        sb.append(getHelpUrl());
+        sb.append("\n");
+      }
+      sb.append(buildSeeAlso(this));
+
+      response.setResponseMessage(sb.toString());
       sendReply(response);
     } else {
 
@@ -302,6 +315,10 @@ public abstract class Cmd implements HokanCommand, CommandRunnable {
         }
       }
     }
+  }
+
+  public String getHelpUrl() {
+    return this.helpUrl;
   }
 
   @Override

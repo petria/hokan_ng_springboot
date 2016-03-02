@@ -31,6 +31,7 @@ public class UserFlagSetCmd extends Cmd {
   public UserFlagSetCmd() {
 
     setHelp("Modifies user flags.");
+    setHelpUrl("https://github.com/petria/hokan_ng_springboot/wiki/UserFlags");
 
     UnflaggedOption unflaggedOption = new UnflaggedOption(ARG_NICK)
         .setRequired(false)
