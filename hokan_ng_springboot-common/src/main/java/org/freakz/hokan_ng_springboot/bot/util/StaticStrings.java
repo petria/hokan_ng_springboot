@@ -9,6 +9,7 @@ package org.freakz.hokan_ng_springboot.bot.util;
  */
 public class StaticStrings {
 
+  public static final String ARG_ADD_OR_DEL = "AddOrDel";
   public static final String ARG_ALIAS = "Alias";
   public static final String ARG_AMOUNT = "Amount";
   public static final String ARG_CHANNEL = "Channel";
