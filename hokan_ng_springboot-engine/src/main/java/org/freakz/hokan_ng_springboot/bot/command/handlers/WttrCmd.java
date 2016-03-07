@@ -55,8 +55,7 @@ public class WttrCmd extends Cmd {
       });
       doc = Jsoup.connect(url).timeout(0).userAgent(StaticStrings.HTTP_USER_AGENT).get();
     } catch (IOException e) {
-      log.error("Could not fetch lunch from {}", url, e);
-      response.addResponse("Could not fetch lunch from %s", url);
+      response.addResponse("Could not fetch data from %s", url);
       return;
     }
     Elements elements = doc.getElementsByTag("pre");
