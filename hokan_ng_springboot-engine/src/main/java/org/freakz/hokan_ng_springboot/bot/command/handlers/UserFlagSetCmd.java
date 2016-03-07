@@ -13,8 +13,7 @@ import org.freakz.hokan_ng_springboot.bot.jpa.entity.UserFlag;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_FLAGS;
-import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_NICK;
+import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.*;
 
 /**
  * Created by Petri Airio on 24.2.2016.
@@ -39,6 +38,11 @@ public class UserFlagSetCmd extends Cmd {
     registerParameter(unflaggedOption);
 
     unflaggedOption = new UnflaggedOption(ARG_FLAGS)
+        .setRequired(false)
+        .setGreedy(false);
+    registerParameter(unflaggedOption);
+
+    unflaggedOption = new UnflaggedOption(ARG_ADD_OR_DEL)
         .setRequired(false)
         .setGreedy(false);
     registerParameter(unflaggedOption);
@@ -72,6 +76,17 @@ public class UserFlagSetCmd extends Cmd {
     String flagsStr = results.getString(ARG_FLAGS, null);
     if (flagsStr == null) {
       response.addResponse("%s UserFlags: %s", user.getNick(), UserFlag.getStringFromFlagSet(user));
+      return;
+    }
+
+    if (flagsStr.startsWith("+")) {
+      response.addResponse("fuffu +");
+
+    } else if (flagsStr.startsWith("-")) {
+      response.addResponse("fufuffu -");
+
+    } else {
+      response.addResponse("'%s' flag string must start with - or +", flagsStr);
     }
   }
 

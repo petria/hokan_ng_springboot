@@ -4,6 +4,8 @@ import com.martiansoftware.jsap.FlaggedOption;
 import com.martiansoftware.jsap.JSAP;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.UnflaggedOption;
+import org.freakz.hokan_ng_springboot.bot.command.HelpGroup;
+import org.freakz.hokan_ng_springboot.bot.command.annotation.HelpGroups;
 import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.events.ServiceRequestType;
@@ -29,6 +31,9 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_PLACE;
  */
 @Component
 @Scope("prototype")
+@HelpGroups(
+    helpGroups = {HelpGroup.DATA_FETCHERS}
+)
 public class WeatherCmd extends Cmd {
 
   public WeatherCmd() {
