@@ -52,8 +52,9 @@ public class IMDBInfoCmd extends Cmd {
       String rate = omdb.getImdbRating();
       String votes = omdb.getImdbVotes();
       String director = omdb.getDirector();
-      response.addResponse("[%s] \"%s\", director %s, year %s, %s, rate %s (%s votes), plot: \"%s\"\n",
-          omdb.getType(), omdb.getTitle(), director, omdb.getYear(), runtime, rate, votes, omdb.getPlot());
+      String imdbUrl = "http://www.imdb.com/title/" + omdb.getImdbID();
+      response.addResponse("[%s] \"%s\", director %s, year %s, %s, rate %s (%s votes), plot: \"%s\" -> %s\n",
+          omdb.getType(), omdb.getTitle(), director, omdb.getYear(), runtime, rate, votes, omdb.getPlot(), imdbUrl);
     } else {
       response.addResponse("Nothing found with: %s", text);
     }
