@@ -3,10 +3,7 @@ package org.freakz.hokan_ng_springboot.bot.service;
 import org.freakz.hokan_ng_springboot.bot.enums.LunchPlace;
 import org.freakz.hokan_ng_springboot.bot.models.LunchData;
 import org.freakz.hokan_ng_springboot.bot.service.lunch.LunchRequestHandler;
-import org.freakz.hokan_ng_springboot.bot.service.lunch.requesthandlers.HarmooniLunchPlaceHandler;
-import org.freakz.hokan_ng_springboot.bot.service.lunch.requesthandlers.HelsinkiTerminaali2RequestHandler;
-import org.freakz.hokan_ng_springboot.bot.service.lunch.requesthandlers.HerkkupisteLunchPlaceHandler;
-import org.freakz.hokan_ng_springboot.bot.service.lunch.requesthandlers.QulkuriLunchPlaceHandler;
+import org.freakz.hokan_ng_springboot.bot.service.lunch.requesthandlers.*;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
@@ -49,6 +46,14 @@ public class LunchServiceTest {
     LunchData response = new LunchData();
     lunchRequestHandler.handleLunchPlace(LunchPlace.LOUNAS_INFO_QULKURI, response, DateTime.now());
     assertEquals(LunchPlace.LOUNAS_INFO_QULKURI, response.getLunchPlace());
+  }
+
+  @Test
+  public void testEnergiaKeidas() {
+    LunchRequestHandler lunchRequestHandler = new EnergiaKeidasLunchPlaceHandler();
+    LunchData response = new LunchData();
+    lunchRequestHandler.handleLunchPlace(LunchPlace.LOUNAS_INFO_ENERGIA_KEIDAS, response, DateTime.now());
+    assertEquals(LunchPlace.LOUNAS_INFO_ENERGIA_KEIDAS, response.getLunchPlace());
   }
 
 }
