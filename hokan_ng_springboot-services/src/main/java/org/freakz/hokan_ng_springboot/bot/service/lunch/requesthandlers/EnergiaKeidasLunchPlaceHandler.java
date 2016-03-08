@@ -35,14 +35,14 @@ public class EnergiaKeidasLunchPlaceHandler implements LunchRequestHandler {
   public EnergiaKeidasLunchPlaceHandler() {
   }
 
-  private String readPDFMenu(String pdfUrl) {
+  private String readMenu(String menuUrl) {
     Parser parser = new AutoDetectParser();
     Metadata metadata = new Metadata();
     ParseContext context = new ParseContext();
     BodyContentHandler handler = new BodyContentHandler(1000000);
     InputStream is;
     try {
-      URL oracle = new URL(pdfUrl);
+      URL oracle = new URL(menuUrl);
       is = oracle.openStream();
       parser.parse(is, handler, metadata, context);
       is.close();
@@ -65,7 +65,7 @@ public class EnergiaKeidasLunchPlaceHandler implements LunchRequestHandler {
   @LunchPlaceHandler(LunchPlace = LunchPlace.LOUNAS_INFO_ENERGIA_KEIDAS)
   public void handleLunchPlace(LunchPlace lunchPlaceRequest, LunchData response, DateTime day) {
     response.setLunchPlace(lunchPlaceRequest);
-    String menuText = readPDFMenu(lunchPlaceRequest.getUrl());
+    String menuText = readMenu(lunchPlaceRequest.getUrl());
     parseMenu(menuText, response);
   }
 
