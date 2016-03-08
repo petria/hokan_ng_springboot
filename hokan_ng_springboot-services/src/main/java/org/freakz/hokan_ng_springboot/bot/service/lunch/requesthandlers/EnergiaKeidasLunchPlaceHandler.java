@@ -66,7 +66,9 @@ public class EnergiaKeidasLunchPlaceHandler implements LunchRequestHandler {
   public void handleLunchPlace(LunchPlace lunchPlaceRequest, LunchData response, DateTime day) {
     response.setLunchPlace(lunchPlaceRequest);
     String menuText = readMenu(lunchPlaceRequest.getUrl());
-    parseMenu(menuText, response);
+    if (menuText != null) {
+      parseMenu(menuText, response);
+    }
   }
 
   private void parseMenu(String menuText, LunchData response) {
