@@ -16,12 +16,11 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class SystemScriptRunnerServiceImpl implements SystemScriptRunnerService {
 
-  public SystemScriptRunnerServiceImpl() {
-  }
+  private HostOsDetector osDetector = new HostOsDetector();
 
   @Override
   public String[] runScript(SystemScript systemScript, String... args) {
-    HostOS hostOs = new HostOsDetector().detectHostOs();
+    HostOS hostOs = osDetector.detectHostOs();
     return runScript(systemScript, hostOs, args);
   }
 
@@ -41,7 +40,7 @@ public class SystemScriptRunnerServiceImpl implements SystemScriptRunnerService 
 
   @Override
   public SystemScriptResult runAndGetResult(SystemScript systemScript, String... args) {
-    HostOS hostOs = new HostOsDetector().detectHostOs();
+    HostOS hostOs = osDetector.detectHostOs();
     String[] output = runScript(systemScript, hostOs, args);
     SystemScriptResult systemScriptResult = new SystemScriptResult();
     systemScriptResult.setOriginalOutput(output);

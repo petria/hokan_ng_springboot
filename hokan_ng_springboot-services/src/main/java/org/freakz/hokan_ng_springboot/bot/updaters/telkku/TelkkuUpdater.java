@@ -3,14 +3,18 @@ package org.freakz.hokan_ng_springboot.bot.updaters.telkku;
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.cmdpool.CommandPool;
 import org.freakz.hokan_ng_springboot.bot.cmdpool.CommandRunnable;
+import org.freakz.hokan_ng_springboot.bot.enums.HostOS;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
+import org.freakz.hokan_ng_springboot.bot.exception.HokanHostOsNotSupportedException;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.PropertyName;
 import org.freakz.hokan_ng_springboot.bot.jpa.service.PropertyService;
 import org.freakz.hokan_ng_springboot.bot.models.TelkkuData;
 import org.freakz.hokan_ng_springboot.bot.models.TelkkuProgram;
+import org.freakz.hokan_ng_springboot.bot.models.UpdaterStatus;
 import org.freakz.hokan_ng_springboot.bot.updaters.Updater;
 import org.freakz.hokan_ng_springboot.bot.util.CmdExecutor;
 import org.freakz.hokan_ng_springboot.bot.util.FileUtil;
+import org.freakz.hokan_ng_springboot.bot.util.HostOsDetector;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
@@ -66,6 +70,8 @@ public class TelkkuUpdater extends Updater {
   private List<TelkkuProgram> programList;
 
   private List<String> channelNames;
+
+  private HostOsDetector osDetector = new HostOsDetector();
 
   public TelkkuUpdater() {
   }
@@ -175,16 +181,26 @@ public class TelkkuUpdater extends Updater {
 
   @Override
   public Calendar calculateNextUpdate() {
+    if (status == UpdaterStatus.HOST_OS_NOT_SUPPORTED) {
+
+    }
+
+
     Calendar cal = new GregorianCalendar();
     cal.add(Calendar.HOUR_OF_DAY, 4);
     return cal;
   }
+
 
   @Override
   public void doUpdateData() throws Exception {
     if (getUpdateCount() == 0) {
       loadFetchFile(OLD_FETCH_FILE);
     }
+    if (osDetector.detectHostOs() == HostOS.WINDOWS) {
+      throw new HokanHostOsNotSupportedException("Telkku updater not supported on Windows");
+    }
+
     String fileName = runTvGrab();
     log.info("Tv data file: {}", fileName);
 

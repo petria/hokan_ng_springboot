@@ -123,6 +123,9 @@ public class UpdateManagerServiceImpl implements UpdaterManagerService, CommandR
     while (doRun) {
 //      log.info("ping");
       for (DataUpdater updater : getUpdaterList()) {
+        if (updater.getStatus() == UpdaterStatus.HOST_OS_NOT_SUPPORTED) {
+          continue;
+        }
         Calendar now = new GregorianCalendar();
         Calendar next = updater.getNextUpdateTime();
         if (firstRun || now.after(next)) {
