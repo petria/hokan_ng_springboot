@@ -1,7 +1,9 @@
 package org.freakz.hokan_ng_springboot.bot.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.freakz.hokan_ng_springboot.bot.enums.HostOS;
 import org.freakz.hokan_ng_springboot.bot.models.SystemScriptResult;
+import org.freakz.hokan_ng_springboot.bot.util.HostOsDetector;
 import org.freakz.hokan_ng_springboot.bot.util.JarNixScriptExecutor;
 import org.freakz.hokan_ng_springboot.bot.util.JarWindowsBatExecutor;
 import org.springframework.stereotype.Service;
@@ -14,22 +16,16 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class SystemScriptRunnerServiceImpl implements SystemScriptRunnerService {
 
-  enum HostOSEnum {
-    BSD,
-    LINUX,
-    OSX,
-    WINDOWS,
-    UNKNOWN_OS
+  public SystemScriptRunnerServiceImpl() {
   }
-
 
   @Override
   public String[] runScript(SystemScript systemScript, String... args) {
-    HostOSEnum hostOs = detectHostOs();
+    HostOS hostOs = new HostOsDetector().detectHostOs();
     return runScript(systemScript, hostOs, args);
   }
 
-  public String[] runScript(SystemScript systemScript, HostOSEnum hostOs, String... args) {
+  public String[] runScript(SystemScript systemScript, HostOS hostOs, String... args) {
     switch (hostOs) {
       case BSD:
       case LINUX:
@@ -45,7 +41,7 @@ public class SystemScriptRunnerServiceImpl implements SystemScriptRunnerService 
 
   @Override
   public SystemScriptResult runAndGetResult(SystemScript systemScript, String... args) {
-    HostOSEnum hostOs = detectHostOs();
+    HostOS hostOs = new HostOsDetector().detectHostOs();
     String[] output = runScript(systemScript, hostOs, args);
     SystemScriptResult systemScriptResult = new SystemScriptResult();
     systemScriptResult.setOriginalOutput(output);
@@ -53,7 +49,7 @@ public class SystemScriptRunnerServiceImpl implements SystemScriptRunnerService 
       systemScriptResult.setFormattedOutput(output[0]);
       switch (systemScript) {
         case HOST_INFO_SCRIPT:
-          if (hostOs == HostOSEnum.WINDOWS) {
+          if (hostOs == HostOS.WINDOWS) {
             String name = output[2].substring(27).trim();
             String version = output[3].substring(27).trim();
             systemScriptResult.setFormattedOutput(name + " - " + version);
@@ -72,24 +68,6 @@ public class SystemScriptRunnerServiceImpl implements SystemScriptRunnerService 
   private String[] runNixSystemScript(SystemScript systemScript, String[] args) {
     JarNixScriptExecutor executor = new JarNixScriptExecutor(systemScript.getNixScript(), "UTF-8");
     return executor.executeJarScript(args);
-  }
-
-  private HostOSEnum detectHostOs() {
-    String OS = System.getProperty("os.name").toLowerCase();
-    HostOSEnum hostOSEnum;
-    if (OS.contains("win")) {
-      hostOSEnum = HostOSEnum.WINDOWS;
-    } else if (OS.contains("freebsd")) {
-      hostOSEnum = HostOSEnum.BSD;
-    } else if (OS.contains("mac")) {
-      hostOSEnum = HostOSEnum.OSX;
-    } else if (OS.contains("linux")) {
-      hostOSEnum = HostOSEnum.LINUX;
-    } else {
-      hostOSEnum = HostOSEnum.UNKNOWN_OS;
-    }
-    log.debug("Detected OS: {}", hostOSEnum.toString());
-    return hostOSEnum;
   }
 
 }
