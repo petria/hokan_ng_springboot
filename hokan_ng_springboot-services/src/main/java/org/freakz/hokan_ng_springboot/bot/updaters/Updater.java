@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.cmdpool.CommandPool;
 import org.freakz.hokan_ng_springboot.bot.cmdpool.CommandRunnable;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
+import org.freakz.hokan_ng_springboot.bot.exception.HokanHostOsNotSupportedException;
 import org.freakz.hokan_ng_springboot.bot.models.UpdaterStatus;
 import org.springframework.stereotype.Component;
 
@@ -52,12 +53,15 @@ public abstract class Updater implements DataUpdater, CommandRunnable {
     return lastUpdate;
   }
 
-  @Override
+/*  @Override
   public Calendar calculateNextUpdate() {
+    if (status != UpdaterStatus.HOST_OS_NOT_SUPPORTED) {
+
+    }
     Calendar cal = new GregorianCalendar();
     cal.add(Calendar.MINUTE, 5);
     return cal;
-  }
+  }*/
 
   @Override
   public void updateData(CommandPool commandPool) {
@@ -73,17 +77,19 @@ public abstract class Updater implements DataUpdater, CommandRunnable {
       long duration = (startTime - System.currentTimeMillis()) / 1000;
       this.lastUpdateRuntime = duration;
       this.totalUpdateRuntime += duration;
+      nextUpdate = calculateNextUpdate();
       status = UpdaterStatus.IDLE;
-
+    } catch (HokanHostOsNotSupportedException e) {
+      status = UpdaterStatus.HOST_OS_NOT_SUPPORTED;
     } catch (Exception e) {
       log.error("Updater failed", e);
       status = UpdaterStatus.CRASHED;
-      throw new HokanException("Updater failed", e);
+      this.nextUpdate.add(Calendar.MINUTE, 2);
+      throw new HokanException("Updater failed, trying again  in 2 minutes!", e);
     } finally {
       updateCount++;
       lastUpdate = new GregorianCalendar();
     }
-    nextUpdate = calculateNextUpdate();
   }
 
 

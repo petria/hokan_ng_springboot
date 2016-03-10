@@ -9,6 +9,6 @@ package org.freakz.hokan_ng_springboot.bot.models;
  */
 public enum UpdaterStatus {
 
-  IDLE, UPDATING, CRASHED
+  IDLE, UPDATING, CRASHED, HOST_OS_NOT_SUPPORTED
 
 }
