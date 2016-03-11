@@ -121,7 +121,6 @@ public class UpdateManagerServiceImpl implements UpdaterManagerService, CommandR
     doRun = true;
     log.info("<< Starting update service: {} >>", myPid);
     while (doRun) {
-//      log.info("ping");
       for (DataUpdater updater : getUpdaterList()) {
         if (updater.getStatus() == UpdaterStatus.HOST_OS_NOT_SUPPORTED) {
           continue;
@@ -129,9 +128,6 @@ public class UpdateManagerServiceImpl implements UpdaterManagerService, CommandR
         Calendar now = new GregorianCalendar();
         Calendar next = updater.getNextUpdateTime();
         if (firstRun || now.after(next)) {
-          if (updater.getStatus() == UpdaterStatus.CRASHED) {
-            continue;
-          }
           if (updater.getStatus() != UpdaterStatus.UPDATING) {
             updater.updateData(this.commandPool);
           }
@@ -144,6 +140,6 @@ public class UpdateManagerServiceImpl implements UpdaterManagerService, CommandR
         // ignore
       }
     }
-    log.info("<< Stoping update service: {} >>", myPid);
+    log.info("<< Stopping update service: {} >>", myPid);
   }
 }
