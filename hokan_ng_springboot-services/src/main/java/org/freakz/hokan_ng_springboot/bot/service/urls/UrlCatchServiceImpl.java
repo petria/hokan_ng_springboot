@@ -125,7 +125,7 @@ public class UrlCatchServiceImpl implements UrlCatchService {
       return;
     }
     String title = doc.getElementsByTag("title").get(0).text();
-
+    title = title.replaceAll("\n|\t", "");
     if (title != null) {
       title = StringStuff.htmlEntitiesToText(title);
       title = title.replaceAll("\t", "");
