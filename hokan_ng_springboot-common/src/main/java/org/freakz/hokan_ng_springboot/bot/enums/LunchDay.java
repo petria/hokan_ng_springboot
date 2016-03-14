@@ -8,22 +8,28 @@ import org.joda.time.DateTime;
  */
 public enum LunchDay {
 
-  MONDAY("Maanantai"),
-  TUESDAY("Tiistai"),
-  WEDNESDAY("Keskiviikko"),
-  THURSDAY("Torstai"),
-  FRIDAY("Perjantai"),
-  SATURDAY("Lauantai"),
-  SUNDAY("Sunnuntai");
+  MONDAY("Maanantai", "Monday"),
+  TUESDAY("Tiistai", "Tuesday"),
+  WEDNESDAY("Keskiviikko", "Wednesday"),
+  THURSDAY("Torstai", "Thursday"),
+  FRIDAY("Perjantai", "Friday"),
+  SATURDAY("Lauantai", "Saturday"),
+  SUNDAY("Sunnuntai", "Sunday");
 
-  private final String day;
+  private final String dayFin;
+  private final String dayEng;
 
-  LunchDay(final String day) {
-    this.day = day;
+  LunchDay(final String dayFin, String dayEng) {
+    this.dayFin = dayFin;
+    this.dayEng = dayEng;
   }
 
-  public String getDay() {
-    return day;
+  public String getDayFin() {
+    return dayFin;
+  }
+
+  public String getDayEng() {
+    return dayEng;
   }
 
   public static LunchDay getFromDateTime(DateTime day) {
@@ -44,7 +50,10 @@ public enum LunchDay {
 
   public static LunchDay getFromWeekdayString(String weekday) {
     for (LunchDay lunchDay : values()) {
-      if (weekday.toLowerCase().contains(lunchDay.day.toLowerCase())) {
+      if (weekday.toLowerCase().contains(lunchDay.dayFin.toLowerCase())) {
+        return lunchDay;
+      }
+      if (weekday.toLowerCase().contains(lunchDay.dayEng.toLowerCase())) {
         return lunchDay;
       }
     }

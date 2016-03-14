@@ -31,6 +31,7 @@ import java.net.URL;
 public class EnergiaKeidasLunchPlaceHandler implements LunchRequestHandler {
 
   private static final String[] DAYS = {"MAANANTAI", "TIISTAI", "KESKIVIIKKO", "TORSTAI", "PERJANTAI", "Annos:"};
+  private static final String[] DAYS2 = {"MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "Food ration:"};
 
   public EnergiaKeidasLunchPlaceHandler() {
   }
@@ -72,7 +73,7 @@ public class EnergiaKeidasLunchPlaceHandler implements LunchRequestHandler {
   }
 
   private void parseMenu(String menuText, LunchData response) {
-    String[] days = DAYS;
+    String[] days = DAYS2;
     String[] lines = menuText.split("\n");
     int dayIdx = 0;
     int lineIdx = 0;
