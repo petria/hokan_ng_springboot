@@ -1,6 +1,11 @@
 package org.freakz.hokan_ng_springboot.bot.ircengine;
 
+import java.lang.reflect.Method;
+import java.util.*;
+import java.util.regex.Pattern;
+
 import lombok.extern.slf4j.Slf4j;
+
 import org.freakz.hokan_ng_springboot.bot.core.HokanCoreService;
 import org.freakz.hokan_ng_springboot.bot.events.*;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
@@ -18,10 +23,6 @@ import org.jibble.pircbot.PircBotUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import java.lang.reflect.Method;
-import java.util.*;
-import java.util.regex.Pattern;
 
 /**
  * Created by AirioP on 17.2.2015.
@@ -404,7 +405,7 @@ public class HokanCore extends PircBot implements HokanCoreService {
   }
 
   @Override
-  protected void onPrivateMessage(String sender, String login, String hostname, String message) {
+	protected void onPrivateMessage(String sender, String login, String hostname, String message, byte[] original) {
     this.ircLogService.addIrcLog(new Date(), sender, getName(), message);
     int confirmLong = propertyService.getPropertyAsInt(PropertyName.PROP_SYS_CONFIRM_LONG_MESSAGES, -1);
     if (confirmLong > 0) {
@@ -415,6 +416,7 @@ public class HokanCore extends PircBot implements HokanCoreService {
     }
 
     IrcMessageEvent ircEvent = (IrcMessageEvent) IrcEventFactory.createIrcMessageEvent(getName(), getNetwork().getName(), "@privmsg", sender, login, hostname, message);
+		ircEvent.setOriginal(original);
     ircEvent.setPrivate(true);
 
     Network nw = getNetwork();
@@ -442,7 +444,8 @@ public class HokanCore extends PircBot implements HokanCoreService {
   }
 
   @Override
-  protected void onMessage(String channel, String sender, String login, String hostname, String message) {
+	protected void onMessage(String channel, String sender, String login, String hostname, String message,
+			byte[] original) {
     this.ircLogService.addIrcLog(new Date(), sender, channel, message);
     String toMe = String.format("%s: ", getName());
     boolean isToMe = false;
@@ -451,6 +454,7 @@ public class HokanCore extends PircBot implements HokanCoreService {
       isToMe = true;
     }
     IrcMessageEvent ircEvent = (IrcMessageEvent) IrcEventFactory.createIrcMessageEvent(getName(), getNetwork().getName(), channel, sender, login, hostname, message);
+		ircEvent.setOriginal(original);
     ircEvent.setToMe(isToMe);
 
     Network nw = getNetwork();

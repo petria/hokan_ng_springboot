@@ -21,6 +21,15 @@ public class IrcMessageEvent extends IrcEvent implements Serializable, Cloneable
   private String outputPrefix;
   private String outputPostfix;
 
+	public byte[] getOriginal() {
+		return original;
+	}
+
+	public void setOriginal(byte[] original) {
+		this.original = original;
+	}
+
+	private byte[] original;
 
   public IrcMessageEvent() {
     super();

@@ -1,12 +1,12 @@
 package org.freakz.hokan_ng_springboot.bot.util;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
-
 import java.io.*;
 
+import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.stereotype.Component;
+
 /**
- * PircBotUser: petria
  * Date: 11/26/13
  * Time: 8:55 AM
  *
@@ -35,6 +35,17 @@ public class FileUtil {
     log.info("Deleting tmpFile {}", tmpFile.delete());
     return extractPath(path);
   }
+
+	public String copyBytesToTmpFile(byte[] content) throws IOException {
+		File tmpFile = File.createTempFile("bytes", "");
+		OutputStream out = new FileOutputStream(tmpFile);
+		BufferedWriter bw = new BufferedWriter(new FileWriter(tmpFile));
+		out.write(content);
+		out.close();
+		String tmpResourcePath = tmpFile.getAbsolutePath();
+		log.info("byte[] copied resource to {}", tmpResourcePath);
+		return tmpResourcePath;
+	}
 
   public String copyResourceToFile(String resource, File target, StringBuilder... contents) throws IOException {
     InputStream inputStream = this.getClass().getResourceAsStream(resource);

@@ -196,7 +196,7 @@ public abstract class PircBot implements ReplyConstants {
     int tries = 1;
     while ((line = breader.readLine()) != null) {
 
-      this.handleLine(line);
+			this.handleLine(line, null);
 
       int firstSpace = line.indexOf(" ");
       int secondSpace = line.indexOf(" ", firstSpace + 1);
@@ -874,7 +874,7 @@ public abstract class PircBot implements ReplyConstants {
    *
    * @param line The raw line of text from the server.
    */
-  protected void handleLine(String line) {
+	protected void handleLine(String line, byte[] original) {
     this.log(line);
     _linesReceived++;
     // Check for server pings.
@@ -981,10 +981,12 @@ public abstract class PircBot implements ReplyConstants {
       }
     } else if (command.equals("PRIVMSG") && _channelPrefixes.indexOf(target.charAt(0)) >= 0) {
       // This is a normal message to a channel.
-      this.onMessage(target, sourceNick, sourceLogin, sourceHostname, line.substring(line.indexOf(" :") + 2));
+			this.onMessage(target, sourceNick, sourceLogin, sourceHostname, line.substring(line.indexOf(" :") + 2),
+					original);
     } else if (command.equals("PRIVMSG")) {
       // This is a private message to us.
-      this.onPrivateMessage(sourceNick, sourceLogin, sourceHostname, line.substring(line.indexOf(" :") + 2));
+			this.onPrivateMessage(sourceNick, sourceLogin, sourceHostname, line.substring(line.indexOf(" :") + 2),
+					original);
     } else if (command.equals("JOIN")) {
       // Someone is joining a channel.
       String channel = target;
@@ -1239,34 +1241,37 @@ public abstract class PircBot implements ReplyConstants {
   }
 
 
-  /**
-   * This method is called whenever a message is sent to a channel.
-   * <p>
-   * The implementation of this method in the PircBot abstract class
-   * performs no actions and may be overridden as required.
-   *
-   * @param channel  The channel to which the message was sent.
-   * @param sender   The nick of the person who sent the message.
-   * @param login    The login of the person who sent the message.
-   * @param hostname The hostname of the person who sent the message.
-   * @param message  The actual message sent to the channel.
-   */
-  protected void onMessage(String channel, String sender, String login, String hostname, String message) {
+  	/**
+	 * This method is called whenever a message is sent to a channel.
+	 * <p>
+	 * The implementation of this method in the PircBot abstract class performs no actions and may be overridden as
+	 * required.
+	 * 
+	 * @param channel The channel to which the message was sent.
+	 * @param sender The nick of the person who sent the message.
+	 * @param login The login of the person who sent the message.
+	 * @param hostname The hostname of the person who sent the message.
+	 * @param message The actual message sent to the channel.
+	 * @param original
+	 */
+	protected void onMessage(String channel, String sender, String login, String hostname, String message,
+			byte[] original) {
   }
 
 
-  /**
-   * This method is called whenever a private message is sent to the PircBot.
-   * <p>
-   * The implementation of this method in the PircBot abstract class
-   * performs no actions and may be overridden as required.
-   *
-   * @param sender   The nick of the person who sent the private message.
-   * @param login    The login of the person who sent the private message.
-   * @param hostname The hostname of the person who sent the private message.
-   * @param message  The actual message.
-   */
-  protected void onPrivateMessage(String sender, String login, String hostname, String message) {
+  	/**
+	 * This method is called whenever a private message is sent to the PircBot.
+	 * <p>
+	 * The implementation of this method in the PircBot abstract class performs no actions and may be overridden as
+	 * required.
+	 * 
+	 * @param sender The nick of the person who sent the private message.
+	 * @param login The login of the person who sent the private message.
+	 * @param hostname The hostname of the person who sent the private message.
+	 * @param message The actual message.
+	 * @param original
+	 */
+	protected void onPrivateMessage(String sender, String login, String hostname, String message, byte[] original) {
   }
 
 

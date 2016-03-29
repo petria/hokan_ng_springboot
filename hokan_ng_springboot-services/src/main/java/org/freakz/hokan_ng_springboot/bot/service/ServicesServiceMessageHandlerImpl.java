@@ -1,6 +1,13 @@
 package org.freakz.hokan_ng_springboot.bot.service;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import lombok.extern.slf4j.Slf4j;
+
 import org.freakz.hokan_ng_springboot.bot.events.ServiceRequest;
 import org.freakz.hokan_ng_springboot.bot.events.ServiceRequestType;
 import org.freakz.hokan_ng_springboot.bot.events.ServiceResponse;
@@ -24,12 +31,6 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
-
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 /**
  * Created by Petri Airio on 10.2.2015.
@@ -86,6 +87,7 @@ public class ServicesServiceMessageHandlerImpl implements JmsServiceMessageHandl
               m.invoke(obj, request, response);
               return true;
             } catch (Exception e) {
+							e.printStackTrace();
               log.error("Could not call service handler for: {}", request);
               return false;
             }
