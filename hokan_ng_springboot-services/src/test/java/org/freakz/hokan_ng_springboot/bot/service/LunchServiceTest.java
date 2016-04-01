@@ -1,13 +1,13 @@
 package org.freakz.hokan_ng_springboot.bot.service;
 
+import static org.junit.Assert.assertEquals;
+
 import org.freakz.hokan_ng_springboot.bot.enums.LunchPlace;
 import org.freakz.hokan_ng_springboot.bot.models.LunchData;
 import org.freakz.hokan_ng_springboot.bot.service.lunch.LunchRequestHandler;
 import org.freakz.hokan_ng_springboot.bot.service.lunch.requesthandlers.*;
 import org.joda.time.DateTime;
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * Created by Petri Airio on 25.1.2016.
@@ -55,5 +55,13 @@ public class LunchServiceTest {
     lunchRequestHandler.handleLunchPlace(LunchPlace.LOUNAS_INFO_ENERGIA_KEIDAS, response, DateTime.now());
     assertEquals(LunchPlace.LOUNAS_INFO_ENERGIA_KEIDAS, response.getLunchPlace());
   }
+
+	@Test
+	public void testVesilinna() {
+		LunchRequestHandler lunchRequestHandler = new VesilinnaLunchPlaceHandler();
+		LunchData response = new LunchData();
+		lunchRequestHandler.handleLunchPlace(LunchPlace.LOUNAS_INFO_VESILINNA, response, DateTime.now());
+		assertEquals(LunchPlace.LOUNAS_INFO_VESILINNA, response.getLunchPlace());
+	}
 
 }
