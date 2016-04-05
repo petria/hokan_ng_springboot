@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
+import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
@@ -22,10 +22,11 @@ import java.io.StringWriter;
 @Slf4j
 public class ScriptingServiceImpl implements ScriptingService {
 
+  private static final String SCRIPT_DIR = "scripts/";
   private static final int TIMEOUT_SEC = 60;
   private static final ScriptEngine engine = new ScriptEngineManager().getEngineByName("JavaScript");
 
-  private ScriptResult execWithThread(final ScriptEngine engine, final String script, ServiceRequest request) {
+  private ScriptResult execWithThread(final ScriptEngine engine, final String script, boolean isFile, ServiceRequest request) {
     ScriptResult scriptResult = new ScriptResult();
     final Runnable r = new Runnable() {
       public void run() {
@@ -34,12 +35,19 @@ public class ScriptingServiceImpl implements ScriptingService {
           PrintWriter pw = new PrintWriter(sw);
 
           engine.getContext().setWriter(pw);
-          log.debug("Script eval()");
           engine.put("ims", request.getIrcMessageEvent());
-          Object res = engine.eval(script);
+
+          Object res;
+          if (isFile) {
+            log.debug("File eval()");
+            res = engine.eval(new java.io.FileReader(script));
+          } else {
+            log.debug("Script eval()");
+            res = engine.eval(script);
+          }
           log.debug("Script result: {}", res);
           scriptResult.setScriptOutput(sw.getBuffer().toString());
-        } catch (ScriptException e) {
+        } catch (Exception e) {
           scriptResult.setScriptOutput(e.getMessage());
           log.debug("Java: Caught exception from eval(): " + e.getMessage());
         }
@@ -94,15 +102,31 @@ public class ScriptingServiceImpl implements ScriptingService {
 
   @Override
   public ScriptResult evalScript(String script, ServiceRequest request) {
-    ScriptResult result = execWithThread(engine, script, request);
+    ScriptResult result = execWithThread(engine, script, false, request);
     return result;
   }
 
   @ServiceMessageHandler(ServiceRequestType = ServiceRequestType.SCRIPT_SERVICE_REQUEST)
   public void handleLunchPlacesServiceRequest(ServiceRequest request, ServiceResponse response) {
     String script = (String) request.getParameters()[0];
-    ScriptResult result = evalScript(script, request);
+    ScriptResult result;
+    if (script.startsWith("@")) {
+      result = evalScriptFile(script, request);
+    } else {
+      result = evalScript(script, request);
+    }
     response.setResponseData(request.getType().getResponseDataKey(), result);
+  }
+
+  private ScriptResult evalScriptFile(String script, ServiceRequest request) {
+    String fileName = script.substring(1);
+    String toRun = SCRIPT_DIR + "/" + fileName;
+    File f = new File(toRun);
+    if (!f.exists()) {
+      return new ScriptResult("Script not found: " + f.getAbsolutePath());
+    }
+    ScriptResult result = execWithThread(engine, f.getAbsolutePath(), true, request);
+    return result;
   }
 
 }
