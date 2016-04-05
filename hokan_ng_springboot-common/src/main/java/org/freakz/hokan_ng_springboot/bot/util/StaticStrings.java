@@ -46,6 +46,7 @@ public class StaticStrings {
   public static final String ARG_NICK = "Nick";
   public static final String ARG_REPLACE = "Replace";
   public static final String ARG_RAWSTRING = "RawString";
+  public static final String ARG_SCRIPT = "Script";
   public static final String ARG_SEARCH = "Search";
   public static final String ARG_STATION = "Station";
   public static final String ARG_STARTUP_STATE = "StartupState";
@@ -60,7 +61,7 @@ public class StaticStrings {
   public static final String ARG_WORD = "Word";
 
   public static final String HTTP_USER_AGENT
-      = "PircBotUser-Agent\", \"Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:38.0) Gecko/20100101 Firefox/38.0";
+      = "User-Agent\", \"Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:38.0) Gecko/20100101 Firefox/45.0";
 
   public static final String UNKNOWN
       = "<unknown>";
