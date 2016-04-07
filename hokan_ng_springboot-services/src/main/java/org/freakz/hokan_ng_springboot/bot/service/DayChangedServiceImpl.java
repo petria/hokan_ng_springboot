@@ -186,14 +186,18 @@ public class DayChangedServiceImpl implements DayChangedService, CommandRunnable
       } else {
         ret += "\n";
       }
-      Elements value = doc.getElementsByAttributeValue("class", "local-weather-main-title");
-      String place = value.get(0).text();
-      Elements value2 = doc.getElementsByAttributeValue("class", "celestial-text");
+//      Elements value = doc.getElementsByAttributeValue("class", "local-weather-main-title");
+//      String place = value.get(0).text();
+      Elements value = doc.getElementsByAttributeValue("class", "col-xs-12");
+      String place = value.get(1).text().split(" ")[2];
+
+
+      Elements value2 = doc.getElementsByAttributeValue("class", "sunrise");
       if (value2.size() == 0) {
         continue;
       }
-      String sunrise = value2.get(1).text();
-      ret += String.format("%s: %s", place.split(" ")[0], sunrise);
+      String sunrise = value2.text();
+      ret += String.format("%s: %s", place, sunrise);
     }
     return ret;
   }
