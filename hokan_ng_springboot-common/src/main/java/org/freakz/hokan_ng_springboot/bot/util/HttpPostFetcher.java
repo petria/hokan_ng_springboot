@@ -36,8 +36,13 @@ public class HttpPostFetcher {
   public void fetch(String urlStr, String encoding, String... params) throws IOException {
 
     URL url = new URL(urlStr);
-    String proxyHost = properties.getPropertyAsString(PropertyName.PROP_SYS_HTTP_PROXY_HOST, null);
-    int proxyPort = properties.getPropertyAsInt(PropertyName.PROP_SYS_HTTP_PROXY_PORT, -1);
+    String proxyHost = null;
+    int proxyPort = -1;
+
+    if (properties != null) {
+      proxyHost = properties.getPropertyAsString(PropertyName.PROP_SYS_HTTP_PROXY_HOST, null);
+      proxyPort = properties.getPropertyAsInt(PropertyName.PROP_SYS_HTTP_PROXY_PORT, -1);
+    }
 
     URLConnection conn;
     if (proxyHost != null && proxyPort != -1) {

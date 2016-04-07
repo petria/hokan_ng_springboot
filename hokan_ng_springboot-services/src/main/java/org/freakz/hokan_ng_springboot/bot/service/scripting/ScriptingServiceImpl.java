@@ -50,6 +50,7 @@ public class ScriptingServiceImpl implements ScriptingService {
         } catch (Exception e) {
           scriptResult.setScriptOutput(e.getMessage());
           log.debug("Java: Caught exception from eval(): " + e.getMessage());
+          e.printStackTrace();
         }
       }
     };
@@ -61,7 +62,7 @@ public class ScriptingServiceImpl implements ScriptingService {
     boolean doWait = true;
     while (doWait) {
       try {
-        t.join(1000);
+        t.join(333L);
         if (t.isAlive()) {
           long currentTime = System.currentTimeMillis();
           long diff = (currentTime - startTime) / 1000L;
