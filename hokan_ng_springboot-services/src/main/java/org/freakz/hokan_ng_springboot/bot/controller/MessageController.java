@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class MessageController {
 
   @RequestMapping("/message")
-  public String greeting(@RequestParam(value = "name", required = false, defaultValue = "World") String name, Model model) {
-    model.addAttribute("name", name);
-    return "greeting";
+  public String greeting(@RequestParam(value = "key", required = false) String key, Model model) {
+    model.addAttribute("message", "tfufufufuf" + key);
+    return "message";
   }
 
 
