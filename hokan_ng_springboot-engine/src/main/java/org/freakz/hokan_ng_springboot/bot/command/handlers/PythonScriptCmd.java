@@ -11,6 +11,7 @@ import org.freakz.hokan_ng_springboot.bot.events.ServiceRequestType;
 import org.freakz.hokan_ng_springboot.bot.events.ServiceResponse;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
 import org.freakz.hokan_ng_springboot.bot.models.ScriptResult;
+import org.freakz.hokan_ng_springboot.bot.util.CommandArgs;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -31,17 +32,18 @@ public class PythonScriptCmd extends Cmd {
   public PythonScriptCmd() {
     setHelp("Executes Python script.");
 
-    UnflaggedOption opt = new UnflaggedOption(ARG_SCRIPT)
+/*    UnflaggedOption opt = new UnflaggedOption(ARG_SCRIPT)
         .setRequired(true)
-        .setGreedy(false);
-    registerParameter(opt);
+        .setGreedy(true);
+    registerParameter(opt);*/
 
 //    setAdminUserOnly(true);
   }
 
   @Override
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    String script = results.getString(ARG_SCRIPT);
+    CommandArgs args = new CommandArgs(request.getIrcEvent().getMessage());
+    String script = args.getArgs();
     ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.SCRIPT_SERVICE_REQUEST, request.getIrcEvent(), script, "python");
     ScriptResult scriptResult = serviceResponse.getScriptResult();
     response.addResponse("%s", scriptResult.getScriptOutput());
