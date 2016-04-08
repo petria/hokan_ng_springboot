@@ -259,6 +259,11 @@ public abstract class Cmd implements HokanCommand, CommandRunnable {
     CommandArgs args = new CommandArgs(ircEvent.getMessage());
 
     response.setCommandClass(this.getClass().toString());
+    if (!checkAccess(request, response)) {
+      log.debug("Access denied user: {} - command {}", request.getUser(), this);
+      sendReply(response);
+      return;
+    }
 
     if (args.hasArgs() && args.getArgs().equals("?")) {
       StringBuilder sb = new StringBuilder();
@@ -304,15 +309,11 @@ public abstract class Cmd implements HokanCommand, CommandRunnable {
         response.setResponseMessage("Invalid arguments, usage: " + getName() + " " + jsap.getUsage());
         sendReply(response);
       } else {
-        if (checkAccess(request, response)) {
-          ArgsWrapper wrapper = new ArgsWrapper();
-          wrapper.request = request;
-          wrapper.response = response;
-          wrapper.results = results;
-          commandPool.startRunnable(this, request.getUser().getNick(), wrapper);
-        } else {
-          sendReply(response);
-        }
+        ArgsWrapper wrapper = new ArgsWrapper();
+        wrapper.request = request;
+        wrapper.response = response;
+        wrapper.results = results;
+        commandPool.startRunnable(this, request.getUser().getNick(), wrapper);
       }
     }
   }

@@ -51,7 +51,7 @@ public class UserViewCmd extends Cmd {
     } else {
       hUser = userService.findFirstByNick(nick);
       if (hUser == null) {
-        response.addResponse("PircBotUser not found: %s", nick);
+        response.addResponse("User not found: %s", nick);
         return;
       }
     }
