@@ -16,11 +16,7 @@
 package org.freakz.hokan_ng_springboot.bot;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.activemq.ActiveMQConnectionFactory;
-import org.freakz.hokan_ng_springboot.bot.enums.CommandLineArgs;
-import org.freakz.hokan_ng_springboot.bot.util.CommandLineArgsParser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -44,9 +40,6 @@ import org.vaadin.spring.security.web.VaadinRedirectStrategy;
 import org.vaadin.spring.security.web.authentication.VaadinAuthenticationSuccessHandler;
 import org.vaadin.spring.security.web.authentication.VaadinUrlAuthenticationSuccessHandler;
 import org.vaadin.spring.sidebar.annotation.EnableSideBar;
-
-import javax.jms.ConnectionFactory;
-import java.util.Map;
 
 /**
  *
@@ -141,5 +134,5 @@ public class HokanNgVaadinApplication {
             return new VaadinUrlAuthenticationSuccessHandler(httpService, vaadinRedirectStrategy, "/");
         }
     }
-*/
+
 }

@@ -26,10 +26,10 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_SCRIPT;
 )
 @Scope("prototype")
 @Slf4j
-public class ScriptCmd extends Cmd {
+public class PythonScriptCmd extends Cmd {
 
-  public ScriptCmd() {
-    setHelp("Executes JavaScript.");
+  public PythonScriptCmd() {
+    setHelp("Executes Python script.");
 
     UnflaggedOption opt = new UnflaggedOption(ARG_SCRIPT)
         .setRequired(true)
@@ -42,7 +42,7 @@ public class ScriptCmd extends Cmd {
   @Override
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
     String script = results.getString(ARG_SCRIPT);
-    ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.SCRIPT_SERVICE_REQUEST, request.getIrcEvent(), script, "JavaScript");
+    ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.SCRIPT_SERVICE_REQUEST, request.getIrcEvent(), script, "python");
     ScriptResult scriptResult = serviceResponse.getScriptResult();
     response.addResponse("%s", scriptResult.getScriptOutput());
   }

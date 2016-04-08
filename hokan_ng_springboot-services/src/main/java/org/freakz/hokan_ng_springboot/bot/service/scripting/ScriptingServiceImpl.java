@@ -20,11 +20,10 @@ import java.io.StringWriter;
  */
 @Service
 @Slf4j
-public class ScriptingServiceImpl implements ScriptingService {
+public class ScriptingServiceImpl {
 
   private static final String SCRIPT_DIR = "scripts/";
   private static final int TIMEOUT_SEC = 60;
-  private static final ScriptEngine engine = new ScriptEngineManager().getEngineByName("JavaScript");
 
   private ScriptResult execWithThread(final ScriptEngine engine, final String script, boolean isFile, ServiceRequest request) {
     ScriptResult scriptResult = new ScriptResult();
@@ -76,7 +75,6 @@ public class ScriptingServiceImpl implements ScriptingService {
           doWait = false;
         }
       } catch (InterruptedException e) {
-//        log.debug("*");
         e.printStackTrace();
         doWait = false;
       }
@@ -84,42 +82,31 @@ public class ScriptingServiceImpl implements ScriptingService {
 
     log.debug("Script run ended!");
 
-/*    log.debug("Java: ...thread started, timeout: {}", TIMEOUT_SEC);
-    try {
-      Thread.sleep(TIMEOUT_SEC * 1000);
-      if (t.isAlive()) {
-        log.debug("Java: Thread alive after timeout, stopping...");
-        t.stop();
-        log.debug("Java: ...thread stopped");
-      } else {
-        log.debug("Java: Thread not alive after timeout.");
-      }
-    } catch (InterruptedException e) {
-      log.debug("Interrupted while waiting for timeout to elapse.");
-    }*/
     return scriptResult;
   }
 
-
-  @Override
-  public ScriptResult evalScript(String script, ServiceRequest request) {
+  public ScriptResult evalScript(ScriptEngine engine, String script, ServiceRequest request) {
     ScriptResult result = execWithThread(engine, script, false, request);
     return result;
   }
 
+
   @ServiceMessageHandler(ServiceRequestType = ServiceRequestType.SCRIPT_SERVICE_REQUEST)
-  public void handleLunchPlacesServiceRequest(ServiceRequest request, ServiceResponse response) {
+  public void handleScriptServiceRequest(ServiceRequest request, ServiceResponse response) {
     String script = (String) request.getParameters()[0];
+    String engineName = (String) request.getParameters()[1];
+    ScriptEngine engine = new ScriptEngineManager().getEngineByName(engineName);
+
     ScriptResult result;
     if (script.startsWith("@")) {
-      result = evalScriptFile(script, request);
+      result = evalScriptFile(engine, script, request);
     } else {
-      result = evalScript(script, request);
+      result = evalScript(engine, script, request);
     }
     response.setResponseData(request.getType().getResponseDataKey(), result);
   }
 
-  private ScriptResult evalScriptFile(String script, ServiceRequest request) {
+  private ScriptResult evalScriptFile(ScriptEngine engine, String script, ServiceRequest request) {
     String fileName = script.substring(1);
     String toRun = SCRIPT_DIR + "/" + fileName;
     File f = new File(toRun);
