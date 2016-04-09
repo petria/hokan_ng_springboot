@@ -1,7 +1,6 @@
 package org.freakz.hokan_ng_springboot.bot.command.handlers;
 
 import com.martiansoftware.jsap.JSAPResult;
-import com.martiansoftware.jsap.UnflaggedOption;
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.command.HelpGroup;
 import org.freakz.hokan_ng_springboot.bot.command.annotation.HelpGroups;
@@ -14,8 +13,6 @@ import org.freakz.hokan_ng_springboot.bot.models.ScriptResult;
 import org.freakz.hokan_ng_springboot.bot.util.CommandArgs;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_SCRIPT;
 
 /**
  * Created by Petri Airio on 5.4.2016.
