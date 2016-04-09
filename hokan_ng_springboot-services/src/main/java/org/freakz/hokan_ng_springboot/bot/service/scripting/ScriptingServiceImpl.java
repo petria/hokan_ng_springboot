@@ -95,9 +95,16 @@ public class ScriptingServiceImpl {
   public void handleScriptServiceRequest(ServiceRequest request, ServiceResponse response) {
     String script = (String) request.getParameters()[0];
     String engineName = (String) request.getParameters()[1];
+    log.debug("script: {}", script);
+    log.debug("engineName: {}", engineName);
     ScriptEngine engine = new ScriptEngineManager().getEngineByName(engineName);
-
+    log.debug("engine: {}", engine);
     ScriptResult result;
+    if (engine == null) {
+      result = new ScriptResult();
+      result.setScriptOutput("No engine found for: " + engineName);
+      return;
+    }
     if (script.startsWith("@")) {
       result = evalScriptFile(engine, script, request);
     } else {
