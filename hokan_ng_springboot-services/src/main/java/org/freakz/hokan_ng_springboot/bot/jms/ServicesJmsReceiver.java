@@ -32,25 +32,4 @@ public class ServicesJmsReceiver extends SpringJmsReceiver {
     jmsServiceMessageHandler.handleJmsEnvelope(envelope);
   }
 
-/*  @Override
-  public void handleJmsMessage(Message message) throws JMSException {
-    ObjectMessage objectMessage = (ObjectMessage) message;
-    JmsMessage jmsMessage = (JmsMessage) objectMessage.getObject();
-    JmsMessage jmsReplyMessage = null;
-    try {
-      jmsReplyMessage = jmsServiceMessageHandler.handleJmsServiceMessage(jmsMessage);
-    } catch (Exception e) {
-      log.error("Something went wrong!");
-    }
-    Destination replyTo = message.getJMSReplyTo();
-    log.debug("got message: {}, replyTo: {}", jmsMessage, replyTo);
-    if (replyTo != null) {
-      if (jmsReplyMessage != null) {
-        jmsSender.sendJmsMessage(replyTo, jmsReplyMessage);
-      }
-    }
-
-  }
-*/
-
 }

@@ -1,5 +1,7 @@
 package org.freakz.hokan_ng_springboot.bot.events;
 
+import org.freakz.hokan_ng_springboot.bot.jms.JmsEnvelope;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +23,8 @@ public class EngineResponse implements Serializable {
   private String replyTo;
   private String commandClass;
   private boolean noSearchReplace;
+  private boolean isEngineRequest;
+  private JmsEnvelope jmsEnvelope;
 
   private List<EngineMethodCall> engineMethodCalls = new ArrayList<>();
   private IrcMessageEvent ircMessageEvent;
@@ -108,6 +112,22 @@ public class EngineResponse implements Serializable {
 
   public void setNoSearchReplace(boolean noSearchReplace) {
     this.noSearchReplace = noSearchReplace;
+  }
+
+  public boolean isEngineRequest() {
+    return isEngineRequest;
+  }
+
+  public JmsEnvelope getJmsEnvelope() {
+    return jmsEnvelope;
+  }
+
+  public void setJmsEnvelope(JmsEnvelope jmsEnvelope) {
+    this.jmsEnvelope = jmsEnvelope;
+  }
+
+  public void setIsEngineRequest(boolean isEngineRequest) {
+    this.isEngineRequest = isEngineRequest;
   }
 
   public IrcMessageEvent getIrcMessageEvent() {

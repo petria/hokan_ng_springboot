@@ -43,6 +43,11 @@ public class JmsMessage implements Serializable {
     return command;
   }
 
+  public ServiceRequest getEngineRequest() {
+    ServiceRequest request = (ServiceRequest) getPayLoadObject("ENGINE_REQUEST");
+    return request;
+  }
+
   public ServiceRequest getServiceRequest() {
     ServiceRequest request = (ServiceRequest) getPayLoadObject("SERVICE_REQUEST");
     return request;
@@ -50,6 +55,11 @@ public class JmsMessage implements Serializable {
 
   public ServiceResponse getServiceResponse() {
     ServiceResponse response = (ServiceResponse) getPayLoadObject("SERVICE_RESPONSE");
+    return response;
+  }
+
+  public ServiceResponse getEngineResponse() {
+    ServiceResponse response = (ServiceResponse) getPayLoadObject("ENGINE_RESPONSE");
     return response;
   }
 

@@ -1,10 +1,17 @@
 package org.freakz.hokan_ng_springboot.bot.controller;
 
+import lombok.extern.slf4j.Slf4j;
+import org.freakz.hokan_ng_springboot.bot.enums.HokanModule;
 import org.freakz.hokan_ng_springboot.bot.enums.LunchDay;
 import org.freakz.hokan_ng_springboot.bot.enums.LunchPlace;
+import org.freakz.hokan_ng_springboot.bot.events.*;
+import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
+import org.freakz.hokan_ng_springboot.bot.jms.JmsMessage;
+import org.freakz.hokan_ng_springboot.bot.jms.api.JmsSender;
 import org.freakz.hokan_ng_springboot.bot.models.LunchData;
 import org.freakz.hokan_ng_springboot.bot.models.LunchMenu;
 import org.freakz.hokan_ng_springboot.bot.service.lunch.LunchServiceImpl;
+import org.freakz.hokan_ng_springboot.bot.util.CommandArgs;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,12 +19,19 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.jms.JMSException;
+import javax.jms.ObjectMessage;
+
 /**
  * Created by Petri Airio on 7.4.2016.
  * -
  */
 @Controller
+@Slf4j
 public class MessageController {
+
+  @Autowired
+  private JmsSender jmsSender;
 
   @Autowired
   private LunchServiceImpl lunchService;
@@ -50,6 +64,44 @@ public class MessageController {
     return "lunch";
   }
 
+  @RequestMapping("/command")
+  public String command(@RequestParam(value = "line", required = true) String line, Model model) {
+    log.debug("Handling line: {}", line);
+//    IrcMessageEvent ircMessageEvent = new IrcMessageEvent();
+    String botName = "_Hokan_";
+    String networkName = "Network";
+    String sender = "webuser";
+    String login = "webuser";
+    String hostname = "webhost";
+    IrcMessageEvent ircMessageEvent = (IrcMessageEvent) IrcEventFactory.createIrcMessageEvent(botName, networkName, "@webmsg", sender, login, hostname, line);
+    ircMessageEvent.setPrivate(true);
+
+    try {
+      ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.ENGINE_REQUEST, ircMessageEvent, "");
+      int foo = 0;
+    } catch (HokanException e) {
+      e.printStackTrace();
+    }
+    model.addAttribute("message", "tfufufufuf");
+    return "command";
+  }
+
+
+  public ServiceResponse doServicesRequest(ServiceRequestType requestType, IrcMessageEvent ircEvent, Object... parameters) throws HokanException {
+    ServiceRequest request = new ServiceRequest(requestType, ircEvent, new CommandArgs(ircEvent.getMessage()), parameters);
+    ObjectMessage objectMessage = jmsSender.sendAndGetReply(HokanModule.HokanEngine.getQueueName(), "ENGINE_REQUEST", request, false);
+    if (objectMessage == null) {
+      throw new HokanException("ServiceResponse null, is Engine module running?");
+    }
+    try {
+      JmsMessage jmsMessage = (JmsMessage) objectMessage.getObject();
+      return jmsMessage.getEngineResponse();
+    } catch (JMSException e) {
+      log.error("jms", e);
+    }
+    return new ServiceResponse(requestType);
+
+  }
 
 
 }

@@ -6,6 +6,8 @@ package org.freakz.hokan_ng_springboot.bot.events;
  */
 public enum ServiceRequestType {
 
+  ENGINE_REQUEST("ENGINE_RESPONSE"),
+
   CATCH_URLS_REQUEST("NO_RESPONSE"),
 	CHARSET_REQUEST("CHARSET_REQUEST"),
   CURRENCY_CONVERT_REQUEST("CURRENCY_CONVERT_RESPONSE"),

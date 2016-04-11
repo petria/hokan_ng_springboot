@@ -11,6 +11,7 @@ import org.freakz.hokan_ng_springboot.bot.enums.HokanModule;
 import org.freakz.hokan_ng_springboot.bot.events.*;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanEngineException;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
+import org.freakz.hokan_ng_springboot.bot.jms.JmsEnvelope;
 import org.freakz.hokan_ng_springboot.bot.jms.JmsMessage;
 import org.freakz.hokan_ng_springboot.bot.jms.api.JmsSender;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.Channel;
@@ -337,7 +338,12 @@ public abstract class Cmd implements HokanCommand, CommandRunnable {
 
   private void sendReply(EngineResponse response) {
 //    log.debug("Sending response: {}", response);
-    jmsSender.send(HokanModule.HokanIo.getQueueName(), "ENGINE_RESPONSE", response, false);
+    if (response.isEngineRequest()) {
+      JmsEnvelope envelope = response.getJmsEnvelope();
+      envelope.getMessageOut().addPayLoadObject("ENGINE_RESPONSE", response);
+    } else {
+      jmsSender.send(HokanModule.HokanIo.getQueueName(), "ENGINE_RESPONSE", response, false);
+    }
   }
 
 

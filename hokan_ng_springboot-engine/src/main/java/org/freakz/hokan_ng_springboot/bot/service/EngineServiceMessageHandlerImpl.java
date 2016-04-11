@@ -7,6 +7,7 @@ import org.freakz.hokan_ng_springboot.bot.enums.HokanModule;
 import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.events.IrcMessageEvent;
+import org.freakz.hokan_ng_springboot.bot.events.ServiceRequest;
 import org.freakz.hokan_ng_springboot.bot.jms.JmsEnvelope;
 import org.freakz.hokan_ng_springboot.bot.jms.api.JmsSender;
 import org.freakz.hokan_ng_springboot.bot.jms.api.JmsServiceMessageHandler;
@@ -37,16 +38,22 @@ public class EngineServiceMessageHandlerImpl implements JmsServiceMessageHandler
   public void handleJmsEnvelope(JmsEnvelope envelope) throws Exception {
     IrcMessageEvent event = (IrcMessageEvent) envelope.getMessageIn().getPayLoadObject("EVENT");
 //    log.debug("Handling event: {}", event);
+    boolean isEngineRequest = false;
     if (event == null) {
-      log.debug("Nothing to do!");
-      return;
+
+      ServiceRequest serviceRequest = (ServiceRequest) envelope.getMessageIn().getPayLoadObject("ENGINE_REQUEST");
+      if (serviceRequest == null) {
+        log.debug("Nothing to do!");
+        return;
+      }
+      event = serviceRequest.getIrcMessageEvent();
     }
 
     CmdHandlerMatches matches = commandHandlerService.getMatchingCommands(event.getMessage());
     if (matches.getMatches().size() > 0) {
       if (matches.getMatches().size() == 1) {
         Cmd handler = matches.getMatches().get(0);
-        executeHandler(event, handler);
+        executeHandler(event, handler, envelope, isEngineRequest);
       } else {
         EngineResponse response = new EngineResponse(event);
         String multiple = matches.getFirstWord() + " multiple matches: ";
@@ -54,37 +61,25 @@ public class EngineServiceMessageHandlerImpl implements JmsServiceMessageHandler
           multiple += match.getName() + " ";
         }
         response.addResponse(multiple);
-        sendReply(response);
+        sendReply(response, envelope, isEngineRequest);
       }
-
     }
-/*    Cmd handler = commandHandlerService.getCommandHandler(event.getMessage());
-
-    if (handler != null) {
-      EngineResponse response = new EngineResponse(event);
-      InternalRequest internalRequest;
-      internalRequest = context.getBean(InternalRequest.class);
-      try {
-        internalRequest.init(event);
-        if (!event.isPrivate()) {
-          internalRequest.getUserChannel().setLastCommand(event.getMessage());
-          internalRequest.getUserChannel().setLastCommandTime(new Date());
-          internalRequest.saveUserChannel();
-        }
-        handler.handleLine(internalRequest, response);
-      } catch (Exception e) {
-        log.error("Command handler returned exception {}", e);
-      }
-    }*/
   }
 
-  private void sendReply(EngineResponse response) {
+  private void sendReply(EngineResponse response, JmsEnvelope envelope, boolean isEngineRequest) {
 //    log.debug("Sending response: {}", response);
-    jmsSender.send(HokanModule.HokanIo.getQueueName(), "ENGINE_RESPONSE", response, false);
+    if (isEngineRequest) {
+      envelope.getMessageOut().addPayLoadObject("SERVICE_RESPONSE", response);
+    } else {
+      jmsSender.send(HokanModule.HokanIo.getQueueName(), "ENGINE_RESPONSE", response, false);
+    }
   }
 
-  private void executeHandler(IrcMessageEvent event, Cmd handler) {
+  private void executeHandler(IrcMessageEvent event, Cmd handler, JmsEnvelope envelope, boolean isEngineRequest) {
     EngineResponse response = new EngineResponse(event);
+    response.setIsEngineRequest(isEngineRequest);
+    response.setJmsEnvelope(envelope);
+
     InternalRequest internalRequest;
     internalRequest = context.getBean(InternalRequest.class);
     try {
