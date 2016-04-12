@@ -33,6 +33,7 @@ public enum PropertyName {
   PROP_SYS_SESSION_ID_WICKET("sys.SessionIdWicket"),
   PROP_SYS_SESSION_ID_VAADIN("sys.SessionIdVaadin"),
   PROP_SYS_TV_XML_DATA_WATCH_DIR("sys.TvXmlDataWatchDir"),
+  PROP_SYS_DO_WEB_COMMANDS("sys.DoWebCommands"),
 
   PROP_CHANNEL_DO_DAY_CHANGED("channel.DoDayChanged"),
   PROP_CHANNEL_DO_JOIN_MESSAGE("channel.DoJoinMessage"),

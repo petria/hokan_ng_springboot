@@ -28,7 +28,7 @@ public class ScriptCmd extends Cmd {
 
   public ScriptCmd() {
     setHelp("Executes JavaScript.");
-
+    setNoWeb(true);
 /*    UnflaggedOption opt = new UnflaggedOption(ARG_SCRIPT)
         .setRequired(true)
         .setGreedy(true);

@@ -11,6 +11,8 @@ import org.freakz.hokan_ng_springboot.bot.events.ServiceRequestType;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
 import org.freakz.hokan_ng_springboot.bot.jms.JmsMessage;
 import org.freakz.hokan_ng_springboot.bot.jms.api.JmsSender;
+import org.freakz.hokan_ng_springboot.bot.jpa.entity.PropertyName;
+import org.freakz.hokan_ng_springboot.bot.jpa.service.PropertyService;
 import org.freakz.hokan_ng_springboot.bot.models.LunchData;
 import org.freakz.hokan_ng_springboot.bot.models.LunchMenu;
 import org.freakz.hokan_ng_springboot.bot.service.lunch.LunchServiceImpl;
@@ -31,7 +33,7 @@ import javax.jms.ObjectMessage;
  */
 @Controller
 @Slf4j
-public class MessageController {
+public class ServicesWebController {
 
   @Autowired
   private JmsSender jmsSender;
@@ -39,6 +41,8 @@ public class MessageController {
   @Autowired
   private LunchServiceImpl lunchService;
 
+  @Autowired
+  PropertyService propertyService;
 
   @RequestMapping("/message")
   public String greeting(@RequestParam(value = "key", required = false) String key, Model model) {
@@ -70,22 +74,29 @@ public class MessageController {
   @RequestMapping("/command")
   public String command(@RequestParam(value = "line", required = true) String line, Model model) {
     log.debug("Handling line: {}", line);
-    String botName = "_Hokan_";
-    String networkName = "DevNET";
-    String channel = "@privmsg";
-    String sender = "webuser";
-    String login = "webuser";
-    String hostname = "webhost";
-    IrcMessageEvent ircMessageEvent = (IrcMessageEvent) IrcEventFactory.createIrcMessageEvent(botName, networkName, channel, sender, login, hostname, line);
-    ircMessageEvent.setPrivate(true);
-    ircMessageEvent.setWebMessage(true);
+    boolean doWebCommands = propertyService.getPropertyAsBoolean(PropertyName.PROP_SYS_DO_WEB_COMMANDS, false);
+    if (!doWebCommands) {
 
-    try {
-      String serviceResponse = doServicesRequest(ServiceRequestType.ENGINE_REQUEST, ircMessageEvent, "");
-      model.addAttribute("message", serviceResponse);
-      int foo = 0;
-    } catch (HokanException e) {
-      e.printStackTrace();
+      model.addAttribute("message", "doWebCommands = false");
+
+    } else {
+      String botName = "_Hokan_";
+      String networkName = "DevNET";
+      String channel = "@privmsg";
+      String sender = "webuser";
+      String login = "webuser";
+      String hostname = "webhost";
+      IrcMessageEvent ircMessageEvent = (IrcMessageEvent) IrcEventFactory.createIrcMessageEvent(botName, networkName, channel, sender, login, hostname, line);
+      ircMessageEvent.setPrivate(true);
+      ircMessageEvent.setWebMessage(true);
+
+      try {
+        String serviceResponse = doServicesRequest(ServiceRequestType.ENGINE_REQUEST, ircMessageEvent, "");
+        model.addAttribute("message", serviceResponse);
+        int foo = 0;
+      } catch (HokanException e) {
+        e.printStackTrace();
+      }
     }
     return "command";
   }
