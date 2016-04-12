@@ -17,12 +17,13 @@ public class IrcMessageEvent extends IrcEvent implements Serializable, Cloneable
   private boolean isPrivate;
   private boolean isToMe;
   private boolean isBotOp;
+  private boolean webMessage;
 
   private String outputPrefix;
   private String outputPostfix;
 
-	public byte[] getOriginal() {
-		return original;
+  public byte[] getOriginal() {
+    return original;
 	}
 
 	public void setOriginal(byte[] original) {
@@ -97,5 +98,13 @@ public class IrcMessageEvent extends IrcEvent implements Serializable, Cloneable
 
   public void setOutputPostfix(String outputPostfix) {
     this.outputPostfix = outputPostfix;
+  }
+
+  public boolean isWebMessage() {
+    return webMessage;
+  }
+
+  public void setWebMessage(boolean isWebMessage) {
+    this.webMessage = isWebMessage;
   }
 }

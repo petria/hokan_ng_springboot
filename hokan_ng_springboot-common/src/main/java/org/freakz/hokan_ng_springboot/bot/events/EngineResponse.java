@@ -118,14 +118,6 @@ public class EngineResponse implements Serializable {
     return isEngineRequest;
   }
 
-  public JmsEnvelope getJmsEnvelope() {
-    return jmsEnvelope;
-  }
-
-  public void setJmsEnvelope(JmsEnvelope jmsEnvelope) {
-    this.jmsEnvelope = jmsEnvelope;
-  }
-
   public void setIsEngineRequest(boolean isEngineRequest) {
     this.isEngineRequest = isEngineRequest;
   }

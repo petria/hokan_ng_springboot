@@ -58,8 +58,8 @@ public class JmsMessage implements Serializable {
     return response;
   }
 
-  public ServiceResponse getEngineResponse() {
-    ServiceResponse response = (ServiceResponse) getPayLoadObject("ENGINE_RESPONSE");
+  public String getEngineResponse() {
+    String response = (String) getPayLoadObject("ENGINE_RESPONSE");
     return response;
   }
 

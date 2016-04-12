@@ -140,4 +140,8 @@ public class ServiceResponse implements Serializable {
     return (ScriptResult) responseData.get(type.getResponseDataKey());
   }
 
+  public String getEngineResponse() {
+    return (String) responseData.get(type.getResponseDataKey());
+  }
+
 }

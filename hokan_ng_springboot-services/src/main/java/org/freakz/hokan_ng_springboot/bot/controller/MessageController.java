@@ -4,7 +4,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.enums.HokanModule;
 import org.freakz.hokan_ng_springboot.bot.enums.LunchDay;
 import org.freakz.hokan_ng_springboot.bot.enums.LunchPlace;
-import org.freakz.hokan_ng_springboot.bot.events.*;
+import org.freakz.hokan_ng_springboot.bot.events.IrcEventFactory;
+import org.freakz.hokan_ng_springboot.bot.events.IrcMessageEvent;
+import org.freakz.hokan_ng_springboot.bot.events.ServiceRequest;
+import org.freakz.hokan_ng_springboot.bot.events.ServiceRequestType;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
 import org.freakz.hokan_ng_springboot.bot.jms.JmsMessage;
 import org.freakz.hokan_ng_springboot.bot.jms.api.JmsSender;
@@ -67,27 +70,28 @@ public class MessageController {
   @RequestMapping("/command")
   public String command(@RequestParam(value = "line", required = true) String line, Model model) {
     log.debug("Handling line: {}", line);
-//    IrcMessageEvent ircMessageEvent = new IrcMessageEvent();
     String botName = "_Hokan_";
-    String networkName = "Network";
+    String networkName = "DevNET";
+    String channel = "@privmsg";
     String sender = "webuser";
     String login = "webuser";
     String hostname = "webhost";
-    IrcMessageEvent ircMessageEvent = (IrcMessageEvent) IrcEventFactory.createIrcMessageEvent(botName, networkName, "@webmsg", sender, login, hostname, line);
+    IrcMessageEvent ircMessageEvent = (IrcMessageEvent) IrcEventFactory.createIrcMessageEvent(botName, networkName, channel, sender, login, hostname, line);
     ircMessageEvent.setPrivate(true);
+    ircMessageEvent.setWebMessage(true);
 
     try {
-      ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.ENGINE_REQUEST, ircMessageEvent, "");
+      String serviceResponse = doServicesRequest(ServiceRequestType.ENGINE_REQUEST, ircMessageEvent, "");
+      model.addAttribute("message", serviceResponse);
       int foo = 0;
     } catch (HokanException e) {
       e.printStackTrace();
     }
-    model.addAttribute("message", "tfufufufuf");
     return "command";
   }
 
 
-  public ServiceResponse doServicesRequest(ServiceRequestType requestType, IrcMessageEvent ircEvent, Object... parameters) throws HokanException {
+  public String doServicesRequest(ServiceRequestType requestType, IrcMessageEvent ircEvent, Object... parameters) throws HokanException {
     ServiceRequest request = new ServiceRequest(requestType, ircEvent, new CommandArgs(ircEvent.getMessage()), parameters);
     ObjectMessage objectMessage = jmsSender.sendAndGetReply(HokanModule.HokanEngine.getQueueName(), "ENGINE_REQUEST", request, false);
     if (objectMessage == null) {
@@ -99,7 +103,7 @@ public class MessageController {
     } catch (JMSException e) {
       log.error("jms", e);
     }
-    return new ServiceResponse(requestType);
+    return "n/a";
 
   }
 

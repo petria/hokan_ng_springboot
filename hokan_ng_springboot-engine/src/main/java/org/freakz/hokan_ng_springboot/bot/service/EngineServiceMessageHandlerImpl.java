@@ -37,7 +37,6 @@ public class EngineServiceMessageHandlerImpl implements JmsServiceMessageHandler
   @Override
   public void handleJmsEnvelope(JmsEnvelope envelope) throws Exception {
     IrcMessageEvent event = (IrcMessageEvent) envelope.getMessageIn().getPayLoadObject("EVENT");
-//    log.debug("Handling event: {}", event);
     boolean isEngineRequest = false;
     if (event == null) {
 
@@ -53,7 +52,7 @@ public class EngineServiceMessageHandlerImpl implements JmsServiceMessageHandler
     if (matches.getMatches().size() > 0) {
       if (matches.getMatches().size() == 1) {
         Cmd handler = matches.getMatches().get(0);
-        executeHandler(event, handler, envelope, isEngineRequest);
+        executeHandler(event, handler, envelope);
       } else {
         EngineResponse response = new EngineResponse(event);
         String multiple = matches.getFirstWord() + " multiple matches: ";
@@ -61,27 +60,28 @@ public class EngineServiceMessageHandlerImpl implements JmsServiceMessageHandler
           multiple += match.getName() + " ";
         }
         response.addResponse(multiple);
-        sendReply(response, envelope, isEngineRequest);
+        sendReply(response, envelope);
       }
     }
   }
 
-  private void sendReply(EngineResponse response, JmsEnvelope envelope, boolean isEngineRequest) {
+  private void sendReply(EngineResponse response, JmsEnvelope envelope) {
 //    log.debug("Sending response: {}", response);
-    if (isEngineRequest) {
+    if (response.getIrcMessageEvent().isWebMessage()) {
       envelope.getMessageOut().addPayLoadObject("SERVICE_RESPONSE", response);
     } else {
       jmsSender.send(HokanModule.HokanIo.getQueueName(), "ENGINE_RESPONSE", response, false);
     }
   }
 
-  private void executeHandler(IrcMessageEvent event, Cmd handler, JmsEnvelope envelope, boolean isEngineRequest) {
+  private void executeHandler(IrcMessageEvent event, Cmd handler, JmsEnvelope envelope) {
     EngineResponse response = new EngineResponse(event);
-    response.setIsEngineRequest(isEngineRequest);
-    response.setJmsEnvelope(envelope);
+    response.setIsEngineRequest(event.isWebMessage());
+
 
     InternalRequest internalRequest;
     internalRequest = context.getBean(InternalRequest.class);
+    internalRequest.setJmsEnvelope(envelope);
     try {
       internalRequest.init(event);
       if (!event.isPrivate()) {
@@ -90,6 +90,14 @@ public class EngineServiceMessageHandlerImpl implements JmsServiceMessageHandler
         internalRequest.saveUserChannel();
       }
       handler.handleLine(internalRequest, response);
+/*      if (event.isWebMessage()) {
+        handler.handleLineSync(internalRequest, response);
+        ServiceResponse serviceResponse = new ServiceResponse(ServiceRequestType.ENGINE_REQUEST);
+        serviceResponse.setResponseData(ServiceRequestType.ENGINE_REQUEST.getResponseDataKey(), "Fufufuf");
+        envelope.getMessageOut().addPayLoadObject("ENGINE_RESPONSE", serviceResponse);
+      } else {
+        handler.handleLine(internalRequest, response);
+      }*/
     } catch (Exception e) {
       log.error("Command handler returned exception {}", e);
     }

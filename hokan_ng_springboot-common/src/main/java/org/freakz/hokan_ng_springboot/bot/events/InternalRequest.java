@@ -2,6 +2,7 @@ package org.freakz.hokan_ng_springboot.bot.events;
 
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
+import org.freakz.hokan_ng_springboot.bot.jms.JmsEnvelope;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.*;
 import org.freakz.hokan_ng_springboot.bot.jpa.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,7 @@ public class InternalRequest implements Serializable {
   private ChannelStats channelStats;
 
   private IrcMessageEvent ircMessageEvent;
+  private JmsEnvelope envelope;
 
   public InternalRequest() {
   }
@@ -109,4 +111,11 @@ public class InternalRequest implements Serializable {
     return channelStats;
   }
 
+  public void setJmsEnvelope(JmsEnvelope envelope) {
+    this.envelope = envelope;
+  }
+
+  public JmsEnvelope getJmsEnvelope() {
+    return envelope;
+  }
 }

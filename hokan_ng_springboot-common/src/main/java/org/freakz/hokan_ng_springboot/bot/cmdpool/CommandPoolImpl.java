@@ -78,7 +78,7 @@ public class CommandPoolImpl implements CommandPool, DisposableBean {
 	}
 
 	@Override
-	public void startSyncRunnable(CommandRunnable runnable, String startedBy, Object... args) {
+  public void startSyncRunnable(CommandRunnable runnable, String startedBy, Object args) {
     long pid = propertyService.getNextPid();
     CommandHistory history = createCommandHistory(pid, runnable, startedBy, args);
 		CommandRunner runner = new CommandRunner(pid, runnable, this, args, history);

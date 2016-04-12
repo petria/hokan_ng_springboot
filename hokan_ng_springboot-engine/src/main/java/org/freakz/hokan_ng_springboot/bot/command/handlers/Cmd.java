@@ -262,7 +262,7 @@ public abstract class Cmd implements HokanCommand, CommandRunnable {
     response.setCommandClass(this.getClass().toString());
     if (!checkAccess(request, response)) {
       log.debug("Access denied user: {} - command {}", request.getUser(), this);
-      sendReply(response);
+      sendReply(response, request.getJmsEnvelope());
       return;
     }
 
@@ -291,7 +291,7 @@ public abstract class Cmd implements HokanCommand, CommandRunnable {
       sb.append(buildSeeAlso(this));
 
       response.setResponseMessage(sb.toString());
-      sendReply(response);
+      sendReply(response, request.getJmsEnvelope());
     } else {
 
       boolean parseRes;
@@ -308,13 +308,18 @@ public abstract class Cmd implements HokanCommand, CommandRunnable {
 
       if (!parseRes) {
         response.setResponseMessage("Invalid arguments, usage: " + getName() + " " + jsap.getUsage());
-        sendReply(response);
+        sendReply(response, request.getJmsEnvelope());
       } else {
+
         ArgsWrapper wrapper = new ArgsWrapper();
         wrapper.request = request;
         wrapper.response = response;
         wrapper.results = results;
-        commandPool.startRunnable(this, request.getUser().getNick(), wrapper);
+        if (request.getIrcEvent().isWebMessage()) {
+          commandPool.startSyncRunnable(this, request.getUser().getNick(), wrapper);
+        } else {
+          commandPool.startRunnable(this, request.getUser().getNick(), wrapper);
+        }
       }
     }
   }
@@ -333,14 +338,14 @@ public abstract class Cmd implements HokanCommand, CommandRunnable {
       wrapper.response.setException(engineException);
       log.error("Command handler returned exception {}", e);
     }
-    sendReply(wrapper.response);
+    sendReply(wrapper.response, wrapper.request.getJmsEnvelope());
   }
 
-  private void sendReply(EngineResponse response) {
+  private void sendReply(EngineResponse response, JmsEnvelope envelope) {
 //    log.debug("Sending response: {}", response);
     if (response.isEngineRequest()) {
-      JmsEnvelope envelope = response.getJmsEnvelope();
-      envelope.getMessageOut().addPayLoadObject("ENGINE_RESPONSE", response);
+
+      envelope.getMessageOut().addPayLoadObject("ENGINE_RESPONSE", response.getResponseMessage());
     } else {
       jmsSender.send(HokanModule.HokanIo.getQueueName(), "ENGINE_RESPONSE", response, false);
     }
