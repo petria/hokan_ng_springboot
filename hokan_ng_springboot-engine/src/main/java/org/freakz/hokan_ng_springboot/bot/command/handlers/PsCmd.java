@@ -10,9 +10,6 @@ import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.CommandHistory;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.CommandStatus;
-import org.freakz.hokan_ng_springboot.bot.jpa.service.CommandHistoryService;
-import org.freakz.hokan_ng_springboot.bot.jpa.service.PropertyService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -33,16 +30,8 @@ import java.util.List;
 )
 public class PsCmd extends Cmd {
 
-  @Autowired
-  private PropertyService propertyService;
-
-  @Autowired
-  private CommandHistoryService commandHistoryService;
-
   public PsCmd() {
-    super();
     setHelp("Shows active processes running in Bot.");
-
   }
 
   @Override
