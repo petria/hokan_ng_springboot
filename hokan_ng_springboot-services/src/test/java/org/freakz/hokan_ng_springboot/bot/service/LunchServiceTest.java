@@ -67,7 +67,7 @@ public class LunchServiceTest {
 
   @Test
   public void testEnergiaKeidasIsUrlThisWeek() {
-    String url = "http://acloud.bukkake.fi/~petria/ruokalistat/Rlista vko 15 EN-16.doc";
+    String url = "http://acloud.bukkake.fi/~petria/ruokalistat/Rlista%20vko%2015%20EN-16.doc";
     EnergiaKeidasLunchPlaceHandler lunchRequestHandler = new EnergiaKeidasLunchPlaceHandler();
     int weekNow = 15;
     boolean b1 = lunchRequestHandler.isMenuThisWeek(url, weekNow);
