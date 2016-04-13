@@ -1,13 +1,15 @@
 package org.freakz.hokan_ng_springboot.bot.service;
 
-import static org.junit.Assert.assertEquals;
-
 import org.freakz.hokan_ng_springboot.bot.enums.LunchPlace;
 import org.freakz.hokan_ng_springboot.bot.models.LunchData;
 import org.freakz.hokan_ng_springboot.bot.service.lunch.LunchRequestHandler;
 import org.freakz.hokan_ng_springboot.bot.service.lunch.requesthandlers.*;
 import org.joda.time.DateTime;
 import org.junit.Test;
+
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * Created by Petri Airio on 25.1.2016.
@@ -54,6 +56,27 @@ public class LunchServiceTest {
     LunchData response = new LunchData();
     lunchRequestHandler.handleLunchPlace(LunchPlace.LOUNAS_INFO_ENERGIA_KEIDAS, response, DateTime.now());
     assertEquals(LunchPlace.LOUNAS_INFO_ENERGIA_KEIDAS, response.getLunchPlace());
+  }
+
+  @Test
+  public void testEnergiaKeidasMenuList() {
+    EnergiaKeidasLunchPlaceHandler lunchRequestHandler = new EnergiaKeidasLunchPlaceHandler();
+    List<String> menuLists = lunchRequestHandler.getWeeklyMenuUrls();
+    assertNotNull(menuLists);
+  }
+
+  @Test
+  public void testEnergiaKeidasIsUrlThisWeek() {
+    String url = "http://acloud.bukkake.fi/~petria/ruokalistat/Rlista vko 15 EN-16.doc";
+    EnergiaKeidasLunchPlaceHandler lunchRequestHandler = new EnergiaKeidasLunchPlaceHandler();
+    int weekNow = 15;
+    boolean b1 = lunchRequestHandler.isMenuThisWeek(url, weekNow);
+    assertTrue(b1);
+
+    int weekNotNow = 14;
+    boolean b2 = lunchRequestHandler.isMenuThisWeek(url, weekNotNow);
+    assertFalse(b2);
+
   }
 
 	@Test
