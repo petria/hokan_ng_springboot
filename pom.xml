@@ -35,12 +35,6 @@
         </developer>
     </developers>
 
-    <!--    <parent>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-parent</artifactId>
-            <version>1.2.8.RELEASE</version>
-            <relativePath/>
-        </parent> -->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -72,6 +66,7 @@
         <module>hokan_ng_springboot-engine</module>
         <module>hokan_ng_springboot-io</module>
         <module>hokan_ng_springboot-services</module>
+        <module>security-sample-managed</module>
         <!--        <module>hokan_ng_springboot-vaadin</module>
                 <module>hokan_ng_springboot-wicket</module> -->
     </modules>

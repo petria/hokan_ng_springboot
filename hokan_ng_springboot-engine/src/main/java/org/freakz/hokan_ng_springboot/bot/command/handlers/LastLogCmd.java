@@ -26,13 +26,13 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_LOG_PATT
 @HelpGroups(
     helpGroups = {HelpGroup.LOGS}
 )
-public class FindLogCmd extends Cmd {
+public class LastLogCmd extends Cmd {
 
   private static final int SHOW_MAX = 3;
 
-  public FindLogCmd() {
+  public LastLogCmd() {
     super();
-    setHelp("Finds rows matching logs.");
+    setHelp("Shows channel messages.");
 
     UnflaggedOption unflaggedOption = new UnflaggedOption(ARG_LOG_PATTERN)
         .setRequired(true)
