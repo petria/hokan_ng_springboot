@@ -502,7 +502,7 @@ public abstract class Cmd implements HokanCommand, CommandRunnable {
   }
 
   public void sendToUi(String text) {
-    ObjectMessage objectMessage = jmsSender.sendAndGetReply(HokanModule.HokanVaadin.getQueueName(), "TEXT", text, false);
+    ObjectMessage objectMessage = jmsSender.sendAndGetReply(HokanModule.HokanUi.getQueueName(), "TEXT", text, false);
 
   }
 

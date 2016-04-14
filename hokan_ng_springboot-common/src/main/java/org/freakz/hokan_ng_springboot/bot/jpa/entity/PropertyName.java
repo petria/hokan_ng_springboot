@@ -32,6 +32,7 @@ public enum PropertyName {
   PROP_SYS_SESSION_ID_SERVICES("sys.SessionIdServices"),
   PROP_SYS_SESSION_ID_WICKET("sys.SessionIdWicket"),
   PROP_SYS_SESSION_ID_VAADIN("sys.SessionIdVaadin"),
+  PROP_SYS_SESSION_ID_UI("sys.SessionIdUi"),
   PROP_SYS_TV_XML_DATA_WATCH_DIR("sys.TvXmlDataWatchDir"),
   PROP_SYS_DO_WEB_COMMANDS("sys.DoWebCommands"),
 

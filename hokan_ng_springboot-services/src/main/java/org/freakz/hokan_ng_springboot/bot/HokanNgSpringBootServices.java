@@ -10,8 +10,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.jms.ConnectionFactory;
@@ -22,8 +20,6 @@ import java.util.Map;
 @EnableJpaRepositories({"org.freakz.hokan_ng_springboot.bot"})
 @EnableAutoConfiguration
 @EnableTransactionManagement
-@EnableAsync
-@EnableScheduling
 @Slf4j
 public class HokanNgSpringBootServices {
 
