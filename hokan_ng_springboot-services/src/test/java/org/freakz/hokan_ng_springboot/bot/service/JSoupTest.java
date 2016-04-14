@@ -1,6 +1,7 @@
 package org.freakz.hokan_ng_springboot.bot.service;
 
 import org.freakz.hokan_ng_springboot.bot.util.StaticStrings;
+import org.joda.time.DateTime;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -13,6 +14,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by Petri Airio (petri.j.airio@gmail.com) on 1.9.2015.
@@ -102,5 +105,23 @@ public class JSoupTest {
     int foo = 0;
 
   }
+
+  @Test
+  public void testFBAlvarFetch() throws IOException {
+    String url = "http://fi-fi.facebook.com/Cafe-Alvar-278892385487649/";
+    Document doc = Jsoup.connect(url).get();
+    Elements test = doc.getElementsByClass("text_exposed_root");
+    DateTime now = DateTime.now();
+    String weekNow = now.getWeekOfWeekyear() + "";
+    boolean lunchFound = false;
+    for (Element element : test) {
+      String txt = element.text();
+      if (txt.toLowerCase().contains("louna") && txt.contains(weekNow)) {
+        lunchFound = true;
+      }
+    }
+    assertTrue(lunchFound);
+  }
+
 
 }

@@ -87,4 +87,12 @@ public class LunchServiceTest {
 		assertEquals(LunchPlace.LOUNAS_INFO_VESILINNA, response.getLunchPlace());
 	}
 
+  @Test
+  public void testAlvari() {
+    LunchRequestHandler lunchRequestHandler = new AlvariLunchPlaceHandler();
+    LunchData response = new LunchData();
+    lunchRequestHandler.handleLunchPlace(LunchPlace.LOUNAS_INFO_ALVARI, response, DateTime.now());
+    assertEquals(LunchPlace.LOUNAS_INFO_ALVARI, response.getLunchPlace());
+  }
+
 }

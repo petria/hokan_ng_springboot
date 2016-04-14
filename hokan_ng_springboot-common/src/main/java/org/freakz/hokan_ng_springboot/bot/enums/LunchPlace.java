@@ -6,6 +6,7 @@ package org.freakz.hokan_ng_springboot.bot.enums;
  */
 public enum LunchPlace {
 
+  LOUNAS_INFO_ALVARI("AlvariMuseo", "http://acloud.bukkake.fi/~petria/ruokalistat/ruoka.doc"),
   LOUNAS_INFO_ENERGIA_KEIDAS("EnergiaKeidas", "http://acloud.bukkake.fi/~petria/ruokalistat/ruoka.doc"),
   LOUNAS_INFO_HARMOONI("Harmooni", "https://www.harmooni.fi/ravintola/lounas/"),
   LOUNAS_INFO_HERKKUPISTE("Herkkupiste", "http://www.herkkupiste.fi/lounaslista.html"),
