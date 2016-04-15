@@ -3,4 +3,5 @@
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
     <logger name="com.vaadin.spring" level="DEBUG"/>
     <logger name="org.vaadin.spring" level="DEBUG"/>
+    <logger name="org.freakz" level="DEBUG"/>
 </configuration>

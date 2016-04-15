@@ -20,7 +20,7 @@ public class UiServiceMessageHandlerImpl implements JmsServiceMessageHandler {
   public void handleJmsEnvelope(JmsEnvelope envelope) throws Exception {
     log.debug("Got message: {}", envelope);
     ServiceRequest request = envelope.getMessageIn().getServiceRequest();
-    ServiceResponse response = new ServiceResponse(request.getType());
+    ServiceResponse response = new ServiceResponse(null);
     envelope.getMessageOut().addPayLoadObject("UI_RESPONSE", response);
   }
 

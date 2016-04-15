@@ -23,6 +23,8 @@ import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.themes.ValoTheme;
+import lombok.extern.slf4j.Slf4j;
+import org.freakz.hokan_ng_springboot.bot.service.UiServiceMessageHandlerImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.vaadin.spring.events.EventBus;
@@ -37,9 +39,10 @@ import org.vaadin.spring.security.util.SuccessfulLoginEvent;
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
+@Push
+@Slf4j
 @SpringUI
 @Theme(ValoTheme.THEME_NAME)
-@Push
 public class SingleSecuredUI extends UI {
 
   @Autowired
@@ -50,6 +53,11 @@ public class SingleSecuredUI extends UI {
 
   @Autowired
   EventBus.SessionEventBus eventBus;
+
+  @Autowired
+  public void setUiServiceMessageHandlerImpl(UiServiceMessageHandlerImpl uiServiceMessageHandler) {
+    log.debug("{}", uiServiceMessageHandler);
+  }
 
   @Override
   protected void init(VaadinRequest request) {
@@ -110,4 +118,5 @@ public class SingleSecuredUI extends UI {
       getPage().reload();
     }
   }
+
 }
