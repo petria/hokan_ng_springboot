@@ -22,8 +22,6 @@ import com.vaadin.server.SystemMessagesProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.freakz.hokan_ng_springboot.bot.enums.CommandLineArgs;
-import org.freakz.hokan_ng_springboot.bot.jpa.entity.User;
-import org.freakz.hokan_ng_springboot.bot.jpa.service.UserService;
 import org.freakz.hokan_ng_springboot.bot.util.CommandLineArgsParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -90,15 +88,12 @@ public class Application {
   static class AuthenticationConfiguration implements AuthenticationManagerConfigurer {
 
     @Autowired
-    protected UserService userService;
+    private HokanAuthenticationProvider hokanAuthenticationProvider;
 
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
-      User user = userService.findFirstByNick("_Pete_");
-      auth.inMemoryAuthentication()
-          .withUser("user").password("user").roles("USER")
-          .and()
-          .withUser("admin").password("admin").roles("ADMIN");
+      auth.userDetailsService(this.hokanAuthenticationProvider);
+      auth.authenticationProvider(this.hokanAuthenticationProvider);
     }
   }
 }
