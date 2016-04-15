@@ -53,7 +53,7 @@ public class SingleSecuredUI extends UI {
 
   @Override
   protected void init(VaadinRequest request) {
-    getPage().setTitle("Vaadin Managed Security Demo");
+    getPage().setTitle("Hokan");
     // Let's register a custom error handler to make the 'access denied' messages a bit friendlier.
     setErrorHandler(new DefaultErrorHandler() {
       @Override
