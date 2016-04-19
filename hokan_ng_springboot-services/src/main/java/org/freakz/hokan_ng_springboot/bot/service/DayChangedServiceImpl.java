@@ -197,7 +197,7 @@ public class DayChangedServiceImpl implements DayChangedService, CommandRunnable
         continue;
       }
       String sunrise = value2.text();
-      ret += String.format("%s: %s", place, sunrise);
+      ret += String.format("%s: Sunrise at %s", place, sunrise);
     }
     return ret;
   }
