@@ -54,9 +54,13 @@ public class SingleSecuredUI extends UI {
   @Autowired
   EventBus.SessionEventBus eventBus;
 
+  UiServiceMessageHandlerImpl uiServiceMessageHandler;
+
   @Autowired
   public void setUiServiceMessageHandlerImpl(UiServiceMessageHandlerImpl uiServiceMessageHandler) {
-    log.debug("{}", uiServiceMessageHandler);
+    log.debug("UiServiceMessageHandlerImpl: {}", uiServiceMessageHandler);
+    this.uiServiceMessageHandler = uiServiceMessageHandler;
+    uiServiceMessageHandler.setUI(this);
   }
 
   @Override
