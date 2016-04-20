@@ -31,7 +31,7 @@ public class TestCmd extends Cmd {
   @Override
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
     String text = results.getString(ARG_TEXT);
-    sendToUi(text);
+    sendToUi(String.format("%s->%s", request.getUser().getNick(), text));
     response.addResponse("Sent: %s", text);
   }
 

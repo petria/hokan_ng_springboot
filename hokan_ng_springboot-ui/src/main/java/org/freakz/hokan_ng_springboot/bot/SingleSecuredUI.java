@@ -54,17 +54,13 @@ public class SingleSecuredUI extends UI {
   @Autowired
   EventBus.SessionEventBus eventBus;
 
-  UiServiceMessageHandlerImpl uiServiceMessageHandler;
-
   @Autowired
-  public void setUiServiceMessageHandlerImpl(UiServiceMessageHandlerImpl uiServiceMessageHandler) {
-    log.debug("UiServiceMessageHandlerImpl: {}", uiServiceMessageHandler);
-    this.uiServiceMessageHandler = uiServiceMessageHandler;
-    uiServiceMessageHandler.setUI(this);
-  }
+  UiServiceMessageHandlerImpl uiServiceMessageHandler;
 
   @Override
   protected void init(VaadinRequest request) {
+    uiServiceMessageHandler.setUI(this);
+
     getPage().setTitle("Hokan");
     // Let's register a custom error handler to make the 'access denied' messages a bit friendlier.
     setErrorHandler(new DefaultErrorHandler() {
