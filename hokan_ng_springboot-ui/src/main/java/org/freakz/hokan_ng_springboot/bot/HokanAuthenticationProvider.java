@@ -117,7 +117,7 @@ public class HokanAuthenticationProvider implements AuthenticationProvider, User
 
     @Override
     public boolean isAccountNonExpired() {
-      return false;
+      return true;
     }
 
     @Override
@@ -127,7 +127,7 @@ public class HokanAuthenticationProvider implements AuthenticationProvider, User
 
     @Override
     public boolean isCredentialsNonExpired() {
-      return false;
+      return true;
     }
 
     @Override
