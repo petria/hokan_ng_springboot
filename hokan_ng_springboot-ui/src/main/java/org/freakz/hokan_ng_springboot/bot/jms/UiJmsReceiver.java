@@ -1,15 +1,19 @@
 package org.freakz.hokan_ng_springboot.bot.jms;
 
 import lombok.extern.slf4j.Slf4j;
+import org.freakz.hokan_ng_springboot.bot.enums.HokanModule;
 import org.freakz.hokan_ng_springboot.bot.jms.api.JmsSender;
 import org.freakz.hokan_ng_springboot.bot.jms.api.JmsServiceMessageHandler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /**
  * Created by petria on 5.2.2015.
+ * -
  */
 @Component
+@Scope
 @Slf4j
 public class UiJmsReceiver extends SpringJmsReceiver {
 
@@ -19,12 +23,10 @@ public class UiJmsReceiver extends SpringJmsReceiver {
   @Autowired
   private JmsServiceMessageHandler jmsServiceMessageHandler;
 
-
   @Override
   public String getDestinationName() {
-    return "HokanNGUiQueue";
+    return HokanModule.HokanUi.getQueueName();
   }
-
 
   @Override
   public void handleJmsEnvelope(JmsEnvelope envelope) throws Exception {
