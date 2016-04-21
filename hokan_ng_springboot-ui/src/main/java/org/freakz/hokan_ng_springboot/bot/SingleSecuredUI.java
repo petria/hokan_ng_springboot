@@ -43,7 +43,7 @@ import org.vaadin.spring.security.util.SuccessfulLoginEvent;
 @Slf4j
 @SpringUI
 @Theme(ValoTheme.THEME_NAME)
-public class SingleSecuredUI extends UI {
+public class SingleSecuredUI extends UI implements UiServiceMessageHandlerImpl.BroadcastListener {
 
   @Autowired
   ApplicationContext applicationContext;
@@ -59,7 +59,8 @@ public class SingleSecuredUI extends UI {
 
   @Override
   protected void init(VaadinRequest request) {
-    uiServiceMessageHandler.setUI(this);
+
+    uiServiceMessageHandler.register(this);
 
     getPage().setTitle("Hokan");
     // Let's register a custom error handler to make the 'access denied' messages a bit friendlier.
@@ -89,6 +90,7 @@ public class SingleSecuredUI extends UI {
   @Override
   public void detach() {
     eventBus.unsubscribe(this);
+    uiServiceMessageHandler.unregister(this);
     super.detach();
   }
 
@@ -119,4 +121,15 @@ public class SingleSecuredUI extends UI {
     }
   }
 
+  @Override
+  public void receiveBroadcast(String message) {
+    access(new Runnable() {
+      @Override
+      public void run() {
+        Notification n = new Notification("Message received",
+            message, Notification.Type.TRAY_NOTIFICATION);
+        n.show(getPage());
+      }
+    });
+  }
 }
