@@ -126,7 +126,7 @@ public class SingleSecuredUI extends UI implements UiServiceMessageHandlerImpl.B
     access(new Runnable() {
       @Override
       public void run() {
-        Notification n = new Notification("Message received",
+        Notification n = new Notification("IRC message",
             message, Notification.Type.TRAY_NOTIFICATION);
         n.show(getPage());
       }
