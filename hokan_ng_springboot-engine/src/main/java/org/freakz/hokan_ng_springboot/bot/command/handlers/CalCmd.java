@@ -27,7 +27,7 @@ import org.springframework.stereotype.Component;
 public class CalCmd extends Cmd {
 
   public CalCmd() {
-    setHelp("Shows calendar.");
+    setHelp("Shows the Calendar of current month.");
   }
 
   @Override

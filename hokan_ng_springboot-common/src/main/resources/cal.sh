@@ -1,2 +1,2 @@
 #!/bin/sh
-cal $@
+cal -h $@

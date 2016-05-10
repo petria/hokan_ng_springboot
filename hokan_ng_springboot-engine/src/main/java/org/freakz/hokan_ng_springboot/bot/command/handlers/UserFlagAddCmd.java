@@ -25,9 +25,9 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.*;
 @HelpGroups(
     helpGroups = {HelpGroup.ACCESS_CONTROL, HelpGroup.USERS}
 )
-public class UserFlagSetCmd extends Cmd {
+public class UserFlagAddCmd extends Cmd {
 
-  public UserFlagSetCmd() {
+  public UserFlagAddCmd() {
 
     setHelp("Modifies user flags.");
     setHelpWikiUrl("https://github.com/petria/hokan_ng_springboot/wiki/UserFlags");
@@ -38,11 +38,6 @@ public class UserFlagSetCmd extends Cmd {
     registerParameter(unflaggedOption);
 
     unflaggedOption = new UnflaggedOption(ARG_FLAGS)
-        .setRequired(false)
-        .setGreedy(false);
-    registerParameter(unflaggedOption);
-
-    unflaggedOption = new UnflaggedOption(ARG_ADD_OR_DEL)
         .setRequired(false)
         .setGreedy(false);
     registerParameter(unflaggedOption);
