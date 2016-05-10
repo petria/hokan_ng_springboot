@@ -24,7 +24,8 @@ public enum HelpGroup {
   TV("TV", ""),
   UPDATERS("Updaters", ""),
   USERS("Users", ""),
-  URLS("Urls", "");
+  URLS("Urls", ""),
+  UTILITY("Utility", "");
 
   private String groupName;
   private String groupExplanation;

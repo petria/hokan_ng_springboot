@@ -30,4 +30,14 @@ public class SystemScriptResult implements Serializable {
   public void setFormattedOutput(String formattedOutput) {
     this.formattedOutput = formattedOutput;
   }
+
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    for (String line : originalOutput) {
+      sb.append(line).append("\n");
+    }
+    return sb.toString();
+  }
+
 }
