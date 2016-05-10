@@ -6,7 +6,8 @@ package org.freakz.hokan_ng_springboot.bot.service;
  */
 public enum SystemScript {
 
-	FILE_SCRIPT("/file.sh", "/file.bat"),
+  CAL_SCRIPT("/cal.sh", "/cal.bat"),
+  FILE_SCRIPT("/file.sh", "/file.bat"),
   HOST_INFO_SCRIPT("/hostinfo.sh", "/hostinfo.bat"),
   UPTIME_SCRIPT("/uptime.sh", "/uptime.bat");
 
