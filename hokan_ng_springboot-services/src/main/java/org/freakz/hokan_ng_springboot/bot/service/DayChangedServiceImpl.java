@@ -92,7 +92,7 @@ public class DayChangedServiceImpl implements DayChangedService, CommandRunnable
         countTotal += statsData.getWords();
         i++;
       }
-      res += " - Words count = " + countTotal;
+      res += " - Word count = " + countTotal;
       return res;
     } else {
       log.warn("Could not create stats notify request!");
@@ -186,9 +186,6 @@ public class DayChangedServiceImpl implements DayChangedService, CommandRunnable
       } else {
         ret += "\n";
       }
-
-//      Elements value = doc.getElementsByAttributeValue("class", "local-weather-main-title");
-//      String place = value.get(0).text();
       Elements elements1 = doc.getElementsByAttributeValue("class", "col-xs-12");
       String place = elements1.get(1).text().split(" ")[2];
       ret += place + ": ";
@@ -196,18 +193,6 @@ public class DayChangedServiceImpl implements DayChangedService, CommandRunnable
       Elements elementsT = doc.getElementsByAttributeValue("class", "celestial-status-text");
       String tt = elementsT.get(1).text();
       ret += tt;
-
-/*      Elements elements2 = doc.getElementsByAttributeValue("class", "sunrise");
-      if (elements2.size() > 0) {
-        String sunrise = elements2.text();
-        ret += String.format(" Sunrise at %s", sunrise);
-      }
-      Elements elements3 = doc.getElementsByAttributeValue("class", "sunset");
-      if (elements3.size() > 0) {
-        String sunset = elements3.text();
-        ret += String.format(" Sunset at %s", sunset);
-      }*/
-
     }
     return ret;
   }
@@ -251,7 +236,7 @@ public class DayChangedServiceImpl implements DayChangedService, CommandRunnable
       Long count = (Long) counter[1];
       countTotal += count;
     }
-    ret += " - Urls count = " + countTotal;
+    ret += " - Url count = " + countTotal;
 
     return ret;
   }
