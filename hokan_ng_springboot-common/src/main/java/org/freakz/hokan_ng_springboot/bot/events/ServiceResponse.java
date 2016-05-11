@@ -144,4 +144,7 @@ public class ServiceResponse implements Serializable {
     return (String) responseData.get(type.getResponseDataKey());
   }
 
+  public String getSunRiseResponse() {
+    return (String) responseData.get(type.getResponseDataKey());
+  }
 }

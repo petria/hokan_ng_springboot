@@ -169,7 +169,7 @@ public class DayChangedServiceImpl implements DayChangedService, CommandRunnable
   }
 
 
-  private String getSunriseTexts(List<String> sunRisesCities) {
+  public String getSunriseTexts(List<String> sunRisesCities) {
     String ret = null;
     String baseUrl = "http://en.ilmatieteenlaitos.fi/weather/";
 
@@ -186,18 +186,28 @@ public class DayChangedServiceImpl implements DayChangedService, CommandRunnable
       } else {
         ret += "\n";
       }
+
 //      Elements value = doc.getElementsByAttributeValue("class", "local-weather-main-title");
 //      String place = value.get(0).text();
-      Elements value = doc.getElementsByAttributeValue("class", "col-xs-12");
-      String place = value.get(1).text().split(" ")[2];
+      Elements elements1 = doc.getElementsByAttributeValue("class", "col-xs-12");
+      String place = elements1.get(1).text().split(" ")[2];
+      ret += place + ": ";
 
+      Elements elementsT = doc.getElementsByAttributeValue("class", "celestial-status-text");
+      String tt = elementsT.get(1).text();
+      ret += tt;
 
-      Elements value2 = doc.getElementsByAttributeValue("class", "sunrise");
-      if (value2.size() == 0) {
-        continue;
+/*      Elements elements2 = doc.getElementsByAttributeValue("class", "sunrise");
+      if (elements2.size() > 0) {
+        String sunrise = elements2.text();
+        ret += String.format(" Sunrise at %s", sunrise);
       }
-      String sunrise = value2.text();
-      ret += String.format("%s: Sunrise at %s", place, sunrise);
+      Elements elements3 = doc.getElementsByAttributeValue("class", "sunset");
+      if (elements3.size() > 0) {
+        String sunset = elements3.text();
+        ret += String.format(" Sunset at %s", sunset);
+      }*/
+
     }
     return ret;
   }
