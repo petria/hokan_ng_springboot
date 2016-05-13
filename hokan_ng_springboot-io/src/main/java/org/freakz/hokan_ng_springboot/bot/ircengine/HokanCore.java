@@ -1,11 +1,6 @@
 package org.freakz.hokan_ng_springboot.bot.ircengine;
 
-import java.lang.reflect.Method;
-import java.util.*;
-import java.util.regex.Pattern;
-
 import lombok.extern.slf4j.Slf4j;
-
 import org.freakz.hokan_ng_springboot.bot.core.HokanCoreService;
 import org.freakz.hokan_ng_springboot.bot.events.*;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
@@ -23,6 +18,10 @@ import org.jibble.pircbot.PircBotUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+
+import java.lang.reflect.Method;
+import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * Created by AirioP on 17.2.2015.
@@ -730,6 +729,18 @@ public class HokanCore extends PircBot implements HokanCoreService {
     if (postfix == null) {
       postfix = "";
     }
+    boolean bbMode = channelPropertyService.getChannelPropertyAsBoolean(ch, PropertyName.PROP_CHANNEL_BB_MODE, false);
+    if (bbMode) {
+      int rnd = 1 + (int) (Math.random() * 100);
+      if (rnd > 75) {
+        prefix = "yo, " + prefix;
+      }
+      int rnd2 = 1 + (int) (Math.random() * 100);
+      if (rnd2 > 75) {
+        postfix = postfix + ", bitch";
+      }
+    }
+
     Network nw = getNetwork();
     ChannelStats stats = getChannelStats(ch);
 
