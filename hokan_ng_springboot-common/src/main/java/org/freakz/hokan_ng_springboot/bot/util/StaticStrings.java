@@ -55,6 +55,7 @@ public class StaticStrings {
   public static final String ARG_TO = "To";
   public static final String ARG_TOPIC = "Topic";
   public static final String ARG_UPDATER = "Updater";
+  public static final String ARG_UPDATER_NAME = "UpdaterName";
   public static final String ARG_URL = "Url";
   public static final String ARG_URL_PATTERN = "UrlPattern";
   public static final String ARG_VERBOSE = "Verbose";

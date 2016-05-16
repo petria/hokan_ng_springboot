@@ -9,6 +9,8 @@ import org.freakz.hokan_ng_springboot.bot.util.StringStuff;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
+
 /**
  * Created by Petri Airio on 23.3.2015.
  *
@@ -100,4 +102,18 @@ public class AccessControlServiceImpl implements AccessControlService {
     return user.getUserFlagsSet().contains(flag);
   }
 
+  @Override
+  public void addUserFlags(User user2, Set<UserFlag> flagSet) {
+    User user = userService.findById(user2.getId());
+    if (user == null) {
+      log.debug("User not found: {}", user2);
+      return;
+    }
+    user.setFlags("");
+  }
+
+  @Override
+  public void removeUserFlags(User user, Set<UserFlag> flagSet) {
+
+  }
 }
