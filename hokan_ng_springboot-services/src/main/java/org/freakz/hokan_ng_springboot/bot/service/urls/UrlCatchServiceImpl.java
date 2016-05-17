@@ -17,6 +17,7 @@ import org.freakz.hokan_ng_springboot.bot.jpa.service.NetworkService;
 import org.freakz.hokan_ng_springboot.bot.util.StaticStrings;
 import org.freakz.hokan_ng_springboot.bot.util.StringStuff;
 import org.jsoup.Jsoup;
+import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
@@ -124,8 +125,12 @@ public class UrlCatchServiceImpl implements UrlCatchService {
       log.error("Can't get title for: {}", url);
       return;
     }
-    String title = doc.getElementsByTag("title").get(0).text();
-    title = title.replaceAll("\n|\t", "");
+    Elements titleElements = doc.getElementsByTag("title");
+    String title = null;
+    if (titleElements.size() > 0) {
+      title = titleElements.get(0).text();
+      title = title.replaceAll("\n|\t", "");
+    }
     if (title != null) {
       title = StringStuff.htmlEntitiesToText(title);
       title = title.replaceAll("\t", "");
