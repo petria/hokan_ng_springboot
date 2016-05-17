@@ -49,7 +49,7 @@ public class UpdaterInfoCmd extends Cmd {
       if (model.getName().matches(updateName)) {
         txt += String.format("Name                : %s\n", model.getName());
         txt += String.format("Last update         : %s\n", model.getLastUpdate() + "");
-        txt += String.format("Next update         : %s\n", model.getLastUpdate() + "");
+        txt += String.format("Next update         : %s\n", model.getNextUpdate() + "");
         txt += String.format("Last update runtime : %s\n", model.getLastUpdateRuntime());
         txt += String.format("Total runtime       : %s", model.getTotalUpdateRuntime());
         found = true;

@@ -470,10 +470,6 @@ public class HokanCore extends PircBot implements HokanCoreService {
       channelStats.setChannel(ch);
     }
 
-    channelStats.setLastActive(new Date());
-    channelStats.setLastMessage(ircEvent.getMessage());
-    channelStats.setLastWriter(ircEvent.getSender());
-    channelStats.addToLinesReceived(1);
 
     String lastWriter = channelStats.getLastWriter();
     if (lastWriter != null && lastWriter.equalsIgnoreCase(sender)) {
@@ -487,6 +483,11 @@ public class HokanCore extends PircBot implements HokanCoreService {
     } else {
       channelStats.setLastWriterSpree(1);
     }
+
+    channelStats.setLastActive(new Date());
+    channelStats.setLastMessage(ircEvent.getMessage());
+    channelStats.setLastWriter(ircEvent.getSender());
+    channelStats.addToLinesReceived(1);
 
     channelStatsService.save(channelStats);
 

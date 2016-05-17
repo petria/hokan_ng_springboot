@@ -53,16 +53,6 @@ public abstract class Updater implements DataUpdater, CommandRunnable {
     return lastUpdate;
   }
 
-/*  @Override
-  public Calendar calculateNextUpdate() {
-    if (status != UpdaterStatus.HOST_OS_NOT_SUPPORTED) {
-
-    }
-    Calendar cal = new GregorianCalendar();
-    cal.add(Calendar.MINUTE, 5);
-    return cal;
-  }*/
-
   @Override
   public void updateData(CommandPool commandPool) {
     commandPool.startRunnable(this, "<system>");
@@ -74,7 +64,7 @@ public abstract class Updater implements DataUpdater, CommandRunnable {
       status = UpdaterStatus.UPDATING;
       long startTime = System.currentTimeMillis();
       doUpdateData();
-      long duration = (startTime - System.currentTimeMillis()) / 1000;
+      long duration = (System.currentTimeMillis() - startTime) / 1000;
       this.lastUpdateRuntime = duration;
       this.totalUpdateRuntime += duration;
       nextUpdate = calculateNextUpdate();
