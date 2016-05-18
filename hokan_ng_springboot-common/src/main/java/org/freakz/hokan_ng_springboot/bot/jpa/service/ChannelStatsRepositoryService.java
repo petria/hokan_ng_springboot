@@ -25,7 +25,14 @@ public class ChannelStatsRepositoryService implements ChannelStatsService {
 
   @Override
   public ChannelStats save(ChannelStats channelStats) {
-    return repository.save(channelStats);
+    try {
+      ChannelStats saved = repository.save(channelStats);
+      return saved;
+    } catch (Exception e) {
+      log.error("Save failed...", e);
+      log.error("... Failed entity: {}", channelStats.toString());
+    }
+    return channelStats;
   }
 
 }

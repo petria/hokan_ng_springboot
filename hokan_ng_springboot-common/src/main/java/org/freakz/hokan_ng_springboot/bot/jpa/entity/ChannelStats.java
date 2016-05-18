@@ -72,6 +72,15 @@ public class ChannelStats {
   @Column(name = "TOPIC_SET_DATE")
   private Date topicSetDate;
 
+  @Override
+  public String toString() {
+    String ret = "";
+    ret += String.format("ID: %d\n", this.id);
+    ret += String.format("%s\n", this.lastMessage);
+    ret += String.format("%s\n", this.lastWriter);
+    return ret;
+  }
+
   public ChannelStats() {
     Date d = new Date();
     this.firstJoined = d;
