@@ -124,7 +124,7 @@ public class StringStuff {
     return l;
   }
 
-  private static Map<String, StringBuilder> quoteCache = new HashMap<String, StringBuilder>();
+  private static Map<String, StringBuilder> quoteCache = new HashMap<>();
 
   public static String quoteRegExp(String l) {
     StringBuilder sb = quoteCache.get(l);
@@ -315,7 +315,7 @@ public class StringStuff {
     try {
       MessageDigest md = MessageDigest.getInstance("MD5");
       byte[] bytes = md.digest(s.getBytes());
-      StringBuffer hexString = new StringBuffer();
+      StringBuilder hexString = new StringBuilder();
 
       for (byte aByte : bytes) {
         String val = Integer.toHexString(0xFF & aByte);
@@ -391,25 +391,6 @@ public class StringStuff {
     return str;
   }
 
-  /**
-   * Removes HTML tags from the String
-   *
-   * @param htmlString the String to strip from HTML tags
-   * @return String without HTML tags
-   * @throws java.io.IOException
-   */
-/*  public static String removeHTMLTags(String htmlString) throws IOException {
-    StringBuilder sb = new StringBuilder();
-    HtmlStreamTokenizer hst = new HtmlStreamTokenizer(new StringReader(htmlString));
-    while (hst.nextToken() != HtmlStreamTokenizer.TT_EOF) {
-      int ttype = hst.getTokenType();
-      if (ttype == HtmlStreamTokenizer.TT_TEXT) {
-        sb.append(hst.getStringValue());
-      }
-    }
-    return sb.toString();
-  }*/
-
   private final static String[] entityTable = {
       "&Auml;", "Ä",
       "%C3%84", "Ä",
@@ -448,7 +429,7 @@ public class StringStuff {
 
   public static String htmlEntityDecode(String s) {
 
-    int i = 0, j = 0, pos = 0;
+    int i, j, pos = 0;
     StringBuilder sb = new StringBuilder();
     while ((i = s.indexOf("&#", pos)) != -1 && (j = s.indexOf(';', i)) != -1) {
       int n = -1;
@@ -527,7 +508,7 @@ public class StringStuff {
   }
 
   public static String randomizeString(String s) {
-    List<Character> chars = new ArrayList<Character>();
+    List<Character> chars = new ArrayList<>();
     for (int i = 0; i < s.length(); i++) {
       chars.add(s.charAt(i));
     }
@@ -698,7 +679,7 @@ public class StringStuff {
       MessageDigest messageDigest = MessageDigest.getInstance("SHA-1");
       byte[] digest = messageDigest.digest(password.getBytes("UTF-8"));
       byte[] bytes = messageDigest.digest(password.getBytes());
-      StringBuffer hexString = new StringBuffer();
+      StringBuilder hexString = new StringBuilder();
 
       for (byte aByte : bytes) {
         String val = Integer.toHexString(0xFF & aByte);
