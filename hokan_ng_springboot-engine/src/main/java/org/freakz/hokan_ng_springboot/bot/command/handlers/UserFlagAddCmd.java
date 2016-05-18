@@ -34,9 +34,10 @@ public class UserFlagAddCmd extends Cmd {
 
     setHelp("Modifies user flags.");
     setHelpWikiUrl("https://github.com/petria/hokan_ng_springboot/wiki/UserFlags");
+    setAdminUserOnly(true);
 
     UnflaggedOption unflaggedOption = new UnflaggedOption(ARG_NICK)
-        .setRequired(false)
+        .setRequired(true)
         .setGreedy(false);
     registerParameter(unflaggedOption);
 
@@ -50,21 +51,12 @@ public class UserFlagAddCmd extends Cmd {
   @Override
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
     String target = results.getString(ARG_NICK, null);
-    if (target == null) {
-      response.addResponse("UserFlags: %s", UserFlag.getStringFromAllUserFlags());
-      return;
-    }
 
     User user;
     if (target.equals("me")) {
       user = request.getUser();
     } else {
-      if (accessControlService.isAdminUser(request.getUser())) {
-        user = userService.findFirstByNick(target);
-      } else {
-        response.addResponse("Only Admins can modify others data!");
-        return;
-      }
+      user = userService.findFirstByNick(target);
     }
     if (user == null) {
       response.addResponse("No User found with: " + target);
@@ -81,7 +73,8 @@ public class UserFlagAddCmd extends Cmd {
       response.addResponse("No flags: " + flagsStr);
       return;
     }
-
+    accessControlService.addUserFlags(user, flags);
+    response.addResponse("%s flags now: %s", user.getNick(), UserFlag.getStringFromFlagSet(flags));
   }
 
 }
