@@ -32,7 +32,7 @@ public class UserFlagAddCmd extends Cmd {
 
   public UserFlagAddCmd() {
 
-    setHelp("Modifies user flags.");
+    setHelp("Adds user flags.");
     setHelpWikiUrl("https://github.com/petria/hokan_ng_springboot/wiki/UserFlags");
     setAdminUserOnly(true);
 
@@ -73,8 +73,8 @@ public class UserFlagAddCmd extends Cmd {
       response.addResponse("No flags: " + flagsStr);
       return;
     }
-    accessControlService.addUserFlags(user, flags);
-    response.addResponse("%s flags now: %s", user.getNick(), UserFlag.getStringFromFlagSet(flags));
+    user = accessControlService.addUserFlags(user, flags);
+    response.addResponse("%s flags now: %s", user.getNick(), UserFlag.getStringFromFlagSet(user.getUserFlagsSet()));
   }
 
 }

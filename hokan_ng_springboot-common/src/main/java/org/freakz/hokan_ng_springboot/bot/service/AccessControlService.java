@@ -26,8 +26,8 @@ public interface AccessControlService {
 
   boolean hasUserFlag(User user, UserFlag flag);
 
-  void addUserFlags(User user, Set<UserFlag> flagSet);
+  User addUserFlags(User user, Set<UserFlag> flagSet);
 
-  void removeUserFlags(User user, Set<UserFlag> flagSet);
+  User removeUserFlags(User user, Set<UserFlag> flagSet);
 
 }

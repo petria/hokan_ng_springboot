@@ -13,7 +13,10 @@ import org.freakz.hokan_ng_springboot.bot.jpa.entity.UserFlag;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.*;
+import java.util.Set;
+
+import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_FLAGS;
+import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_NICK;
 
 /**
  * Created by Petri Airio on 24.2.2016.
@@ -29,20 +32,16 @@ public class UserFlagDelCmd extends Cmd {
 
   public UserFlagDelCmd() {
 
-    setHelp("Modifies user flags.");
+    setHelp("Removes User Flags.");
     setHelpWikiUrl("https://github.com/petria/hokan_ng_springboot/wiki/UserFlags");
+    setAdminUserOnly(true);
 
     UnflaggedOption unflaggedOption = new UnflaggedOption(ARG_NICK)
-        .setRequired(false)
+        .setRequired(true)
         .setGreedy(false);
     registerParameter(unflaggedOption);
 
     unflaggedOption = new UnflaggedOption(ARG_FLAGS)
-        .setRequired(false)
-        .setGreedy(false);
-    registerParameter(unflaggedOption);
-
-    unflaggedOption = new UnflaggedOption(ARG_ADD_OR_DEL)
         .setRequired(false)
         .setGreedy(false);
     registerParameter(unflaggedOption);
@@ -52,21 +51,12 @@ public class UserFlagDelCmd extends Cmd {
   @Override
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
     String target = results.getString(ARG_NICK, null);
-    if (target == null) {
-      response.addResponse("UserFlags: %s", UserFlag.getStringFromAllUserFlags());
-      return;
-    }
 
     User user;
     if (target.equals("me")) {
       user = request.getUser();
     } else {
-      if (accessControlService.isAdminUser(request.getUser())) {
-        user = userService.findFirstByNick(target);
-      } else {
-        response.addResponse("Only Admins can modify others data!");
-        return;
-      }
+      user = userService.findFirstByNick(target);
     }
     if (user == null) {
       response.addResponse("No User found with: " + target);
@@ -78,16 +68,14 @@ public class UserFlagDelCmd extends Cmd {
       response.addResponse("%s UserFlags: %s", user.getNick(), UserFlag.getStringFromFlagSet(user));
       return;
     }
-
-    if (flagsStr.startsWith("+")) {
-      response.addResponse("fuffu +");
-
-    } else if (flagsStr.startsWith("-")) {
-      response.addResponse("fufuffu -");
-
-    } else {
-      response.addResponse("'%s' flag string must start with - or +", flagsStr);
+    Set<UserFlag> flags = UserFlag.getFlagSetFromString(flagsStr);
+    if (flags.size() == 0) {
+      response.addResponse("No flags: " + flagsStr);
+      return;
     }
+    user = accessControlService.removeUserFlags(user, flags);
+    response.addResponse("%s flags now: %s", user.getNick(), UserFlag.getStringFromFlagSet(user.getUserFlagsSet()));
+
   }
 
 }

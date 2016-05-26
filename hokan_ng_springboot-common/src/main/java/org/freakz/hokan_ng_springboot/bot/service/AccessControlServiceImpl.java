@@ -103,17 +103,39 @@ public class AccessControlServiceImpl implements AccessControlService {
   }
 
   @Override
-  public void addUserFlags(User user2, Set<UserFlag> flagSet) {
+  public User addUserFlags(User user2, Set<UserFlag> flagSet) {
     User user = userService.findById(user2.getId());
     if (user == null) {
       log.debug("User not found: {}", user2);
-      return;
+      return user;
     }
-    user.setFlags("");
+    Set<UserFlag> oldFlagSet = user.getUserFlagsSet();
+    for (UserFlag flag : flagSet) {
+      if (!oldFlagSet.contains(flag)) {
+        oldFlagSet.add(flag);
+        log.debug("Added flag: {}", flag);
+      }
+    }
+    user.setFlags(UserFlag.getStringFromFlagSet(oldFlagSet));
+    return userService.save(user);
   }
 
   @Override
-  public void removeUserFlags(User user, Set<UserFlag> flagSet) {
+  public User removeUserFlags(User user2, Set<UserFlag> flagSet) {
+    User user = userService.findById(user2.getId());
+    if (user == null) {
+      log.debug("User not found: {}", user2);
+      return user;
+    }
+    Set<UserFlag> oldFlagSet = user.getUserFlagsSet();
+    for (UserFlag flag : flagSet) {
+      if (oldFlagSet.contains(flag)) {
+        oldFlagSet.remove(flag);
+        log.debug("Removed flag: {}", flag);
+      }
+    }
+    user.setFlags(UserFlag.getStringFromFlagSet(oldFlagSet));
+    return userService.save(user);
 
   }
 }
