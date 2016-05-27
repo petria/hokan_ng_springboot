@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /**
- * PircBotUser: petria
+ * User: petria
  * Date: 12/13/13
  * Time: 9:33 PM
  *

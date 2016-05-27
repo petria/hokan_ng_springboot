@@ -19,7 +19,7 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_CITY_1;
 import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_CITY_2;
 
 /**
- * PircBotUser: petria
+ * User: petria
  * Date: Apr 19, 2010
  * Time: 10:00:55 PM
  */

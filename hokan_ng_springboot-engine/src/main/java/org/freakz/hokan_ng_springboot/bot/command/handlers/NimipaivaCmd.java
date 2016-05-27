@@ -21,7 +21,7 @@ import java.util.List;
 import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_NIMI_OR_PVM;
 
 /**
- * PircBotUser: petria
+ * User: petria
  * Date: 1/13/14
  * Time: 12:36 PM
  *

@@ -16,7 +16,7 @@ import java.util.Map;
 import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_EXPRESSION;
 
 /**
- * PircBotUser: petria
+ * User: petria
  * Date: 11/27/13
  * Time: 3:20 PM
  *

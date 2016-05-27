@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
- * PircBotUser: petria
+ * User: petria
  * Date: 03-Mar-2009
  * Time: 09:08:27
  *

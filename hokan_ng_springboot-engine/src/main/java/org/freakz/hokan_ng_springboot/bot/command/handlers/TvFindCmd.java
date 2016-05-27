@@ -20,7 +20,7 @@ import java.util.List;
 import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_PROGRAM;
 
 /**
- * PircBotUser: petria
+ * User: petria
  * Date: 11/26/13
  * Time: 12:53 PM
  *

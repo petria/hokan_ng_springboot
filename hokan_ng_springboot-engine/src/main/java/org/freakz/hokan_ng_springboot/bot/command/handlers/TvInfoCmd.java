@@ -20,7 +20,7 @@ import java.text.SimpleDateFormat;
 import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_ID;
 
 /**
- * PircBotUser: petria
+ * User: petria
  * Date: 11/27/13
  * Time: 4:13 PM
  *
