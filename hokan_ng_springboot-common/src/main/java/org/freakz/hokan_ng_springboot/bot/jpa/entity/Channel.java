@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
- * PircBotUser: petria
+ * User: petria
  * Date: 3/4/11
  * Time: 10:02 AM
  */

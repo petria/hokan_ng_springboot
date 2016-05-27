@@ -18,7 +18,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * PircBotUser: petria
+ * User: petria
  * Date: 11/26/13
  * Time: 1:06 PM
  *

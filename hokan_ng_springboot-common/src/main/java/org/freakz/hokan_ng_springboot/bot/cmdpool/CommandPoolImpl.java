@@ -19,7 +19,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * PircBotUser: petria
+ * User: petria
  * Date: 11/5/13
  * Time: 12:04 PM
  *

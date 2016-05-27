@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * PircBotUser: petria
+ * User: petria
  * Date: 11/25/13
  * Time: 4:27 PM
  *

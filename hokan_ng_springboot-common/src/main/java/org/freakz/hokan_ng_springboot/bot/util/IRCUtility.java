@@ -1,7 +1,7 @@
 package org.freakz.hokan_ng_springboot.bot.util;
 
 /**
- * PircBotUser: petria
+ * User: petria
  * Date: 25-Mar-2009
  * Time: 23:04:11
  *

@@ -24,7 +24,7 @@ import javax.annotation.PostConstruct;
 import java.util.*;
 
 /**
- * PircBotUser: petria
+ * User: petria
  * Date: 11/26/13
  * Time: 2:30 PM
  *

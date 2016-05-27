@@ -7,7 +7,7 @@ import org.freakz.hokan_ng_springboot.bot.models.UpdaterStatus;
 import java.util.Calendar;
 
 /**
- * PircBotUser: petria
+ * User: petria
  * Date: 11/18/13
  * Time: 2:25 PM
  *

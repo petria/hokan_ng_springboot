@@ -5,7 +5,7 @@ import org.freakz.hokan_ng_springboot.bot.jpa.entity.CommandHistory;
 import java.util.List;
 
 /**
- * PircBotUser: petria
+ * User: petria
  * Date: 11/5/13
  * Time: 12:13 PM
  *

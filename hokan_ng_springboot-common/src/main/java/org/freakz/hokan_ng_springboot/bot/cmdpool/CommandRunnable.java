@@ -3,7 +3,7 @@ package org.freakz.hokan_ng_springboot.bot.cmdpool;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
 
 /**
- * PircBotUser: petria
+ * User: petria
  * Date: 11/5/13
  * Time: 12:06 PM
  *

@@ -3,7 +3,7 @@ package org.freakz.hokan_ng_springboot.bot.ircengine.connector;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.IrcServerConfig;
 
 /**
- * PircBotUser: petria
+ * User: petria
  * Date: 11/4/13
  * Time: 7:14 PM
  *

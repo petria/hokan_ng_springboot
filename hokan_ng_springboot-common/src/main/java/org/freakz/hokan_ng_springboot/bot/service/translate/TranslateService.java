@@ -3,7 +3,7 @@ package org.freakz.hokan_ng_springboot.bot.service.translate;
 import java.util.List;
 
 /**
- * PircBotUser: petria
+ * User: petria
  * Date: 12/14/13
  * Time: 9:06 AM
  *

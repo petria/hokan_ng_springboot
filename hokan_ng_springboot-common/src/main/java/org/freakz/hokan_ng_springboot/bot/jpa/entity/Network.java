@@ -6,7 +6,7 @@ import java.util.Date;
 
 /**
  * Created by IntelliJ IDEA.
- * PircBotUser: petria
+ * User: petria
  * Date: 3/20/11
  * Time: 1:31 PM
  */

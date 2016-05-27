@@ -15,7 +15,7 @@ import java.net.*;
 /**
  * <br>
  * <p>
- * PircBotUser: petria<br>
+ * User: petria<br>
  * Date: 29-Jun-2007<br>
  * Time: 12:53:37<br>
  * <p>

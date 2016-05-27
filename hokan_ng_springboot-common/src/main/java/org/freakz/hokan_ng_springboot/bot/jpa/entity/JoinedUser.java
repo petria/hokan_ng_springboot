@@ -3,7 +3,7 @@ package org.freakz.hokan_ng_springboot.bot.jpa.entity;
 import javax.persistence.*;
 
 /**
- * PircBotUser: petria
+ * User: petria
  * Date: 11/11/13
  * Time: 10:19 AM
  *

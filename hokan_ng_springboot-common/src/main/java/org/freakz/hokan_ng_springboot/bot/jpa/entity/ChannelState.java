@@ -3,7 +3,7 @@ package org.freakz.hokan_ng_springboot.bot.jpa.entity;
 import java.io.Serializable;
 
 /**
- * PircBotUser: petria
+ * User: petria
  * Date: 11/7/13
  * Time: 12:05 PM
  *

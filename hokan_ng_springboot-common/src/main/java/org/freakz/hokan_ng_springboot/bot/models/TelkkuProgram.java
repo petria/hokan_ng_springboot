@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * PircBotUser: petria
+ * User: petria
  * Date: 16-Jan-2009
  * Time: 08:37:05
  *

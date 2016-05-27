@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.CommandHistory;
 
 /**
- * PircBotUser: petria
+ * User: petria
  * Date: 11/5/13
  * Time: 12:09 PM
  *
