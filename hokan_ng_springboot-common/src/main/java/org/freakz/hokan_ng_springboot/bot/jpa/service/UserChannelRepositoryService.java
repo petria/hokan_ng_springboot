@@ -2,6 +2,7 @@ package org.freakz.hokan_ng_springboot.bot.jpa.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.Channel;
+import org.freakz.hokan_ng_springboot.bot.jpa.entity.IrcLog;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.User;
 import org.freakz.hokan_ng_springboot.bot.jpa.entity.UserChannel;
 import org.freakz.hokan_ng_springboot.bot.jpa.repository.UserChannelRepository;
@@ -13,6 +14,7 @@ import java.util.List;
 
 /**
  * Created by Petri Airio on 7.4.2015.
+ * -
  */
 @Service
 @Slf4j
@@ -23,8 +25,9 @@ public class UserChannelRepositoryService implements UserChannelService {
 
   @Override
   @Transactional
-  public UserChannel createUserChannel(User user, Channel channel) {
+  public UserChannel createUserChannel(User user, Channel channel, IrcLog irclog) {
     UserChannel userChannel = new UserChannel(user, channel);
+    userChannel.setLastIrcLogID(irclog.getId() + "");
     return repository.save(userChannel);
   }
 

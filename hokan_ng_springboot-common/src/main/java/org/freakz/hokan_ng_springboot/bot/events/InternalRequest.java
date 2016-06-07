@@ -55,11 +55,10 @@ public class InternalRequest implements Serializable {
     this.ircMessageEvent = ircMessageEvent;
     this.network = networkService.getNetwork(ircMessageEvent.getNetwork());
     this.user = getUser(ircMessageEvent);
-    if (!ircMessageEvent.isPrivate()) {
-      this.channel = channelService.findByNetworkAndChannelName(network, ircMessageEvent.getChannel());
-      this.userChannel = userChannelService.getUserChannel(this.user, this.channel);
-      this.channelStats = channelStatsService.findFirstByChannel(channel);
-    }
+    this.channel = channelService.findByNetworkAndChannelName(network, ircMessageEvent.getChannel());
+    this.userChannel = userChannelService.getUserChannel(this.user, this.channel);
+    this.channelStats = channelStatsService.findFirstByChannel(channel);
+
   }
 
 

@@ -19,7 +19,6 @@ import java.util.Date;
 
 /**
  * Created by Petri Airio on 10.2.2015.
- *
  */
 @Controller
 @Slf4j
@@ -84,20 +83,10 @@ public class EngineServiceMessageHandlerImpl implements JmsServiceMessageHandler
     internalRequest.setJmsEnvelope(envelope);
     try {
       internalRequest.init(event);
-      if (!event.isPrivate()) {
-        internalRequest.getUserChannel().setLastCommand(event.getMessage());
-        internalRequest.getUserChannel().setLastCommandTime(new Date());
-        internalRequest.saveUserChannel();
-      }
+      internalRequest.getUserChannel().setLastCommand(event.getMessage());
+      internalRequest.getUserChannel().setLastCommandTime(new Date());
+      internalRequest.saveUserChannel();
       handler.handleLine(internalRequest, response);
-/*      if (event.isWebMessage()) {
-        handler.handleLineSync(internalRequest, response);
-        ServiceResponse serviceResponse = new ServiceResponse(ServiceRequestType.ENGINE_REQUEST);
-        serviceResponse.setResponseData(ServiceRequestType.ENGINE_REQUEST.getResponseDataKey(), "Fufufuf");
-        envelope.getMessageOut().addPayLoadObject("ENGINE_RESPONSE", serviceResponse);
-      } else {
-        handler.handleLine(internalRequest, response);
-      }*/
     } catch (Exception e) {
       log.error("Command handler returned exception {}", e);
     }

@@ -42,13 +42,13 @@ public class UserChannel implements Serializable {
   @Column(name = "LAST_PART_MESSAGE")
   private String lastPartMessage;
 
-  @Column(name = "LAST_MESSAGE", length = 1024)
-  private String lastMessage;
+  @Column(name = "LAST_IRC_LOG_ID")
+  private String lastIrcLogID;
 
   @Column(name = "LAST_MESSAGE_TIME")
   private Date lastMessageTime;
 
-  @Column(name = "LAST_COMMAND", length = 1024)
+  @Column(name = "LAST_COMMAND", length = 256)
   private String lastCommand;
 
   @Column(name = "LAST_COMMAND_TIME")
@@ -61,7 +61,6 @@ public class UserChannel implements Serializable {
     this.lastJoin = new Date();
     this.lastPart = new Date();
     this.lastPartMessage = "";
-    this.lastMessage = "";
     this.lastMessageTime = new Date();
     this.lastCommand = "";
     this.lastCommandTime = new Date();
@@ -138,12 +137,12 @@ public class UserChannel implements Serializable {
     this.lastPartMessage = lastPartMessage;
   }
 
-  public String getLastMessage() {
-    return lastMessage;
+  public String getLastIrcLogID() {
+    return lastIrcLogID;
   }
 
-  public void setLastMessage(String lastMessage) {
-    this.lastMessage = lastMessage;
+  public void setLastIrcLogID(String lastIrcLogID) {
+    this.lastIrcLogID = lastIrcLogID;
   }
 
   public Date getLastMessageTime() {

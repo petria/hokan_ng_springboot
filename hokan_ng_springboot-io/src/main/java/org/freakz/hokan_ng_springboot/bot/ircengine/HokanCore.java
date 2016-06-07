@@ -173,10 +173,10 @@ public class HokanCore extends PircBot implements HokanCoreService {
     return channelStats;
   }
 
-  public UserChannel getUserChannel(User user, Channel channel) {
+  public UserChannel getUserChannel(User user, Channel channel, IrcLog ircLog) {
     UserChannel userChannel = userChannelService.getUserChannel(user, channel);
     if (userChannel == null) {
-      userChannel = userChannelService.createUserChannel(user, channel);
+      userChannel = userChannelService.createUserChannel(user, channel, ircLog);
     }
     return userChannel;
   }
@@ -226,7 +226,7 @@ public class HokanCore extends PircBot implements HokanCoreService {
       user.setRealMask(StringStuff.quoteRegExp(mask));
       user = this.userService.save(user);
 
-      getUserChannel(user, channel);
+//      getUserChannel(user, channel);
 /*      UserChannel userChannel = userChannelService.getUserChannel(user, channel);
       if (userChannel == null) {
         userChannelService.createUserChannel(user, channel);
@@ -288,7 +288,7 @@ public class HokanCore extends PircBot implements HokanCoreService {
     Channel channel = getChannel(ircEvent);
     ChannelStats channelStats = getChannelStats(channel);
     User user = getUser(ircEvent);
-    UserChannel userChannel = getUserChannel(user, channel);
+//    UserChannel userChannel = getUserChannel(user, channel);
 
     if (sender.equalsIgnoreCase(getNick())) {
       // Bot joining
@@ -308,12 +308,12 @@ public class HokanCore extends PircBot implements HokanCoreService {
 
     } else {
       boolean doJoin = channelPropertyService.getChannelPropertyAsBoolean(channel, PropertyName.PROP_CHANNEL_DO_JOIN_MESSAGE, false);
-      if (doJoin) {
-        String message = userChannel.getJoinComment();
+/* TODO
+       String message = userChannel.getJoinComment();
         if (message != null && message.length() > 0) {
           handleSendMessage(channel.getChannelName(), String.format("%s -> %s", sender, message));
         }
-      }
+      }*/
     }
     int oldC = channelStats.getMaxUserCount();
     int newC = getUsers(channel.getChannelName()).length;
@@ -405,7 +405,7 @@ public class HokanCore extends PircBot implements HokanCoreService {
 
   @Override
 	protected void onPrivateMessage(String sender, String login, String hostname, String message, byte[] original) {
-    this.ircLogService.addIrcLog(new Date(), sender, getName(), message);
+    IrcLog ircLog = ircLogService.addIrcLog(new Date(), sender, getName(), message);
     int confirmLong = propertyService.getPropertyAsInt(PropertyName.PROP_SYS_CONFIRM_LONG_MESSAGES, -1);
     if (confirmLong > 0) {
       if (handleConfirmMessages(sender, message)) {
@@ -436,7 +436,7 @@ public class HokanCore extends PircBot implements HokanCoreService {
       log.debug("Ignoring: {}", user);
     } else {
       Channel channel = getChannel(ircEvent);
-      UserChannel userChannel = getUserChannel(user, channel);
+      UserChannel userChannel = getUserChannel(user, channel, ircLog);
       String result = engineCommunicator.sendToEngine(ircEvent, userChannel);
     }
 
@@ -445,7 +445,7 @@ public class HokanCore extends PircBot implements HokanCoreService {
   @Override
 	protected void onMessage(String channel, String sender, String login, String hostname, String message,
 			byte[] original) {
-    this.ircLogService.addIrcLog(new Date(), sender, channel, message);
+    IrcLog ircLog = this.ircLogService.addIrcLog(new Date(), sender, channel, message);
     String toMe = String.format("%s: ", getName());
     boolean isToMe = false;
     if (message.startsWith(toMe)) {
@@ -495,7 +495,7 @@ public class HokanCore extends PircBot implements HokanCoreService {
     if (userChannel == null) {
       userChannel = new UserChannel(user, ch);
     }
-    userChannel.setLastMessage(message);
+    userChannel.setLastIrcLogID(ircLog.getId() + "");
     userChannel.setLastMessageTime(new Date());
     userChannelService.save(userChannel);
 
